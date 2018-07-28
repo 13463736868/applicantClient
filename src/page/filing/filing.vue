@@ -4,7 +4,10 @@
       <span class="f36 fcf">立案申请</span>
     </head-top>
     <div class="_center">
-      <span class="f20 bc fc4">立案申请</span>
+      <Row>
+        <Col span="4" offset="2" class="tc">申请人</Col>
+        <Col span="16" class="tc">申请人</Col>
+      </Row>
     </div>
   </div>
 </template>
