@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <head-top>
+    <head-top :isRegister="true">
       <span class="f36 fcf">我的案件</span>
     </head-top>
     <div class="_center">

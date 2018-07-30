@@ -1,6 +1,6 @@
 <template>
   <div class="filing">
-    <head-top>
+    <head-top :isRegister="true">
       <span class="f36 fcf">立案申请</span>
     </head-top>
     <div class="_center">

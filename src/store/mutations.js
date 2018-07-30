@@ -1,6 +1,6 @@
 export default {
   // 大写
-  // admin_token (state, data) {
+  // ADMIN_TOKEN (state, data) {
   //   state.admin_token = data
   // }
 }

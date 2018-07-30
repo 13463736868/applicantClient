@@ -1,6 +1,6 @@
 <template>
   <div class="userInfo">
-    <head-top>
+    <head-top :isRegister="true">
       <span class="f36 fcf">身份绑定信息</span>
     </head-top>
     <div class="_center">

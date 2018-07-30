@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import 'iview/dist/styles/iview.css'
 
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login')
+const register = r => require.ensure([], () => r(require('@/page/register/register.vue')), 'register')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
 const proposer = r => require.ensure([], () => r(require('@/page/filing/children/proposer.vue')), 'proposer')
@@ -26,6 +27,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
     },
     {
       path: '/home',

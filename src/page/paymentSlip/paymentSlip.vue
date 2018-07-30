@@ -1,6 +1,6 @@
 <template>
   <div class="paymentSlip">
-    <head-top>
+    <head-top :isRegister="true">
       <span class="f36 fcf">缴费单查询</span>
     </head-top>
     <div class="_center">
@@ -70,7 +70,13 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  color: '#2d8cf0'
+                  color: '#2d8cf0',
+                  cursor: 'pointer'
+                },
+                on: {
+                  click: () => {
+                    this.goPaymentInfo(params.index)
+                  }
                 }
               }, params.row.payNum)
             }
@@ -188,6 +194,9 @@ export default {
     })
   },
   methods: {
+    goPaymentInfo (index) {
+      console.log(this.payList.bodyList[index])
+    },
     resSearch () {
       console.log(this.search.text)
       // 获取列表方法

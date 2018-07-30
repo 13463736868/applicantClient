@@ -1,6 +1,6 @@
 <template>
   <div class="notApplied">
-    <head-top>
+    <head-top :isRegister="true">
       <span class="f36 fcf">待申请案件</span>
     </head-top>
     <div class="_center">

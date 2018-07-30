@@ -1,13 +1,13 @@
 <template>
   <div class="_header pr not_s" :style="style.bg">
     <div class="header_top clearfix">
-      <ul class="nav fl">
+      <ul class="nav fl" v-if="isRegister">
         <router-link v-for="item in nav.menu" :to="item.url" :key="item.id" tag="li" class="hand fl">{{item.text}}</router-link>
       </ul>
       <div class="user fr w200">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
           <Col span="16">
-            <span class="fcf f14">王钢蛋，您好！</span>
+            <span class="fcf f14" v-if="isRegister">王钢蛋，您好！</span>
           </Col>
           <Col span="8">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>
@@ -74,6 +74,7 @@ export default {
       }
     }
   },
+  props: ['isRegister'],
   methods: {
     loginOut () {
       removeToken()

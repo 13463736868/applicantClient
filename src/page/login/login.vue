@@ -114,7 +114,7 @@ export default {
             this.user.em = '该手机号码不存在'
           } else if (resO.data.data === 1) {
             setToken(resT.data.data)
-            // this.$store.commit('admin_token', '111111xxx')
+            // this.$store.commit('ADMIN_TOKEN', '111111xxx')
             let redirect = decodeURIComponent(this.$route.query.redirect || '/')
             this.$router.push({
               path: redirect
@@ -141,6 +141,9 @@ export default {
     },
     resRegister () {
       console.log('注册操作')
+      this.$router.push({
+        path: '/register'
+      })
     }
   }
 }
