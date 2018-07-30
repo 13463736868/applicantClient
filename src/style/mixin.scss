@@ -72,6 +72,14 @@ left: 50%;
   color: $color;
 }
 
+@mixin hand {
+  -webkit-cursor: pointer;
+  -moz-cursor: pointer;
+  -ms-cursor: pointer;
+  -o-cursor: pointer;
+  cursor: pointer;
+}
+
 @mixin btn($bg, $width, $size, $height){
   display: inline-block;
   white-space: nowrap;

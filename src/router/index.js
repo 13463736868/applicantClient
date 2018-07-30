@@ -5,6 +5,10 @@ import 'iview/dist/styles/iview.css'
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
+const proposer = r => require.ensure([], () => r(require('@/page/filing/children/proposer.vue')), 'proposer')
+const respondent = r => require.ensure([], () => r(require('@/page/filing/children/respondent.vue')), 'respondent')
+const claimItems = r => require.ensure([], () => r(require('@/page/filing/children/claimItems.vue')), 'claimItems')
+const evidences = r => require.ensure([], () => r(require('@/page/filing/children/evidences.vue')), 'evidences')
 const notApplied = r => require.ensure([], () => r(require('@/page/notApplied/notApplied.vue')), 'notApplied')
 const paymentSlip = r => require.ensure([], () => r(require('@/page/paymentSlip/paymentSlip.vue')), 'paymentSlip')
 const userInfo = r => require.ensure([], () => r(require('@/page/userInfo/userInfo.vue')), 'userInfo')
@@ -37,7 +41,37 @@ export default new Router({
       meta: {
         requireAuth: true
       },
-      component: filing
+      component: filing,
+      children: [
+        {
+          path: '',
+          redirect: '/filing/proposer'
+        },
+        {
+          path: 'proposer',
+          name: 'proposer',
+          component: proposer
+        },
+        {
+          path: 'respondent',
+          name: 'respondent',
+          component: respondent
+        },
+        {
+          path: 'claimItems',
+          name: 'claimItems',
+          component: claimItems
+        },
+        {
+          path: 'evidences',
+          name: 'evidences',
+          component: evidences
+        },
+        {
+          path: '*',
+          redirect: '/filing/proposer'
+        }
+      ]
     },
     {
       path: '/notApplied',

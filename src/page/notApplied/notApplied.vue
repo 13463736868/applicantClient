@@ -239,7 +239,10 @@ export default {
   },
   methods: {
     goCaseSee (index) {
-      console.log('案件查看操作')
+      console.log('案件查看操作-先把案件号存到store.xxNo')
+      this.$router.push({
+        path: '/filing'
+      })
     },
     resCaseDel (index) {
       console.log('案件删除操作')
