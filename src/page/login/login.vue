@@ -15,7 +15,7 @@
               <label class="lh32 f16 fc9">手机号:</label>
             </Col>
             <Col span="18" class="tl">
-              <input type="text" class="_input" v-model="user.phone">
+              <input type="text" class="_input" v-model.trim="user.phone">
             </Col>
           </Row>
         </div>
@@ -25,9 +25,8 @@
               <label class="lh32 f16 fc9">密 码:</label>
             </Col>
             <Col span="18" class="tl">
-              <!-- <Input v-model="user.password" :icon="user.passIcon" placeholder="" :type="user.passType" @on-click="showPass" @keyup.enter.native="resLogin"></Input> -->
-              <input class="_input" v-model="user.password" placeholder="" :type="user.passType" @keyup.enter="resLogin"></input>
-              <Icon size="18" class="hand" :type="user.passIcon" @click="showPass"></Icon>
+              <input class="_input" v-model="user.password" placeholder="" :type="user.showPass === true?'text':'password'" @keyup.enter="resLogin"></input>
+              <Icon size="18" class="hand" :type="user.showPass === true?'eye':'eye-disabled'" @click="showPass"></Icon>
             </Col>
           </Row>
         </div>
@@ -76,8 +75,7 @@ export default {
       user: {
         phone: '',
         password: '',
-        passType: 'password',
-        passIcon: 'eye-disabled',
+        showPass: false,
         em: '',
         emStatus: false
       }
@@ -87,16 +85,12 @@ export default {
   },
   methods: {
     showPass () {
-      if (this.user.passIcon === 'eye-disabled') {
-        this.user.passIcon = 'eye'
-        this.user.passType = 'text'
-      } else {
-        this.user.passIcon = 'eye-disabled'
-        this.user.passType = 'password'
-      }
+      this.user.showPass = !this.user.showPass
     },
     resForget () {
-      console.log('找回密码操作')
+      this.$router.push({
+        path: '/forget'
+      })
     },
     resLogin () {
       if (this.user.phone === '') {
@@ -140,7 +134,6 @@ export default {
       }
     },
     resRegister () {
-      console.log('注册操作')
       this.$router.push({
         path: '/register'
       })
@@ -199,7 +192,7 @@ export default {
         margin-bottom: 5px;
         ._input {
           width: 80%;
-          letter-spacing: 2px;
+          letter-spacing: 1px;
           font-size: 16px;
           color: #666;
           height: 32px;

@@ -4,6 +4,7 @@ import 'iview/dist/styles/iview.css'
 
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login')
 const register = r => require.ensure([], () => r(require('@/page/register/register.vue')), 'register')
+const forget = r => require.ensure([], () => r(require('@/page/forget/forget.vue')), 'forget')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
 const proposer = r => require.ensure([], () => r(require('@/page/filing/children/proposer.vue')), 'proposer')
@@ -32,6 +33,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      component: forget
     },
     {
       path: '/home',

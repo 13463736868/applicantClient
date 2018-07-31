@@ -18,6 +18,16 @@ const login = () => {
 }
 
 const checkPhone = () => {
+  let data = 0
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const identCode = () => {
   let data = 1
   return {
     flag: true,
@@ -47,4 +57,5 @@ const productData = () => {
 
 Mock.mock('/api/login', 'post', login)
 Mock.mock('/api/checkPhone', 'post', checkPhone)
+Mock.mock('/api/identCode', 'post', identCode)
 Mock.mock('/api/user/query', 'get', productData)
