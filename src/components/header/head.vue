@@ -77,6 +77,10 @@ export default {
   props: ['isRegister'],
   methods: {
     loginOut () {
+      if (window.localStorage) {
+        let loc = window.localStorage
+        loc.removeItem('userInfo')
+      }
       removeToken()
       this.$router.replace({
         path: '/login'

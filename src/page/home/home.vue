@@ -22,16 +22,16 @@
       </Row>
       <div class="_caseList clearfix">
         </Row>
-          <Col span="24">
+          <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="caseList.loading" :columns="caseList.header" :data="caseList.bodyList"></Table>
           </Col>
         </Row>
       </div>
       <div class="_page clearfix">
         </Row>
-            <Col span="12" offset="6" class="tc">
-              <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.size" show-elevator show-total @on-change="reschangePage"></Page>
-            </Col>
+          <Col span="12" offset="6" class="tc">
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.size" show-elevator show-total @on-change="reschangePage"></Page>
+          </Col>
         </Row>
       </div>
     </div>
@@ -384,6 +384,10 @@ export default {
     },
     goCaseInfo (index) {
       console.log(this.caseList.bodyList[index].caseNo, this.caseList.bodyList[index].caseStatus)
+      console.log('案件查看操作-先把案件号存到store.xxCaseNo')
+      this.$router.push({
+        path: '/caseInfo'
+      })
     }
   }
 }
@@ -394,7 +398,7 @@ export default {
 ._center {
   background: transparent;
   width: 80%;
-  @include mw(1080px);
+  @include mw(1180px);
   @include bc;
   padding-top: 40px;
   ._search {

@@ -113,12 +113,12 @@ export default {
         axios.post('/checkPhone', {
           phone: this[type].phone
         }).then(res => {
-          if (res.data.data === 1) {
+          if (res.data.data === 0) {
             this.forgetBtn = true
             this[type].emStatus = 1
-            this[type].emText = '此手机号码已经注册过,您可直接登录,如忘记密码返回点击找回'
+            this[type].emText = '此手机号码尚未注册过,请先注册'
             this.identCodeBtn = true
-          } else {
+          } else if (res.data.data === 1) {
             this.forgetBtn = false
             this[type].emStatus = 0
             this[type].emText = ''

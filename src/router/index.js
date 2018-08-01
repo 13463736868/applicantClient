@@ -6,6 +6,15 @@ const login = r => require.ensure([], () => r(require('@/page/login/login.vue'))
 const register = r => require.ensure([], () => r(require('@/page/register/register.vue')), 'register')
 const forget = r => require.ensure([], () => r(require('@/page/forget/forget.vue')), 'forget')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
+const caseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/caseInfo.vue')), 'caseInfo')
+const basicInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/basicInfo.vue')), 'basicInfo')
+const proposerInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/proposerInfo.vue')), 'proposerInfo')
+const respondentInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/respondentInfo.vue')), 'respondentInfo')
+const claimInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/claimInfo.vue')), 'claimInfo')
+const revClaimInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/revClaimInfo.vue')), 'revClaimInfo')
+const evidencesInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/evidencesInfo.vue')), 'evidencesInfo')
+const sendInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/sendInfo.vue')), 'sendInfo')
+const endCaseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/endCaseInfo.vue')), 'endCaseInfo')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
 const proposer = r => require.ensure([], () => r(require('@/page/filing/children/proposer.vue')), 'proposer')
 const respondent = r => require.ensure([], () => r(require('@/page/filing/children/respondent.vue')), 'respondent')
@@ -48,8 +57,84 @@ export default new Router({
       component: home
     },
     {
+      path: '/caseInfo',
+      meta: {
+        requireAuth: true
+      },
+      component: caseInfo,
+      children: [
+        {
+          path: '',
+          redirect: '/caseInfo/basicInfo'
+        },
+        {
+          path: 'basicInfo',
+          name: 'basicInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: basicInfo
+        },
+        {
+          path: 'proposerInfo',
+          name: 'proposerInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: proposerInfo
+        },
+        {
+          path: 'respondentInfo',
+          name: 'respondentInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: respondentInfo
+        },
+        {
+          path: 'claimInfo',
+          name: 'claimInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: claimInfo
+        },
+        {
+          path: 'revClaimInfo',
+          name: 'revClaimInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: revClaimInfo
+        },
+        {
+          path: 'evidencesInfo',
+          name: 'evidencesInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: evidencesInfo
+        },
+        {
+          path: 'sendInfo',
+          name: 'sendInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: sendInfo
+        },
+        {
+          path: 'endCaseInfo',
+          name: 'endCaseInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: endCaseInfo
+        }
+      ]
+    },
+    {
       path: '/filing',
-      name: 'filing',
       meta: {
         requireAuth: true
       },
@@ -62,21 +147,33 @@ export default new Router({
         {
           path: 'proposer',
           name: 'proposer',
+          meta: {
+            requireAuth: true
+          },
           component: proposer
         },
         {
           path: 'respondent',
           name: 'respondent',
+          meta: {
+            requireAuth: true
+          },
           component: respondent
         },
         {
           path: 'claimItems',
           name: 'claimItems',
+          meta: {
+            requireAuth: true
+          },
           component: claimItems
         },
         {
           path: 'evidences',
           name: 'evidences',
+          meta: {
+            requireAuth: true
+          },
           component: evidences
         },
         {

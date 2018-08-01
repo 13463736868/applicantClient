@@ -14,7 +14,7 @@
       </Row>
       <div class="_caseList clearfix">
         </Row>
-          <Col span="24">
+          <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="caseList.loading" :columns="caseList.header" :data="caseList.bodyList"></Table>
           </Col>
         </Row>
@@ -265,7 +265,7 @@ export default {
 ._center {
   background: transparent;
   width: 80%;
-  @include mw(1080px);
+  @include mw(1180px);
   @include bc;
   padding-top: 40px;
   ._search {

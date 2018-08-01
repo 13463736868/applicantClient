@@ -28,7 +28,7 @@ export default {
 ._center {
   background: transparent;
   width: 80%;
-  @include mw(1080px);
+  @include mw(1180px);
   @include bc;
   padding-top: 40px;
 }

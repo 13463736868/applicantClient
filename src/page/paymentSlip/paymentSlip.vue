@@ -22,7 +22,7 @@
       </Row>
       <div class="_payList clearfix">
         </Row>
-          <Col span="24">
+          <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="payList.loading" :columns="payList.header" :data="payList.bodyList"></Table>
           </Col>
         </Row>
@@ -219,7 +219,7 @@ export default {
 ._center {
   background: transparent;
   width: 80%;
-  @include mw(1080px);
+  @include mw(1180px);
   @include bc;
   padding-top: 40px;
   ._search {

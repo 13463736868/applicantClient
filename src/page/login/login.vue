@@ -15,7 +15,7 @@
               <label class="lh32 f16 fc9">手机号:</label>
             </Col>
             <Col span="18" class="tl">
-              <input type="text" class="_input" v-model.trim="user.phone">
+              <input type="text" class="_input" v-model.trim="user.phone" @change="resCheckPhone">
             </Col>
           </Row>
         </div>
@@ -38,7 +38,7 @@
           </Row>
         </div>
         <div class="_footer bc w350 tc">
-          <span class="_loginBtn" @click="resLogin">确 认</span>
+          <button class="_loginBtn" v-bind:disabled="user.loginBtn" :class="{'_active':user.loginBtn}" @click="resLogin">确 认</button>
         </div>
         <div class="_register bc w350 tc">
           <span class="_loginBtn" @click="resRegister">没有帐号? 注册</span>
@@ -50,7 +50,8 @@
 
 <script>
 import axios from 'axios'
-import {setToken} from '@/cookies'
+import {setToken, removeToken} from '@/cookies'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'login',
@@ -76,14 +77,25 @@ export default {
         phone: '',
         password: '',
         showPass: false,
+        loginBtn: true,
         em: '',
         emStatus: false
       }
     }
   },
+  created () {
+    this.clearTokenLoc()
+  },
   mounted () {
   },
   methods: {
+    clearTokenLoc () {
+      removeToken()
+      if (window.localStorage) {
+        let loc = window.localStorage
+        loc.removeItem('userInfo')
+      }
+    },
     showPass () {
       this.user.showPass = !this.user.showPass
     },
@@ -92,45 +104,84 @@ export default {
         path: '/forget'
       })
     },
+    resCheckPhone () {
+      if (this.user.phone === '') {
+        this.user.emStatus = true
+        this.user.em = '请输入手机号'
+      } else if (!setRegExp(this.user.phone, 'phone')) {
+        this.user.emStatus = true
+        this.user.em = '手机号码格式不正确'
+      } else {
+        axios.post('/checkPhone', {
+          phone: this.user.phone
+        }).then(res => {
+          if (res.data.data === 0) {
+            this.user.loginBtn = true
+            this.user.emStatus = true
+            this.user.em = '该手机号码尚未注册'
+          } else if (res.data.data === 1) {
+            this.user.loginBtn = false
+            this.user.emStatus = false
+            this.user.em = ''
+          }
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+    },
     resLogin () {
       if (this.user.phone === '') {
         this.user.emStatus = true
         this.user.em = '请输入手机号'
+      } else if (!setRegExp(this.user.phone, 'phone')) {
+        this.user.emStatus = true
+        this.user.em = '手机号码格式不正确'
       } else if (this.user.password === '') {
         this.user.emStatus = true
         this.user.em = '请输入密码'
+      } else if (!setRegExp(this.user.password, 'password')) {
+        this.user.emStatus = true
+        this.user.em = '密码错误'
       } else {
         this.user.emStatus = false
         this.user.em = ''
-        axios.all([axios.post('/checkPhone', {phone: this.user.phone}), axios.post('/login', {phone: this.user.phone, password: this.user.password})]).then(axios.spread((resO, resT) => {
-          if (resO.data.data === 0) {
-            this.user.emStatus = true
-            this.user.em = '该手机号码不存在'
-          } else if (resO.data.data === 1) {
-            setToken(resT.data.data)
-            // this.$store.commit('ADMIN_TOKEN', '111111xxx')
-            let redirect = decodeURIComponent(this.$route.query.redirect || '/')
-            this.$router.push({
-              path: redirect
-            })
-          }
-        })).catch(e => {
-          console.log(e)
-        })
-
-        // axios.post('/login', {
-        //   phone: this.user.phone,
-        //   password: this.user.password
-        // }).then(res => {
-        //   setToken(res.data.data)
-        //   // this.$store.commit('admin_token', '111111xxx')
-        //   let redirect = decodeURIComponent(this.$route.query.redirect || '/')
-        //   this.$router.push({
-        //     path: redirect
-        //   })
-        // }).catch(e => {
+        // axios.all([axios.post('/checkPhone', {phone: this.user.phone}), axios.post('/login', {phone: this.user.phone, password: this.user.password})]).then(axios.spread((resO, resT) => {
+        //   if (resO.data.data === 0) {
+        //     this.user.emStatus = true
+        //     this.user.em = '该手机号码尚未注册'
+        //   } else if (resO.data.data === 1) {
+        //     if (window.localStorage) {
+        //         let loc = window.localStorage
+        //         loc.setItem('userInfo', JSON.stringify(res.data.data))
+        //       }
+        //     setToken(resT.data.data)
+        //     // this.$store.commit('ADMIN_TOKEN', '111111xxx')
+        //     let redirect = decodeURIComponent(this.$route.query.redirect || '/')
+        //     this.$router.push({
+        //       path: redirect
+        //     })
+        //   }
+        // })).catch(e => {
         //   console.log(e)
         // })
+
+        axios.post('/login', {
+          phone: this.user.phone,
+          password: this.user.password
+        }).then(res => {
+          if (window.localStorage) {
+            let loc = window.localStorage
+            loc.setItem('userInfo', JSON.stringify(res.data.data))
+          }
+          setToken(res.data.data.token)
+          // this.$store.commit('admin_token', '111111xxx')
+          let redirect = decodeURIComponent(this.$route.query.redirect || '/')
+          this.$router.push({
+            path: redirect
+          })
+        }).catch(e => {
+          console.log(e)
+        })
       }
     },
     resRegister () {
@@ -213,6 +264,9 @@ export default {
         ._loginBtn {
           @include btn(#126eaf, 90px, 16px, 40px);
           @include borderRadius(5px);
+        }
+        ._loginBtn._active {
+          @include btn(#ccc, 90px, 16px, 40px);
         }
       }
       ._register {

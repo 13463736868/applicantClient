@@ -1,12 +1,12 @@
 <template>
-  <div class="filing">
+  <div class="caseInfo">
     <head-top :isRegister="true">
-      <span class="f36 fcf">立案申请</span>
+      <span class="f36 fcf">案件详情</span>
     </head-top>
     <div class="_center">
       <Row>
         <Col span="4" offset="1" class="_center_left not_s">
-          <router-link v-for="item in menuClaim" :to='{path: "/filing" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
+          <router-link v-for="item in menuClaim" :to='{path: "/caseInfo" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
         <Col span="17" class="_center_right">
           <router-view></router-view>
@@ -20,30 +20,50 @@
 import headTop from '@/components/header/head'
 
 export default {
-  name: 'filing',
+  name: 'caseInfo',
   components: { headTop },
   data () {
     return {
       menuClaim: [
         {
           id: '0',
-          text: '申请人',
-          url: '/proposer'
+          text: '基本信息',
+          url: '/basicInfo'
         },
         {
           id: '1',
-          text: '被申请人',
-          url: '/respondent'
+          text: '申请方',
+          url: '/proposerInfo'
         },
         {
           id: '2',
-          text: '请求',
-          url: '/claimItems'
+          text: '被申请方',
+          url: '/respondentInfo'
         },
         {
           id: '3',
-          text: '证据',
-          url: '/evidences'
+          text: '请求和答辩',
+          url: '/claimInfo'
+        },
+        {
+          id: '4',
+          text: '反请求和答辩',
+          url: '/revClaimInfo'
+        },
+        {
+          id: '5',
+          text: '证据和质证',
+          url: '/evidencesInfo'
+        },
+        {
+          id: '6',
+          text: '送达',
+          url: '/sendInfo'
+        },
+        {
+          id: '7',
+          text: '结案',
+          url: '/endCaseInfo'
         }
       ]
     }
