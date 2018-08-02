@@ -10,10 +10,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'proposer',
+  props: [],
   data () {
     return {}
+  },
+  created () {
+    console.log(this.caseInfo)
+  },
+  computed: {
+    ...mapGetters([
+      'caseInfo'
+    ])
   }
 }
 </script>

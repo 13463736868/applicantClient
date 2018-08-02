@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 
 export default {
@@ -24,6 +26,7 @@ export default {
   components: { headTop },
   data () {
     return {
+      caseInfo: null,
       menuClaim: [
         {
           id: '0',
@@ -47,6 +50,33 @@ export default {
         }
       ]
     }
+  },
+  created () {
+    if (this.caseId === '') {
+      console.log('弹出一个框提示是否新建一个案件')
+    } else {
+      axios.post('/case/details', {
+        id: this.caseId
+      }).then(res => {
+        console.log(res.data.data)
+        this.caseInfo = res.data.data
+        this.getCaseInfo(res.data.data)
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+  },
+  mounted () {
+  },
+  computed: {
+    ...mapGetters([
+      'caseId'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getCaseInfo'
+    ])
   }
 }
 </script>

@@ -1,5 +1,6 @@
 'use strict'
 import Mock from 'mockjs'
+import Json from '@/mock/data.js'
 
 const Random = Mock.Random
 
@@ -21,6 +22,16 @@ const login = () => {
     verifyDesc: '尚未完善信息描述',
     userTypeDesc: '个人用户类型描述'
   }
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const details = () => {
+  let data = Json.details
   return {
     flag: true,
     data: data,
@@ -70,4 +81,5 @@ const productData = () => {
 Mock.mock('/api/login', 'post', login)
 Mock.mock('/api/checkPhone', 'post', checkPhone)
 Mock.mock('/api/identCode', 'post', identCode)
+Mock.mock('/api/case/details', 'post', details)
 Mock.mock('/api/user/query', 'get', productData)

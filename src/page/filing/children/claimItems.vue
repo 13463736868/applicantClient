@@ -13,10 +13,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'claimItems',
+  props: [],
   data () {
     return {}
+  },
+  created () {
+    console.log(this.caseInfo)
+  },
+  computed: {
+    ...mapGetters([
+      'caseInfo'
+    ])
   }
 }
 </script>

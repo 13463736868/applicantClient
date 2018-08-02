@@ -1,4 +1,5 @@
 import * as cookies from '@/cookies'
+import store from '@/store'
 
 const beforeEach = (to, from, next) => {
   let loc = null
@@ -11,6 +12,16 @@ const beforeEach = (to, from, next) => {
     //   store.commit('随便个名', window.localStorage.getItem('token'))
     // }
     if (cookies.getToken() && loc !== null && loc.getItem('userInfo') !== null) {
+      if (to.fullPath.indexOf('filing') === -1) {
+        loc.removeItem('caseId')
+        store.commit('GET_CASEID', '')
+      } else {
+        if (store.state.caseId === '') {
+          if (loc.getItem('caseId')) {
+            store.commit('GET_CASEID', loc.getItem('caseId'))
+          }
+        }
+      }
       next()
     } else {
       next({

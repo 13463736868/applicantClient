@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 
 export default {
@@ -238,8 +239,13 @@ export default {
     })
   },
   methods: {
+    ...mapActions([
+      'getCaseId'
+    ]),
     goCaseSee (index) {
-      console.log('案件查看操作-先把案件号存到store.xxNo')
+      console.log('案件查看操作-先把案件号存到store.xxNo', this.caseList.bodyList[index].caseNo)
+      this.getCaseId(this.caseList.bodyList[index].caseNo)
+      window.localStorage.setItem('caseId', this.caseList.bodyList[index].caseNo)
       this.$router.push({
         path: '/filing'
       })

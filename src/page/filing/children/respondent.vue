@@ -7,10 +7,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'respondent',
+  props: [],
   data () {
     return {}
+  },
+  created () {
+    console.log(this.caseInfo)
+  },
+  computed: {
+    ...mapGetters([
+      'caseInfo'
+    ])
   }
 }
 </script>
