@@ -16,12 +16,19 @@ export default {
     return {}
   },
   created () {
-    console.log(this.caseInfo)
+    if (this.caseInfo !== null) {
+      console.log('渲染数据')
+    }
   },
   computed: {
     ...mapGetters([
       'caseInfo'
     ])
+  },
+  watch: {
+    caseInfo: function (val) {
+      console.log('渲染数据')
+    }
   }
 }
 </script>

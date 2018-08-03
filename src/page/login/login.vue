@@ -50,6 +50,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 import {setToken, removeToken} from '@/cookies'
 import setRegExp from '@/config/regExp.js'
 
@@ -89,6 +90,9 @@ export default {
   mounted () {
   },
   methods: {
+    ...mapActions([
+      'setUserInfo'
+    ]),
     clearTokenLoc () {
       removeToken()
       if (window.localStorage) {
@@ -174,7 +178,7 @@ export default {
             loc.setItem('userInfo', JSON.stringify(res.data.data))
           }
           setToken(res.data.data.token)
-          // this.$store.commit('admin_token', '111111xxx')
+          this.setUserInfo(res.data.data)
           let redirect = decodeURIComponent(this.$route.query.redirect || '/')
           this.$router.push({
             path: redirect

@@ -12,13 +12,18 @@ const beforeEach = (to, from, next) => {
     //   store.commit('随便个名', window.localStorage.getItem('token'))
     // }
     if (cookies.getToken() && loc !== null && loc.getItem('userInfo') !== null) {
+      if (store.state.userInfo === null) {
+        if (loc.getItem('userInfo')) {
+          store.commit('SET_USERINFO', JSON.parse(loc.getItem('userInfo')))
+        }
+      }
       if (to.fullPath.indexOf('filing') === -1) {
         loc.removeItem('caseId')
-        store.commit('GET_CASEID', '')
+        store.commit('SET_CASEID', '')
       } else {
         if (store.state.caseId === '') {
           if (loc.getItem('caseId')) {
-            store.commit('GET_CASEID', loc.getItem('caseId'))
+            store.commit('SET_CASEID', loc.getItem('caseId'))
           }
         }
       }

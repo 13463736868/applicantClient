@@ -4,10 +4,13 @@ export default {
   // getUser ({commit}) {
   //   commit('ADMIN_TOKEN', '111111xxx')
   // }
-  getCaseId ({commit, state}, id) {
-    commit('GET_CASEID', id)
+  setUserInfo ({commit, state}, obj) {
+    commit('SET_USERINFO', obj)
   },
-  getCaseInfo ({commit, state}, obj) {
-    commit('GET_CASEINFO', obj)
+  setCaseId ({commit, state}, id) {
+    commit('SET_CASEID', id)
+  },
+  setCaseInfo ({commit, state}, obj) {
+    commit('SET_CASEINFO', obj)
   }
 }

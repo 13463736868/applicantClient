@@ -3,7 +3,8 @@
     <head-top :isRegister="true">
       <span class="f36 fcf">待申请案件</span>
     </head-top>
-    <div class="_center">
+    <div class="_center pr">
+      <spin-comp :spinShow="spinShow"></spin-comp>
       <Row>
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
@@ -13,7 +14,7 @@
         </Col>
       </Row>
       <div class="_caseList clearfix">
-        </Row>
+        <Row>
           <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="caseList.loading" :columns="caseList.header" :data="caseList.bodyList"></Table>
           </Col>
@@ -34,12 +35,14 @@
 import axios from 'axios'
 import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
+import spinComp from '@/components/common/spin'
 
 export default {
   name: 'notApplied',
-  components: { headTop },
+  components: { headTop, spinComp },
   data () {
     return {
+      spinShow: true,
       search: {
         text: ''
       },
@@ -48,7 +51,7 @@ export default {
         header: [
           {
             title: '案件编号',
-            key: 'caseNo',
+            key: 'id',
             align: 'center',
             render: (h, params) => {
               return h('a', {
@@ -64,27 +67,39 @@ export default {
                     this.goCaseSee(params.index)
                   }
                 }
-              }, params.row.caseNo)
+              }, params.row.id)
             }
           },
           {
             title: '申请人',
-            key: 'proposer',
-            align: 'center'
+            key: 'propName',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.propName === null ? '' : params.row.propName)
+            }
           },
           {
             title: '被申请人',
-            key: 'respondent',
-            align: 'center'
+            key: 'respName',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.respName === null ? '' : params.row.respName)
+            }
           },
           {
             title: '创建时间',
-            key: 'createTime',
-            align: 'center'
+            key: 'createtime',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.createtime === null ? '' : params.row.createtime)
+            }
           },
           {
             title: '操作',
-            key: 'operating',
+            key: 'state',
             align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -120,132 +135,43 @@ export default {
             }
           }
         ],
-        bodyList: [
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '1',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '2',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '3',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '4',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '5',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '6',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '7',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '8',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '9',
-            createTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '1',
-            createTime: '2018-07-07',
-            operating: ''
-          }
-        ]
+        bodyList: []
       },
       pageObj: {
-        total: 100,
+        total: 0,
         pageNum: 1,
         pageSize: 10
       }
     }
   },
-  mounted () {
-    axios.get('/user/query').then(res => {
-      console.log(res)
-    }).catch(e => {
-      // 加一个 alertText 组件
-      console.log(e)
-    })
+  created () {
+    this.resPrepareList()
   },
   methods: {
     ...mapActions([
-      'getCaseId'
+      'setCaseId'
     ]),
+    resPrepareList () {
+      this.spinShow = true
+      axios.post('/case/prepareList', {
+        keyword: this.search.text
+      }).then(res => {
+        console.log(res.data.data)
+        let _data = res.data.data
+        this.caseList.bodyList = _data.dataList
+        this.pageObj.total = _data.totalCount
+        this.pageObj.pageNum = Math.ceil(_data.totalCount / this.pageObj.pageSize)
+        this.spinShow = false
+      }).catch(e => {
+        // 加一个 alertText 组件
+        this.spinShow = false
+        console.log(e)
+      })
+    },
     goCaseSee (index) {
-      console.log('案件查看操作-先把案件号存到store.xxNo', this.caseList.bodyList[index].caseNo)
-      this.getCaseId(this.caseList.bodyList[index].caseNo)
-      window.localStorage.setItem('caseId', this.caseList.bodyList[index].caseNo)
+      console.log('案件查看操作-先把案件号存到store.xxNo', this.caseList.bodyList[index].id)
+      this.setCaseId(this.caseList.bodyList[index].id)
+      window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
       this.$router.push({
         path: '/filing'
       })
@@ -254,13 +180,12 @@ export default {
       console.log('案件删除操作')
     },
     resSearch () {
-      console.log(this.search.text)
-      // 获取列表方法
+      this.pageObj.pageNum = 1
+      this.resPrepareList()
     },
     reschangePage (page) {
       this.pageObj.pageNum = page
-      // 获取列表方法
-      console.log(page)
+      this.resPrepareList()
     }
   }
 }

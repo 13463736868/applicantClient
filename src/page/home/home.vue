@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import headTop from '@/components/header/head'
 
 export default {
@@ -270,12 +270,6 @@ export default {
     }
   },
   mounted () {
-    axios.get('/user/query').then(res => {
-      console.log(res)
-    }).catch(e => {
-      // 加一个 alertText 组件
-      console.log(e)
-    })
   },
   methods: {
     renderCaseStatus (caseStatus) {

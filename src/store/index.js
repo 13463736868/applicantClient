@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 const state = {
   // admin_token: null
+  userInfo: null,
   caseId: '',
   caseInfo: null
 }

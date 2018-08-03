@@ -3,6 +3,8 @@
     <head-top :isRegister="true">
       <span class="f36 fcf">立案申请</span>
     </head-top>
+    <alert-tip :alertShow="alertShow" @alertCancel="alertCancel" @alertConfirm="alertConfirm" alertTitle="提示" alertText="是否确定直接申请立案？">
+    </alert-tip>
     <div class="_center">
       <Row>
         <Col span="4" offset="1" class="_center_left not_s">
@@ -20,12 +22,14 @@
 import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
+import alertTip from '@/components/common/alertTip'
 
 export default {
   name: 'filing',
-  components: { headTop },
+  components: { headTop, alertTip },
   data () {
     return {
+      alertShow: false,
       caseInfo: null,
       menuClaim: [
         {
@@ -53,14 +57,14 @@ export default {
   },
   created () {
     if (this.caseId === '') {
-      console.log('弹出一个框提示是否新建一个案件')
+      this.alertShow = true
     } else {
       axios.post('/case/details', {
         id: this.caseId
       }).then(res => {
         console.log(res.data.data)
         this.caseInfo = res.data.data
-        this.getCaseInfo(res.data.data)
+        this.setCaseInfo(res.data.data)
       }).catch(e => {
         console.log(e)
       })
@@ -75,8 +79,34 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getCaseInfo'
-    ])
+      'setCaseId',
+      'setCaseInfo'
+    ]),
+    alertCancel () {
+      this.$Message.info({
+        content: '将在2秒后返回上个页面',
+        duration: 2,
+        onClose: () => {
+          setTimeout(() => {
+            this.alertShow = false
+            this.$router.go(-1)
+          })
+        }
+      })
+    },
+    alertConfirm () {
+      axios.post('/case/new').then(res => {
+        console.log(res.data.data)
+        this.alertShow = false
+        this.setCaseId(res.data.data.id)
+      }).catch(e => {
+        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    }
   }
 }
 </script>

@@ -10,15 +10,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import headTop from '@/components/header/head'
 
 export default {
   name: 'userInfo',
+  components: { headTop },
   data () {
     return {}
   },
-  components: {
-    headTop
+  created () {
+    console.log(this.userInfo)
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
   }
 }
 </script>

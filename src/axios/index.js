@@ -40,7 +40,7 @@ axios.interceptors.response.use((res) => {
         query: {redirect: this.$router.currentRoute.fullpath}
       })
   }
-  return Promise.reject(error)
+  return Promise.reject(error.status)
 })
 
 Vue.prototype.$http = axios

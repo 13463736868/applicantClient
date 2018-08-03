@@ -1,2 +1,3 @@
-export const GET_CASEID = 'GET_CASEID'
-export const GET_CASEINFO = 'GET_CASEINFO'
+export const SET_USERINFO = 'SET_USERINFO'
+export const SET_CASEID = 'SET_CASEID'
+export const SET_CASEINFO = 'SET_CASEINFO'
