@@ -2,18 +2,23 @@
   <div class="evidences">
     <div class="_evidences">
       <div class="_top">我的证据</div>
+      <add-icon v-if="addEvidShow" :imgStatus="2" addText="添加证据" @addClick="addEvid"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import addIcon from '@/components/common/addIcon'
 
 export default {
   name: 'evidences',
   props: [],
+  components: { addIcon },
   data () {
-    return {}
+    return {
+      addEvidShow: true
+    }
   },
   created () {
     if (this.caseInfo !== null) {
@@ -24,6 +29,11 @@ export default {
     ...mapGetters([
       'caseInfo'
     ])
+  },
+  methods: {
+    addEvid () {
+      console.log('添加证据')
+    }
   },
   watch: {
     caseInfo: function (val) {
@@ -37,9 +47,6 @@ export default {
 @import '@/style/mixin';
 .evidences {
   width: 83%;
-  ._evidences {
-    padding-bottom: 40px;
-  }
   ._evidences ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

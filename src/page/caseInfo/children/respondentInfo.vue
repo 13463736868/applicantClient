@@ -19,9 +19,6 @@ export default {
 @import '@/style/mixin';
 .respondentInfo {
   width: 83%;
-  ._respondent {
-    padding-bottom: 40px;
-  }
   ._respondent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

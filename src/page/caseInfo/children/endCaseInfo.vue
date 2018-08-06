@@ -19,9 +19,6 @@ export default {
 @import '@/style/mixin';
 .endCaseInfo {
   width: 83%;
-  ._endCase {
-    padding-bottom: 40px;
-  }
   ._endCase ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

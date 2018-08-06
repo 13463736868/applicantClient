@@ -2,18 +2,23 @@
   <div class="respondent">
     <div class="_respondent">
       <div class="_top">被申请人</div>
+      <add-icon v-if="addRespShow" :imgStatus="1" addText="添加被申请人" @addClick="addResp"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import addIcon from '@/components/common/addIcon'
 
 export default {
   name: 'respondent',
   props: [],
+  components: { addIcon },
   data () {
-    return {}
+    return {
+      addRespShow: true
+    }
   },
   created () {
     if (this.caseInfo !== null) {
@@ -24,6 +29,11 @@ export default {
     ...mapGetters([
       'caseInfo'
     ])
+  },
+  methods: {
+    addResp () {
+      console.log('添加被申请人')
+    }
   },
   watch: {
     caseInfo: function (val) {
@@ -37,9 +47,6 @@ export default {
 @import '@/style/mixin';
 .respondent {
   width: 83%;
-  ._respondent {
-    padding-bottom: 40px;
-  }
   ._respondent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

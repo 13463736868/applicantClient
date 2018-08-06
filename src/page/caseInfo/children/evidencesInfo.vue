@@ -19,9 +19,6 @@ export default {
 @import '@/style/mixin';
 .evidencesInfo {
   width: 83%;
-  ._evidences {
-    padding-bottom: 40px;
-  }
   ._evidences ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

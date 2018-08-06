@@ -2,24 +2,33 @@
   <div class="claimItems">
     <div class="_claim">
       <div class="_top">仲裁请求</div>
+      <add-icon v-if="addClaimShow" :imgStatus="2" addText="添加仲裁请求" @addClick="addClaim"></add-icon>
     </div>
     <div class="_reason">
       <div class="_top">事实与理由</div>
+      <add-icon v-if="addReasShow" :imgStatus="2" addText="添加事实与理由" @addClick="addReas"></add-icon>
     </div>
     <div class="_applicationBook">
       <div class="_top">仲裁申请书</div>
+      <add-icon v-if="addApplShow" :imgStatus="3" addText="上传申请书" @addClick="addAppl"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import addIcon from '@/components/common/addIcon'
 
 export default {
   name: 'claimItems',
   props: [],
+  components: { addIcon },
   data () {
-    return {}
+    return {
+      addClaimShow: true,
+      addReasShow: true,
+      addApplShow: true
+    }
   },
   created () {
     if (this.caseInfo !== null) {
@@ -30,6 +39,17 @@ export default {
     ...mapGetters([
       'caseInfo'
     ])
+  },
+  methods: {
+    addClaim () {
+      console.log('添加仲裁请求')
+    },
+    addReas () {
+      console.log('添加事实与理由')
+    },
+    addAppl () {
+      console.log('上传申请书')
+    }
   },
   watch: {
     caseInfo: function (val) {
@@ -43,9 +63,6 @@ export default {
 @import '@/style/mixin';
 .claimItems {
   width: 83%;
-  ._claim, ._reason, ._applicationBook {
-    padding-bottom: 40px;
-  }
   ._reason, ._applicationBook {
     padding-top: 60px;
   }

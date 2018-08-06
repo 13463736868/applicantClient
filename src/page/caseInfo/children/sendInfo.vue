@@ -25,9 +25,6 @@ export default {
 @import '@/style/mixin';
 .sendInfo {
   width: 83%;
-  ._infoStatus, ._emailWarn, ._smsWarn {
-    padding-bottom: 40px;
-  }
   ._emailWarn, ._smsWarn {
     padding-top: 60px;
   }

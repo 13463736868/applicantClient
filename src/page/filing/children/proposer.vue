@@ -2,21 +2,28 @@
   <div class="proposer">
     <div class="_proposer">
       <div class="_top">申请人</div>
+      <add-icon v-if="addPropShow" :imgStatus="1" addText="添加申请人" @addClick="addProp"></add-icon>
     </div>
     <div class="_agent">
       <div class="_top">代理人</div>
+      <add-icon v-if="addAgenShow" :imgStatus="1" addText="添加代理人" @addClick="addAgen"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import addIcon from '@/components/common/addIcon'
 
 export default {
   name: 'proposer',
   props: [],
+  components: { addIcon },
   data () {
-    return {}
+    return {
+      addPropShow: true,
+      addAgenShow: true
+    }
   },
   created () {
     if (this.caseInfo !== null) {
@@ -27,6 +34,14 @@ export default {
     ...mapGetters([
       'caseInfo'
     ])
+  },
+  methods: {
+    addProp () {
+      console.log('添加申请人')
+    },
+    addAgen () {
+      console.log('添加代理人')
+    }
   },
   watch: {
     caseInfo: function (val) {
@@ -40,9 +55,6 @@ export default {
 @import '@/style/mixin';
 .proposer {
   width: 83%;
-  ._proposer,._agent {
-    padding-bottom: 40px;
-  }
   ._agent {
     padding-top: 60px;
   }

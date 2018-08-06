@@ -22,9 +22,6 @@ export default {
 @import '@/style/mixin';
 .proposerInfo {
   width: 83%;
-  ._proposer,._agent {
-    padding-bottom: 40px;
-  }
   ._agent {
     padding-top: 60px;
   }

@@ -22,9 +22,6 @@ export default {
 @import '@/style/mixin';
 .basicInfo {
   width: 83%;
-  ._basic,._progress {
-    padding-bottom: 40px;
-  }
   ._progress {
     padding-top: 60px;
   }

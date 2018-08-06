@@ -25,9 +25,6 @@ export default {
 @import '@/style/mixin';
 .claimInfo {
   width: 83%;
-  ._claim, ._reason, ._applicationBook {
-    padding-bottom: 40px;
-  }
   ._reason, ._applicationBook {
     padding-top: 60px;
   }
