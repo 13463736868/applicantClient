@@ -2,6 +2,11 @@
   <div class="respondent">
     <div class="_respondent">
       <div class="_top">被申请人</div>
+      <div v-if="listRespShow" class="_listResp">
+        <div v-if="respData !== null" v-for="(item, index) in respData" :key="index">
+          <com-info :infoData="item" @editInfo="editInfo" @delInfo="delInfo"></com-info>
+        </div>
+      </div>
       <add-icon v-if="addRespShow" :imgStatus="1" addText="添加被申请人" @addClick="addResp"></add-icon>
     </div>
   </div>
@@ -10,19 +15,23 @@
 <script>
 import { mapGetters } from 'vuex'
 import addIcon from '@/components/common/addIcon'
+import comInfo from '@/page/filing/children/children/comInfo'
 
 export default {
   name: 'respondent',
   props: [],
-  components: { addIcon },
+  components: { addIcon, comInfo },
   data () {
     return {
-      addRespShow: true
+      listRespShow: false,
+      addRespShow: true,
+      respData: {}
     }
   },
   created () {
     if (this.caseInfo !== null) {
-      console.log('渲染数据')
+      this.respData = this.caseInfo.respList
+      this.createList()
     }
   },
   computed: {
@@ -33,11 +42,25 @@ export default {
   methods: {
     addResp () {
       console.log('添加被申请人')
+    },
+    editInfo (id) {
+      console.log(id)
+    },
+    delInfo (id) {
+      console.log(id)
+    },
+    createList () {
+      if (this.respData.length === 0) {
+        this.listRespShow = false
+      } else {
+        this.listRespShow = true
+      }
     }
   },
   watch: {
     caseInfo: function (val) {
-      console.log('渲染数据')
+      this.respData = val.respList
+      this.createList()
     }
   }
 }

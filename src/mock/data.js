@@ -36,7 +36,7 @@ const details = {
           id: '1004',
           filename: '身份证反面.jpg',
           filetype: null,
-          filepath: 'https://tse2-mm.cn.bing.net/th?q=%e5%bc%a0%e4%b8%80%e5%b1%b1&dc=3&w=100&h=100&c=1&rs=1&pid=InlineBlock&mkt=zh-CN&adlt=strict&t=1&mw=240&sr=3&shs=2'
+          filepath: 'https://tse2-mm.cn.bing.net/th?id=OIP.RUV1PV5e0W5KoXqzLzJi5AHaIo&w=206&h=240&c=7&o=5&pid=1.7'
         }
       ]
     },
@@ -75,6 +75,36 @@ const details = {
     {
       id: 1002,
       name: '李铁蛋',
+      idcardType: 1,
+      idcard: '500200199901275969',
+      phone: '13454545454',
+      email: null,
+      address: null,
+      enterpriseName: null,
+      enterpriseType: null,
+      exterpriseIdcard: null,
+      type: 1,
+      linkMan: null,
+      partyType: null,
+      caseId: null,
+      fileList: [
+        {
+          id: '1003',
+          filename: '身份证正面.jpg',
+          filetype: null,
+          filepath: 'https://tse1-mm.cn.bing.net/th?id=OIP.BNOZO227-GsmVIloTPCgtgHaHa&w=166&h=166&c=7&o=5&pid=1.7'
+        },
+        {
+          id: '1004',
+          filename: '身份证反面.jpg',
+          filetype: null,
+          filepath: 'https://tse4-mm.cn.bing.net/th?id=OIP.ZngkdDnOpBCDxryjPocMCAHaEo&w=266&h=166&c=7&o=5&pid=1.7'
+        }
+      ]
+    },
+    {
+      id: 1003,
+      name: '李二蛋',
       idcardType: 1,
       idcard: '500200199901275969',
       phone: '13454545454',
