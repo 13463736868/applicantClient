@@ -60,6 +60,26 @@ const caseNew = () => {
   }
 }
 
+const partyAdd = () => {
+  let data = Json.partyAdd
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const proxyAdd = () => {
+  let data = Json.proxyAdd
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
 const checkPhone = () => {
   let data = 1
   return {
@@ -104,4 +124,7 @@ Mock.mock('/api/identCode', 'post', identCode)
 Mock.mock('/api/case/details', 'post', details)
 Mock.mock('/api/case/prepareList', 'post', prepareList)
 Mock.mock('/api/case/new', 'post', caseNew)
+Mock.mock('/api/party/add/1', 'post', partyAdd)
+Mock.mock('/api/party/add/2', 'post', partyAdd)
+Mock.mock('/api/proxy/add', 'post', proxyAdd)
 Mock.mock('/api/user/query', 'post', productData)

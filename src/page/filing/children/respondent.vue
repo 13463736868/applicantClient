@@ -2,30 +2,48 @@
   <div class="respondent">
     <div class="_respondent">
       <div class="_top">被申请人</div>
-      <div v-if="listRespShow" class="_listResp">
+      <div v-if="respShow.list" class="_listResp">
         <div v-if="respData !== null" v-for="(item, index) in respData" :key="index">
-          <com-info :infoData="item" @editInfo="editInfo" @delInfo="delInfo"></com-info>
+          <prop-info :infoData="item" @editInfo="editInfo" @uploadImg="uploadImg" @delInfo="delInfo" @delImg="delImg"></prop-info>
         </div>
       </div>
-      <add-icon v-if="addRespShow" :imgStatus="1" addText="添加被申请人" @addClick="addResp"></add-icon>
+      <div v-if="respShow.add">
+        <add-prop-info :addType="2" :caseId="caseId" @saveClick="addRespSave" @cancClick="changeView('listResp')"></add-prop-info>
+      </div>
+      <div v-if="respShow.edit">
+        <edit-prop-info :caseId="caseId"></edit-prop-info>
+      </div>
+      <div v-if="respShow.upload">
+        <upload-prop :caseId="caseId"></upload-prop>
+      </div>
+      <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import addIcon from '@/components/common/addIcon'
-import comInfo from '@/page/filing/children/children/comInfo'
+import propInfo from '@/page/filing/children/children/propInfo'
+import addPropInfo from '@/page/filing/children/children/addPropInfo'
+import editPropInfo from '@/page/filing/children/children/editPropInfo'
+import uploadProp from '@/page/filing/children/children/uploadProp'
 
 export default {
   name: 'respondent',
   props: [],
-  components: { addIcon, comInfo },
+  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp },
   data () {
     return {
-      listRespShow: false,
-      addRespShow: true,
-      respData: {}
+      respShow: {
+        list: false,
+        add: false,
+        edit: false,
+        upload: false,
+        addBtn: true
+      },
+      respData: [],
+      editResppData: {}
     }
   },
   created () {
@@ -36,24 +54,61 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'caseId',
       'caseInfo'
     ])
   },
   methods: {
-    addResp () {
-      console.log('添加被申请人')
+    ...mapActions([
+      'setFiling'
+    ]),
+    addRespSave (_obj) {
+      this.respData.push(_obj)
+      this.setFiling({type: 'respList', data: this.respData})
+      this.changeView('listResp')
     },
     editInfo (id) {
+      console.log(id)
+    },
+    uploadImg (id) {
       console.log(id)
     },
     delInfo (id) {
       console.log(id)
     },
+    delImg (_obj) {
+      console.log(_obj)
+    },
     createList () {
       if (this.respData.length === 0) {
-        this.listRespShow = false
+        this.respShow.list = false
       } else {
-        this.listRespShow = true
+        this.respShow.list = true
+      }
+    },
+    changeView (type) {
+      if (type === 'listResp') {
+        if (this.respData.length === 0) {
+          this.respShow.list = false
+        } else {
+          this.respShow.list = true
+        }
+        this.respShow.add = false
+        this.respShow.edit = false
+        this.respShow.upload = false
+        this.respShow.addBtn = true
+      } else if (type === 'addResp') {
+        this.respShow.list = false
+        this.respShow.add = true
+        this.respShow.addBtn = false
+      } else if (type === 'editResp') {
+        this.respShow.list = false
+        this.respShow.edit = true
+        this.respShow.addBtn = false
+      } else if (type === 'uploadResp') {
+        this.respShow.list = false
+        this.respShow.upload = true
+        this.respShow.addBtn = false
       }
     }
   },

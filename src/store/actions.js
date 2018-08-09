@@ -1,6 +1,5 @@
 export default {
   //  小写
-  // 为啥login 引用 ...mapActions不好使
   // getUser ({commit}) {
   //   commit('ADMIN_TOKEN', '111111xxx')
   // }
@@ -12,5 +11,8 @@ export default {
   },
   setCaseInfo ({commit, state}, obj) {
     commit('SET_CASEINFO', obj)
+  },
+  setFiling ({commit, state}, obj) {
+    commit('SET_FILING', obj)
   }
 }

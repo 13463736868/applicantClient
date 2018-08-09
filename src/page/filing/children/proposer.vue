@@ -2,42 +2,70 @@
   <div class="proposer">
     <div class="_proposer">
       <div class="_top">申请人</div>
-      <div v-if="listPropShow" class="_listProp">
+      <div v-if="propShow.list" class="_listProp">
         <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
-          <com-info :infoData="item" @editInfo="editPropInfo" @delInfo="delPropInfo"></com-info>
+          <prop-info :infoData="item" @editInfo="editPropInfo" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
         </div>
       </div>
-      <add-icon v-if="addPropShow" :imgStatus="1" addText="添加申请人" @addClick="addProp"></add-icon>
+      <div v-if="propShow.add">
+        <add-prop-info :addType="1" :caseId="caseId" @saveClick="addPropSave" @cancClick="changeView('listProp')"></add-prop-info>
+      </div>
+      <div v-if="propShow.edit">
+        <edit-prop-info :caseId="caseId" :editPropData="editPropData"></edit-prop-info>
+      </div>
+      <div v-if="propShow.upload">
+        <upload-prop :caseId="caseId"></upload-prop>
+      </div>
+      <add-icon v-if="propShow.addBtn" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
     </div>
     <div class="_agent">
       <div class="_top">代理人</div>
-      <div v-if="listAgenShow" class="_listAgen">
+      <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
-          <com-info :infoData="item" @editInfo="editAgenInfo" @delInfo="delAgenInfo"></com-info>
+          <prop-info :infoData="item" @editInfo="editAgenInfo" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></prop-info>
         </div>
       </div>
-      <add-icon v-if="addAgenShow" :imgStatus="1" addText="添加代理人" @addClick="addAgen"></add-icon>
+      <div v-if="agenShow.add">
+        <add-agen-info :caseId="caseId" @saveClick="addAgenSave" @cancClick="changeView('listAgen')"></add-agen-info>
+      </div>
+      <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import addIcon from '@/components/common/addIcon'
-import comInfo from '@/page/filing/children/children/comInfo'
+import propInfo from '@/page/filing/children/children/propInfo'
+import addPropInfo from '@/page/filing/children/children/addPropInfo'
+import editPropInfo from '@/page/filing/children/children/editPropInfo'
+import uploadProp from '@/page/filing/children/children/uploadProp'
+import addAgenInfo from '@/page/filing/children/children/addAgenInfo'
 
 export default {
   name: 'proposer',
   props: [],
-  components: { addIcon, comInfo },
+  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo },
   data () {
     return {
-      listPropShow: false,
-      addPropShow: true,
-      listAgenShow: false,
-      addAgenShow: true,
-      propData: {},
-      agenData: {}
+      propShow: {
+        list: false,
+        add: false,
+        edit: false,
+        upload: false,
+        addBtn: true
+      },
+      agenShow: {
+        list: false,
+        add: false,
+        edit: false,
+        upload: false,
+        addBtn: true
+      },
+      propData: [],
+      agenData: [],
+      editPropData: {},
+      editAgenData: {}
     }
   },
   created () {
@@ -50,38 +78,107 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'caseId',
       'caseInfo'
     ])
   },
   methods: {
-    addProp () {
-      console.log('添加申请人')
+    ...mapActions([
+      'setFiling'
+    ]),
+    addPropSave (_obj) {
+      this.propData.push(_obj)
+      this.setFiling({type: 'propList', data: this.propData})
+      this.changeView('listProp')
     },
     editPropInfo (id) {
       console.log(id)
+      this.changeView('editProp')
+    },
+    uploadPropImg (id) {
+      console.log(id)
+      this.changeView('uploadProp')
     },
     delPropInfo (id) {
       console.log(id)
     },
-    addAgen () {
-      console.log('添加代理人')
+    delPropImg (_obj) {
+      console.log(_obj)
+    },
+    addAgenSave (_obj) {
+      this.agenData.push(_obj)
+      this.setFiling({type: 'proxyList', data: this.agenData})
+      this.changeView('listAgen')
     },
     editAgenInfo (id) {
+      console.log(id)
+    },
+    uploadAgenImg (id) {
       console.log(id)
     },
     delAgenInfo (id) {
       console.log(id)
     },
+    delAgenImg (_obj) {
+      console.log(_obj)
+    },
     createList () {
       if (this.propData.length === 0) {
-        this.listPropShow = false
+        this.propShow.list = false
       } else {
-        this.listPropShow = true
+        this.propShow.list = true
       }
       if (this.agenData.length === 0) {
-        this.listAgenShow = false
+        this.agenShow.list = false
       } else {
-        this.listAgenShow = true
+        this.agenShow.list = true
+      }
+    },
+    changeView (type) {
+      if (type === 'listProp') {
+        if (this.propData.length === 0) {
+          this.propShow.list = false
+        } else {
+          this.propShow.list = true
+        }
+        this.propShow.add = false
+        this.propShow.edit = false
+        this.propShow.upload = false
+        this.propShow.addBtn = true
+      } else if (type === 'addProp') {
+        this.propShow.list = false
+        this.propShow.add = true
+        this.propShow.addBtn = false
+      } else if (type === 'editProp') {
+        this.propShow.list = false
+        this.propShow.edit = true
+        this.propShow.addBtn = false
+      } else if (type === 'uploadProp') {
+        this.propShow.list = false
+        this.propShow.upload = true
+        this.propShow.addBtn = false
+      } else if (type === 'listAgen') {
+        if (this.agenData.length === 0) {
+          this.agenShow.list = false
+        } else {
+          this.agenShow.list = true
+        }
+        this.agenShow.add = false
+        this.agenShow.edit = false
+        this.agenShow.upload = false
+        this.agenShow.addBtn = true
+      } else if (type === 'addAgen') {
+        this.agenShow.list = false
+        this.agenShow.add = true
+        this.agenShow.addBtn = false
+      } else if (type === 'editAgen') {
+        this.agenShow.list = false
+        this.agenShow.edit = true
+        this.agenShow.addBtn = false
+      } else if (type === 'uploadAgen') {
+        this.agenShow.list = false
+        this.agenShow.upload = true
+        this.agenShow.addBtn = false
       }
     }
   },
@@ -102,6 +199,7 @@ export default {
   width: 83%;
   ._agent {
     padding-top: 60px;
+    padding-bottom: 60px;
   }
   ._proposer ._top, ._agent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);

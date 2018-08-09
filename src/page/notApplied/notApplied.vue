@@ -140,6 +140,7 @@ export default {
       pageObj: {
         total: 0,
         pageNum: 1,
+        pageIndex: 0,
         pageSize: 10
       }
     }
@@ -154,12 +155,15 @@ export default {
     resPrepareList () {
       this.spinShow = true
       axios.post('/case/prepareList', {
+        pageIndex: this.pageObj.pageIndex,
+        pageSize: this.pageObj.pageSize,
         keyword: this.search.text
       }).then(res => {
         console.log(res.data.data)
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList
         this.pageObj.total = _data.totalCount
+        this.pageObj.pageIndex = _data.pageIndex
         this.pageObj.pageNum = Math.ceil(_data.totalCount / this.pageObj.pageSize)
         this.spinShow = false
       }).catch(e => {

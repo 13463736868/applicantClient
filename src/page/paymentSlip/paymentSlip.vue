@@ -178,6 +178,7 @@ export default {
       pageObj: {
         total: 100,
         pageNum: 1,
+        pageIndex: 0,
         pageSize: 10
       }
     }

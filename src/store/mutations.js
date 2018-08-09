@@ -13,5 +13,8 @@ export default {
   },
   [types.SET_CASEINFO] (state, obj) {
     state.caseInfo = obj
+  },
+  [types.SET_FILING] (state, obj) {
+    state.caseInfo[obj.type] = obj.data
   }
 }
