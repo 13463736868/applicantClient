@@ -1,5 +1,5 @@
 <template>
-  <div class="_addAgenInfo">
+  <div class="_editAgenInfo">
     <Row>
       <Col span="23" offset="1" class="_type">
         <span class="mr20">代理人属性</span>
@@ -66,7 +66,7 @@
     </Row>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
-      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addAgenBtn}" v-bind:disabled="addAgenBtn" @click="saveClick">保 存</button></Col>
+      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':editAgenBtn}" v-bind:disabled="editAgenBtn" @click="saveClick">保 存</button></Col>
     </Row>
   </div>
 </template>
@@ -75,11 +75,11 @@
 import axios from 'axios'
 
 export default {
-  name: 'add_agen_info',
-  props: ['caseId', 'propArrName'],
+  name: 'edit_agen_info',
+  props: ['caseId', 'propArrName', 'editAgenData'],
   data () {
     return {
-      addAgenBtn: false,
+      editAgenBtn: false,
       emInfo: {
         status: 0,
         text: ''
@@ -114,17 +114,7 @@ export default {
           label: '驾照'
         }
       ],
-      agenData: {
-        type: '1',
-        idcardType: null,
-        idcard: '',
-        organization: '',
-        propName: '',
-        phone: '',
-        name: '',
-        email: '',
-        address: ''
-      }
+      agenData: JSON.parse(JSON.stringify(this.editAgenData))
     }
   },
   methods: {
@@ -132,6 +122,7 @@ export default {
       // console.log('type?_regExg_ajax')
       axios.post('/proxy/add', {
         caseId: this.caseId,
+        id: this.id,
         propName: this.agenData.propName,
         type: this.agenData.type,
         idcardType: this.agenData.idcardType,
@@ -156,7 +147,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._addAgenInfo {
+._editAgenInfo {
   @include borderRadius(3px);
   @include boxShadow(0 1px 6px -1px #bbb);
   margin-top: 10px;

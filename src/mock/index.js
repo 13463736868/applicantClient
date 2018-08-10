@@ -80,6 +80,26 @@ const proxyAdd = () => {
   }
 }
 
+const partyUpdate = () => {
+  let data = Json.partyUpdate
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const proxyUpdate = () => {
+  let data = Json.proxyUpdate
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
 const checkPhone = () => {
   let data = 1
   return {
@@ -127,4 +147,6 @@ Mock.mock('/api/case/new', 'post', caseNew)
 Mock.mock('/api/party/add/1', 'post', partyAdd)
 Mock.mock('/api/party/add/2', 'post', partyAdd)
 Mock.mock('/api/proxy/add', 'post', proxyAdd)
+Mock.mock('/api/party/update', 'post', partyUpdate)
+Mock.mock('/api/proxy/update', 'post', proxyUpdate)
 Mock.mock('/api/user/query', 'post', productData)

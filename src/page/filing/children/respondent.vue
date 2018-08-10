@@ -4,14 +4,14 @@
       <div class="_top">被申请人</div>
       <div v-if="respShow.list" class="_listResp">
         <div v-if="respData !== null" v-for="(item, index) in respData" :key="index">
-          <prop-info :infoData="item" @editInfo="editInfo" @uploadImg="uploadImg" @delInfo="delInfo" @delImg="delImg"></prop-info>
+          <prop-info :infoData="item" @editInfo="editRespInfo(item)" @uploadImg="uploadRespImg" @delInfo="delRespInfo" @delImg="delRespImg"></prop-info>
         </div>
       </div>
       <div v-if="respShow.add">
         <add-prop-info :addType="2" :caseId="caseId" @saveClick="addRespSave" @cancClick="changeView('listResp')"></add-prop-info>
       </div>
       <div v-if="respShow.edit">
-        <edit-prop-info :caseId="caseId"></edit-prop-info>
+        <edit-prop-info :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
       </div>
       <div v-if="respShow.upload">
         <upload-prop :caseId="caseId"></upload-prop>
@@ -43,7 +43,7 @@ export default {
         addBtn: true
       },
       respData: [],
-      editResppData: {}
+      editRespData: {}
     }
   },
   created () {
@@ -67,16 +67,27 @@ export default {
       this.setFiling({type: 'respList', data: this.respData})
       this.changeView('listResp')
     },
-    editInfo (id) {
+    editRespInfo (_obj) {
+      this.editRespData = _obj
+      this.changeView('editResp')
+    },
+    editRespSave (_obj) {
+      for (let k in this.respData) {
+        if (this.respData[k].id === _obj.id) {
+          this.respData[k] = JSON.parse(JSON.stringify(_obj))
+          this.setFiling({type: 'respList', data: this.respData})
+          this.changeView('listResp')
+          return
+        }
+      }
+    },
+    uploadRespImg (id) {
       console.log(id)
     },
-    uploadImg (id) {
+    delRespInfo (id) {
       console.log(id)
     },
-    delInfo (id) {
-      console.log(id)
-    },
-    delImg (_obj) {
+    delRespImg (_obj) {
       console.log(_obj)
     },
     createList () {

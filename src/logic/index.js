@@ -20,6 +20,7 @@ const beforeEach = (to, from, next) => {
       if (to.fullPath.indexOf('filing') === -1) {
         loc.removeItem('caseId')
         store.commit('SET_CASEID', '')
+        store.commit('SET_CASEINFO', null)
       } else {
         if (store.state.caseId === '') {
           if (loc.getItem('caseId')) {
@@ -29,6 +30,8 @@ const beforeEach = (to, from, next) => {
       }
       next()
     } else {
+      store.commit('SET_CASEID', '')
+      store.commit('SET_CASEINFO', null)
       next({
         path: '/login',
         query: {redirect: to.fullPath}

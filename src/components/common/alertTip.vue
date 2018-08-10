@@ -4,6 +4,7 @@
       v-model="alertShow"
       :title="alertTitle"
       :mask-closable="false"
+      :closable="false"
       class="not_s">
       <div>
         <p v-text="alertText"></p>

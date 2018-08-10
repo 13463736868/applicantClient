@@ -4,14 +4,14 @@
       <div class="_top">申请人</div>
       <div v-if="propShow.list" class="_listProp">
         <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
-          <prop-info :infoData="item" @editInfo="editPropInfo" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
+          <prop-info :infoData="item" @editInfo="editPropInfo(item)" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
         </div>
       </div>
       <div v-if="propShow.add">
         <add-prop-info :addType="1" :caseId="caseId" @saveClick="addPropSave" @cancClick="changeView('listProp')"></add-prop-info>
       </div>
       <div v-if="propShow.edit">
-        <edit-prop-info :caseId="caseId" :editPropData="editPropData"></edit-prop-info>
+        <edit-prop-info :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
       </div>
       <div v-if="propShow.upload">
         <upload-prop :caseId="caseId"></upload-prop>
@@ -22,11 +22,14 @@
       <div class="_top">代理人</div>
       <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
-          <prop-info :infoData="item" @editInfo="editAgenInfo" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></prop-info>
+          <prop-info :infoData="item" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></prop-info>
         </div>
       </div>
       <div v-if="agenShow.add">
-        <add-agen-info :caseId="caseId" @saveClick="addAgenSave" @cancClick="changeView('listAgen')"></add-agen-info>
+        <add-agen-info :caseId="caseId" :propArrName="propDataName" @saveClick="addAgenSave" @cancClick="changeView('listAgen')"></add-agen-info>
+      </div>
+      <div v-if="agenShow.edit">
+        <edit-agen-info :caseId="caseId" :propArrName="propDataName" :editAgenData="editAgenData" @saveClick="editAgenSave" @cancClick="changeView('listAgen')"></edit-agen-info>
       </div>
       <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
@@ -41,11 +44,12 @@ import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
 import uploadProp from '@/page/filing/children/children/uploadProp'
 import addAgenInfo from '@/page/filing/children/children/addAgenInfo'
+import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
 
 export default {
   name: 'proposer',
   props: [],
-  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo },
+  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo, editAgenInfo },
   data () {
     return {
       propShow: {
@@ -70,7 +74,6 @@ export default {
   },
   created () {
     if (this.caseInfo !== null) {
-      console.log(this.caseInfo.propList)
       this.propData = this.caseInfo.propList
       this.agenData = this.caseInfo.proxyList
       this.createList()
@@ -80,7 +83,24 @@ export default {
     ...mapGetters([
       'caseId',
       'caseInfo'
-    ])
+    ]),
+    propDataName () {
+      let _nameArr = []
+      let _typeArr = [2, 3, 4]
+      for (let k in this.propData) {
+        let _obj = {}
+        if (this.propData[k].type === 1) {
+          _obj.label = this.propData[k].name
+          _obj.value = this.propData[k].id
+          _nameArr.push(_obj)
+        } else if (_typeArr.indexOf(this.propData[k].type) !== -1) {
+          _obj.label = this.propData[k].enterpriseName
+          _obj.value = this.propData[k].id
+          _nameArr.push(_obj)
+        }
+      }
+      return _nameArr
+    }
   },
   methods: {
     ...mapActions([
@@ -91,9 +111,19 @@ export default {
       this.setFiling({type: 'propList', data: this.propData})
       this.changeView('listProp')
     },
-    editPropInfo (id) {
-      console.log(id)
+    editPropInfo (_obj) {
+      this.editPropData = _obj
       this.changeView('editProp')
+    },
+    editPropSave (_obj) {
+      for (let k in this.propData) {
+        if (this.propData[k].id === _obj.id) {
+          this.propData[k] = JSON.parse(JSON.stringify(_obj))
+          this.setFiling({type: 'propList', data: this.propData})
+          this.changeView('listProp')
+          return
+        }
+      }
     },
     uploadPropImg (id) {
       console.log(id)
@@ -110,8 +140,19 @@ export default {
       this.setFiling({type: 'proxyList', data: this.agenData})
       this.changeView('listAgen')
     },
-    editAgenInfo (id) {
-      console.log(id)
+    editAgenInfo (_obj) {
+      this.editAgenData = _obj
+      this.changeView('editAgen')
+    },
+    editAgenSave (_obj) {
+      for (let k in this.agenData) {
+        if (this.agenData[k].id === _obj.id) {
+          this.agenData[k] = JSON.parse(JSON.stringify(_obj))
+          this.setFiling({type: 'proxyList', data: this.agenData})
+          this.changeView('listAgen')
+          return
+        }
+      }
     },
     uploadAgenImg (id) {
       console.log(id)
@@ -184,7 +225,6 @@ export default {
   },
   watch: {
     caseInfo: function (val) {
-      console.log(val.propList)
       this.propData = val.propList
       this.agenData = this.caseInfo.proxyList
       this.createList()

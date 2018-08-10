@@ -62,7 +62,6 @@ export default {
       axios.post('/case/details', {
         id: this.caseId
       }).then(res => {
-        console.log(res.data.data)
         this.caseInfo = res.data.data
         this.setCaseInfo(res.data.data)
       }).catch(e => {
@@ -96,7 +95,6 @@ export default {
     },
     alertConfirm () {
       axios.post('/case/new').then(res => {
-        console.log(res.data.data)
         this.alertShow = false
         this.setCaseId(res.data.data.id)
       }).catch(e => {

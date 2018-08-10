@@ -41,7 +41,7 @@ const details = {
       ]
     },
     {
-      id: 1002,
+      id: 2011,
       name: '李二蛋',
       idcardType: 1,
       idcard: '500200199901275969',
@@ -103,7 +103,7 @@ const details = {
       ]
     },
     {
-      id: 1003,
+      id: 2021,
       name: '李二蛋',
       idcardType: 1,
       idcard: '500200199901275969',
@@ -135,7 +135,7 @@ const details = {
   ],
   proxyList: [
     {
-      id: 1000,
+      id: 2002,
       name: '李狗胜',
       idcardType: 1,
       idcard: '500200199901275969',
@@ -397,7 +397,7 @@ const caseNew = {
 
 const partyAdd = {
   id: 2001,
-  name: '小贱人',
+  name: '添加小贱人',
   idcardType: 1,
   idcard: '500200199901275969',
   phone: '13654789898',
@@ -428,7 +428,69 @@ const partyAdd = {
 
 const proxyAdd = {
   id: 2002,
-  name: '二撒子',
+  name: '添加二撒子',
+  idcardType: 1,
+  idcard: '500200199901275969',
+  phone: '13454545454',
+  email: null,
+  address: null,
+  enterpriseName: null,
+  enterpriseType: null,
+  exterpriseIdcard: null,
+  type: 1,
+  linkMan: null,
+  partyType: null,
+  caseId: null,
+  fileList: [
+    {
+      id: '1003',
+      filename: '身份证正面.jpg',
+      filetype: null,
+      filepath: 'https://tse4-mm.cn.bing.net/th?id=OIP.ZngkdDnOpBCDxryjPocMCAHaEo&w=266&h=166&c=7&o=5&pid=1.7'
+    },
+    {
+      id: '1004',
+      filename: '身份证反面.jpg',
+      filetype: null,
+      filepath: 'https://tse1-mm.cn.bing.net/th?id=OIP.BNOZO227-GsmVIloTPCgtgHaHa&w=166&h=166&c=7&o=5&pid=1.7'
+    }
+  ]
+}
+
+const partyUpdate = {
+  id: 2021,
+  name: '修改小贱人',
+  idcardType: 1,
+  idcard: '500200199901275969',
+  phone: '13654789898',
+  email: null,
+  address: null,
+  enterpriseName: null,
+  enterpriseType: null,
+  exterpriseIdcard: null,
+  type: 1,
+  linkMan: null,
+  partyType: null,
+  caseId: null,
+  fileList: [
+    {
+      id: '1003',
+      filename: '身份证正面.jpg',
+      filetype: null,
+      filepath: 'https://tse2-mm.cn.bing.net/th?q=%e5%bc%a0%e4%b8%80%e5%b1%b1&dc=3&w=100&h=100&c=1&rs=1&pid=InlineBlock&mkt=zh-CN&adlt=strict&t=1&mw=240&sr=3&shs=2'
+    },
+    {
+      id: '1004',
+      filename: '身份证反面.jpg',
+      filetype: null,
+      filepath: 'https://tse2-mm.cn.bing.net/th?id=OIP.RUV1PV5e0W5KoXqzLzJi5AHaIo&w=206&h=240&c=7&o=5&pid=1.7'
+    }
+  ]
+}
+
+const proxyUpdate = {
+  id: 2002,
+  name: '修改二撒子',
   idcardType: 1,
   idcard: '500200199901275969',
   phone: '13454545454',
@@ -462,5 +524,7 @@ export default {
   prepareList,
   caseNew,
   partyAdd,
-  proxyAdd
+  proxyAdd,
+  partyUpdate,
+  proxyUpdate
 }

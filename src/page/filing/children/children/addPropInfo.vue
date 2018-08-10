@@ -4,13 +4,13 @@
       <Col span="23" offset="1" class="_type">
         <span class="mr20">当事人属性</span>
         <RadioGroup v-model="propData.type" @on-change="changeType">
-          <Radio label="1">自然人</Radio>
-          <Radio label="2">企业</Radio>
-          <Radio label="3">个体户</Radio>
-          <Radio label="4">其他组织</Radio>
+          <Radio :label="1">自然人</Radio>
+          <Radio :label="2">企业</Radio>
+          <Radio :label="3">个体户</Radio>
+          <Radio :label="4">其他组织</Radio>
         </RadioGroup>
       </Col>
-      <Row v-if="propData.type === '1'">
+      <Row v-if="propData.type === 1">
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
@@ -50,7 +50,7 @@
           </Row>
         </Col>
       </Row>
-      <Row v-else-if="propData.type === '2'">
+      <Row v-else-if="propData.type === 2">
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">企业名称<b class="_b">*</b></Col>
@@ -114,7 +114,7 @@
           </Row>
         </Col>
       </Row>
-      <Row v-else-if="propData.type === '3'">
+      <Row v-else-if="propData.type === 3">
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">名称<b class="_b">*</b></Col>
@@ -178,7 +178,7 @@
           </Row>
         </Col>
       </Row>
-      <Row v-else-if="propData.type === '4'">
+      <Row v-else-if="propData.type === 4">
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">组织名称<b class="_b">*</b></Col>
@@ -312,7 +312,7 @@ export default {
         }
       ],
       propData: {
-        type: '1',
+        type: 1,
         idcardType: null,
         idcard: '',
         phone: '',
@@ -328,8 +328,9 @@ export default {
   },
   methods: {
     changeType () {
+      let _type = this.propData.type
       this.propData = {
-        type: '1',
+        type: _type,
         idcardType: null,
         idcard: '',
         phone: '',
