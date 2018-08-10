@@ -33,11 +33,16 @@
       </div>
       <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
+    <alert-tip :alertShow="alertShowProp" @alertCancel="delPropCanc" @alertConfirm="delPropSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
+    <alert-tip :alertShow="alertShowAgen" @alertCancel="delAgenCanc" @alertConfirm="delAgenSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
@@ -49,9 +54,11 @@ import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
 export default {
   name: 'proposer',
   props: [],
-  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo, editAgenInfo },
+  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo, editAgenInfo },
   data () {
     return {
+      alertShowProp: false,
+      alertShowAgen: false,
       propShow: {
         list: false,
         add: false,
@@ -69,7 +76,9 @@ export default {
       propData: [],
       agenData: [],
       editPropData: {},
-      editAgenData: {}
+      editAgenData: {},
+      delPropId: null,
+      delAgenId: null
     }
   },
   created () {
@@ -130,7 +139,23 @@ export default {
       this.changeView('uploadProp')
     },
     delPropInfo (id) {
-      console.log(id)
+      this.alertShowProp = true
+      this.delPropId = id
+    },
+    delPropSave () {
+      // console.log(ajax_del)
+      for (let k in this.propData) {
+        if (this.propData[k].id === this.delPropId) {
+          this.propData.splice(k, 1)
+          this.setFiling({type: 'propList', data: this.propData})
+          this.alertShowProp = false
+          return
+        }
+      }
+    },
+    delPropCanc () {
+      this.alertShowProp = false
+      this.delPropId = null
     },
     delPropImg (_obj) {
       console.log(_obj)
@@ -158,7 +183,23 @@ export default {
       console.log(id)
     },
     delAgenInfo (id) {
-      console.log(id)
+      this.alertShowAgen = true
+      this.delAgenId = id
+    },
+    delAgenSave () {
+      // console.log(ajax_del)
+      for (let k in this.agenData) {
+        if (this.agenData[k].id === this.delAgenId) {
+          this.agenData.splice(k, 1)
+          this.setFiling({type: 'proxyList', data: this.agenData})
+          this.alertShowAgen = false
+          return
+        }
+      }
+    },
+    delAgenCanc () {
+      this.alertShowAgen = false
+      this.delAgenId = null
     },
     delAgenImg (_obj) {
       console.log(_obj)

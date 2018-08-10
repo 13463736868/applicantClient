@@ -18,11 +18,14 @@
       </div>
       <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
+    <alert-tip :alertShow="alertShowResp" @alertCancel="delRespCanc" @alertConfirm="delRespSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
@@ -32,9 +35,10 @@ import uploadProp from '@/page/filing/children/children/uploadProp'
 export default {
   name: 'respondent',
   props: [],
-  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp },
+  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, alertTip },
   data () {
     return {
+      alertShowResp: false,
       respShow: {
         list: false,
         add: false,
@@ -43,7 +47,8 @@ export default {
         addBtn: true
       },
       respData: [],
-      editRespData: {}
+      editRespData: {},
+      delRespId: null
     }
   },
   created () {
@@ -85,7 +90,23 @@ export default {
       console.log(id)
     },
     delRespInfo (id) {
-      console.log(id)
+      this.alertShowResp = true
+      this.delRespId = id
+    },
+    delRespSave () {
+      // console.log(ajax_del)
+      for (let k in this.respData) {
+        if (this.respData[k].id === this.delRespId) {
+          this.respData.splice(k, 1)
+          this.setFiling({type: 'respList', data: this.respData})
+          this.alertShowResp = false
+          return
+        }
+      }
+    },
+    delRespCanc () {
+      this.alertShowResp = false
+      this.delRespId = null
     },
     delRespImg (_obj) {
       console.log(_obj)
