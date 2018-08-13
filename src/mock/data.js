@@ -172,7 +172,7 @@ const details = {
       content: '请求项内容一',
       type: 1,
       fileid: null,
-      requestName: '李二蛋'
+      requestName: 1001
     },
     {
       id: 1001,
@@ -180,7 +180,7 @@ const details = {
       content: '请求项内容二',
       type: 1,
       fileid: null,
-      requestName: '李二蛋'
+      requestName: 1001
     }
   ],
   requestReasons: {
@@ -519,6 +519,24 @@ const proxyUpdate = {
   ]
 }
 
+const requestAdd = {
+  id: 1111,
+  caseid: 1000,
+  content: '新增请求项内容',
+  type: 1,
+  fileid: null,
+  requestName: 1001
+}
+
+const requestUpdate = {
+  id: 1000,
+  caseid: 1000,
+  content: '修改请求项内容',
+  type: 1,
+  fileid: null,
+  requestName: 1001
+}
+
 export default {
   details,
   prepareList,
@@ -526,5 +544,7 @@ export default {
   partyAdd,
   proxyAdd,
   partyUpdate,
-  proxyUpdate
+  proxyUpdate,
+  requestAdd,
+  requestUpdate
 }

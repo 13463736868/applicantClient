@@ -22,7 +22,7 @@
       <div class="_top">代理人</div>
       <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
-          <prop-info :infoData="item" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></prop-info>
+          <agen-info :infoData="item" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
         </div>
       </div>
       <div v-if="agenShow.add">
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
@@ -48,13 +49,14 @@ import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
 import uploadProp from '@/page/filing/children/children/uploadProp'
+import agenInfo from '@/page/filing/children/children/agenInfo'
 import addAgenInfo from '@/page/filing/children/children/addAgenInfo'
 import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
 
 export default {
   name: 'proposer',
   props: [],
-  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, addAgenInfo, editAgenInfo },
+  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, agenInfo, addAgenInfo, editAgenInfo },
   data () {
     return {
       alertShowProp: false,
@@ -143,15 +145,25 @@ export default {
       this.delPropId = id
     },
     delPropSave () {
-      // console.log(ajax_del)
-      for (let k in this.propData) {
-        if (this.propData[k].id === this.delPropId) {
-          this.propData.splice(k, 1)
-          this.setFiling({type: 'propList', data: this.propData})
-          this.alertShowProp = false
-          return
+      axios.post('/party/delete/1', {
+        caseId: this.caseId,
+        id: this.delPropId
+      }).then(res => {
+        for (let k in this.propData) {
+          if (this.propData[k].id === this.delPropId) {
+            this.propData.splice(k, 1)
+            this.setFiling({type: 'propList', data: this.propData})
+            this.alertShowProp = false
+            return
+          }
         }
-      }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     delPropCanc () {
       this.alertShowProp = false
@@ -187,15 +199,25 @@ export default {
       this.delAgenId = id
     },
     delAgenSave () {
-      // console.log(ajax_del)
-      for (let k in this.agenData) {
-        if (this.agenData[k].id === this.delAgenId) {
-          this.agenData.splice(k, 1)
-          this.setFiling({type: 'proxyList', data: this.agenData})
-          this.alertShowAgen = false
-          return
+      axios.post('/proxy/delete', {
+        caseId: this.caseId,
+        id: this.delAgenId
+      }).then(res => {
+        for (let k in this.agenData) {
+          if (this.agenData[k].id === this.delAgenId) {
+            this.agenData.splice(k, 1)
+            this.setFiling({type: 'proxyList', data: this.agenData})
+            this.alertShowAgen = false
+            return
+          }
         }
-      }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     delAgenCanc () {
       this.alertShowAgen = false
@@ -267,7 +289,7 @@ export default {
   watch: {
     caseInfo: function (val) {
       this.propData = val.propList
-      this.agenData = this.caseInfo.proxyList
+      this.agenData = val.proxyList
       this.createList()
     }
   }

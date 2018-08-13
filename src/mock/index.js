@@ -100,8 +100,58 @@ const proxyUpdate = () => {
   }
 }
 
+const partyDelete = () => {
+  let data = 1
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const proxyDelete = () => {
+  let data = 1
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const requestAdd = () => {
+  let data = Json.requestAdd
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const requestUpdate = () => {
+  let data = Json.requestUpdate
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
 const checkPhone = () => {
   let data = 1
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
+const sendMessage = () => {
+  let data = 'ok'
   return {
     flag: true,
     data: data,
@@ -140,6 +190,7 @@ const productData = () => {
 
 Mock.mock('/api/login', 'post', login)
 Mock.mock('/api/checkPhone', 'post', checkPhone)
+Mock.mock('/api/sendMessage', 'post', sendMessage)
 Mock.mock('/api/identCode', 'post', identCode)
 Mock.mock('/api/case/details', 'post', details)
 Mock.mock('/api/case/prepareList', 'post', prepareList)
@@ -149,4 +200,12 @@ Mock.mock('/api/party/add/2', 'post', partyAdd)
 Mock.mock('/api/proxy/add', 'post', proxyAdd)
 Mock.mock('/api/party/update', 'post', partyUpdate)
 Mock.mock('/api/proxy/update', 'post', proxyUpdate)
+Mock.mock('/api/party/delete/1', 'post', partyDelete)
+Mock.mock('/api/party/delete/2', 'post', partyDelete)
+Mock.mock('/api/proxy/delete', 'post', proxyDelete)
+Mock.mock('/api/case/requestAdd/1', 'post', requestAdd)
+Mock.mock('/api/case/requestUpdate/1', 'post', requestUpdate)
+Mock.mock('/api/case/requestUpdate/2', 'post', requestUpdate)
+Mock.mock('/api/case/requestDelete', 'post', requestAdd)
+
 Mock.mock('/api/user/query', 'post', productData)

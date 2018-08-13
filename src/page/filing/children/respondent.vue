@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
@@ -94,15 +95,25 @@ export default {
       this.delRespId = id
     },
     delRespSave () {
-      // console.log(ajax_del)
-      for (let k in this.respData) {
-        if (this.respData[k].id === this.delRespId) {
-          this.respData.splice(k, 1)
-          this.setFiling({type: 'respList', data: this.respData})
-          this.alertShowResp = false
-          return
+      axios.post('/party/delete/2', {
+        caseId: this.caseId,
+        id: this.delRespId
+      }).then(res => {
+        for (let k in this.respData) {
+          if (this.respData[k].id === this.delRespId) {
+            this.respData.splice(k, 1)
+            this.setFiling({type: 'respList', data: this.respData})
+            this.alertShowResp = false
+            return
+          }
         }
-      }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     delRespCanc () {
       this.alertShowResp = false

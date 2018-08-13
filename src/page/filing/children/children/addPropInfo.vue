@@ -21,7 +21,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -61,7 +61,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseIdcard">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -125,7 +125,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseIdcard">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -189,7 +189,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseIdcard">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>

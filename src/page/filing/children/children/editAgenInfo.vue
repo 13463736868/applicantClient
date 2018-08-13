@@ -4,9 +4,9 @@
       <Col span="23" offset="1" class="_type">
         <span class="mr20">代理人属性</span>
         <RadioGroup v-model="agenData.type">
-          <Radio label="1">律师代理</Radio>
-          <Radio label="2">公民代理</Radio>
-          <Radio label="3">职员</Radio>
+          <Radio :label="1">律师代理</Radio>
+          <Radio :label="2">公民代理</Radio>
+          <Radio :label="3">职员</Radio>
         </RadioGroup>
       </Col>
       <Row>
@@ -20,7 +20,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="agenData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===12" v-text="emInfo.text"></span></Col>
@@ -41,7 +41,7 @@
             <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="agenData.propName">
-                <Option v-for="item in propArrName" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>

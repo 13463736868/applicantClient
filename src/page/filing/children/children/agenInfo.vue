@@ -1,8 +1,8 @@
 <template>
-  <div class="_propInfo">
+  <div class="_agenInfo">
     <Row>
       <Col class="_listL" span="14">
-        <Row v-if="infoData.type === 1">
+        <Row>
           <Col span="22" offset="1">
             <p>
               <span class="mr10">姓名 :</span>
@@ -19,15 +19,6 @@
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.adress"></span></p>
           </Col>
         </Row>
-        <Row v-else-if="infoData.type === 2">
-          <Col>2</Col>
-        </Row>
-        <Row v-else-if="infoData.type === 3">
-          <Col>3</Col>
-        </Row>
-        <Row v-else-if="infoData.type === 4">
-          <Col>4</Col>
-        </Row>
       </Col>
       <Col class="_listR clearfix" span="9" offset="1">
         <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
@@ -43,7 +34,7 @@
 
 <script>
 export default {
-  name: 'prop_info',
+  name: 'agen_info',
   props: ['infoData'],
   data () {
     return {
@@ -128,7 +119,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._propInfo {
+._agenInfo {
   margin-top: 10px;
   ._listL, ._listR {
     @include borderRadius(3px);
