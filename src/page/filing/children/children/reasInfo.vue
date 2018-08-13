@@ -1,21 +1,16 @@
 <template>
-  <div class="_claimInfo">
+  <div class="_reasInfo">
     <Row>
       <Col class="_listL" span="24">
         <Row>
           <Col span="22" offset="1">
             <p>
-              <span class="mr10">申请人 :</span>
-              <span v-text="requestName"></span>
+              <span class="mr10">事实与理由 :</span>
               <span class="_icon">
                 <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
-            <p>
-              <span class="mr10">请求项内容 :</span>
-              <span v-text="infoData.content"></span>
-            </p>
+            <textarea readonly class="_textarea" v-model="infoData.content" rows="8"></textarea>
           </Col>
         </Row>
       </Col>
@@ -25,19 +20,10 @@
 
 <script>
 export default {
-  name: 'claim_info',
-  props: ['infoData', 'propArrName'],
+  name: 'reas_info',
+  props: ['infoData'],
   data () {
     return {}
-  },
-  computed: {
-    requestName () {
-      for (let k in this.propArrName) {
-        if (this.propArrName[k].value === this.infoData.requestName) {
-          return this.propArrName[k].label
-        }
-      }
-    }
   },
   methods: {
     editInfo (id) {
@@ -52,7 +38,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._claimInfo {
+._reasInfo {
   margin-top: 10px;
   ._listL {
     @include borderRadius(3px);
@@ -61,6 +47,20 @@ export default {
     padding: 10px 0;
     p {
       padding: 5px 0;
+    }
+    ._textarea {
+      @include borderRadius(4px);
+      width: 100%;
+      padding: 5px 8px;
+      resize: none;
+      border: 1px solid #dddee1;
+      outline: none;
+      transition: all .2s ease-in-out;
+    }
+    ._textarea:hover {
+      @include boxShadow(0 0 0 1px rgba(45,140,240,.2));
+      border-color: #57a3f3;
+      outline: 0;
     }
     ._icon {
       float: right;

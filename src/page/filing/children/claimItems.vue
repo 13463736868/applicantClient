@@ -14,7 +14,7 @@
         </div>
       </div>
       <div v-if="claimShow.add">
-        <add-claim-info :caseId="caseId" :propArrName="propDataName" @saveClick="addClaimSave" @cancClick="changeView('listClaim')"></add-claim-info>
+        <add-claim-info :caseId="caseId" :propArrName="propDataName" @saveClick="addClaiSave" @cancClick="changeView('listClaim')"></add-claim-info>
       </div>
       <div v-if="claimShow.edit">
         <edit-claim-info :caseId="caseId" :propArrName="propDataName" :editClaiData="editClaiData" @saveClick="editClaiSave" @cancClick="changeView('listClaim')"></edit-claim-info>
@@ -23,7 +23,16 @@
     </div>
     <div class="_reason">
       <div class="_top">事实与理由</div>
-      <add-icon v-if="reasShowBtn" :imgStatus="2" addText="添加事实与理由" @addClick="addReas"></add-icon>
+      <div v-if="reasShow.list">
+        <reas-info :infoData="reasData" @editInfo="changeView('editReas')"></reas-info>
+      </div>
+      <div v-if="reasShow.add">
+        <add-reas-info :caseId="caseId" @saveClick="updateReasSave" @cancClick="changeView('listReas')"></add-reas-info>
+      </div>
+      <div v-if="reasShow.edit">
+        <edit-reas-info :caseId="caseId" :editReasData="reasData" @saveClick="updateReasSave" @cancClick="changeView('listReas')"></edit-reas-info>
+      </div>
+      <add-icon v-if="reasShowBtn" :imgStatus="2" addText="添加事实与理由" @addClick="changeView('addReas')"></add-icon>
     </div>
     <div class="_applicationBook">
       <div class="_top">仲裁申请书</div>
@@ -42,11 +51,14 @@ import addIcon from '@/components/common/addIcon'
 import claimInfo from '@/page/filing/children/children/claimInfo'
 import addClaimInfo from '@/page/filing/children/children/addClaimInfo'
 import editClaimInfo from '@/page/filing/children/children/editClaimInfo'
+import reasInfo from '@/page/filing/children/children/reasInfo'
+import addReasInfo from '@/page/filing/children/children/addReasInfo'
+import editReasInfo from '@/page/filing/children/children/editReasInfo'
 
 export default {
   name: 'claimItems',
   props: [],
-  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo },
+  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo, reasInfo, addReasInfo, editReasInfo },
   data () {
     return {
       alertShowClai: false,
@@ -72,7 +84,7 @@ export default {
       claimData: [],
       editClaiData: {},
       delClaiId: null,
-      reasData: {},
+      reasData: null,
       applData: {}
     }
   },
@@ -126,7 +138,7 @@ export default {
     ...mapActions([
       'setFiling'
     ]),
-    addClaimSave (_obj) {
+    addClaiSave (_obj) {
       this.claimData.push(_obj)
       this.setFiling({type: 'requestList', data: this.claimData})
       this.changeView('listClaim')
@@ -174,8 +186,10 @@ export default {
       this.alertShowClai = false
       this.delClaiId = null
     },
-    addReas () {
-      console.log('添加事实与理由')
+    updateReasSave (_obj) {
+      this.reasData = JSON.parse(JSON.stringify(_obj))
+      this.setFiling({type: 'requestReasons', data: this.reasData})
+      this.changeView('listReas')
     },
     addAppl () {
       console.log('上传申请书')
@@ -185,6 +199,11 @@ export default {
         this.claimShow.list = false
       } else {
         this.claimShow.list = true
+      }
+      if (this.reasData !== null) {
+        this.reasShow.list = true
+      } else {
+        this.reasShow.list = false
       }
     },
     changeView (type) {
@@ -208,6 +227,23 @@ export default {
         this.claimShow.edit = true
         this.claimShow.addBtn = false
         this.claimShow.caption = false
+      } else if (type === 'listReas') {
+        if (this.reasData !== null) {
+          this.reasShow.list = true
+        } else {
+          this.reasShow.list = false
+        }
+        this.reasShow.add = false
+        this.reasShow.edit = false
+        this.reasShow.addBtn = false
+      } else if (type === 'addReas') {
+        this.reasShow.list = false
+        this.reasShow.add = true
+        this.reasShow.addBtn = false
+      } else if (type === 'editReas') {
+        this.reasShow.list = false
+        this.reasShow.edit = true
+        this.reasShow.addBtn = false
       }
     }
   },

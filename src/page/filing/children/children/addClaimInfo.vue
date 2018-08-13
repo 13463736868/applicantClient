@@ -3,20 +3,20 @@
     <Row>
       <Col span="22" offset="1">
         <Row class="_labelFor">
-          <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
+          <Col span="24" class="_label">申请人<b class="_b">*</b></Col>
           <Col span="24">
             <Select v-model="claimData.requestName">
               <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
             </Select>
           </Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">请求内容<b class="_b">*</b></Col>
           <Col span="24">
             <textarea class="_textarea" v-model="claimData.content" rows="8"></textarea>
           </Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
         </Row>
       </Col>
     </Row>

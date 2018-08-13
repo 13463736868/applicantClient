@@ -537,6 +537,15 @@ const requestUpdate = {
   requestName: 1001
 }
 
+const reasonsUpdate = {
+  id: 1002,
+  caseid: 1000,
+  content: '更新后的事实和理由',
+  type: 2,
+  fileid: null,
+  requestName: '事实和理由姓名'
+}
+
 export default {
   details,
   prepareList,
@@ -546,5 +555,6 @@ export default {
   partyUpdate,
   proxyUpdate,
   requestAdd,
-  requestUpdate
+  requestUpdate,
+  reasonsUpdate
 }
