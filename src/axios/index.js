@@ -10,13 +10,14 @@ Vue.config.productionTip = process.env.NODE_ENV === 'production'
 // 使用qs包将data转为表单数据
 // https://www.jianshu.com/p/042632dec9fb
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+axios.defaults.timeout = 20000
 axios.interceptors.request.use((config) => {
   if (config.method === 'post') {
     config.data = qs.stringify(config.data)
   }
   if (!Vue.config.productionTip) {
     config.url = '/api' + config.url
-    // if (store.state.admin_token) {//如何不用cookie的话 给每个http header加token
+    // if (store.state.admin_token) {//如果不用cookie的话 给每个http header加token
     //   config.headers.Authorization = `token $(store.state.admin_token)`
     // }
   }
@@ -29,16 +30,25 @@ axios.interceptors.response.use((res) => {
   if (res.data.flag === true) {
     return res
   } else {
+    switch (res.data.code) {
+      case '000121':
+        removeToken()
+        break
+    }
     return Promise.reject(res.data.message)
   }
 }, (error) => {
   switch (error.status) {
     case 401:
+    case 403:
       removeToken()
-      this.$router.replace({
-        path: '/login',
-        query: {redirect: this.$router.currentRoute.fullpath}
-      })
+      // 清除token store localStorage 等等
+      // this 不是 vue 实例对象 下面代码不需要
+      // this.$router.replace({
+      //   path: '/login',
+      //   query: {redirect: this.$router.currentRoute.fullpath}
+      // })
+      break
   }
   return Promise.reject(error.status)
 })

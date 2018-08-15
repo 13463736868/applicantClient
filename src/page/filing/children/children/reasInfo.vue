@@ -28,9 +28,6 @@ export default {
   methods: {
     editInfo (id) {
       this.$emit('editInfo', id)
-    },
-    delInfo (id) {
-      this.$emit('delInfo', id)
     }
   }
 }
@@ -68,12 +65,6 @@ export default {
         @include hand;
         font-size: 16px;
         color: #126eaf
-      }
-      ._del {
-        @include hand;
-        font-size: 17px;
-        color: #ff7a7a;
-        margin-left: 10px;
       }
     }
   }

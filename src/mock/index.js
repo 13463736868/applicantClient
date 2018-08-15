@@ -150,6 +150,16 @@ const reasonsUpdate = () => {
   }
 }
 
+const delFile = () => {
+  let data = 1
+  return {
+    flag: true,
+    data: data,
+    code: '000000',
+    message: null
+  }
+}
+
 const checkPhone = () => {
   let data = 1
   return {
@@ -217,5 +227,6 @@ Mock.mock('/api/case/requestAdd/1', 'post', requestAdd)
 Mock.mock('/api/case/requestUpdate/1', 'post', requestUpdate)
 Mock.mock('/api/case/requestUpdate/2', 'post', reasonsUpdate)
 Mock.mock('/api/case/requestDelete', 'post', requestAdd)
+Mock.mock('/api/file/deleteFileUpload', 'post', delFile)
 
 Mock.mock('/api/user/query', 'post', productData)

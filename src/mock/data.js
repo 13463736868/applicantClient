@@ -193,9 +193,9 @@ const details = {
   },
   arbRequisitionFile: {
     id: 1005,
-    filename: '仲裁申请书',
+    filename: '仲裁申请书.pdf',
     fileType: null,
-    filepath: '192.168.1.134:8082/register-system/application/20180801/e22b04c6f609427c938b0a500889052d'
+    filepath: 'http://www.rubick.cn/ceshi.pdf'
   },
   evidenceList: [
     {

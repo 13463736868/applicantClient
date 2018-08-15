@@ -59,14 +59,7 @@ export default {
     if (this.caseId === '') {
       this.alertShow = true
     } else {
-      axios.post('/case/details', {
-        id: this.caseId
-      }).then(res => {
-        this.caseInfo = res.data.data
-        this.setCaseInfo(res.data.data)
-      }).catch(e => {
-        console.log(e)
-      })
+      this.resCaseInfo(this.caseId)
     }
   },
   mounted () {
@@ -81,6 +74,16 @@ export default {
       'setCaseId',
       'setCaseInfo'
     ]),
+    resCaseInfo (id) {
+      axios.post('/case/details', {
+        id: this.caseId
+      }).then(res => {
+        this.caseInfo = res.data.data
+        this.setCaseInfo(res.data.data)
+      }).catch(e => {
+        console.log(e)
+      })
+    },
     alertCancel () {
       this.$Message.info({
         content: '将在2秒后返回上个页面',
@@ -97,6 +100,7 @@ export default {
       axios.post('/case/new').then(res => {
         this.alertShow = false
         this.setCaseId(res.data.data.id)
+        this.resCaseInfo(res.data.data.id)
       }).catch(e => {
         console.log(e)
         this.$Message.error({

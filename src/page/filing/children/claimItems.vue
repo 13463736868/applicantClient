@@ -36,9 +36,14 @@
     </div>
     <div class="_applicationBook">
       <div class="_top">仲裁申请书</div>
+      <div v-if="applShow.list">
+        <appl-info :infoData="applData" @delInfo="delApplInfo"></appl-info>
+      </div>
       <add-icon v-if="applShowBtn" :imgStatus="3" addText="上传申请书" @addClick="addAppl"></add-icon>
     </div>
     <alert-tip :alertShow="alertShowClai" @alertCancel="delClaiCanc" @alertConfirm="delClaiSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
+    <alert-tip :alertShow="alertShowAppl" @alertCancel="delApplCanc" @alertConfirm="delApplSave" alertTitle="提示" alertText="确定要删除吗？">
     </alert-tip>
   </div>
 </template>
@@ -54,14 +59,16 @@ import editClaimInfo from '@/page/filing/children/children/editClaimInfo'
 import reasInfo from '@/page/filing/children/children/reasInfo'
 import addReasInfo from '@/page/filing/children/children/addReasInfo'
 import editReasInfo from '@/page/filing/children/children/editReasInfo'
+import applInfo from '@/page/filing/children/children/applInfo'
 
 export default {
   name: 'claimItems',
   props: [],
-  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo, reasInfo, addReasInfo, editReasInfo },
+  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo, reasInfo, addReasInfo, editReasInfo, applInfo },
   data () {
     return {
       alertShowClai: false,
+      alertShowAppl: false,
       claimShow: {
         list: false,
         add: false,
@@ -85,7 +92,7 @@ export default {
       editClaiData: {},
       delClaiId: null,
       reasData: null,
-      applData: {}
+      applData: null
     }
   },
   created () {
@@ -194,6 +201,24 @@ export default {
     addAppl () {
       console.log('上传申请书')
     },
+    delApplInfo () {
+      this.alertShowAppl = true
+    },
+    delApplSave () {
+      axios.post('/file/deleteFileUpload', {
+        id: this.applData.id
+      }).then(res => {
+        this.applData = null
+        this.setFiling({type: 'arbRequisitionFile', data: this.applData})
+        this.alertShowAppl = false
+        this.changeView('listAppl')
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    delApplCanc () {
+      this.alertShowAppl = false
+    },
     createList () {
       if (this.claimData.length === 0) {
         this.claimShow.list = false
@@ -204,6 +229,11 @@ export default {
         this.reasShow.list = true
       } else {
         this.reasShow.list = false
+      }
+      if (this.applData !== null) {
+        this.applShow.list = true
+      } else {
+        this.applShow.list = false
       }
     },
     changeView (type) {
@@ -244,16 +274,25 @@ export default {
         this.reasShow.list = false
         this.reasShow.edit = true
         this.reasShow.addBtn = false
+      } else if (type === 'listAppl') {
+        if (this.applData !== null) {
+          this.applShow.list = true
+        } else {
+          this.applShow.list = false
+        }
+        this.applShow.add = false
       }
     }
   },
   watch: {
     caseInfo: function (val) {
-      this.propData = val.propList
-      this.claimData = val.requestList
-      this.reasData = val.requestReasons
-      this.applData = val.arbRequisitionFile
-      this.createList()
+      if (val !== null) {
+        this.propData = val.propList
+        this.claimData = val.requestList
+        this.reasData = val.requestReasons
+        this.applData = val.arbRequisitionFile
+        this.createList()
+      }
     }
   }
 }

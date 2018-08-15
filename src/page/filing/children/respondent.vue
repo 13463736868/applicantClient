@@ -14,11 +14,13 @@
         <edit-prop-info :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
       </div>
       <div v-if="respShow.upload">
-        <upload-prop :caseId="caseId"></upload-prop>
+        <upload-annex :caseId="caseId" :infoId="uploadRespId" uploadUrl="/api/file/uploadParty/2" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
       </div>
       <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
     <alert-tip :alertShow="alertShowResp" @alertCancel="delRespCanc" @alertConfirm="delRespSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
+    <alert-tip :alertShow="alertShowRespImg" @alertCancel="delRespImgCanc" @alertConfirm="delRespImgSave" alertTitle="提示" alertText="确定要删除这个附件吗？">
     </alert-tip>
   </div>
 </template>
@@ -31,15 +33,16 @@ import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
-import uploadProp from '@/page/filing/children/children/uploadProp'
+import uploadAnnex from '@/page/filing/children/children/uploadAnnex'
 
 export default {
   name: 'respondent',
   props: [],
-  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, alertTip },
+  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadAnnex, alertTip },
   data () {
     return {
       alertShowResp: false,
+      alertShowRespImg: false,
       respShow: {
         list: false,
         add: false,
@@ -49,7 +52,9 @@ export default {
       },
       respData: [],
       editRespData: {},
-      delRespId: null
+      delRespId: null,
+      delRespImgObj: null,
+      uploadRespId: null
     }
   },
   created () {
@@ -88,7 +93,18 @@ export default {
       }
     },
     uploadRespImg (id) {
-      console.log(id)
+      this.uploadRespId = id
+      this.changeView('uploadResp')
+    },
+    uploadRespSave (_obj) {
+      this.changeView('listResp')
+      for (let k in this.respData) {
+        if (this.respData[k].id === _obj.id) {
+          this.respData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
+          this.setFiling({type: 'respList', data: this.respData})
+          return
+        }
+      }
     },
     delRespInfo (id) {
       this.alertShowResp = true
@@ -120,7 +136,36 @@ export default {
       this.delRespId = null
     },
     delRespImg (_obj) {
-      console.log(_obj)
+      this.alertShowRespImg = true
+      this.delRespImgObj = _obj
+    },
+    delRespImgSave (_obj) {
+      axios.post('/file/deleteFileUpload', {
+        id: this.delRespImgObj.fileId
+      }).then(res => {
+        for (let k in this.respData) {
+          if (this.respData[k].id === this.delRespImgObj.id) {
+            for (let v in this.respData[k].fileList) {
+              if (this.respData[k].fileList[v].id === this.delRespImgObj.fileId) {
+                this.respData[k].fileList.splice(v, 1)
+                this.setFiling({type: 'respList', data: this.respData})
+                this.alertShowRespImg = false
+                return
+              }
+            }
+          }
+        }
+      }).catch(e => {
+        this.alertShowRespImg = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    delRespImgCanc () {
+      this.alertShowRespImg = false
+      this.delRespImgObj = null
     },
     createList () {
       if (this.respData.length === 0) {
@@ -157,8 +202,10 @@ export default {
   },
   watch: {
     caseInfo: function (val) {
-      this.respData = val.respList
-      this.createList()
+      if (val !== null) {
+        this.respData = val.respList
+        this.createList()
+      }
     }
   }
 }

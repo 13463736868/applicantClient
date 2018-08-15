@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import addIcon from '@/components/common/addIcon'
 
 export default {
@@ -27,17 +27,23 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'caseId',
       'caseInfo'
     ])
   },
   methods: {
+    ...mapActions([
+      'setFiling'
+    ]),
     addEvid () {
       console.log('添加证据')
     }
   },
   watch: {
     caseInfo: function (val) {
-      console.log('渲染数据')
+      if (val !== null) {
+        console.log('渲染数据')
+      }
     }
   }
 }

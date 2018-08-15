@@ -21,12 +21,14 @@
         </Row>
       </Col>
       <Col class="_listR clearfix" span="9" offset="1">
-        <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
-        <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
-        <div class="_imgBox">
-          <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+infoData.fileList[fileIndex].filename" @click="seeImg(infoData.fileList[fileIndex].filepath)">
+        <div v-if="isShowFile">
+          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
+          <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
+          <div class="_imgBox">
+            <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
+          </div>
+          <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
-        <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
       </Col>
     </Row>
   </div>
@@ -44,22 +46,52 @@ export default {
       }
     }
   },
+  beforeUpdate () {
+    if (this.fileIndex > this.fileNum) {
+      this.fileIndex = this.infoData.fileList.length - 1
+    }
+  },
   computed: {
+    isShowFile () {
+      if (this.fileNum > -1) {
+        return true
+      } else {
+        return false
+      }
+    },
     fileNum () {
       return this.infoData.fileList.length - 1
+    },
+    fileName () {
+      let _index = this.fileIndex
+      if (_index > this.fileNum) {
+        _index = this.fileNum
+      }
+      return this.infoData.fileList[_index].filename
+    },
+    filePath () {
+      let _index = this.fileIndex
+      if (_index > this.fileNum) {
+        _index = this.fileNum
+      }
+      return this.infoData.fileList[_index].filepath
     },
     fileImgSrc () {
       let exte = null
       let _img = ['bmp', 'jpg', 'jpeg', 'png', 'gif']
       let _doc = ['doc', 'docx', 'docm', 'dotm', 'dot']
       let _pdf = ['pdf']
-      if (this.infoData.fileList[this.fileIndex].filename !== null) {
-        exte = this.infoData.fileList[this.fileIndex].filename.split('.').pop().toLowerCase()
+      let _index = this.fileIndex
+      if (_index > this.fileNum) {
+        _index = this.fileNum
+      }
+      if (this.infoData.fileList[_index].filename !== null) {
+        exte = this.infoData.fileList[_index].filename.split('.').pop().toLowerCase()
       }
       if (exte === null) {
         return '../../static/images/file_icon.png'
       } else if (_img.indexOf(exte) !== -1) {
-        return this.infoData.fileList[this.fileIndex].filepath
+        return this.infoData.fileList[_index].filepath
       } else if (_doc.indexOf(exte) !== -1) {
         return '../../static/images/doc_icon.png'
       } else if (_pdf.indexOf(exte) !== -1) {
@@ -71,8 +103,12 @@ export default {
     isImgClass () {
       let exte = null
       let _img = ['bmp', 'jpg', 'jpeg', 'png', 'gif']
-      if (this.infoData.fileList[this.fileIndex].filename !== null) {
-        exte = this.infoData.fileList[this.fileIndex].filename.split('.').pop().toLowerCase()
+      let _index = this.fileIndex
+      if (_index > this.fileNum) {
+        _index = this.fileNum
+      }
+      if (this.infoData.fileList[_index].filename !== null) {
+        exte = this.infoData.fileList[_index].filename.split('.').pop().toLowerCase()
       }
       if (exte === null) {
         return true
@@ -97,6 +133,9 @@ export default {
       this.$emit('delImg', {id: id, fileId: fileId})
     },
     imgPrev () {
+      if (this.fileNum === -1) {
+        return
+      }
       if (this.fileIndex === 0) {
         this.fileIndex = this.fileNum
       } else {
@@ -104,6 +143,9 @@ export default {
       }
     },
     imgNext () {
+      if (this.fileNum === -1) {
+        return
+      }
       if (this.fileIndex === this.fileNum) {
         this.fileIndex = 0
       } else {

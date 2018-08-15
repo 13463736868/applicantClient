@@ -14,7 +14,7 @@
         <edit-prop-info :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
       </div>
       <div v-if="propShow.upload">
-        <upload-prop :caseId="caseId"></upload-prop>
+        <upload-annex :caseId="caseId" :infoId="uploadPropId" uploadUrl="/api/file/uploadParty/1" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
       </div>
       <add-icon v-if="propShow.addBtn" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
     </div>
@@ -31,11 +31,18 @@
       <div v-if="agenShow.edit">
         <edit-agen-info :caseId="caseId" :propArrName="propDataName" :editAgenData="editAgenData" @saveClick="editAgenSave" @cancClick="changeView('listAgen')"></edit-agen-info>
       </div>
+      <div v-if="agenShow.upload">
+        <upload-annex :caseId="caseId" :infoId="uploadAgenId" uploadUrl="/api/file/uploadParty/3" @saveClick="uploadAgenSave" @cancClick="changeView('listAgen')"></upload-annex>
+      </div>
       <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
     <alert-tip :alertShow="alertShowProp" @alertCancel="delPropCanc" @alertConfirm="delPropSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
     </alert-tip>
+    <alert-tip :alertShow="alertShowPropImg" @alertCancel="delPropImgCanc" @alertConfirm="delPropImgSave" alertTitle="提示" alertText="确定要删除这个附件吗？">
+    </alert-tip>
     <alert-tip :alertShow="alertShowAgen" @alertCancel="delAgenCanc" @alertConfirm="delAgenSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
+    </alert-tip>
+    <alert-tip :alertShow="alertShowAgenImg" @alertCancel="delAgenImgCanc" @alertConfirm="delAgenImgSave" alertTitle="提示" alertText="确定要删除这个附件吗？">
     </alert-tip>
   </div>
 </template>
@@ -48,7 +55,7 @@ import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
-import uploadProp from '@/page/filing/children/children/uploadProp'
+import uploadAnnex from '@/page/filing/children/children/uploadAnnex'
 import agenInfo from '@/page/filing/children/children/agenInfo'
 import addAgenInfo from '@/page/filing/children/children/addAgenInfo'
 import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
@@ -56,11 +63,13 @@ import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
 export default {
   name: 'proposer',
   props: [],
-  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadProp, agenInfo, addAgenInfo, editAgenInfo },
+  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadAnnex, agenInfo, addAgenInfo, editAgenInfo },
   data () {
     return {
       alertShowProp: false,
       alertShowAgen: false,
+      alertShowPropImg: false,
+      alertShowAgenImg: false,
       propShow: {
         list: false,
         add: false,
@@ -80,7 +89,11 @@ export default {
       editPropData: {},
       editAgenData: {},
       delPropId: null,
-      delAgenId: null
+      delAgenId: null,
+      delPropImgObj: null,
+      delAgenImgObj: null,
+      uploadPropId: null,
+      uploadAgenId: null
     }
   },
   created () {
@@ -137,8 +150,18 @@ export default {
       }
     },
     uploadPropImg (id) {
-      console.log(id)
+      this.uploadPropId = id
       this.changeView('uploadProp')
+    },
+    uploadPropSave (_obj) {
+      this.changeView('listProp')
+      for (let k in this.propData) {
+        if (this.propData[k].id === _obj.id) {
+          this.propData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
+          this.setFiling({type: 'propList', data: this.propData})
+          return
+        }
+      }
     },
     delPropInfo (id) {
       this.alertShowProp = true
@@ -170,7 +193,36 @@ export default {
       this.delPropId = null
     },
     delPropImg (_obj) {
-      console.log(_obj)
+      this.alertShowPropImg = true
+      this.delPropImgObj = _obj
+    },
+    delPropImgSave () {
+      axios.post('/file/deleteFileUpload', {
+        id: this.delPropImgObj.fileId
+      }).then(res => {
+        for (let k in this.propData) {
+          if (this.propData[k].id === this.delPropImgObj.id) {
+            for (let v in this.propData[k].fileList) {
+              if (this.propData[k].fileList[v].id === this.delPropImgObj.fileId) {
+                this.propData[k].fileList.splice(v, 1)
+                this.setFiling({type: 'propList', data: this.propData})
+                this.alertShowPropImg = false
+                return
+              }
+            }
+          }
+        }
+      }).catch(e => {
+        this.alertShowPropImg = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    delPropImgCanc () {
+      this.alertShowPropImg = false
+      this.delPropImgObj = null
     },
     addAgenSave (_obj) {
       this.agenData.push(_obj)
@@ -192,7 +244,18 @@ export default {
       }
     },
     uploadAgenImg (id) {
-      console.log(id)
+      this.uploadAgenId = id
+      this.changeView('uploadAgen')
+    },
+    uploadAgenSave (_obj) {
+      this.changeView('listAgen')
+      for (let k in this.agenData) {
+        if (this.agenData[k].id === _obj.id) {
+          this.agenData[k].fileList.push(_obj.fileObj)
+          this.setFiling({type: 'proxyList', data: this.agenData})
+          return
+        }
+      }
     },
     delAgenInfo (id) {
       this.alertShowAgen = true
@@ -224,7 +287,36 @@ export default {
       this.delAgenId = null
     },
     delAgenImg (_obj) {
-      console.log(_obj)
+      this.alertShowAgenImg = true
+      this.delAgenImgObj = _obj
+    },
+    delAgenImgSave () {
+      axios.post('/file/deleteFileUpload', {
+        id: this.delAgenImgObj.fileId
+      }).then(res => {
+        for (let k in this.agenData) {
+          if (this.agenData[k].id === this.delAgenImgObj.id) {
+            for (let v in this.agenData[k].fileList) {
+              if (this.agenData[k].fileList[v].id === this.delAgenImgObj.fileId) {
+                this.agenData[k].fileList.splice(v, 1)
+                this.setFiling({type: 'proxyList', data: this.agenData})
+                this.alertShowAgenImg = false
+                return
+              }
+            }
+          }
+        }
+      }).catch(e => {
+        this.alertShowAgenImg = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    delAgenImgCanc () {
+      this.alertShowAgenImg = false
+      this.delAgenImgObj = null
     },
     createList () {
       if (this.propData.length === 0) {
@@ -288,9 +380,11 @@ export default {
   },
   watch: {
     caseInfo: function (val) {
-      this.propData = val.propList
-      this.agenData = val.proxyList
-      this.createList()
+      if (val !== null) {
+        this.propData = val.propList
+        this.agenData = val.proxyList
+        this.createList()
+      }
     }
   }
 }
