@@ -132,6 +132,7 @@ export default {
         commissionType: this.committeeCode
       }).then(res => {
         this.spinShow = false
+        this.alertShowSub = false
         this.$Message.success({
           content: '提交仲裁成功,将跳转到我的案件',
           duration: 2,
@@ -145,6 +146,7 @@ export default {
         })
       }).catch(e => {
         this.spinShow = false
+        this.alertShowSub = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
