@@ -5,8 +5,8 @@ import store from './store'
 import './axios'
 import iView from 'iview'
 import logic from './logic'
-// import './mock'
-// 正式时 注视掉mock 去掉aip,和附件上传前api前缀
+import './mock'
+// 正式时 注视掉mock 另外前缀aip,和附件上传前api前缀
 // Vue.config.productionTip = false
 
 Vue.use(iView)

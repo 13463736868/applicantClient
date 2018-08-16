@@ -23,7 +23,7 @@
       <div class="_page clearfix">
         </Row>
           <Col span="12" offset="6" class="tc">
-            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.size" show-elevator show-total @on-change="reschangePage"></Page>
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>
         </Row>
       </div>
@@ -140,7 +140,6 @@ export default {
       pageObj: {
         total: 0,
         pageNum: 1,
-        pageIndex: 0,
         pageSize: 10
       }
     }
@@ -155,25 +154,23 @@ export default {
     resPrepareList () {
       this.spinShow = true
       axios.post('/case/prepareList', {
-        pageIndex: this.pageObj.pageIndex,
+        pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text
       }).then(res => {
-        console.log(res.data.data)
         let _data = res.data.data
-        this.caseList.bodyList = _data.dataList
+        this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
         this.pageObj.total = _data.totalCount
-        this.pageObj.pageIndex = _data.pageIndex
-        this.pageObj.pageNum = Math.ceil(_data.totalCount / this.pageObj.pageSize)
         this.spinShow = false
       }).catch(e => {
-        // 加一个 alertText 组件
         this.spinShow = false
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
       })
     },
     goCaseSee (index) {
-      console.log('案件查看操作-先把案件号存到store.xxNo', this.caseList.bodyList[index].id)
       this.setCaseId(this.caseList.bodyList[index].id)
       window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
       this.$router.push({
@@ -181,6 +178,20 @@ export default {
       })
     },
     resCaseDel (index) {
+      axios.post('/case/delete', {
+        id: this.caseList.bodyList[index].id
+      }).then(res => {
+        this.resSearch()
+        this.$Message.success({
+          content: '删除成功',
+          duration: 2
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
       console.log('案件删除操作')
     },
     resSearch () {

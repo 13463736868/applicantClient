@@ -14,7 +14,7 @@
         <edit-prop-info :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
       </div>
       <div v-if="propShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadPropId" uploadUrl="/api/file/uploadParty/1" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadPropId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/1" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
       </div>
       <add-icon v-if="propShow.addBtn" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
     </div>
@@ -32,7 +32,7 @@
         <edit-agen-info :caseId="caseId" :propArrName="propDataName" :editAgenData="editAgenData" @saveClick="editAgenSave" @cancClick="changeView('listAgen')"></edit-agen-info>
       </div>
       <div v-if="agenShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadAgenId" uploadUrl="/api/file/uploadParty/3" @saveClick="uploadAgenSave" @cancClick="changeView('listAgen')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadAgenId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/3" @saveClick="uploadAgenSave" @cancClick="changeView('listAgen')"></upload-annex>
       </div>
       <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
@@ -134,6 +134,10 @@ export default {
       this.propData.push(_obj)
       this.setFiling({type: 'propList', data: this.propData})
       this.changeView('listProp')
+      this.$Message.success({
+        content: '添加成功',
+        duration: 2
+      })
     },
     editPropInfo (_obj) {
       this.editPropData = _obj
@@ -145,6 +149,10 @@ export default {
           this.propData[k] = JSON.parse(JSON.stringify(_obj))
           this.setFiling({type: 'propList', data: this.propData})
           this.changeView('listProp')
+          this.$Message.success({
+            content: '修改成功',
+            duration: 2
+          })
           return
         }
       }
@@ -159,6 +167,10 @@ export default {
         if (this.propData[k].id === _obj.id) {
           this.propData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
           this.setFiling({type: 'propList', data: this.propData})
+          this.$Message.success({
+            content: '上传成功',
+            duration: 2
+          })
           return
         }
       }
@@ -177,6 +189,10 @@ export default {
             this.propData.splice(k, 1)
             this.setFiling({type: 'propList', data: this.propData})
             this.alertShowProp = false
+            this.$Message.success({
+              content: '删除成功',
+              duration: 2
+            })
             return
           }
         }
@@ -207,6 +223,10 @@ export default {
                 this.propData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'propList', data: this.propData})
                 this.alertShowPropImg = false
+                this.$Message.success({
+                  content: '删除成功',
+                  duration: 2
+                })
                 return
               }
             }
@@ -228,6 +248,10 @@ export default {
       this.agenData.push(_obj)
       this.setFiling({type: 'proxyList', data: this.agenData})
       this.changeView('listAgen')
+      this.$Message.success({
+        content: '添加成功',
+        duration: 2
+      })
     },
     editAgenInfo (_obj) {
       this.editAgenData = _obj
@@ -239,6 +263,10 @@ export default {
           this.agenData[k] = JSON.parse(JSON.stringify(_obj))
           this.setFiling({type: 'proxyList', data: this.agenData})
           this.changeView('listAgen')
+          this.$Message.success({
+            content: '修改成功',
+            duration: 2
+          })
           return
         }
       }
@@ -253,6 +281,10 @@ export default {
         if (this.agenData[k].id === _obj.id) {
           this.agenData[k].fileList.push(_obj.fileObj)
           this.setFiling({type: 'proxyList', data: this.agenData})
+          this.$Message.success({
+            content: '上传成功',
+            duration: 2
+          })
           return
         }
       }
@@ -271,6 +303,10 @@ export default {
             this.agenData.splice(k, 1)
             this.setFiling({type: 'proxyList', data: this.agenData})
             this.alertShowAgen = false
+            this.$Message.success({
+              content: '删除成功',
+              duration: 2
+            })
             return
           }
         }
@@ -301,6 +337,10 @@ export default {
                 this.agenData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'proxyList', data: this.agenData})
                 this.alertShowAgenImg = false
+                this.$Message.success({
+                  content: '删除成功',
+                  duration: 2
+                })
                 return
               }
             }

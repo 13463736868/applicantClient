@@ -14,7 +14,7 @@
         <edit-prop-info :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
       </div>
       <div v-if="respShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadRespId" uploadUrl="/api/file/uploadParty/2" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadRespId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/2" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
       </div>
       <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
@@ -77,6 +77,10 @@ export default {
       this.respData.push(_obj)
       this.setFiling({type: 'respList', data: this.respData})
       this.changeView('listResp')
+      this.$Message.success({
+        content: '添加成功',
+        duration: 2
+      })
     },
     editRespInfo (_obj) {
       this.editRespData = _obj
@@ -88,6 +92,10 @@ export default {
           this.respData[k] = JSON.parse(JSON.stringify(_obj))
           this.setFiling({type: 'respList', data: this.respData})
           this.changeView('listResp')
+          this.$Message.success({
+            content: '修改成功',
+            duration: 2
+          })
           return
         }
       }
@@ -102,6 +110,10 @@ export default {
         if (this.respData[k].id === _obj.id) {
           this.respData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
           this.setFiling({type: 'respList', data: this.respData})
+          this.$Message.success({
+            content: '上传成功',
+            duration: 2
+          })
           return
         }
       }
@@ -120,6 +132,10 @@ export default {
             this.respData.splice(k, 1)
             this.setFiling({type: 'respList', data: this.respData})
             this.alertShowResp = false
+            this.$Message.success({
+              content: '删除成功',
+              duration: 2
+            })
             return
           }
         }
@@ -150,6 +166,10 @@ export default {
                 this.respData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'respList', data: this.respData})
                 this.alertShowRespImg = false
+                this.$Message.success({
+                  content: '删除成功',
+                  duration: 2
+                })
                 return
               }
             }
@@ -215,6 +235,9 @@ export default {
 @import '@/style/mixin';
 .respondent {
   width: 83%;
+  ._respondent {
+    padding-bottom: 60px;
+  }
   ._respondent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

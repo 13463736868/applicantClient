@@ -1,12 +1,12 @@
 <template>
-  <div class="pr _uploadAnnex">
+  <div class="pr _uploadApplBook">
     <spin-comp :spinShow="spinShow">
       <div v-if="progressText !== null" v-text="progressText"></div>
     </spin-comp>
     <Row>
       <Col span="22" offset="1">
         <Row class="_labelFor">
-          <Col span="24" class="_label">附件上传<b class="_b">*</b></Col>
+          <Col span="24" class="_label">仲裁申请书上传<b class="_b">*</b></Col>
           <Col span="24">
             <Upload
               ref="upload"
@@ -47,9 +47,9 @@
 import spinComp from '@/components/common/spin'
 
 export default {
-  name: 'upload_annex',
+  name: 'upload_appl_book',
   components: { spinComp },
-  props: ['caseId', 'infoId', 'uploadUrl', 'fileType'],
+  props: ['caseId', 'uploadUrl', 'fileType'],
   data () {
     return {
       spinShow: false,
@@ -59,8 +59,7 @@ export default {
         text: ''
       },
       data: {
-        caseId: this.caseId,
-        id: this.infoId
+        caseId: this.caseId
       },
       fileObj: null
     }
@@ -79,14 +78,14 @@ export default {
       this.spinShow = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
-        duration: 2
+        duration: 5
       })
     },
     resSzieError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件不能超过10MB',
-        duration: 2
+        duration: 5
       })
     },
     resBefoUpload (file) {
@@ -110,7 +109,7 @@ export default {
         duration: 2,
         onClose: () => {
           setTimeout(() => {
-            this.$emit('saveClick', {id: this.infoId, fileObj: file.response.data})
+            this.$emit('saveClick', file.response.data)
           }, 1000)
         }
       })
@@ -135,7 +134,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._uploadAnnex {
+._uploadApplBook {
   @include borderRadius(3px);
   @include boxShadow(0 1px 6px -1px #bbb);
   margin-top: 10px;

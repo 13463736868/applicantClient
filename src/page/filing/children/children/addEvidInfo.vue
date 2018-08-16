@@ -1,12 +1,32 @@
 <template>
-  <div class="pr _uploadAnnex">
+  <div class="pr _addEvidInfo">
     <spin-comp :spinShow="spinShow">
       <div v-if="progressText !== null" v-text="progressText"></div>
     </spin-comp>
     <Row>
       <Col span="22" offset="1">
         <Row class="_labelFor">
-          <Col span="24" class="_label">附件上传<b class="_b">*</b></Col>
+          <Col span="4" class="_label">证据项名称<b class="_b">*</b></Col>
+          <Col span="16" class="_input"><input type="text" v-model="data.name"></Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="4" class="_label">是否有原文件<b class="_b">*</b></Col>
+          <Col span="16" class="_radio">
+            <RadioGroup v-model="data.state">
+              <Radio :label="1">是</Radio>
+              <Radio :label="2">否</Radio>
+            </RadioGroup>
+          </Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
+          <Col span="16" class="_input"><input type="text" v-model="data.memo"></Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">证据上传<b class="_b">*</b></Col>
           <Col span="24">
             <Upload
               ref="upload"
@@ -47,9 +67,9 @@
 import spinComp from '@/components/common/spin'
 
 export default {
-  name: 'upload_annex',
+  name: 'add_evid_info',
   components: { spinComp },
-  props: ['caseId', 'infoId', 'uploadUrl', 'fileType'],
+  props: ['caseId', 'uploadUrl', 'fileType'],
   data () {
     return {
       spinShow: false,
@@ -60,14 +80,16 @@ export default {
       },
       data: {
         caseId: this.caseId,
-        id: this.infoId
+        name: '',
+        state: null,
+        memo: ''
       },
       fileObj: null
     }
   },
   computed: {
     addFileBtn () {
-      if (this.fileObj === null) {
+      if (this.fileObj === null || this.data.name === '' || this.data.state === null || this.data.memo === '') {
         return true
       } else {
         return false
@@ -79,14 +101,14 @@ export default {
       this.spinShow = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
-        duration: 2
+        duration: 5
       })
     },
     resSzieError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件不能超过10MB',
-        duration: 2
+        duration: 5
       })
     },
     resBefoUpload (file) {
@@ -110,7 +132,7 @@ export default {
         duration: 2,
         onClose: () => {
           setTimeout(() => {
-            this.$emit('saveClick', {id: this.infoId, fileObj: file.response.data})
+            this.$emit('saveClick', file.response.data)
           }, 1000)
         }
       })
@@ -135,7 +157,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._uploadAnnex {
+._addEvidInfo {
   @include borderRadius(3px);
   @include boxShadow(0 1px 6px -1px #bbb);
   margin-top: 10px;
@@ -153,6 +175,27 @@ export default {
     }
     ._text {
       padding: 30px 0;
+    }
+    ._input {
+      border-bottom:1px solid #ddd;
+      input {
+        width: 100%;
+        border: none;
+        letter-spacing: 1px;
+        font-size: 12px;
+        color: #666;
+        height: 29px;
+        line-height: 29px;
+        background: transparent;
+      }
+      input:focus {
+        box-shadow: none;
+        outline: 0px;
+      }
+    }
+    ._radio {
+      height: 29px;
+      line-height: 29px;
     }
     ._em {
       height: 16px;

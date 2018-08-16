@@ -1,14 +1,28 @@
 <template>
-  <div class="_applInfo">
+  <div class="_evidInfo">
     <Row>
       <Col class="_listL" span="24">
         <Row>
           <Col span="22" offset="1">
             <p>
-              <span class="mr10 _file" v-text="infoData.filename" :title="'点击查看: '+infoData.filename" @click="seeFile(infoData.filepath)"></span>
+              <span class="mr10">证据项名称 :</span>
+              <span v-text="infoData.name"></span>
               <span class="_icon">
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
+            </p>
+            <p>
+              <span class="mr10">是否有原件 :</span>
+              <span v-if="infoData.state === 1">是</span>
+              <span v-else-if="infoData.state === 2">否</span>
+            </p>
+            <p>
+              <span class="mr10">证据项描述 :</span>
+              <span v-text="infoData.memo"></span>
+            </p>
+            <p>
+              <span class="mr10">附件名称 :</span>
+              <span class="_file" v-text="infoData.fileName" :title="'点击查看: '+infoData.fileName" @click="seeFile(infoData.filePath)"></span>
             </p>
           </Col>
         </Row>
@@ -19,7 +33,7 @@
 
 <script>
 export default {
-  name: 'appl_info',
+  name: 'evid_info',
   props: ['infoData'],
   data () {
     return {}
@@ -37,7 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._applInfo {
+._evidInfo {
   margin-top: 10px;
   ._listL {
     @include borderRadius(3px);
@@ -47,18 +61,23 @@ export default {
     p {
       padding: 5px 0;
     }
-    ._file {
-      @include hand;
-      color: #337BB5;
-    }
     ._icon {
       float: right;
+      ._edit {
+        @include hand;
+        font-size: 16px;
+        color: #126eaf
+      }
       ._del {
         @include hand;
         font-size: 17px;
         color: #ff7a7a;
         margin-left: 10px;
       }
+    }
+    ._file {
+      @include hand;
+      color: #337BB5
     }
   }
 }

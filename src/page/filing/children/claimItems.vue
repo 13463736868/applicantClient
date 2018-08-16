@@ -39,7 +39,10 @@
       <div v-if="applShow.list">
         <appl-info :infoData="applData" @delInfo="delApplInfo"></appl-info>
       </div>
-      <add-icon v-if="applShowBtn" :imgStatus="3" addText="上传申请书" @addClick="addAppl"></add-icon>
+      <div v-if="applShow.add">
+        <upload-appl-book :caseId="caseId" :fileType="['pdf']" uploadUrl="/api/file/uploadApplication" @saveClick="uploadApplSave" @cancClick="changeView('listAppl')"></upload-appl-book>
+      </div>
+      <add-icon v-if="applShowBtn" :imgStatus="3" addText="上传申请书" @addClick="changeView('addAppl')"></add-icon>
     </div>
     <alert-tip :alertShow="alertShowClai" @alertCancel="delClaiCanc" @alertConfirm="delClaiSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
     </alert-tip>
@@ -60,11 +63,12 @@ import reasInfo from '@/page/filing/children/children/reasInfo'
 import addReasInfo from '@/page/filing/children/children/addReasInfo'
 import editReasInfo from '@/page/filing/children/children/editReasInfo'
 import applInfo from '@/page/filing/children/children/applInfo'
+import uploadApplBook from '@/page/filing/children/children/uploadApplBook'
 
 export default {
   name: 'claimItems',
   props: [],
-  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo, reasInfo, addReasInfo, editReasInfo, applInfo },
+  components: { alertTip, addIcon, claimInfo, addClaimInfo, editClaimInfo, reasInfo, addReasInfo, editReasInfo, applInfo, uploadApplBook },
   data () {
     return {
       alertShowClai: false,
@@ -149,6 +153,10 @@ export default {
       this.claimData.push(_obj)
       this.setFiling({type: 'requestList', data: this.claimData})
       this.changeView('listClaim')
+      this.$Message.success({
+        content: '添加成功',
+        duration: 2
+      })
     },
     editClaiInfo (_obj) {
       this.editClaiData = _obj
@@ -160,6 +168,10 @@ export default {
           this.claimData[k] = JSON.parse(JSON.stringify(_obj))
           this.setFiling({type: 'requestList', data: this.claimData})
           this.changeView('listClaim')
+          this.$Message.success({
+            content: '修改成功',
+            duration: 2
+          })
           return
         }
       }
@@ -178,11 +190,14 @@ export default {
             this.claimData.splice(k, 1)
             this.setFiling({type: 'requestList', data: this.claimData})
             this.alertShowClai = false
+            this.$Message.success({
+              content: '删除成功',
+              duration: 2
+            })
             return
           }
         }
       }).catch(e => {
-        console.log(e)
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -197,9 +212,19 @@ export default {
       this.reasData = JSON.parse(JSON.stringify(_obj))
       this.setFiling({type: 'requestReasons', data: this.reasData})
       this.changeView('listReas')
+      this.$Message.success({
+        content: '操作成功',
+        duration: 2
+      })
     },
-    addAppl () {
-      console.log('上传申请书')
+    uploadApplSave (_obj) {
+      this.applData = _obj
+      this.setFiling({type: 'arbRequisitionFile', data: this.applData})
+      this.changeView('listAppl')
+      this.$Message.success({
+        content: '上传成功',
+        duration: 2
+      })
     },
     delApplInfo () {
       this.alertShowAppl = true
@@ -212,6 +237,10 @@ export default {
         this.setFiling({type: 'arbRequisitionFile', data: this.applData})
         this.alertShowAppl = false
         this.changeView('listAppl')
+        this.$Message.success({
+          content: '删除成功',
+          duration: 2
+        })
       }).catch(e => {
         console.log(e)
       })
@@ -281,6 +310,9 @@ export default {
           this.applShow.list = false
         }
         this.applShow.add = false
+      } else if (type === 'addAppl') {
+        this.applShow.list = false
+        this.applShow.add = true
       }
     }
   },

@@ -206,7 +206,7 @@ const details = {
       fileid: null,
       state: 1,
       fileName: '借款协议.pdf',
-      filePath: '192.168.1.134:8082/register-system/evidence/20180801/89455d20f8f940a38b260331fe47d9e6'
+      filePath: 'http://www.rubick.cn/ceshi.pdf'
     }
   ],
   caseCode: null,

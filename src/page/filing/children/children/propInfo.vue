@@ -29,7 +29,7 @@
           <Col>4</Col>
         </Row>
       </Col>
-      <Col class="_listR clearfix" span="9" offset="1">
+      <Col class="_listR clearfix not_s" span="9" offset="1">
         <div v-if="isShowFile">
           <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>

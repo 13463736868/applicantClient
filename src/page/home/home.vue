@@ -3,7 +3,8 @@
     <head-top :isRegister="true">
       <span class="f36 fcf">我的案件</span>
     </head-top>
-    <div class="_center">
+    <div class="_center pr">
+      <spin-comp :spinShow="spinShow"></spin-comp>
       <Row>
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
@@ -30,7 +31,7 @@
       <div class="_page clearfix">
         </Row>
           <Col span="12" offset="6" class="tc">
-            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.size" show-elevator show-total @on-change="reschangePage"></Page>
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>
         </Row>
       </div>
@@ -39,66 +40,60 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import headTop from '@/components/header/head'
+import spinComp from '@/components/common/spin'
 
 export default {
   name: 'home',
-  components: { headTop },
+  components: { headTop, spinComp },
   data () {
     return {
+      spinShow: true,
       search: {
         text: ''
       },
       caseStatusList: [
         {
-          value: '全部',
+          value: 0,
           label: '全部'
         },
         {
-          value: '已提交',
+          value: 1,
           label: '已提交'
         },
         {
-          value: '不受理',
-          label: '不受理'
-        },
-        {
-          value: '预审通过',
-          label: '预审通过'
-        },
-        {
-          value: '待缴费',
+          value: 2,
           label: '待缴费'
         },
         {
-          value: '已缴费',
-          label: '已缴费'
+          value: 3,
+          label: '不受理'
         },
         {
-          value: '已立案',
+          value: 4,
           label: '已立案'
         },
         {
-          value: '审核中',
+          value: 5,
           label: '审核中'
         },
         {
-          value: '已结案',
-          label: '已结案'
+          value: 6,
+          label: '已撤回'
         },
         {
-          value: '撤回申请',
-          label: '撤回申请'
+          value: 7,
+          label: '已结案'
         }
       ],
-      caseStatus: '全部',
+      caseStatus: 0,
       caseList: {
         loading: false,
         header: [
           {
             title: '案件编号',
-            key: 'caseNo',
+            key: 'oldId',
             align: 'center',
             render: (h, params) => {
               return h('a', {
@@ -114,190 +109,63 @@ export default {
                     this.goCaseInfo(params.index)
                   }
                 }
-              }, params.row.caseNo)
+              }, params.row.oldId)
             }
           },
           {
             title: '案号',
-            key: 'caseNum',
+            key: 'code',
             align: 'center'
           },
           {
             title: '申请人',
-            key: 'proposer',
+            key: 'applicantName',
             align: 'center'
           },
           {
             title: '被申请人',
-            key: 'respondent',
+            key: 'respondentName',
             align: 'center'
           },
           {
             title: '纠纷类型',
-            key: 'disputeType',
+            key: 'caseType',
             align: 'center'
           },
           {
             title: '案件状态',
-            key: 'caseStatus',
-            align: 'center',
-            render: (h, params) => {
-              return h('span', {}, this.renderCaseStatus(params.row.caseStatus))
-            }
+            key: 'caseState',
+            align: 'center'
           },
           {
             title: '申请时间',
-            key: 'applicationTime',
+            key: 'createTime',
             align: 'center'
           },
           {
             title: '操作',
-            key: 'operating',
+            key: 'id',
             align: 'center',
             render: (h, params) => {
               return this.renderOperation(h, params)
             }
           }
         ],
-        bodyList: [
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '1',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '2',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '3',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '4',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '5',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '6',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '7',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '8',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '9',
-            applicationTime: '2018-07-07',
-            operating: ''
-          },
-          {
-            caseNo: '0000000001',
-            caseNum: '(2018)穗州网案字第19555号',
-            proposer: '王钢蛋',
-            respondent: '李铁柱',
-            disputeType: '借款合同纠纷',
-            caseStatus: '1',
-            applicationTime: '2018-07-07',
-            operating: ''
-          }
-        ]
+        bodyList: []
       },
       pageObj: {
-        total: 100,
+        total: 0,
         pageNum: 1,
-        pageIndex: 1,
         pageSize: 10
       }
     }
   },
-  mounted () {
+  created () {
+    this.resMineList()
   },
   methods: {
-    renderCaseStatus (caseStatus) {
-      if (caseStatus === '1') {
-        return '已提交'
-      } else if (caseStatus === '2') {
-        return '不受理'
-      } else if (caseStatus === '3') {
-        return '预审通过'
-      } else if (caseStatus === '4') {
-        return '待缴费'
-      } else if (caseStatus === '5') {
-        return '已交费'
-      } else if (caseStatus === '6') {
-        return '已立案'
-      } else if (caseStatus === '7') {
-        return '审核中'
-      } else if (caseStatus === '8') {
-        return '已结案'
-      } else if (caseStatus === '9') {
-        return '撤回申请'
-      } else {
-        return '无法识别状态'
-      }
-    },
     renderOperation (h, params) {
-      if (params.row.caseStatus === '4') {
+      if (params.row.state === 2) {
         return h('div', [
           h('Button', {
             props: {
@@ -311,7 +179,7 @@ export default {
             }
           }, '去缴费')
         ])
-      } else if (params.row.caseStatus === '7') {
+      } else if (params.row.state === 5) {
         return h('div', [
           h('Button', {
             props: {
@@ -358,18 +226,37 @@ export default {
         ])
       }
     },
+    resMineList () {
+      this.spinShow = true
+      axios.post('/case/mine', {
+        pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
+        pageSize: this.pageObj.pageSize,
+        keyword: this.search.text,
+        caseState: this.caseStatus
+      }).then(res => {
+        let _data = res.data.data
+        this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
+        this.pageObj.total = _data.totalCount
+        this.spinShow = false
+      }).catch(e => {
+        this.spinShow = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
     resSearch () {
-      console.log(this.search.text)
-      // 获取列表方法
+      this.pageObj.pageNum = 1
+      this.resMineList()
     },
     resChangeStatus () {
-      console.log(this.caseStatus)
-      // 获取列表方法
+      this.pageObj.pageNum = 1
+      this.resMineList()
     },
     reschangePage (page) {
       this.pageObj.pageNum = page
-      // 获取列表方法
-      console.log(page)
+      this.resMineList()
     },
     goCourtRoom (index) {
       console.log(this.caseList.bodyList[index])

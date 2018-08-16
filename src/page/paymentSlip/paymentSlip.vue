@@ -3,7 +3,8 @@
     <head-top :isRegister="true">
       <span class="f36 fcf">缴费单查询</span>
     </head-top>
-    <div class="_center">
+    <div class="_center pr">
+      <spin-comp :spinShow="spinShow"></spin-comp>
       <Row>
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
@@ -30,7 +31,7 @@
       <div class="_page clearfix">
         </Row>
           <Col span="12" offset="6" class="tc">
-            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.size" show-elevator show-total @on-change="reschangePage"></Page>
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>
         </Row>
       </div>
@@ -39,29 +40,27 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import headTop from '@/components/header/head'
+import spinComp from '@/components/common/spin'
 
 export default {
   name: 'paymentSlip',
+  components: { headTop, spinComp },
   data () {
     return {
+      spinShow: true,
       search: {
         text: ''
       },
-      committeeList: [
-        {
-          value: '中国盐城仲裁委员会',
-          label: '中国盐城仲裁委员会'
-        }
-      ],
-      committeeStatus: '中国盐城仲裁委员会',
+      committeeList: [],
+      committeeStatus: '',
       payList: {
         loading: false,
         header: [
           {
             title: '缴费单号',
-            key: 'payNum',
+            key: 'payCode',
             align: 'center',
             render: (h, params) => {
               return h('span', {
@@ -78,7 +77,7 @@ export default {
                     this.goPaymentInfo(params.index)
                   }
                 }
-              }, params.row.payNum)
+              }, params.row.payCode)
             }
           },
           {
@@ -88,122 +87,84 @@ export default {
           },
           {
             title: '支付方式',
-            key: 'payManner',
+            key: 'payMode',
             align: 'center'
           },
           {
             title: '收款方',
-            key: 'beneficiary',
+            key: 'accountName',
             align: 'center'
           },
           {
             title: '支付金额',
-            key: 'payAmount',
+            key: 'money',
             align: 'center'
           }
         ],
-        bodyList: [
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          },
-          {
-            payNum: 'DG0000000001',
-            beneficiary: '中国盐城仲裁委员会',
-            payManner: '对公转账',
-            payTime: '2018-07-07',
-            payAmount: '1500'
-          }
-        ]
+        bodyList: []
       },
       pageObj: {
-        total: 100,
+        total: 0,
         pageNum: 1,
-        pageIndex: 0,
         pageSize: 10
       }
     }
   },
-  components: {
-    headTop
-  },
-  mounted () {
+  created () {
+    this.resDictionary('commissionType')
   },
   methods: {
+    resDictionary (itemGroup) {
+      axios.post('/dictionary/' + itemGroup).then(res => {
+        let _dataList = res.data.data
+        let _select = []
+        for (let k in _dataList) {
+          let _o = {}
+          _o.value = _dataList[k].itemValue
+          _o.label = _dataList[k].item
+          _select.push(_o)
+        }
+        this.committeeList = _select
+        this.committeeStatus = this.committeeList === '' ? '' : this.committeeList[0].value
+        this.resPayList()
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    resPayList () {
+      this.spinShow = true
+      axios.post('/person/paymentList', {
+        pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
+        pageSize: this.pageObj.pageSize,
+        keyword: this.search.text,
+        commissionType: this.committeeStatus
+      }).then(res => {
+        let _data = res.data.data
+        this.payList.bodyList = _data.dataList === null ? [] : _data.dataList
+        this.pageObj.total = _data.totalCount
+        this.spinShow = false
+      }).catch(e => {
+        this.spinShow = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
     goPaymentInfo (index) {
       console.log(this.payList.bodyList[index])
     },
     resSearch () {
-      console.log(this.search.text)
-      // 获取列表方法
+      this.pageObj.pageNum = 0
+      this.resPayList()
     },
     resChangeStatus () {
-      console.log(this.caseStatus)
-      // 获取列表方法
+      this.pageObj.pageNum = 0
+      this.resPayList()
     },
     reschangePage (page) {
       this.pageObj.pageNum = page
-      // 获取列表方法
-      console.log(page)
+      this.resPayList()
     }
   }
 }

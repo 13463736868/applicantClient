@@ -7,7 +7,7 @@
       <div class="user fr w200">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
           <Col span="16">
-            <span class="fcf f14" v-if="isRegister">王钢蛋，您好！</span>
+            <span class="fcf f14" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
           </Col>
           <Col span="8">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>
@@ -31,8 +31,10 @@ import {removeToken} from '@/cookies'
 
 export default {
   name: 'header_top',
+  props: ['isRegister'],
   data () {
     return {
+      userName: null,
       style: {
         bg: {
           backgroundImage: "url('../../static/images/header_bg.png')",
@@ -74,7 +76,9 @@ export default {
       }
     }
   },
-  props: ['isRegister'],
+  created () {
+    this.setUserName()
+  },
   methods: {
     loginOut () {
       if (window.localStorage) {
@@ -85,6 +89,13 @@ export default {
       this.$router.replace({
         path: '/login'
       })
+    },
+    setUserName () {
+      if (window.localStorage) {
+        let loc = window.localStorage
+        let _userInfo = loc.getItem('userInfo')
+        this.userName = JSON.parse(_userInfo).phone
+      }
     }
   }
 }

@@ -5,16 +5,21 @@
     </head-top>
     <alert-tip :alertShow="alertShow" @alertCancel="alertCancel" @alertConfirm="alertConfirm" alertTitle="提示" alertText="是否确定直接申请立案？">
     </alert-tip>
-    <div class="_center">
+    <div class="_center pr">
+      <spin-comp :spinShow="spinShow">
+        <div>正在提交仲裁...</div>
+      </spin-comp>
       <Row>
         <Col span="4" offset="1" class="_center_left not_s">
           <router-link v-for="item in menuClaim" :to='{path: "/filing" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
         <Col span="17" class="_center_right">
           <router-view></router-view>
+          <case-submit @saveClick="caseSubInfo"></case-submit>
         </Col>
       </Row>
     </div>
+    <alert-tip :alertShow="alertShowSub" @alertCancel="caseSubCanc" @alertConfirm="caseSubSave" alertTitle="提示" alertText="确定提交仲裁吗？"></alert-tip>
   </div>
 </template>
 
@@ -23,13 +28,18 @@ import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import alertTip from '@/components/common/alertTip'
+import spinComp from '@/components/common/spin'
+import caseSubmit from '@/page/filing/children/caseSubmit'
 
 export default {
   name: 'filing',
-  components: { headTop, alertTip },
+  components: { headTop, alertTip, spinComp, caseSubmit },
   data () {
     return {
+      spinShow: false,
       alertShow: false,
+      alertShowSub: false,
+      committeeCode: null,
       caseInfo: null,
       menuClaim: [
         {
@@ -108,6 +118,40 @@ export default {
           duration: 5
         })
       })
+    },
+    caseSubInfo (code) {
+      this.alertShowSub = true
+      this.committeeCode = code
+    },
+    caseSubSave () {
+      this.spinShow = true
+      axios.post('/case/submit', {
+        caseId: this.caseId,
+        commissionType: this.committeeCode
+      }).then(res => {
+        this.spinShow = false
+        this.$Message.success({
+          content: '提交仲裁成功,将跳转到我的案件',
+          duration: 2,
+          onClose: () => {
+            setTimeout(() => {
+              this.$router.push({
+                path: '/home'
+              })
+            })
+          }
+        })
+      }).catch(e => {
+        this.spinShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    caseSubCanc () {
+      this.alertShowSub = false
+      this.committeeCode = null
     }
   }
 }

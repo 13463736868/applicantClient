@@ -32,6 +32,7 @@ axios.interceptors.response.use((res) => {
   } else {
     switch (res.data.code) {
       case '000121':
+        // 没有登录
         removeToken()
         break
     }
