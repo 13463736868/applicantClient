@@ -7,7 +7,7 @@
       <div class="user fr w200">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
           <Col span="16">
-            <span class="fcf f14" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
+            <span class="fcf f12" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
           </Col>
           <Col span="8">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>

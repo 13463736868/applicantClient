@@ -125,15 +125,27 @@ export default {
             this.identCodeBtn = false
           }
         }).catch(e => {
-          console.log(e)
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
         })
       }
     },
     resIdentCode () {
-      this.identCodeTime = 30
-      this.identCodeShow = true
-      this.identCodeBtn = true
-      this.timeOut()
+      axios.post('/sendMessage', {
+        phone: this.forget.phone
+      }).then(res => {
+        this.identCodeTime = 60
+        this.identCodeShow = true
+        this.identCodeBtn = true
+        this.timeOut()
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     timeOut () {
       this.codeTimeOut = setTimeout(() => {
@@ -176,7 +188,28 @@ export default {
       } else {
         this[type].emStatus = 0
         this[type].emText = ''
-        console.log('找回密码')
+        axios.post('/register/2', {
+          phone: this.forget.phone,
+          password: this.forget.password.text,
+          identCode: this.forget.identCode
+        }).then(res => {
+          this.$Message.success({
+            content: '密码重置成功,快去登录吧',
+            duration: 2,
+            onClose: () => {
+              setTimeout(() => {
+                this.$router.push({
+                  path: '/login'
+                })
+              })
+            }
+          })
+        }).catch(e => {
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
       }
     }
   }

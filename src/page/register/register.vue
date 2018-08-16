@@ -252,10 +252,19 @@ export default {
       }
     },
     resIdentCode () {
-      this.identCodeTime = 30
-      this.identCodeShow = true
-      this.identCodeBtn = true
-      this.timeOut()
+      axios.post('/sendMessage', {
+        phone: this.registerType === true ? this.company.phone : this.personal.phone
+      }).then(res => {
+        this.identCodeTime = 60
+        this.identCodeShow = true
+        this.identCodeBtn = true
+        this.timeOut()
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     timeOut () {
       this.codeTimeOut = setTimeout(() => {
@@ -303,7 +312,29 @@ export default {
       } else {
         this[type].emStatus = 0
         this[type].emText = ''
-        console.log('注册')
+        axios.post('/register/1', {
+          phone: this.registerType === true ? this.company.phone : this.personal.phone,
+          password: this.registerType === true ? this.company.password.text : this.personal.password.text,
+          identCode: this.registerType === true ? this.company.identCode : this.personal.identCode,
+          userType: this.registerType === true ? 2 : 1
+        }).then(res => {
+          this.$Message.success({
+            content: '注册成功,快去登录吧',
+            duration: 2,
+            onClose: () => {
+              setTimeout(() => {
+                this.$router.push({
+                  path: '/login'
+                })
+              })
+            }
+          })
+        }).catch(e => {
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
       }
     }
   }
