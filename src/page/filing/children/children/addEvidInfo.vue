@@ -79,7 +79,7 @@ export default {
         text: ''
       },
       data: {
-        caseId: this.caseId,
+        caseid: this.caseId,
         name: '',
         state: null,
         memo: ''

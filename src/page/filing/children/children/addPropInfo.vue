@@ -60,7 +60,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -124,7 +124,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -188,7 +188,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -363,9 +363,15 @@ export default {
         email: this.propData.email,
         address: this.propData.address
       }).then(res => {
+        if (res.data.data.fileList === null) {
+          res.data.data.fileList = []
+        }
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {

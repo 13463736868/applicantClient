@@ -192,7 +192,6 @@ export default {
           duration: 5
         })
       })
-      console.log('案件删除操作')
     },
     resSearch () {
       this.pageObj.pageNum = 1

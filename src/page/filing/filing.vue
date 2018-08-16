@@ -91,7 +91,10 @@ export default {
         this.caseInfo = res.data.data
         this.setCaseInfo(res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     alertCancel () {
@@ -112,7 +115,6 @@ export default {
         this.setCaseId(res.data.data.id)
         this.resCaseInfo(res.data.data.id)
       }).catch(e => {
-        console.log(e)
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

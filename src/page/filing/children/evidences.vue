@@ -57,8 +57,14 @@ export default {
     ...mapActions([
       'setFiling'
     ]),
-    addEvidSave () {
-
+    addEvidSave (_obj) {
+      this.evidData.push(_obj)
+      this.setFiling({type: 'evidenceList', data: this.evidData})
+      this.changeView('listEvid')
+      this.$Message.success({
+        content: '添加成功',
+        duration: 2
+      })
     },
     delEvidInfo (_id) {
       this.alertShowEvid = true

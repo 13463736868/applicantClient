@@ -120,9 +120,9 @@ export default {
   methods: {
     saveClick () {
       // console.log('type?_regExg_ajax')
-      axios.post('/proxy/add', {
+      axios.post('/proxy/update', {
         caseId: this.caseId,
-        id: this.id,
+        id: this.agenData.id,
         propName: this.agenData.propName,
         type: this.agenData.type,
         idcardType: this.agenData.idcardType,
@@ -133,9 +133,15 @@ export default {
         email: this.agenData.email,
         address: this.agenData.address
       }).then(res => {
+        if (typeof res.data.data.propName === 'string') {
+          res.data.data.propName = res.data.data.propName - 0
+        }
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {

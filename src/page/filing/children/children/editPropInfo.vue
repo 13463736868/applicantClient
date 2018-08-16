@@ -335,7 +335,7 @@ export default {
       // console.log('type?_regExg_ajax')
       axios.post('/party/update', {
         caseId: this.caseId,
-        id: this.id,
+        id: this.propData.id,
         type: this.propData.type,
         idcardType: this.propData.idcardType,
         idcard: this.propData.idcard,
@@ -350,7 +350,10 @@ export default {
       }).then(res => {
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {

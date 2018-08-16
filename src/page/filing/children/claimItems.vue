@@ -182,7 +182,7 @@ export default {
     },
     delClaiSave () {
       axios.post('/case/requestDelete', {
-        caseId: this.caseId,
+        caseid: this.caseId,
         id: this.delClaiId
       }).then(res => {
         for (let k in this.claimData) {
@@ -242,7 +242,10 @@ export default {
           duration: 2
         })
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     delApplCanc () {

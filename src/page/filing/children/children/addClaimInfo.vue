@@ -50,13 +50,19 @@ export default {
     saveClick () {
       // console.log('type?_regExg_ajax')
       axios.post('/case/requestAdd/1', {
-        caseId: this.caseId,
+        caseid: this.caseId,
         requestName: this.claimData.requestName,
         content: this.claimData.content
       }).then(res => {
+        if (typeof res.data.data.requestName === 'string') {
+          res.data.data.requestName = res.data.data.requestName - 0
+        }
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {

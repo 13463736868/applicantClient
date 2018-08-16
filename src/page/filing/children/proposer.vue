@@ -197,7 +197,6 @@ export default {
           }
         }
       }).catch(e => {
-        console.log(e)
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -311,7 +310,6 @@ export default {
           }
         }
       }).catch(e => {
-        console.log(e)
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

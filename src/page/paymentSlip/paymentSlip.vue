@@ -128,7 +128,10 @@ export default {
         this.committeeStatus = this.committeeList === '' ? '' : this.committeeList[0].value
         this.resPayList()
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     resPayList () {

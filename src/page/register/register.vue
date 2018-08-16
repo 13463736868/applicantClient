@@ -247,7 +247,10 @@ export default {
             this.identCodeBtn = false
           }
         }).catch(e => {
-          console.log(e)
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
         })
       }
     },

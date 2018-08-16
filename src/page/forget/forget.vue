@@ -62,7 +62,7 @@
           </div>
         </div>
         <Row class="pb10 pt20">
-          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':forgetBtn}" v-bind:disabled="forgetBtn" @click="resForget">注 册</button></Col>
+          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':forgetBtn}" v-bind:disabled="forgetBtn" @click="resForget">确 定</button></Col>
         </Row>
       </div>
     </div>

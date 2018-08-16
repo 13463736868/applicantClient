@@ -142,9 +142,18 @@ export default {
         email: this.agenData.email,
         address: this.agenData.address
       }).then(res => {
+        if (res.data.data.fileList === null) {
+          res.data.data.fileList = []
+        }
+        if (typeof res.data.data.propName === 'string') {
+          res.data.data.propName = res.data.data.propName - 0
+        }
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {

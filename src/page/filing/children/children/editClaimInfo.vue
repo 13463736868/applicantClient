@@ -47,14 +47,17 @@ export default {
     saveClick () {
       // console.log('type?_regExg_ajax')
       axios.post('/case/requestUpdate/1', {
-        caseId: this.caseId,
+        caseid: this.caseId,
         id: this.claimData.id,
         requestName: this.claimData.requestName,
         content: this.claimData.content
       }).then(res => {
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
-        console.log(e)
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
       })
     },
     cancClick () {
