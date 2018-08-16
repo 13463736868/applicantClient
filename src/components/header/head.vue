@@ -94,7 +94,7 @@ export default {
       if (window.localStorage) {
         let loc = window.localStorage
         let _userInfo = loc.getItem('userInfo')
-        this.userName = JSON.parse(_userInfo).phone
+        this.userName = _userInfo === null ? null : JSON.parse(_userInfo).phone
       }
     }
   }
