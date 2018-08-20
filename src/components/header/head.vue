@@ -33,7 +33,7 @@ import alertTip from '@/components/common/alertTip'
 
 export default {
   name: 'header_top',
-  props: ['isRegister'],
+  props: ['isRegister', 'headType'],
   components: { alertTip },
   data () {
     return {
@@ -85,7 +85,11 @@ export default {
   },
   methods: {
     loginOut () {
-      this.alertShowOut = true
+      if (this.headType === 'register' || this.headType === 'forget') {
+        this.userOutSave()
+      } else {
+        this.alertShowOut = true
+      }
     },
     userOutSave () {
       if (window.localStorage) {

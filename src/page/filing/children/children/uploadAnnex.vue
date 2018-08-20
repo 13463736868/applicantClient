@@ -107,11 +107,11 @@ export default {
       this.spinShow = false
       this.$Message.success({
         content: '文件上传成功',
-        duration: 2,
+        duration: 1,
         onClose: () => {
           setTimeout(() => {
             this.$emit('saveClick', {id: this.infoId, fileObj: file.response.data})
-          }, 1000)
+          })
         }
       })
     },

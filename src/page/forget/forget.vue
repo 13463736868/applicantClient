@@ -1,6 +1,6 @@
 <template>
   <div class="forget">
-    <head-top :isRegister="false">
+    <head-top :isRegister="false" headType="forget">
       <span class="f36 fcf">忘记密码</span>
     </head-top>
     <div class="_center">

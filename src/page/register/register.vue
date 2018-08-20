@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <head-top :isRegister="false">
+    <head-top :isRegister="false" headType="register">
       <span class="f36 fcf">注册</span>
     </head-top>
     <div class="_center">
