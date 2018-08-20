@@ -6,10 +6,10 @@
       </ul>
       <div class="user fr w200">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
-          <Col span="16">
-            <span class="fcf f12" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
+          <Col span="18">
+            <span class="fcf f13" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
           </Col>
-          <Col span="8">
+          <Col span="6">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>
           </Col>
         </Row>
@@ -23,17 +23,21 @@
         </Col>
       </Row>
     </div>
+    <alert-tip :alertShow="alertShowOut" @alertCancel="userOutCanc" @alertConfirm="userOutSave" alertTitle="提示" alertText="确定退出吗？"></alert-tip>
   </div>
 </template>
 
 <script>
 import {removeToken} from '@/cookies'
+import alertTip from '@/components/common/alertTip'
 
 export default {
   name: 'header_top',
   props: ['isRegister'],
+  components: { alertTip },
   data () {
     return {
+      alertShowOut: false,
       userName: null,
       style: {
         bg: {
@@ -81,6 +85,9 @@ export default {
   },
   methods: {
     loginOut () {
+      this.alertShowOut = true
+    },
+    userOutSave () {
       if (window.localStorage) {
         let loc = window.localStorage
         loc.removeItem('userInfo')
@@ -89,6 +96,9 @@ export default {
       this.$router.replace({
         path: '/login'
       })
+    },
+    userOutCanc () {
+      this.alertShowOut = false
     },
     setUserName () {
       if (window.localStorage) {

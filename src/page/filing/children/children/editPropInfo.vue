@@ -21,7 +21,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -60,7 +60,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -92,7 +92,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -124,7 +124,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -156,7 +156,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -188,7 +188,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="propData.enterpriseIdcard">
+              <Select v-model="propData.enterpriseType">
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -220,7 +220,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span></span></Col>
@@ -255,7 +255,7 @@ import axios from 'axios'
 
 export default {
   name: 'edit_prop_info',
-  props: ['caseId', 'editPropData'],
+  props: ['editType', 'caseId', 'editPropData'],
   data () {
     return {
       editPropBtn: false,
@@ -333,7 +333,7 @@ export default {
     },
     saveClick () {
       // console.log('type?_regExg_ajax')
-      axios.post('/party/update', {
+      axios.post('/party/update/' + this.editType, {
         caseId: this.caseId,
         id: this.propData.id,
         type: this.propData.type,

@@ -89,7 +89,7 @@ export default {
   },
   computed: {
     addFileBtn () {
-      if (this.fileObj === null || this.data.name === '' || this.data.state === null || this.data.memo === '') {
+      if (this.fileObj === null || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
         return true
       } else {
         return false

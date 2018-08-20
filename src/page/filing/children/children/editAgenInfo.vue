@@ -40,7 +40,7 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
             <Col span="24">
-              <Select v-model="agenData.propName">
+              <Select v-model="agenData.propId">
                 <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
@@ -123,6 +123,7 @@ export default {
       axios.post('/proxy/update', {
         caseId: this.caseId,
         id: this.agenData.id,
+        propId: this.agenData.propId,
         propName: this.agenData.propName,
         type: this.agenData.type,
         idcardType: this.agenData.idcardType,

@@ -165,7 +165,21 @@ export default {
   },
   methods: {
     renderOperation (h, params) {
-      if (params.row.state === 2) {
+      if (params.row.state === 1 || params.row.state === 4) {
+        return h('div', [
+          h('Button', {
+            props: {
+              type: 'primary',
+              size: 'small'
+            },
+            on: {
+              click: () => {
+                this.resCancCase(params.index)
+              }
+            }
+          }, '撤回')
+        ])
+      } else if (params.row.state === 2) {
         return h('div', [
           h('Button', {
             props: {
@@ -177,7 +191,18 @@ export default {
                 this.goPayment(params.index)
               }
             }
-          }, '去缴费')
+          }, '去缴费'),
+          h('Button', {
+            props: {
+              type: 'primary',
+              size: 'small'
+            },
+            on: {
+              click: () => {
+                this.resCancCase(params.index)
+              }
+            }
+          }, '撤回')
         ])
       } else if (params.row.state === 5) {
         return h('div', [
@@ -194,7 +219,18 @@ export default {
                 this.goCourtRoom(params.index)
               }
             }
-          }, '进入庭室')
+          }, '进入庭室'),
+          h('Button', {
+            props: {
+              type: 'primary',
+              size: 'small'
+            },
+            on: {
+              click: () => {
+                this.resCancCase(params.index)
+              }
+            }
+          }, '撤回')
         ])
       } else {
         return h('div', [
@@ -258,6 +294,9 @@ export default {
       this.pageObj.pageNum = page
       this.resMineList()
     },
+    resCancCase (index) {
+      console.log('撤回案件按钮')
+    },
     goCourtRoom (index) {
       console.log(this.caseList.bodyList[index])
     },
@@ -265,8 +304,8 @@ export default {
       console.log(this.caseList.bodyList[index])
     },
     goCaseInfo (index) {
-      console.log(this.caseList.bodyList[index].caseNo, this.caseList.bodyList[index].caseStatus)
-      console.log('案件查看操作-先把案件号存到store.xxCaseNo')
+      console.log(this.caseList.bodyList[index].oldId, this.caseList.bodyList[index].state)
+      console.log('案件查看操作-先把案件号存到store.xxCaseNo, 状态store.xxCaseStatue')
       this.$router.push({
         path: '/caseInfo'
       })

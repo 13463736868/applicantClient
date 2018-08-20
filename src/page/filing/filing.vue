@@ -72,8 +72,6 @@ export default {
       this.resCaseInfo(this.caseId)
     }
   },
-  mounted () {
-  },
   computed: {
     ...mapGetters([
       'caseId'
@@ -112,6 +110,7 @@ export default {
     alertConfirm () {
       axios.post('/case/new').then(res => {
         this.alertShow = false
+        window.localStorage.setItem('caseId', res.data.data.id)
         this.setCaseId(res.data.data.id)
         this.resCaseInfo(res.data.data.id)
       }).catch(e => {

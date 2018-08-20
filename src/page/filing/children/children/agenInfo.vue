@@ -16,7 +16,8 @@
             <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
-            <p><span class="mr10">联系地址 :</span><span v-text="infoData.adress"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+            <p><span class="mr10">委托人姓名 :</span><span v-text="showPropName"></span></p>
           </Col>
         </Row>
       </Col>
@@ -35,9 +36,10 @@
 </template>
 
 <script>
+
 export default {
   name: 'agen_info',
-  props: ['infoData'],
+  props: ['infoData', 'propArrName'],
   data () {
     return {
       fileIndex: 0,
@@ -52,6 +54,18 @@ export default {
     }
   },
   computed: {
+    showPropName () {
+      if (this.propArrName === null || this.propArrName === []) {
+        return ''
+      } else {
+        for (let k in this.propArrName) {
+          if (this.propArrName[k].value === this.infoData.propId) {
+            return this.propArrName[k].label
+          }
+        }
+        return ''
+      }
+    },
     isShowFile () {
       if (this.fileNum > -1) {
         return true
@@ -215,19 +229,19 @@ export default {
       position: absolute;
       font-size: 17px;
       color: #ff7a7a;
-      right: 6px;
-      top: 4px;
+      right: 7px;
+      top: 5px;
     }
     ._imgBox {
       overflow: hidden;
       width: 84%;
-      height: 160px;
+      height: 188px;
       margin: 0 auto;
       ._fileImg {
         @include hand;
         clear: both;
         display: block;
-        margin: 12px auto;
+        margin: 14px auto;
         width: 96%;
         height: 85%;
       }

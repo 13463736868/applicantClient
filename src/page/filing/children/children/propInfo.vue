@@ -16,17 +16,59 @@
             <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
-            <p><span class="mr10">联系地址 :</span><span v-text="infoData.adress"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
           </Col>
         </Row>
         <Row v-else-if="infoData.type === 2">
-          <Col>2</Col>
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">企业名 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
+                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+          </Col>
         </Row>
         <Row v-else-if="infoData.type === 3">
-          <Col>3</Col>
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">名称 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
+                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+          </Col>
         </Row>
         <Row v-else-if="infoData.type === 4">
-          <Col>4</Col>
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">组织名称 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
+                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+          </Col>
         </Row>
       </Col>
       <Col class="_listR clearfix not_s" span="9" offset="1">
@@ -51,7 +93,8 @@ export default {
     return {
       fileIndex: 0,
       objInfo: {
-        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :']
+        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :'],
+        enterpriseArr: ['未知证件 :', '营业执照 :', '组织机构代码 :', '税务登记证 :', '多证合一营业执照 :']
       }
     }
   },

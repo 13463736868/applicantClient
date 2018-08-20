@@ -11,7 +11,7 @@
         <add-prop-info :addType="1" :caseId="caseId" @saveClick="addPropSave" @cancClick="changeView('listProp')"></add-prop-info>
       </div>
       <div v-if="propShow.edit">
-        <edit-prop-info :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
+        <edit-prop-info :editType="1" :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
       </div>
       <div v-if="propShow.upload">
         <upload-annex :caseId="caseId" :infoId="uploadPropId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/1" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
@@ -22,7 +22,7 @@
       <div class="_top">代理人</div>
       <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
-          <agen-info :infoData="item" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
+          <agen-info :infoData="item" :propArrName="propDataName" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
         </div>
       </div>
       <div v-if="agenShow.add">
@@ -93,7 +93,8 @@ export default {
       delPropImgObj: null,
       delAgenImgObj: null,
       uploadPropId: null,
-      uploadAgenId: null
+      uploadAgenId: null,
+      propDataName: []
     }
   },
   created () {
@@ -101,30 +102,14 @@ export default {
       this.propData = this.caseInfo.propList
       this.agenData = this.caseInfo.proxyList
       this.createList()
+      this.resPropArrName()
     }
   },
   computed: {
     ...mapGetters([
       'caseId',
       'caseInfo'
-    ]),
-    propDataName () {
-      let _nameArr = []
-      let _typeArr = [2, 3, 4]
-      for (let k in this.propData) {
-        let _obj = {}
-        if (this.propData[k].type === 1) {
-          _obj.label = this.propData[k].name
-          _obj.value = this.propData[k].id
-          _nameArr.push(_obj)
-        } else if (_typeArr.indexOf(this.propData[k].type) !== -1) {
-          _obj.label = this.propData[k].enterpriseName
-          _obj.value = this.propData[k].id
-          _nameArr.push(_obj)
-        }
-      }
-      return _nameArr
-    }
+    ])
   },
   methods: {
     ...mapActions([
@@ -133,6 +118,7 @@ export default {
     addPropSave (_obj) {
       this.propData.push(_obj)
       this.setFiling({type: 'propList', data: this.propData})
+      this.resPropArrName()
       this.changeView('listProp')
       this.$Message.success({
         content: '添加成功',
@@ -148,6 +134,7 @@ export default {
         if (this.propData[k].id === _obj.id) {
           this.propData[k] = JSON.parse(JSON.stringify(_obj))
           this.setFiling({type: 'propList', data: this.propData})
+          this.resPropArrName()
           this.changeView('listProp')
           this.$Message.success({
             content: '修改成功',
@@ -188,6 +175,7 @@ export default {
           if (this.propData[k].id === this.delPropId) {
             this.propData.splice(k, 1)
             this.setFiling({type: 'propList', data: this.propData})
+            this.resPropArrName()
             this.alertShowProp = false
             this.$Message.success({
               content: '删除成功',
@@ -356,6 +344,23 @@ export default {
       this.alertShowAgenImg = false
       this.delAgenImgObj = null
     },
+    resPropArrName () {
+      let _nameArr = []
+      let _typeArr = [2, 3, 4]
+      for (let k in this.propData) {
+        let _obj = {}
+        if (this.propData[k].type === 1) {
+          _obj.label = this.propData[k].name
+          _obj.value = this.propData[k].id
+          _nameArr.push(_obj)
+        } else if (_typeArr.indexOf(this.propData[k].type) !== -1) {
+          _obj.label = this.propData[k].enterpriseName
+          _obj.value = this.propData[k].id
+          _nameArr.push(_obj)
+        }
+      }
+      this.propDataName = _nameArr
+    },
     createList () {
       if (this.propData.length === 0) {
         this.propShow.list = false
@@ -422,6 +427,7 @@ export default {
         this.propData = val.propList
         this.agenData = val.proxyList
         this.createList()
+        this.resPropArrName()
       }
     }
   }

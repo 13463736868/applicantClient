@@ -11,7 +11,7 @@
         <add-prop-info :addType="2" :caseId="caseId" @saveClick="addRespSave" @cancClick="changeView('listResp')"></add-prop-info>
       </div>
       <div v-if="respShow.edit">
-        <edit-prop-info :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
+        <edit-prop-info :editType="2" :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
       </div>
       <div v-if="respShow.upload">
         <upload-annex :caseId="caseId" :infoId="uploadRespId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/2" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
