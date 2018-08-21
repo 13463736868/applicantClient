@@ -10,6 +10,10 @@
         </Col>
         <Col span="14" class="_center_right">
           <router-view></router-view>
+          <my-case-sub :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState"></my-case-sub>
+        </Col>
+        <Col span="4">
+          <right-arbi></right-arbi>
         </Col>
       </Row>
     </div>
@@ -17,14 +21,82 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import headTop from '@/components/header/head'
+import rightArbi from '@/page/caseInfo/children/rightArbi'
+import myCaseSub from '@/page/caseInfo/children/myCaseSub'
 
 export default {
   name: 'caseInfo',
-  components: { headTop },
+  components: { headTop, rightArbi, myCaseSub },
   data () {
     return {
-      menuClaim: [
+      menuClaim: [],
+      menuClaimA: [
+        {
+          id: '0',
+          text: '基本信息',
+          url: '/basicInfo'
+        },
+        {
+          id: '1',
+          text: '申请方',
+          url: '/proposerInfo'
+        },
+        {
+          id: '2',
+          text: '被申请方',
+          url: '/respondentInfo'
+        },
+        {
+          id: '3',
+          text: '请求和答辩',
+          url: '/claimInfo'
+        },
+        {
+          id: '5',
+          text: '证据和质证',
+          url: '/evidencesInfo'
+        }
+      ],
+      menuClaimB: [
+        {
+          id: '0',
+          text: '基本信息',
+          url: '/basicInfo'
+        },
+        {
+          id: '1',
+          text: '申请方',
+          url: '/proposerInfo'
+        },
+        {
+          id: '2',
+          text: '被申请方',
+          url: '/respondentInfo'
+        },
+        {
+          id: '3',
+          text: '请求和答辩',
+          url: '/claimInfo'
+        },
+        {
+          id: '4',
+          text: '反请求和答辩',
+          url: '/revClaimInfo'
+        },
+        {
+          id: '5',
+          text: '证据和质证',
+          url: '/evidencesInfo'
+        },
+        {
+          id: '6',
+          text: '送达',
+          url: '/sendInfo'
+        }
+      ],
+      menuClaimC: [
         {
           id: '0',
           text: '基本信息',
@@ -65,8 +137,31 @@ export default {
           text: '结案',
           url: '/endCaseInfo'
         }
-      ]
+      ],
+      stateA: [1, 2, 3, 6, '1', '2', '3', '6'],
+      stateB: [4, 5, '4', '5'],
+      stateC: [7, '7']
     }
+  },
+  created () {
+    if (this.stateA.indexOf(this.myCaseState) !== -1) {
+      this.menuClaim = this.menuClaimA
+    } else if (this.stateB.indexOf(this.myCaseState) !== -1) {
+      this.menuClaim = this.menuClaimB
+    } else if (this.stateC.indexOf(this.myCaseState) !== -1) {
+      this.menuClaim = this.menuClaimC
+    } else {
+      this.menuClaim = this.menuClaimA
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseId',
+      'myCaseOldId',
+      'myCaseState'
+    ])
+  },
+  methods: {
   }
 }
 </script>

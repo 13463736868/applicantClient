@@ -27,6 +27,9 @@ export default {
   ._reason, ._applicationBook {
     padding-top: 60px;
   }
+  ._applicationBook {
+    padding-bottom: 60px;
+  }
   ._claim ._top, ._reason ._top, ._applicationBook ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

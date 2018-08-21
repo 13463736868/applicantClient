@@ -1,7 +1,7 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="4" class="_label">证据项名称<b class="_b">*</b></Col>
+      <Col span="4" class="_label">选择仲裁机构<b class="_b">*</b></Col>
       <Col span="8">
         <Select v-model="committeeStatus">
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>

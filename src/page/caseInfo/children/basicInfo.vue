@@ -23,6 +23,7 @@ export default {
 .basicInfo {
   ._progress {
     padding-top: 60px;
+    padding-bottom: 60px;
   }
   ._basic ._top, ._progress ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);

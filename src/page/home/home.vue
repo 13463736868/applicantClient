@@ -41,6 +41,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 
@@ -164,6 +165,11 @@ export default {
     this.resMineList()
   },
   methods: {
+    ...mapActions([
+      'setMyCaseId',
+      'setMyCaseOldId',
+      'setMyCaseState'
+    ]),
     renderOperation (h, params) {
       if (params.row.state === 1 || params.row.state === 4) {
         return h('div', [
@@ -186,6 +192,9 @@ export default {
               type: 'primary',
               size: 'small'
             },
+            style: {
+              marginRight: '5px'
+            },
             on: {
               click: () => {
                 this.goPayment(params.index)
@@ -196,6 +205,9 @@ export default {
             props: {
               type: 'primary',
               size: 'small'
+            },
+            style: {
+              marginRight: '5px'
             },
             on: {
               click: () => {
@@ -224,6 +236,9 @@ export default {
             props: {
               type: 'primary',
               size: 'small'
+            },
+            style: {
+              marginRight: '5px'
             },
             on: {
               click: () => {
@@ -304,8 +319,12 @@ export default {
       console.log(this.caseList.bodyList[index])
     },
     goCaseInfo (index) {
-      console.log(this.caseList.bodyList[index].oldId, this.caseList.bodyList[index].state)
-      console.log('案件查看操作-先把案件号存到store.xxCaseNo, 状态store.xxCaseStatue')
+      this.setMyCaseId(this.caseList.bodyList[index].id)
+      window.localStorage.setItem('myCaseId', this.caseList.bodyList[index].id)
+      this.setMyCaseOldId(this.caseList.bodyList[index].oldId)
+      window.localStorage.setItem('myCaseOldId', this.caseList.bodyList[index].oldId)
+      this.setMyCaseState(this.caseList.bodyList[index].state)
+      window.localStorage.setItem('myCaseState', this.caseList.bodyList[index].state)
       this.$router.push({
         path: '/caseInfo'
       })

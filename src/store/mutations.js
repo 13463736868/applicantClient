@@ -16,5 +16,14 @@ export default {
   },
   [types.SET_FILING] (state, obj) {
     state.caseInfo[obj.type] = obj.data
+  },
+  [types.SET_MYCASEID] (state, id) {
+    state.myCaseId = id
+  },
+  [types.SET_MYCASEOLDID] (state, id) {
+    state.myCaseOldId = id
+  },
+  [types.SET_MYCASESTATE] (state, obj) {
+    state.myCaseState = obj
   }
 }

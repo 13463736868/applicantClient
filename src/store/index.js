@@ -10,7 +10,10 @@ const state = {
   // admin_token: null
   userInfo: null,
   caseId: '',
-  caseInfo: null
+  caseInfo: null,
+  myCaseId: '',
+  myCaseOldId: '',
+  myCaseState: null
 }
 
 export default new Vuex.Store({

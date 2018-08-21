@@ -18,6 +18,9 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .respondentInfo {
+  ._respondent {
+    padding-bottom: 60px;
+  }
   ._respondent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

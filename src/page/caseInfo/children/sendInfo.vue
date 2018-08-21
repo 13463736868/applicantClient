@@ -27,6 +27,9 @@ export default {
   ._emailWarn, ._smsWarn {
     padding-top: 60px;
   }
+  ._smsWarn {
+    padding-bottom: 60px;
+  }
   ._infoStatus ._top, ._emailWarn ._top, ._smsWarn ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);

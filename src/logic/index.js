@@ -28,10 +28,30 @@ const beforeEach = (to, from, next) => {
           }
         }
       }
+      if (to.fullPath.indexOf('caseInfo') === -1) {
+        loc.removeItem('myCaseId')
+        loc.removeItem('myCaseState')
+        store.commit('SET_MYCASEID', '')
+        store.commit('SET_MYCASESTATE', null)
+      } else {
+        if (store.state.myCaseId === '') {
+          if (loc.getItem('myCaseId')) {
+            store.commit('SET_MYCASEID', loc.getItem('myCaseId'))
+          }
+        }
+        if (store.state.myCaseState === null) {
+          if (loc.getItem('myCaseState')) {
+            store.commit('SET_MYCASESTATE', loc.getItem('myCaseState'))
+          }
+        }
+      }
       next()
     } else {
+      store.commit('SET_USERINFO', null)
       store.commit('SET_CASEID', '')
       store.commit('SET_CASEINFO', null)
+      store.commit('SET_MYCASEID', '')
+      store.commit('SET_MYCASESTATE', null)
       next({
         path: '/login',
         query: {redirect: to.fullPath}

@@ -14,5 +14,14 @@ export default {
   },
   setFiling ({commit, state}, obj) {
     commit('SET_FILING', obj)
+  },
+  setMyCaseId ({commit, state}, id) {
+    commit('SET_MYCASEID', id)
+  },
+  setMyCaseOldId ({commit, state}, id) {
+    commit('SET_MYCASEOLDID', id)
+  },
+  setMyCaseState ({commit, state}, obj) {
+    commit('SET_MYCASESTATE', obj)
   }
 }

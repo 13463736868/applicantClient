@@ -23,6 +23,7 @@ export default {
 .proposerInfo {
   ._agent {
     padding-top: 60px;
+    padding-bottom: 60px;
   }
   ._proposer ._top, ._agent ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
