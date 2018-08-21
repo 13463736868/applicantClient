@@ -233,7 +233,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .respondent {
-  width: 83%;
   ._respondent {
     padding-bottom: 60px;
   }

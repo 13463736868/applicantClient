@@ -135,7 +135,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .evidences {
-  width: 83%;
   ._evidences {
     padding-bottom: 60px;
   }

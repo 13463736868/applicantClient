@@ -336,7 +336,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .claimItems {
-  width: 83%;
   ._reason, ._applicationBook {
     padding-top: 60px;
   }

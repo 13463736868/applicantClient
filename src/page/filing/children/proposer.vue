@@ -437,7 +437,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .proposer {
-  width: 83%;
   ._agent {
     padding-top: 60px;
     padding-bottom: 60px;

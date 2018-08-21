@@ -24,7 +24,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .sendInfo {
-  width: 83%;
   ._emailWarn, ._smsWarn {
     padding-top: 60px;
   }

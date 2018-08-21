@@ -24,7 +24,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .revClaimInfo {
-  width: 83%;
   ._reason, ._applicationBook {
     padding-top: 60px;
   }

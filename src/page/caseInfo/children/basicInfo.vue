@@ -21,7 +21,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .basicInfo {
-  width: 83%;
   ._progress {
     padding-top: 60px;
   }

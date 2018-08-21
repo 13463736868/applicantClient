@@ -61,7 +61,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .caseSubmit {
-  width: 83%;
   ._labelFor {
     padding-bottom: 30px;
     ._label {

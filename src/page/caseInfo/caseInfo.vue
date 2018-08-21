@@ -8,7 +8,7 @@
         <Col span="4" offset="1" class="_center_left not_s">
           <router-link v-for="item in menuClaim" :to='{path: "/caseInfo" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
-        <Col span="17" class="_center_right">
+        <Col span="14" class="_center_right">
           <router-view></router-view>
         </Col>
       </Row>
