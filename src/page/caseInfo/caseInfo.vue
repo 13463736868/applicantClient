@@ -10,10 +10,9 @@
         </Col>
         <Col span="14" class="_center_right">
           <router-view></router-view>
-          <my-case-sub :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState"></my-case-sub>
         </Col>
         <Col span="4">
-          <right-arbi></right-arbi>
+          <right-arbi :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState"></right-arbi>
         </Col>
       </Row>
     </div>
@@ -24,11 +23,10 @@
 import { mapGetters } from 'vuex'
 import headTop from '@/components/header/head'
 import rightArbi from '@/page/caseInfo/children/rightArbi'
-import myCaseSub from '@/page/caseInfo/children/myCaseSub'
 
 export default {
   name: 'caseInfo',
-  components: { headTop, rightArbi, myCaseSub },
+  components: { headTop, rightArbi },
   data () {
     return {
       menuClaim: [],

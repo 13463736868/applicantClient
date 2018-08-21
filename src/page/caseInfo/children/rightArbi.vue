@@ -25,47 +25,119 @@
     <div class="_caseInfo">
       <div class="_top">案件信息</div>
       <div class="_mid">
-        <Row>
+        <Row v-if="dataInfoShow">
           <Col span="22" offset="1">
             <p>
               <span class="mr10"><b>仲裁机构 :</b></span>
-              <span class="mr10">盐城仲裁委</span>
+              <span class="mr10" v-text="dataInfo.carbitrationNameode"></span>
             </p>
             <p>
               <span class="mr10"><b>纠纷类型 :</b></span>
-              <span class="mr10">民间借贷</span>
+              <span class="mr10" v-text="dataInfo.caseType"></span>
             </p>
             <p>
               <span class="mr10"><b>案件案号 :</b></span>
-              <span class="mr10">盐仲WL201800040号</span>
+              <span class="mr10" v-text="dataInfo.code"></span>
             </p>
             <p>
               <span class="mr10"><b>案件状态 :</b></span>
-              <span class="mr10">已撤回</span>
+              <span class="mr10" v-text="dataInfo.caseState"></span>
             </p>
             <p>
               <span class="mr10"><b>立案秘书姓名 :</b></span>
-              <span class="mr10">刘二蛋</span>
+              <span class="mr10" v-text="dataInfo.secretaryName"></span>
             </p>
             <p>
               <span class="mr10"><b>立案秘书电话 :</b></span>
-              <span class="mr10">13454545454</span>
+              <span class="mr10" v-text="dataInfo.secretaryPhone"></span>
             </p>
           </Col>
         </Row>
       </div>
     </div>
+    <div class="_myCaseSub">
+      <Row>
+        <Col v-if="btnShow.avoidShow" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="avoidClick">申请仲裁员回避</button></Col>
+          </Row>
+        </Col>
+        <Col v-if="btnShow.retractShow" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="retractClick">撤回案件</button></Col>
+          </Row>
+        </Col>
+        <Col v-if="btnShow.selectShow" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="selectClick">选择仲裁员</button></Col>
+          </Row>
+        </Col>
+        <Col v-if="btnShow.replClick" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="replClick">补正</button></Col>
+          </Row>
+        </Col>
+      </Row>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'right_arbi',
-  props: ['caseState'],
+  props: ['caseId', 'caseOldId', 'caseState'],
   data () {
     return {
       logo: {
         url: '../../static/images/logoR.png'
+      },
+      dataInfoShow: false,
+      dataInfo: null,
+      addSubmit: false,
+      btnShow: {
+        avoidShow: false,
+        retractShow: false,
+        selectShow: false,
+        replClick: false
+      },
+      stateA: [1, 2, '1', '2'],
+      stateB: [3, 6, '3', '6'],
+      stateCA: [4, '4'],
+      stateCB: [5, '5'],
+      stateD: [7, '7']
+    }
+  },
+  created () {
+    this.isShowBtn()
+    this.resCaseItem()
+  },
+  methods: {
+    resCaseItem () {
+      axios.post('/case/queryCaseItem', {
+        id: this.caseId
+      }).then(res => {
+        this.dataInfo = res.data.data
+        this.dataInfoShow = true
+      }).catch(e => {
+        this.dataInfoShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    isShowBtn () {
+      if (this.stateA.indexOf(this.caseState) !== -1) {
+        this.btnShow.retractShow = true
+      } else if (this.stateCA.indexOf(this.caseState) !== -1) {
+        this.btnShow.retractShow = true
+        this.btnShow.selectShow = true
+      } else if (this.stateCB.indexOf(this.caseState) !== -1) {
+        this.btnShow.retractShow = true
+        this.btnShow.avoidShow = true
+      } else if (this.stateD.indexOf(this.caseState) !== -1) {
+        this.btnShow.replClick = true
       }
     }
   }
@@ -97,6 +169,19 @@ export default {
     padding: 10px 0;
     p {
       padding: 5px 0;
+    }
+  }
+  ._myCaseSub {
+    ._saveBtn {
+      @include btn(#126eaf, 140px, 13px, 40px);
+      @include boxShadow(0 1px 6px -1px #bbb);
+      @include borderRadius(4px);
+    }
+    ._saveBtn._disabled {
+      @include btn(#ccc, 140px, 13px, 40px);
+    }
+    ._saveBtn:focus {
+      outline: 0px;
     }
   }
   ._logo {
