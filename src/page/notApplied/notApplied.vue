@@ -21,7 +21,7 @@
         </Row>
       </div>
       <div class="_page clearfix">
-        </Row>
+        <Row>
           <Col span="12" offset="6" class="tc">
             <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>

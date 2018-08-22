@@ -22,14 +22,14 @@
         </Col>
       </Row>
       <div class="_caseList clearfix">
-        </Row>
+        <Row>
           <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="caseList.loading" :columns="caseList.header" :data="caseList.bodyList"></Table>
           </Col>
         </Row>
       </div>
       <div class="_page clearfix">
-        </Row>
+        <Row>
           <Col span="12" offset="6" class="tc">
             <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>
@@ -168,7 +168,8 @@ export default {
     ...mapActions([
       'setMyCaseId',
       'setMyCaseOldId',
-      'setMyCaseState'
+      'setMyCaseState',
+      'setGoPaymentOldId'
     ]),
     renderOperation (h, params) {
       if (params.row.state === 1 || params.row.state === 4) {
@@ -316,7 +317,11 @@ export default {
       console.log(this.caseList.bodyList[index])
     },
     goPayment (index) {
-      console.log(this.caseList.bodyList[index])
+      this.setGoPaymentOldId(this.caseList.bodyList[index].oldId)
+      window.localStorage.setItem('goPaymentOldId', this.caseList.bodyList[index].oldId)
+      this.$router.push({
+        path: '/goPayment'
+      })
     },
     goCaseInfo (index) {
       this.setMyCaseId(this.caseList.bodyList[index].id)

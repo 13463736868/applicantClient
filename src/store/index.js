@@ -7,13 +7,15 @@ import mutations from './mutations.js'
 Vue.use(Vuex)
 
 const state = {
-  // admin_token: null
+  // token: null
   userInfo: null,
   caseId: '',
   caseInfo: null,
   myCaseId: '',
   myCaseOldId: '',
-  myCaseState: null
+  myCaseState: null,
+  goPaymentOldId: '',
+  paymentInfoId: ''
 }
 
 export default new Vuex.Store({

@@ -22,14 +22,14 @@
         </Col>
       </Row>
       <div class="_payList clearfix">
-        </Row>
+        <Row>
           <Col span="24" class="pl20 pr20">
             <Table stripe border align="center" :loading="payList.loading" :columns="payList.header" :data="payList.bodyList"></Table>
           </Col>
         </Row>
       </div>
       <div class="_page clearfix">
-        </Row>
+        <Row>
           <Col span="12" offset="6" class="tc">
             <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
           </Col>
@@ -41,6 +41,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 
@@ -114,6 +115,9 @@ export default {
     this.resDictionary('commissionType')
   },
   methods: {
+    ...mapActions([
+      'setPaymentInfoId'
+    ]),
     resDictionary (itemGroup) {
       axios.post('/dictionary/' + itemGroup).then(res => {
         let _dataList = res.data.data
@@ -155,7 +159,11 @@ export default {
       })
     },
     goPaymentInfo (index) {
-      console.log(this.payList.bodyList[index])
+      this.setPaymentInfoId(this.payList.bodyList[index].caseId)
+      window.localStorage.setItem('paymentInfoId', this.payList.bodyList[index].caseId)
+      this.$router.push({
+        path: '/paymentInfo'
+      })
     },
     resSearch () {
       this.pageObj.pageNum = 0

@@ -1,7 +1,7 @@
 export default {
   //  小写
-  // getUser ({commit}) {
-  //   commit('ADMIN_TOKEN', '111111xxx')
+  // setToken ({commit}, id) {
+  //   commit('SET_TOKEN', id)
   // }
   setUserInfo ({commit, state}, obj) {
     commit('SET_USERINFO', obj)
@@ -23,5 +23,11 @@ export default {
   },
   setMyCaseState ({commit, state}, obj) {
     commit('SET_MYCASESTATE', obj)
+  },
+  setGoPaymentOldId ({commit, state}, id) {
+    commit('SET_GOPAYMENTOLDID', id)
+  },
+  setPaymentInfoId ({commit, state}, id) {
+    commit('SET_PAYMENTINFOID', id)
   }
 }

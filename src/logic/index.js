@@ -8,8 +8,10 @@ const beforeEach = (to, from, next) => {
   }
   if (to.meta.requireAuth) {
     // 如果使用store.state.admin_token 的话 需要注意页面刷新问题 登录成功后存俩份
-    // if (window.localStorage.getItem('token')) {
-    //   store.commit('随便个名', window.localStorage.getItem('token'))
+    // if (store.state.token === null) {
+    //   if (loc.getItem('token')) {
+    //     store.commit('SET_TOKEN', window.localStorage.getItem('token'))
+    //   }
     // }
     if (cookies.getToken() && loc !== null && loc.getItem('userInfo') !== null) {
       if (store.state.userInfo === null) {
@@ -45,6 +47,26 @@ const beforeEach = (to, from, next) => {
           }
         }
       }
+      if (to.fullPath.indexOf('goPayment') === -1) {
+        loc.removeItem('goPaymentOldId')
+        // store.commit('SET_GOPAYMENTOLDID', '') 销毁组件前已经清理了
+      } else {
+        if (store.state.goPaymentOldId === '') {
+          if (loc.getItem('goPaymentOldId')) {
+            store.commit('SET_GOPAYMENTOLDID', loc.getItem('goPaymentOldId'))
+          }
+        }
+      }
+      if (to.fullPath.indexOf('paymentInfo') === -1) {
+        loc.removeItem('paymentInfoId')
+        // store.commit('SET_PAYMENTINFOID', '') 销毁组件前已经清理了
+      } else {
+        if (store.state.paymentInfoId === '') {
+          if (loc.getItem('paymentInfoId')) {
+            store.commit('SET_PAYMENTINFOID', loc.getItem('paymentInfoId'))
+          }
+        }
+      }
       next()
     } else {
       store.commit('SET_USERINFO', null)
@@ -52,6 +74,7 @@ const beforeEach = (to, from, next) => {
       store.commit('SET_CASEINFO', null)
       store.commit('SET_MYCASEID', '')
       store.commit('SET_MYCASESTATE', null)
+      store.commit('SET_GOPAYMENTOLDID', '')
       next({
         path: '/login',
         query: {redirect: to.fullPath}

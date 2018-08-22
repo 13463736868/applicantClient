@@ -6,6 +6,8 @@ const login = r => require.ensure([], () => r(require('@/page/login/login.vue'))
 const register = r => require.ensure([], () => r(require('@/page/register/register.vue')), 'register')
 const forget = r => require.ensure([], () => r(require('@/page/forget/forget.vue')), 'forget')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
+const goPayment = r => require.ensure([], () => r(require('@/page/goPayment/goPayment.vue')), 'goPayment')
+const paymentInfo = r => require.ensure([], () => r(require('@/page/paymentInfo/paymentInfo.vue')), 'paymentInfo')
 const caseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/caseInfo.vue')), 'caseInfo')
 const basicInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/basicInfo.vue')), 'basicInfo')
 const proposerInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/proposerInfo.vue')), 'proposerInfo')
@@ -55,6 +57,22 @@ export default new Router({
         requireAuth: true
       },
       component: home
+    },
+    {
+      path: '/goPayment',
+      name: 'goPayment',
+      meta: {
+        requireAuth: true
+      },
+      component: goPayment
+    },
+    {
+      path: '/paymentInfo',
+      name: 'paymentInfo',
+      meta: {
+        requireAuth: true
+      },
+      component: paymentInfo
     },
     {
       path: '/caseInfo',

@@ -2,8 +2,8 @@ import * as types from './mutations-types.js'
 
 export default {
   // 大写
-  // ADMIN_TOKEN (state, data) {
-  //   state.admin_token = data
+  // [types.SET_TOKEN] (state, data) {
+  //   state.token = data
   // }
   [types.SET_USERINFO] (state, obj) {
     state.userInfo = obj
@@ -25,5 +25,11 @@ export default {
   },
   [types.SET_MYCASESTATE] (state, obj) {
     state.myCaseState = obj
+  },
+  [types.SET_GOPAYMENTOLDID] (state, id) {
+    state.goPaymentOldId = id
+  },
+  [types.SET_PAYMENTINFOID] (state, id) {
+    state.paymentInfoId = id
   }
 }
