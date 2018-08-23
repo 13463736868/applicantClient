@@ -32,23 +32,27 @@
               <span class="mr10" v-text="dataInfo.carbitrationNameode"></span>
             </p>
             <p>
-              <span class="mr10"><b>纠纷类型 :</b></span>
-              <span class="mr10" v-text="dataInfo.caseType"></span>
-            </p>
-            <p>
               <span class="mr10"><b>案件案号 :</b></span>
               <span class="mr10" v-text="dataInfo.code"></span>
+            </p>
+            <p>
+              <span class="mr10"><b>纠纷类型 :</b></span>
+              <span class="mr10" v-text="dataInfo.caseType"></span>
             </p>
             <p>
               <span class="mr10"><b>案件状态 :</b></span>
               <span class="mr10" v-text="dataInfo.caseState"></span>
             </p>
             <p>
-              <span class="mr10"><b>立案秘书姓名 :</b></span>
+              <span class="mr10"><b>仲裁员 :</b></span>
+              <span class="mr10" v-text="dataInfo.arbitratorName"></span>
+            </p>
+            <p>
+              <span class="mr10"><b>秘书 :</b></span>
               <span class="mr10" v-text="dataInfo.secretaryName"></span>
             </p>
             <p>
-              <span class="mr10"><b>立案秘书电话 :</b></span>
+              <span class="mr10"><b>电话 :</b></span>
               <span class="mr10" v-text="dataInfo.secretaryPhone"></span>
             </p>
           </Col>
@@ -84,6 +88,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'right_arbi',
   props: ['caseId', 'caseOldId', 'caseState'],
@@ -190,6 +195,7 @@ export default {
       @include btn(#126eaf, 140px, 13px, 40px);
       @include boxShadow(0 1px 6px -1px #bbb);
       @include borderRadius(4px);
+      margin-bottom: 20px;
     }
     ._saveBtn._disabled {
       @include btn(#ccc, 140px, 13px, 40px);

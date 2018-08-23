@@ -32,13 +32,20 @@ const beforeEach = (to, from, next) => {
       }
       if (to.fullPath.indexOf('caseInfo') === -1) {
         loc.removeItem('myCaseId')
+        loc.removeItem('myCaseOldId')
         loc.removeItem('myCaseState')
         store.commit('SET_MYCASEID', '')
+        store.commit('SET_MYCASEOLDID', '')
         store.commit('SET_MYCASESTATE', null)
       } else {
         if (store.state.myCaseId === '') {
           if (loc.getItem('myCaseId')) {
             store.commit('SET_MYCASEID', loc.getItem('myCaseId'))
+          }
+        }
+        if (store.state.myCaseOldId === '') {
+          if (loc.getItem('myCaseOldId')) {
+            store.commit('SET_MYCASEOLDID', loc.getItem('myCaseOldId'))
           }
         }
         if (store.state.myCaseState === null) {

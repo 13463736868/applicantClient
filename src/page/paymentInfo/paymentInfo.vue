@@ -95,7 +95,7 @@ export default {
                   type: 'text',
                   size: 'small'
                 }
-              }, params.index + 1)
+              }, '0' + (params.index + 1))
             }
           },
           {
