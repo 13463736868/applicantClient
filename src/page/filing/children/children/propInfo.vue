@@ -8,7 +8,7 @@
               <span class="mr10">姓名 :</span>
               <span v-text="infoData.name"></span>
               <span class="_icon">
-                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                 <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
@@ -25,7 +25,7 @@
               <span class="mr10">企业名 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                 <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
@@ -42,7 +42,7 @@
               <span class="mr10">名称 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                 <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
@@ -59,7 +59,7 @@
               <span class="mr10">组织名称 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                 <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
@@ -172,8 +172,8 @@ export default {
     }
   },
   methods: {
-    editInfo (id) {
-      this.$emit('editInfo', id)
+    editInfo () {
+      this.$emit('editInfo')
     },
     uploadImg (id) {
       this.$emit('uploadImg', id)

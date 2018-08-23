@@ -140,6 +140,7 @@ export default {
           }
         }
       }).catch(e => {
+        this.alertShowResp = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

@@ -6,9 +6,6 @@
           <Col span="22" offset="1">
             <p>
               <span class="mr10">事实与理由 :</span>
-              <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
-              </span>
             </p>
             <textarea readonly class="_textarea" v-model="infoData.content" rows="8"></textarea>
           </Col>
@@ -24,11 +21,6 @@ export default {
   props: ['infoData'],
   data () {
     return {}
-  },
-  methods: {
-    editInfo () {
-      this.$emit('editInfo')
-    }
   }
 }
 </script>
@@ -58,14 +50,6 @@ export default {
       @include boxShadow(0 0 0 1px rgba(45,140,240,.2));
       border-color: #57a3f3;
       outline: 0;
-    }
-    ._icon {
-      float: right;
-      ._edit {
-        @include hand;
-        font-size: 16px;
-        color: #126eaf
-      }
     }
   }
 }

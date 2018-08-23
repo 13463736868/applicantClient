@@ -49,7 +49,7 @@ export default {
         {
           id: '3',
           text: '请求和答辩',
-          url: '/claimInfo'
+          url: '/claimItem'
         },
         {
           id: '5',
@@ -76,12 +76,12 @@ export default {
         {
           id: '3',
           text: '请求和答辩',
-          url: '/claimInfo'
+          url: '/claimItem'
         },
         {
           id: '4',
           text: '反请求和答辩',
-          url: '/revClaimInfo'
+          url: '/revClaimItem'
         },
         {
           id: '5',
@@ -113,12 +113,12 @@ export default {
         {
           id: '3',
           text: '请求和答辩',
-          url: '/claimInfo'
+          url: '/claimItem'
         },
         {
           id: '4',
           text: '反请求和答辩',
-          url: '/revClaimInfo'
+          url: '/revClaimItem'
         },
         {
           id: '5',
@@ -164,8 +164,6 @@ export default {
       'myCaseOldId',
       'myCaseState'
     ])
-  },
-  methods: {
   }
 }
 </script>

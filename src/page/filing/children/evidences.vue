@@ -88,6 +88,7 @@ export default {
           }
         }
       }).catch(e => {
+        this.alertShowEvid = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

@@ -28,6 +28,7 @@
         </Row>
       </div>
     </div>
+    <alert-tip :alertShow="alertShowSub" @alertCancel="caseDelCanc" @alertConfirm="caseDelSave" alertTitle="提示" alertText="确定要删除这个案件吗？"></alert-tip>
   </div>
 </template>
 
@@ -35,13 +36,16 @@
 import axios from 'axios'
 import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
+import alertTip from '@/components/common/alertTip'
 import spinComp from '@/components/common/spin'
 
 export default {
   name: 'notApplied',
-  components: { headTop, spinComp },
+  components: { headTop, alertTip, spinComp },
   data () {
     return {
+      alertShowSub: false,
+      caseDelId: null,
       spinShow: true,
       search: {
         text: ''
@@ -178,8 +182,13 @@ export default {
       })
     },
     resCaseDel (index) {
+      this.alertShowSub = true
+      this.caseDelId = this.caseList.bodyList[index].id
+    },
+    caseDelSave () {
+      this.alertShowSub = false
       axios.post('/case/delete', {
-        id: this.caseList.bodyList[index].id
+        id: this.caseDelId
       }).then(res => {
         this.resSearch()
         this.$Message.success({
@@ -192,6 +201,10 @@ export default {
           duration: 5
         })
       })
+    },
+    caseDelCanc () {
+      this.alertShowSub = false
+      this.caseDelId = null
     },
     resSearch () {
       this.pageObj.pageNum = 1

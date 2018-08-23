@@ -12,8 +12,8 @@ const caseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/caseIn
 const basicInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/basicInfo.vue')), 'basicInfo')
 const proposerInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/proposerInfo.vue')), 'proposerInfo')
 const respondentInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/respondentInfo.vue')), 'respondentInfo')
-const claimInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/claimInfo.vue')), 'claimInfo')
-const revClaimInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/revClaimInfo.vue')), 'revClaimInfo')
+const claimItem = r => require.ensure([], () => r(require('@/page/caseInfo/children/claimItem.vue')), 'claimItem')
+const revClaimItem = r => require.ensure([], () => r(require('@/page/caseInfo/children/revClaimItem.vue')), 'revClaimItem')
 const evidencesInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/evidencesInfo.vue')), 'evidencesInfo')
 const sendInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/sendInfo.vue')), 'sendInfo')
 const endCaseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/endCaseInfo.vue')), 'endCaseInfo')
@@ -110,20 +110,20 @@ export default new Router({
           component: respondentInfo
         },
         {
-          path: 'claimInfo',
-          name: 'claimInfo',
+          path: 'claimItem',
+          name: 'claimItem',
           meta: {
             requireAuth: true
           },
-          component: claimInfo
+          component: claimItem
         },
         {
-          path: 'revClaimInfo',
-          name: 'revClaimInfo',
+          path: 'revClaimItem',
+          name: 'revClaimItem',
           meta: {
             requireAuth: true
           },
-          component: revClaimInfo
+          component: revClaimItem
         },
         {
           path: 'evidencesInfo',

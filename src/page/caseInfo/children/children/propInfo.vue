@@ -1,29 +1,71 @@
 <template>
-  <div class="_agenInfo">
+  <div class="_propInfo">
     <Row>
       <Col class="_listL" span="14">
-        <Row>
+        <Row v-if="infoData.type === 1">
           <Col span="22" offset="1">
             <p>
               <span class="mr10">姓名 :</span>
               <span v-text="infoData.name"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+                <Icon @click="seeInfo" class="_see" type="eye"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
-            <p><span class="mr10">委托人姓名 :</span><span v-text="showPropName"></span></p>
+          </Col>
+        </Row>
+        <Row v-else-if="infoData.type === 2">
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">企业名 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+          </Col>
+        </Row>
+        <Row v-else-if="infoData.type === 3">
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">名称 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
+          </Col>
+        </Row>
+        <Row v-else-if="infoData.type === 4">
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10">组织名称 :</span>
+              <span v-text="infoData.enterpriseName"></span>
+              <span class="_icon">
+                <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+              </span>
+            </p>
+            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
+            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
+            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
           </Col>
         </Row>
       </Col>
       <Col class="_listR clearfix not_s" span="9" offset="1">
         <div v-if="isShowFile">
-          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
+          <Icon @click="dowImg(infoData.fileList[fileIndex].id)" class="_dowImg" type="archive"></Icon>
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
@@ -36,15 +78,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
-  name: 'agen_info',
-  props: ['infoData', 'propArrName'],
+  name: 'prop_info',
+  props: ['infoData'],
   data () {
     return {
       fileIndex: 0,
       objInfo: {
-        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :']
+        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :'],
+        enterpriseArr: ['未知证件 :', '营业执照 :', '组织机构代码 :', '税务登记证 :', '多证合一营业执照 :']
       }
     }
   },
@@ -54,18 +98,6 @@ export default {
     }
   },
   computed: {
-    showPropName () {
-      if (this.propArrName === null || this.propArrName === []) {
-        return ''
-      } else {
-        for (let k in this.propArrName) {
-          if (this.propArrName[k].value === this.infoData.propId) {
-            return this.propArrName[k].label
-          }
-        }
-        return ''
-      }
-    },
     isShowFile () {
       if (this.fileNum > -1) {
         return true
@@ -134,22 +166,10 @@ export default {
     }
   },
   methods: {
-    editInfo () {
-      this.$emit('editInfo')
-    },
-    uploadImg (id) {
-      this.$emit('uploadImg', id)
-    },
-    delInfo (id) {
-      this.$emit('delInfo', id)
-    },
-    delImg (id, fileId) {
-      this.$emit('delImg', {id: id, fileId: fileId})
+    seeInfo () {
+      this.$emit('seeInfo')
     },
     imgPrev () {
-      if (this.fileNum === -1) {
-        return
-      }
       if (this.fileIndex === 0) {
         this.fileIndex = this.fileNum
       } else {
@@ -157,9 +177,6 @@ export default {
       }
     },
     imgNext () {
-      if (this.fileNum === -1) {
-        return
-      }
       if (this.fileIndex === this.fileNum) {
         this.fileIndex = 0
       } else {
@@ -168,6 +185,11 @@ export default {
     },
     seeImg (path) {
       window.open(path, '_blank')
+    },
+    dowImg (id) {
+      axios.get('/file/dowload/' + id).then(res => {
+      }).catch(e => {
+      })
     }
   }
 }
@@ -175,7 +197,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._agenInfo {
+._propInfo {
   margin-top: 10px;
   ._listL, ._listR {
     @include borderRadius(3px);
@@ -189,22 +211,10 @@ export default {
     }
     ._icon {
       float: right;
-      ._edit {
-        @include hand;
-        font-size: 16px;
-        color: #126eaf
-      }
-      ._uploadImg {
+      ._see {
         @include hand;
         font-size: 18px;
-        color: #126eaf;
-        margin-left: 10px;
-      }
-      ._del {
-        @include hand;
-        font-size: 17px;
-        color: #ff7a7a;
-        margin-left: 10px;
+        color: #126eaf
       }
     }
   }
@@ -224,24 +234,24 @@ export default {
     ._iconRight {
       right: 7px;
     }
-    ._delImg {
+    ._dowImg {
       @include hand;
       position: absolute;
-      font-size: 17px;
-      color: #ff7a7a;
-      right: 7px;
-      top: 5px;
+      font-size: 18px;
+      color: #126eaf;
+      right: 6px;
+      top: 9px;
     }
     ._imgBox {
       overflow: hidden;
       width: 84%;
-      height: 188px;
+      height: 160px;
       margin: 0 auto;
       ._fileImg {
         @include hand;
         clear: both;
         display: block;
-        margin: 14px auto;
+        margin: 12px auto;
         width: 96%;
         height: 85%;
       }

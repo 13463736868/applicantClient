@@ -8,7 +8,7 @@
               <span class="mr10">申请人 :</span>
               <span v-text="requestName"></span>
               <span class="_icon">
-                <Icon @click="editInfo(infoData.id)" class="_edit" type="edit"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
@@ -40,8 +40,8 @@ export default {
     }
   },
   methods: {
-    editInfo (id) {
-      this.$emit('editInfo', id)
+    editInfo () {
+      this.$emit('editInfo')
     },
     delInfo (id) {
       this.$emit('delInfo', id)

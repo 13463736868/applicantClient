@@ -198,6 +198,7 @@ export default {
           }
         }
       }).catch(e => {
+        this.alertShowClai = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -242,6 +243,7 @@ export default {
           duration: 2
         })
       }).catch(e => {
+        this.alertShowAppl = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

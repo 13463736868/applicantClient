@@ -8,22 +8,20 @@
               <span class="mr10">姓名 :</span>
               <span v-text="infoData.name"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+                <Icon @click="seeInfo" class="_see" type="eye"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
-            <p><span class="mr10">委托人姓名 :</span><span v-text="showPropName"></span></p>
+            <p><span class="mr10">委托人姓名 :</span><span v-text="infoData.propName"></span></p>
           </Col>
         </Row>
       </Col>
       <Col class="_listR clearfix not_s" span="9" offset="1">
         <div v-if="isShowFile">
-          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
+          <Icon @click="dowImg(infoData.fileList[fileIndex].id)" class="_dowImg" type="archive"></Icon>
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
@@ -36,10 +34,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'agen_info',
-  props: ['infoData', 'propArrName'],
+  props: ['infoData'],
   data () {
     return {
       fileIndex: 0,
@@ -54,18 +53,6 @@ export default {
     }
   },
   computed: {
-    showPropName () {
-      if (this.propArrName === null || this.propArrName === []) {
-        return ''
-      } else {
-        for (let k in this.propArrName) {
-          if (this.propArrName[k].value === this.infoData.propId) {
-            return this.propArrName[k].label
-          }
-        }
-        return ''
-      }
-    },
     isShowFile () {
       if (this.fileNum > -1) {
         return true
@@ -134,17 +121,8 @@ export default {
     }
   },
   methods: {
-    editInfo () {
-      this.$emit('editInfo')
-    },
-    uploadImg (id) {
-      this.$emit('uploadImg', id)
-    },
-    delInfo (id) {
-      this.$emit('delInfo', id)
-    },
-    delImg (id, fileId) {
-      this.$emit('delImg', {id: id, fileId: fileId})
+    seeInfo () {
+      this.$emit('seeInfo')
     },
     imgPrev () {
       if (this.fileNum === -1) {
@@ -168,6 +146,11 @@ export default {
     },
     seeImg (path) {
       window.open(path, '_blank')
+    },
+    dowImg (id) {
+      axios.get('/file/dowload/' + id).then(res => {
+      }).catch(e => {
+      })
     }
   }
 }
@@ -189,22 +172,10 @@ export default {
     }
     ._icon {
       float: right;
-      ._edit {
-        @include hand;
-        font-size: 16px;
-        color: #126eaf
-      }
-      ._uploadImg {
+      ._see {
         @include hand;
         font-size: 18px;
-        color: #126eaf;
-        margin-left: 10px;
-      }
-      ._del {
-        @include hand;
-        font-size: 17px;
-        color: #ff7a7a;
-        margin-left: 10px;
+        color: #126eaf
       }
     }
   }
@@ -224,13 +195,13 @@ export default {
     ._iconRight {
       right: 7px;
     }
-    ._delImg {
+    ._dowImg {
       @include hand;
       position: absolute;
-      font-size: 17px;
-      color: #ff7a7a;
-      right: 7px;
-      top: 5px;
+      font-size: 18px;
+      color: #126eaf;
+      right: 6px;
+      top: 12px;
     }
     ._imgBox {
       overflow: hidden;

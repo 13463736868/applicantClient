@@ -158,7 +158,6 @@ export default {
       axios.post('/case/baseItem', {
         id: this.caseId
       }).then(res => {
-        console.log(res.data.data)
         this.dataBasic = res.data.data
         this.progressList.bodyList = res.data.data.processList === null ? [] : res.data.data.processList
       }).catch(e => {

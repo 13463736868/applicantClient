@@ -1,16 +1,15 @@
 <template>
-  <div class="_reasInfo">
+  <div class="_applInfo">
     <Row>
       <Col class="_listL" span="24">
         <Row>
           <Col span="22" offset="1">
             <p>
-              <span class="mr10">事实与理由 :</span>
+              <span class="mr10 _file" v-text="infoData.filename" :title="'点击查看: '+infoData.filename" @click="seeFile(infoData.filepath)"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
+                <Icon @click="dowInfo(infoData.id)" class="_dow" type="archive"></Icon>
               </span>
             </p>
-            <textarea readonly class="_textarea" v-model="infoData.content" rows="8"></textarea>
           </Col>
         </Row>
       </Col>
@@ -19,15 +18,22 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'reas_info',
+  name: 'appl_info',
   props: ['infoData'],
   data () {
     return {}
   },
   methods: {
-    editInfo () {
-      this.$emit('editInfo')
+    seeFile (path) {
+      window.open(path, '_blank')
+    },
+    dowInfo (id) {
+      axios.get('/file/dowload/' + id).then(res => {
+      }).catch(e => {
+      })
     }
   }
 }
@@ -35,7 +41,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._reasInfo {
+._applInfo {
   margin-top: 10px;
   ._listL {
     @include borderRadius(3px);
@@ -45,26 +51,17 @@ export default {
     p {
       padding: 5px 0;
     }
-    ._textarea {
-      @include borderRadius(4px);
-      width: 100%;
-      padding: 5px 8px;
-      resize: none;
-      border: 1px solid #dddee1;
-      outline: none;
-      transition: all .2s ease-in-out;
-    }
-    ._textarea:hover {
-      @include boxShadow(0 0 0 1px rgba(45,140,240,.2));
-      border-color: #57a3f3;
-      outline: 0;
+    ._file {
+      @include hand;
+      color: #337BB5;
     }
     ._icon {
       float: right;
-      ._edit {
+      ._dow {
         @include hand;
-        font-size: 16px;
-        color: #126eaf
+        font-size: 18px;
+        color: #126eaf;
+        margin-left: 10px;
       }
     }
   }
