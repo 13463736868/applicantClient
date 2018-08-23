@@ -187,9 +187,7 @@ export default {
       window.open(path, '_blank')
     },
     dowImg (id) {
-      axios.get('/file/dowload/' + id).then(res => {
-      }).catch(e => {
-      })
+      window.open('/api/file/dowload/' + id, '_blank')
     }
   }
 }
