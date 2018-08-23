@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'appl_info',
   props: ['infoData'],

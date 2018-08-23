@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'evid_info',
   props: ['infoData'],
