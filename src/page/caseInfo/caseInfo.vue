@@ -142,6 +142,12 @@ export default {
     }
   },
   created () {
+    if (this.myCaseId === '' || this.myCaseOldId === '') {
+      this.$router.push({
+        path: '/home'
+      })
+      return
+    }
     if (this.stateA.indexOf(this.myCaseState) !== -1) {
       this.menuClaim = this.menuClaimA
     } else if (this.stateB.indexOf(this.myCaseState) !== -1) {

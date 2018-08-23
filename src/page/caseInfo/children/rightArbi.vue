@@ -109,8 +109,10 @@ export default {
     }
   },
   created () {
-    this.isShowBtn()
-    this.resCaseItem()
+    if (this.caseId !== '' && this.caseOldId !== '') {
+      this.isShowBtn()
+      this.resCaseItem()
+    }
   },
   methods: {
     resCaseItem () {
@@ -139,6 +141,18 @@ export default {
       } else if (this.stateD.indexOf(this.caseState) !== -1) {
         this.btnShow.replClick = true
       }
+    },
+    avoidClick () {
+      console.log('申请仲裁员回避')
+    },
+    retractClick () {
+      console.log('撤回案件')
+    },
+    selectClick () {
+      console.log('选择仲裁员')
+    },
+    replClick () {
+      console.log('补正')
     }
   }
 }
