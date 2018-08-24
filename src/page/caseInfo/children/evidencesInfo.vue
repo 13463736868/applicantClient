@@ -1,8 +1,14 @@
 <template>
   <div class="evidencesInfo">
     <div class="_evidences">
-      <div class="_top">我的证据</div>
+      <div class="_top">申请人证据</div>
       <div v-if="evidData !== null" v-for="(item, index) in evidData" :key="index">
+        <evid-info :infoData="item"></evid-info>
+      </div>
+    </div>
+    <div class="_revEvidences">
+      <div class="_top">被申请人证据</div>
+      <div v-if="revEvidData !== null" v-for="(item, index) in revEvidData" :key="index">
         <evid-info :infoData="item"></evid-info>
       </div>
     </div>
@@ -19,7 +25,8 @@ export default {
   components: { evidInfo },
   data () {
     return {
-      evidData: null
+      evidData: null,
+      revEvidData: null
     }
   },
   created () {
@@ -39,6 +46,16 @@ export default {
           duration: 5
         })
       })
+      axios.post('/case/queryRespEvidence', {
+        id: this.caseId
+      }).then(res => {
+        this.revEvidData = res.data.data
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     }
   }
 }
@@ -50,7 +67,7 @@ export default {
   ._evidences {
     padding-bottom: 60px;
   }
-  ._evidences ._top{
+  ._evidences ._top, ._revEvidences ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;

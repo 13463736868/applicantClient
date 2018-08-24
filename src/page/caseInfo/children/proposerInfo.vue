@@ -2,14 +2,24 @@
   <div class="proposerInfo">
     <div class="_proposer">
       <div class="_top">申请人</div>
-      <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
-        <prop-info :infoData="item" @seeInfo="seePropInfo(item)"></prop-info>
+      <div v-if="propShow.list">
+        <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
+          <prop-info :infoData="item" @seeInfo="seePropInfo(item)"></prop-info>
+        </div>
+      </div>
+      <div v-if="propShow.see">
+        <see-prop-info :seePropData="seePropData" @saveClick="seePropSave"></see-prop-info>
       </div>
     </div>
     <div class="_agent">
       <div class="_top">代理人</div>
-      <div v-if="agenData !== null"  v-for="(item, index) in agenData" :key="index">
-        <agen-info :infoData="item" @seeInfo="seeAgenInfo(item)"></agen-info>
+      <div v-if="agenShow.list">
+        <div v-if="agenData !== null"  v-for="(item, index) in agenData" :key="index">
+          <agen-info :infoData="item" @seeInfo="seeAgenInfo(item)"></agen-info>
+        </div>
+      </div>
+      <div v-if="agenShow.see">
+        <see-agen-info :seeAgenData="seeAgenData" @saveClick="seeAgenSave"></see-agen-info>
       </div>
     </div>
   </div>
@@ -19,15 +29,27 @@
 import axios from 'axios'
 import propInfo from '@/page/caseInfo/children/children/propInfo'
 import agenInfo from '@/page/caseInfo/children/children/agenInfo'
+import seePropInfo from '@/page/caseInfo/children/children/seePropInfo'
+import seeAgenInfo from '@/page/caseInfo/children/children/seeAgenInfo'
 
 export default {
   name: 'proposerInfo',
   props: ['caseId', 'caseOldId', 'caseState'],
-  components: { propInfo, agenInfo },
+  components: { propInfo, agenInfo, seePropInfo, seeAgenInfo },
   data () {
     return {
       propData: null,
-      agenData: null
+      agenData: null,
+      seePropData: null,
+      seeAgenData: null,
+      propShow: {
+        list: true,
+        see: false
+      },
+      agenShow: {
+        list: true,
+        see: false
+      }
     }
   },
   created () {
@@ -50,10 +72,24 @@ export default {
       })
     },
     seePropInfo (obj) {
-      console.log('查看申请人')
+      this.seePropData = obj
+      this.propShow.list = false
+      this.propShow.see = true
+    },
+    seePropSave () {
+      this.seePropData = null
+      this.propShow.list = true
+      this.propShow.see = false
     },
     seeAgenInfo (obj) {
-      console.log('查看代理人')
+      this.seeAgenData = obj
+      this.agenShow.list = false
+      this.agenShow.see = true
+    },
+    seeAgenSave () {
+      this.seeAgenData = null
+      this.agenShow.list = true
+      this.agenShow.see = false
     }
   }
 }
