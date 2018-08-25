@@ -95,6 +95,12 @@ const beforeEach = (to, from, next) => {
           path: redirect
         })
       } else {
+        store.commit('SET_USERINFO', null)
+        store.commit('SET_CASEID', '')
+        store.commit('SET_CASEINFO', null)
+        store.commit('SET_MYCASEID', '')
+        store.commit('SET_MYCASESTATE', null)
+        store.commit('SET_GOPAYMENTOLDID', '')
         next()
       }
     } else {

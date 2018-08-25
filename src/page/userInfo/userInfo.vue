@@ -4,7 +4,22 @@
       <span class="f36 fcf">身份绑定信息</span>
     </head-top>
     <div class="_center">
-      <span class="f20 bc fc4">身份绑定信息</span>
+      <Row>
+        <Col span="14" offset="5">
+          <div v-if="userInfo.verify === '-1'">
+            <verify-a></verify-a>
+          </div>
+          <div v-else-if="userInfo.verify === '0'">
+            <verify-b></verify-b>
+          </div>
+          <div v-else-if="userInfo.verify === '1'">
+            <verify-c></verify-c>
+          </div>
+          <div v-else-if="userInfo.verify === '2'">
+            <verify-d :desc="userInfo.verifyDesc"></verify-d>
+          </div>
+        </Col>
+      </Row>
     </div>
   </div>
 </template>
@@ -12,10 +27,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import headTop from '@/components/header/head'
+import verifyA from '@/page/userInfo/children/verifyA'
+import verifyB from '@/page/userInfo/children/verifyB'
+import verifyC from '@/page/userInfo/children/verifyC'
+import verifyD from '@/page/userInfo/children/verifyD'
 
 export default {
   name: 'userInfo',
-  components: { headTop },
+  components: { headTop, verifyA, verifyB, verifyC, verifyD },
   data () {
     return {}
   },

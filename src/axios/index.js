@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import router from '@/router'
 import qs from 'qs'
 import {removeToken} from '@/cookies'
 
@@ -34,6 +35,13 @@ axios.interceptors.response.use((res) => {
       case '000121':
         // 没有登录
         removeToken()
+        // 如何跳转到登录页面
+        if (router.currentRoute.path !== 'login') {
+          router.replace({
+            path: '/login',
+            query: {redirect: router.currentRoute.fullpath}
+          })
+        }
         break
     }
     return Promise.reject(res.data.message)
