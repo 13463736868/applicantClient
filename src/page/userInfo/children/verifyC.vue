@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'verify_c_info',
-  props: [],
+  props: [ 'userType' ],
   data () {
     return {
     }

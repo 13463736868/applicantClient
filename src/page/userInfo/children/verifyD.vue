@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'verify_d_info',
-  props: [ 'desc' ],
+  props: [ 'userType', 'desc' ],
   data () {
     return {
     }

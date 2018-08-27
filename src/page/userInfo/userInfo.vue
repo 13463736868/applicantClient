@@ -7,16 +7,16 @@
       <Row>
         <Col span="14" offset="5">
           <div v-if="userInfo.verify === '-1'">
-            <verify-a></verify-a>
+            <verify-a :userType="userInfo.userType"></verify-a>
           </div>
           <div v-else-if="userInfo.verify === '0'">
             <verify-b></verify-b>
           </div>
           <div v-else-if="userInfo.verify === '1'">
-            <verify-c></verify-c>
+            <verify-c :userType="userInfo.userType"></verify-c>
           </div>
           <div v-else-if="userInfo.verify === '2'">
-            <verify-d :desc="userInfo.verifyDesc"></verify-d>
+            <verify-d :userType="userInfo.userType" :desc="userInfo.verifyDesc"></verify-d>
           </div>
         </Col>
       </Row>
