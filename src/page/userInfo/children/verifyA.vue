@@ -17,7 +17,7 @@
                   <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
                 </Select>
               </Col>
-              <Col span="24" class="_em"><span></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===112" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
@@ -37,7 +37,7 @@
               <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">送达邮箱</Col>
+              <Col span="24" class="_label">联系邮箱</Col>
               <Col span="24" class="_input"><input type="text" v-model="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
             </Row>
@@ -58,7 +58,7 @@
             <Row class="_labelFor">
               <Col span="24" class="_label">营业执照号码<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input v-model="userAInfo.code" type="text"></Col>
-              <Col span="24" class="_em"><span></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===212" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">公司地址<b class="_b">*</b></Col>
@@ -72,14 +72,14 @@
                   <Option v-for="item in tradeList" :value="item.value" :key="item.value">{{item.label}}</Option>
                 </Select>
               </Col>
-              <Col span="24" class="_em"><span></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===214" v-text="emInfo.text"></span></Col>
             </Row>
           </Col>
           <Col span="10" offset="2">
             <Row class="_labelFor">
               <Col span="24" class="_label">法定人姓名<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input type="text" v-model="userAInfo.legal"></Col>
-              <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
@@ -88,12 +88,12 @@
                   <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
                 </Select>
               </Col>
-              <Col span="24" class="_em"><span></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===222" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input type="text" v-model="userAInfo.idcard"></Col>
-              <Col span="24" class="_em"><span v-show="emInfo.status===225" v-text="emInfo.text"></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
@@ -102,7 +102,7 @@
                   <Option v-for="item in scaleList" :value="item.value" :key="item.value">{{item.label}}</Option>
                 </Select>
               </Col>
-              <Col span="24" class="_em"><span></span></Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===224" v-text="emInfo.text"></span></Col>
             </Row>
           </Col>
         </Row>
@@ -169,6 +169,8 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'verify_a_info',
@@ -176,7 +178,7 @@ export default {
   data () {
     return {
       uploadUrl: '',
-      uploadData: null,
+      uploadNum: 0,
       addInfoBtn: false,
       emInfo: {
         status: 0,
@@ -233,14 +235,24 @@ export default {
       this.uploadUrl = '/api/person/perfect/1'
       this.userAInfo = this.userAInfoA
       this.fileObj = this.fileObjA
+      this.uploadNum = 3
     } else if (this.userType === 2) {
       this.dictionary()
       this.uploadUrl = '/api/person/perfect/company/1'
       this.userAInfo = this.userAInfoB
       this.fileObj = this.fileObjB
+      this.uploadNum = 4
+    }
+  },
+  computed: {
+    uploadData () {
+      return this.userAInfo
     }
   },
   methods: {
+    ...mapActions([
+      'setUserInfo'
+    ]),
     cardList () {
       axios.post('/dictionary/personIdcardType').then(res => {
         let _dataList = res.data.data
@@ -369,19 +381,52 @@ export default {
       }
     },
     resSuccess (res, file) {
-      // 记录个数 然后全部成功后 返回正在审核
-      console.log(res)
+      this.uploadNum--
+      if (this.uploadNum === 0) {
+        if (res.flag === false) {
+          this.$Message.error({
+            content: '错误信息:' + res.message + '',
+            duration: 5
+          })
+        } else {
+          this.$Message.success({
+            content: '文件上传成功',
+            duration: 2
+          })
+          if (window.localStorage) {
+            let loc = window.localStorage
+            loc.setItem('userInfo', JSON.stringify(res.data))
+          }
+          this.setUserInfo(res.data)
+        }
+      }
     },
     resError (e, file) {
-      // 记录个数 然后失败后重新上传
-      console.log(e)
+      this.uploadNum--
+      if (this.uploadNum === 0) {
+        this.$Message.error({
+          content: '错误信息:' + e.status + ' 稍后再试',
+          duration: 5
+        })
+      }
     },
     cancClick () {
       if (this.userType === 1) {
-        this.fileObj = this.fileObjA
+        this.fileObj = {
+          fileA: null,
+          fileB: null,
+          fileC: null
+        }
+        this.uploadNum = 3
         this.$refs._formA.reset()
       } else if (this.userType === 2) {
-        this.fileObj = this.fileObjB
+        this.fileObj = {
+          fileA: null,
+          fileB: null,
+          fileC: null,
+          fileD: null
+        }
+        this.uploadNum = 4
         this.$refs._formB.reset()
       }
       this.imgUrl = {
@@ -392,8 +437,112 @@ export default {
       }
     },
     saveClick () {
-      // console.log('regExg')
-      this.uploadData = this.userAInfo
+      if (this.userType === 1) {
+        if (this.userAInfo.name === '' || this.userAInfo.idcardType === null || this.userAInfo.idcard === '' || this.userAInfo.address === '' || this.userAInfo.sex === null || this.userAInfo.email === '') {
+          if (this.userAInfo.name === '') {
+            this.emInfo.status = 111
+            this.emInfo.text = '请输入真实姓名'
+          } else if (this.userAInfo.idcardType === null) {
+            this.emInfo.status = 112
+            this.emInfo.text = '请选择证件类型'
+          } else if (this.userAInfo.idcard === '') {
+            this.emInfo.status = 113
+            this.emInfo.text = '请输入证件号码'
+          } else if (this.userAInfo.sex === null) {
+            this.emInfo.status = 121
+            this.emInfo.text = '请选择性别'
+          } else if (this.userAInfo.email === '') {
+            this.emInfo.status = 122
+            this.emInfo.text = '请输入邮箱地址'
+          } else if (this.userAInfo.address === '') {
+            this.emInfo.status = 123
+            this.emInfo.text = '请输入联系地址'
+          }
+        } else {
+          if (!setRegExp(this.userAInfo.name, 'name')) {
+            this.emInfo.status = 111
+            this.emInfo.text = '请输入正确名字格式'
+          } else if (!setRegExp(this.userAInfo.idcard, 'idcard' + this.userAInfo.idcardType)) {
+            this.emInfo.status = 113
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.userAInfo.email, 'email')) {
+            this.emInfo.status = 122
+            this.emInfo.text = '请输入正确邮箱格式'
+          } else if (!setRegExp(this.userAInfo.address, 'address')) {
+            this.emInfo.status = 123
+            this.emInfo.text = '请输入正确地址格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
+          }
+        }
+      } else if (this.userType === 2) {
+        if (this.userAInfo.name === '' || this.userAInfo.code === '' || this.userAInfo.address === '' || this.userAInfo.trade === null || this.userAInfo.legal === '' || this.userAInfo.idcardType === null || this.userAInfo.idcard === '' || this.userAInfo.scale === null) {
+          if (this.userAInfo.name === '') {
+            this.emInfo.status = 211
+            this.emInfo.text = '请输入公司名称'
+          } else if (this.userAInfo.code === '') {
+            this.emInfo.status = 212
+            this.emInfo.text = '请输入营业执照号码'
+          } else if (this.userAInfo.address === '') {
+            this.emInfo.status = 213
+            this.emInfo.text = '请输入公司地址'
+          } else if (this.userAInfo.trade === null) {
+            this.emInfo.status = 214
+            this.emInfo.text = '请选择公司行业'
+          } else if (this.userAInfo.legal === '') {
+            this.emInfo.status = 221
+            this.emInfo.text = '请输入法定人姓名'
+          } else if (this.userAInfo.idcardType === null) {
+            this.emInfo.status = 222
+            this.emInfo.text = '请选择证件类型'
+          } else if (this.userAInfo.idcard === '') {
+            this.emInfo.status = 223
+            this.emInfo.text = '请输入证件号码'
+          } else if (this.userAInfo.scale === null) {
+            this.emInfo.status = 224
+            this.emInfo.text = '请选择公司人数'
+          }
+        } else {
+          if (!setRegExp(this.userAInfo.name, 'company')) {
+            this.emInfo.status = 211
+            this.emInfo.text = '请输入正确公司名称格式'
+          } else if (!setRegExp(this.userAInfo.code, 'entityNo1')) {
+            this.emInfo.status = 212
+            this.emInfo.text = '请输入正确营业执照格式'
+          } else if (!setRegExp(this.userAInfo.address, 'address')) {
+            this.emInfo.status = 213
+            this.emInfo.text = '请输入正确地址格式'
+          } else if (!setRegExp(this.userAInfo.legal, 'name')) {
+            this.emInfo.status = 221
+            this.emInfo.text = '请输入正确名字格式'
+          } else if (!setRegExp(this.userAInfo.idcard, 'idcard' + this.userAInfo.idcardType)) {
+            this.emInfo.status = 223
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
+          }
+        }
+      }
+    },
+    sendAjax () {
+      if (this.userType === 1) {
+        this.uploadNum = 3
+      } else if (this.userType === 2) {
+        this.uploadNum = 4
+      }
+      for (let k in this.fileObj) {
+        if (this.fileObj[k] === null) {
+          this.$Message.warning({
+            content: '附件信息不能为空',
+            duration: 5
+          })
+          return
+        }
+      }
       for (let k in this.fileObj) {
         let item = this.fileObj[k]
         this.$refs.upload.post(item)

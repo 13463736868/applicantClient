@@ -36,7 +36,7 @@ const setSFZRegExp = (val) => {
   let _sum = 0
   if (_valArr.length === 18) {
     for (let k in _valArr) {
-      if (k !== 17) {
+      if (k !== '17') {
         _valArr[k] = _valArr[k] - 0
         _sum += _valArr[k] * _multipliedArr[k]
       }
@@ -44,7 +44,7 @@ const setSFZRegExp = (val) => {
     if (_valArr[17] === 'X') {
       _valArr[17] = _valArr[17].toLowerCase()
     }
-    if (_valArr[17] === _test[_sum % 11]) {
+    if (_valArr[17] === _test[_sum % 11] + '') {
       return true
     } else {
       return false
@@ -90,10 +90,64 @@ export default function (val, type) {
     } else {
       return false
     }
-  } else if (type === 'idCard') {
+  } else if (type === 'idcard1' || type === 'idcard3' || type === 'idcard7') {
+    // 1身份证 3户口簿 6驾照
     let reg = new RegExp('^[1-9]{1}[0-9]{16}[0-9xX]$|^[1-9]{1}[0-9]{14}$')
     if (reg.test(val)) {
       return setSFZRegExp(val)
+    } else {
+      return false
+    }
+  } else if (type === 'idcard2') {
+    // 2军官证
+    let reg = new RegExp('^[0-9a-zA-Z]{7,15}$')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'idcard4') {
+    // 4律师执业证
+    let reg = new RegExp('^[0-9]{17}$|^[0-9]{12}$')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'idcard5') {
+    // 5护照
+    let reg = new RegExp('^[A-Z]{1}[0-9]{8,9}$')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'entityNo1') {
+    // 营业执照
+    let reg = new RegExp('^[0-9A-Z]{15}$|^[0-9A-Z]{18}$')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'name') {
+    let reg = new RegExp('^[\u4e00-\u9fa5]{1,10}[∙•・●]{0,1}[\u4e00-\u9fa5]{1,10}$')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'address') {
+    let reg = new RegExp('^[\u4e00-\u9fa5]{2,7}')
+    if (reg.test(val)) {
+      return true
+    } else {
+      return false
+    }
+  } else if (type === 'company') {
+    let reg = new RegExp('[\u4e00-\u9fa5]{2,7}')
+    if (reg.test(val)) {
+      return true
     } else {
       return false
     }
