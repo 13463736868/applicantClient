@@ -29,5 +29,8 @@ export default {
   },
   setPaymentInfoId ({commit, state}, id) {
     commit('SET_PAYMENTINFOID', id)
+  },
+  setUserState ({commit, state}, obj) {
+    commit('SET_USERSTATE', obj)
   }
 }

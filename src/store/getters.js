@@ -6,5 +6,6 @@ export default {
   myCaseOldId: state => state.myCaseOldId,
   myCaseState: state => state.myCaseState,
   goPaymentOldId: state => state.goPaymentOldId,
-  paymentInfoId: state => state.paymentInfoId
+  paymentInfoId: state => state.paymentInfoId,
+  userState: state => state.userState
 }

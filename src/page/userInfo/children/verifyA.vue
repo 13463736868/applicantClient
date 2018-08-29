@@ -85,7 +85,7 @@
               <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
               <Col span="24">
                 <Select v-model="userAInfo.idcardType">
-                  <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                  <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
                 </Select>
               </Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===222" v-text="emInfo.text"></span></Col>
@@ -251,7 +251,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setUserInfo'
+      'setUserState'
     ]),
     cardList () {
       axios.post('/dictionary/personIdcardType').then(res => {
@@ -393,11 +393,16 @@ export default {
             content: '文件上传成功',
             duration: 2
           })
+          let _data = {}
+          _data.userType = res.data.data.userType
+          _data.userTypeDesc = res.data.data.userTypeDesc
+          _data.verify = res.data.data.verify
+          _data.verifyDesc = res.data.data.verifyDesc
           if (window.localStorage) {
             let loc = window.localStorage
-            loc.setItem('userInfo', JSON.stringify(res.data))
+            loc.setItem('userInfo', JSON.stringify(_data))
           }
-          this.setUserInfo(res.data)
+          this.setUserInfo(_data)
         }
       }
     },

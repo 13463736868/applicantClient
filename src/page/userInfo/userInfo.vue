@@ -4,19 +4,19 @@
       <span class="f36 fcf">身份绑定信息</span>
     </head-top>
     <div class="_center">
-      <Row>
+      <Row v-if="userState !== null">
         <Col span="14" offset="5">
-          <div v-if="userInfo.verify === '-1'">
-            <verify-a :userType="userInfo.userType"></verify-a>
+          <div v-if="userState.verify === '-1'">
+            <verify-a :userType="userState.userType"></verify-a>
           </div>
-          <div v-else-if="userInfo.verify === '0'">
+          <div v-else-if="userState.verify === '0'">
             <verify-b></verify-b>
           </div>
-          <div v-else-if="userInfo.verify === '1'">
-            <verify-c :userType="userInfo.userType"></verify-c>
+          <div v-else-if="userState.verify === '1'">
+            <verify-c :userType="userState.userType"></verify-c>
           </div>
-          <div v-else-if="userInfo.verify === '2'">
-            <verify-d :userType="userInfo.userType" :desc="userInfo.verifyDesc"></verify-d>
+          <div v-else-if="userState.verify === '2'">
+            <verify-d :userType="userState.userType" :desc="userState.verifyDesc"></verify-d>
           </div>
         </Col>
       </Row>
@@ -25,7 +25,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import verifyA from '@/page/userInfo/children/verifyA'
 import verifyB from '@/page/userInfo/children/verifyB'
@@ -39,12 +40,31 @@ export default {
     return {}
   },
   created () {
-    console.log(this.userInfo)
+    this.resState()
   },
   computed: {
     ...mapGetters([
-      'userInfo'
+      'userState'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'setUserState'
+    ]),
+    resState () {
+      axios.post('/person/checkState').then(res => {
+        if (window.localStorage) {
+          let loc = window.localStorage
+          loc.setItem('userState', JSON.stringify(res.data.data))
+        }
+        this.setUserState(res.data.data)
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e.status + ' 稍后再试',
+          duration: 5
+        })
+      })
+    }
   }
 }
 </script>

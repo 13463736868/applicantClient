@@ -31,5 +31,8 @@ export default {
   },
   [types.SET_PAYMENTINFOID] (state, id) {
     state.paymentInfoId = id
+  },
+  [types.SET_USERSTATE] (state, obj) {
+    state.userState = obj
   }
 }
