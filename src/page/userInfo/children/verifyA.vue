@@ -394,10 +394,10 @@ export default {
             duration: 2
           })
           let _data = {}
-          _data.userType = res.data.data.userType
-          _data.userTypeDesc = res.data.data.userTypeDesc
-          _data.verify = res.data.data.verify
-          _data.verifyDesc = res.data.data.verifyDesc
+          _data.userType = res.data.userType
+          _data.userTypeDesc = res.data.userTypeDesc
+          _data.verify = res.data.verify
+          _data.verifyDesc = res.data.verifyDesc
           if (window.localStorage) {
             let loc = window.localStorage
             loc.setItem('userInfo', JSON.stringify(_data))
