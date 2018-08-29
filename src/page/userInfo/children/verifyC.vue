@@ -82,33 +82,29 @@
       <div class="_top">附件信息</div>
       <div class="_mid">
         <Row v-if="userType === 1">
-          <form ref="_formA">
-            <Col span="10" offset="1">
-              <img class="_imgA" :src="imgUrl.fileA" ref="fileA">
-            </Col>
-            <Col span="10" offset="2">
-              <img class="_imgB" :src="imgUrl.fileB" ref="fileB">
-            </Col>
-            <Col class="pt20" span="10" offset="7" ref="fileC">
-              <img class="_imgC" :src="imgUrl.fileC">
-            </Col>
-          </form>
+          <Col span="10" offset="1">
+            <img class="_imgA" :src="imgUrl.fileA" @click="resSeeImg('fileA')">
+          </Col>
+          <Col span="10" offset="2">
+            <img class="_imgB" :src="imgUrl.fileB" @click="resSeeImg('fileB')">
+          </Col>
+          <Col class="pt20" span="10" offset="7">
+            <img class="_imgC" :src="imgUrl.fileC" @click="resSeeImg('fileC')">
+          </Col>
         </Row>
         <Row v-else-if="userType === 2">
-          <form ref="_formB">
-            <Col span="10" offset="1">
-              <img class="_imgA" :src="imgUrl.fileA" ref="fileA">
-            </Col>
-            <Col span="10" offset="2">
-              <img class="_imgB" :src="imgUrl.fileB" ref="fileB">
-            </Col>
-            <Col class="pt20" span="10" offset="1" ref="fileC">
-              <img class="_imgC" :src="imgUrl.fileC">
-            </Col>
-            <Col class="pt20" span="10" offset="2" ref="fileD">
-              <img class="_imgD" :src="imgUrl.fileD">
-            </Col>
-          </form>
+          <Col span="10" offset="1">
+            <img class="_imgA" :src="imgUrl.fileA" @click="resSeeImg('fileA')">
+          </Col>
+          <Col span="10" offset="2">
+            <img class="_imgB" :src="imgUrl.fileB" @click="resSeeImg('fileB')">
+          </Col>
+          <Col class="pt20" span="10" offset="1">
+            <img class="_imgC" :src="imgUrl.fileC" @click="resSeeImg('fileC')">
+          </Col>
+          <Col class="pt20" span="10" offset="2">
+            <img class="_imgD" :src="imgUrl.fileD" @click="resSeeImg('fileD')">
+          </Col>
         </Row>
       </div>
     </div>
@@ -220,6 +216,9 @@ export default {
           duration: 5
         })
       })
+    },
+    resSeeImg (type) {
+      window.open(this.imgUrl[type], '_blank')
     }
   }
 }
