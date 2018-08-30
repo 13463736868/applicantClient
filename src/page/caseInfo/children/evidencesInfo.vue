@@ -17,11 +17,12 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 import evidInfo from '@/page/caseInfo/children/children/evidInfo'
 
 export default {
   name: 'evidencesInfo',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { evidInfo },
   data () {
     return {
@@ -31,14 +32,37 @@ export default {
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.resEvid()
+      if (this.partieType !== null) {
+        this.resEvid()
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseCrossE'
+    ]),
+    resEvidUrl () {
+      if (this.partieType === 1) {
+        return '/case/selectObjectByCaseId/4'
+      } else if (this.partieType === 2) {
+        return '/case/selectObjectById/4'
+      }
+    },
+    resEvidUrlId () {
+      if (this.partieType === 1) {
+        let _data = {}
+        _data.caseId = this.caseOldId
+        return _data
+      } else if (this.partieType === 2) {
+        let _data = {}
+        _data.id = this.caseId
+        return _data
+      }
     }
   },
   methods: {
     resEvid () {
-      axios.post('/case/selectObjectByCaseId/4', {
-        caseId: this.caseOldId
-      }).then(res => {
+      axios.post(this.resEvidUrl, this.resEvidUrlId).then(res => {
         this.evidData = res.data.data.evidenceList
       }).catch(e => {
         this.$Message.error({

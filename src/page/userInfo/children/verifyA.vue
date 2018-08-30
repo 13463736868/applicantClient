@@ -534,6 +534,7 @@ export default {
       }
     },
     sendAjax () {
+      let _order = 0
       if (this.userType === 1) {
         this.uploadNum = 3
       } else if (this.userType === 2) {
@@ -549,6 +550,8 @@ export default {
         }
       }
       for (let k in this.fileObj) {
+        _order++
+        this.userAInfo.order = _order
         let item = this.fileObj[k]
         this.$refs.upload.post(item)
       }

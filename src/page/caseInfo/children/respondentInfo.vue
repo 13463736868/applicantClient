@@ -21,7 +21,7 @@ import seePropInfo from '@/page/caseInfo/children/children/seePropInfo'
 
 export default {
   name: 'respondentInfo',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { propInfo, seePropInfo },
   data () {
     return {
@@ -35,14 +35,34 @@ export default {
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.resResp()
+      if (this.partieType !== null) {
+        this.resResp()
+      }
+    }
+  },
+  computed: {
+    resRespUrl () {
+      if (this.partieType === 1) {
+        return '/case/selectObjectByCaseId/2'
+      } else if (this.partieType === 2) {
+        return '/case/selectObjectById/2'
+      }
+    },
+    resRespUrlId () {
+      if (this.partieType === 1) {
+        let _data = {}
+        _data.caseId = this.caseOldId
+        return _data
+      } else if (this.partieType === 2) {
+        let _data = {}
+        _data.id = this.caseId
+        return _data
+      }
     }
   },
   methods: {
     resResp () {
-      axios.post('/case/selectObjectByCaseId/2', {
-        caseId: this.caseOldId
-      }).then(res => {
+      axios.post(this.resRespUrl, this.resRespUrlId).then(res => {
         this.respData = res.data.data.respList
       }).catch(e => {
         this.$Message.error({

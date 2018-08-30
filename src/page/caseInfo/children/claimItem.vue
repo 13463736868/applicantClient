@@ -29,7 +29,7 @@ import applInfo from '@/page/caseInfo/children/children/applInfo'
 
 export default {
   name: 'claimItem',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { claimInfo, reasInfo, applInfo },
   data () {
     return {
@@ -40,14 +40,34 @@ export default {
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.resClaim()
+      if (this.partieType !== null) {
+        this.resClaim()
+      }
+    }
+  },
+  computed: {
+    resClaimUrl () {
+      if (this.partieType === 1) {
+        return '/case/selectObjectByCaseId/3'
+      } else if (this.partieType === 2) {
+        return '/case/selectObjectById/3'
+      }
+    },
+    resClaimUrlId () {
+      if (this.partieType === 1) {
+        let _data = {}
+        _data.caseId = this.caseOldId
+        return _data
+      } else if (this.partieType === 2) {
+        let _data = {}
+        _data.id = this.caseId
+        return _data
+      }
     }
   },
   methods: {
     resClaim () {
-      axios.post('/case/selectObjectByCaseId/3', {
-        caseId: this.caseOldId
-      }).then(res => {
+      axios.post(this.resClaimUrl, this.resClaimUrlId).then(res => {
         this.claimData = res.data.data.requestList
         this.reasData = res.data.data.requestReasons
         this.applData = res.data.data.arbRequisitionFile

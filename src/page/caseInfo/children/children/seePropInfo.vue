@@ -46,7 +46,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="priseName"></span></Col>
+            <Col span="24" class="_input"><span v-text="priseName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -68,7 +68,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="idcardName"></span></Col>
+            <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
@@ -92,7 +92,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="priseName"></span></Col>
+            <Col span="24" class="_input"><span v-text="priseName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -114,7 +114,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="idcardName"></span></Col>
+            <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
@@ -138,7 +138,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="priseName"></span></Col>
+            <Col span="24" class="_input"><span v-text="priseName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -160,7 +160,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
-            <Col span="24"><span v-text="idcardName"></span></Col>
+            <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>

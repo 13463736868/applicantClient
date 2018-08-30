@@ -103,7 +103,7 @@ import axios from 'axios'
 
 export default {
   name: 'basicInfo',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   data () {
     return {
       dataBasic: null,

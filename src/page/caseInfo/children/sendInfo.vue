@@ -75,7 +75,7 @@ import alertSeeInfo from '@/page/caseInfo/children/children/alertSeeInfo'
 
 export default {
   name: 'sendInfo',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { alertSeeInfo },
   data () {
     return {

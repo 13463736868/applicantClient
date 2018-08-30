@@ -16,7 +16,10 @@ const state = {
   myCaseState: null,
   goPaymentOldId: '',
   paymentInfoId: '',
-  userState: null
+  userState: null,
+  myCaseShowBtn: null,
+  myCasePartieType: null,
+  myCaseCrossE: null
 }
 
 export default new Vuex.Store({

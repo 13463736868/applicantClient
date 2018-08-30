@@ -34,9 +34,15 @@ const beforeEach = (to, from, next) => {
         loc.removeItem('myCaseId')
         loc.removeItem('myCaseOldId')
         loc.removeItem('myCaseState')
+        loc.removeItem('myCaseShowBtn')
+        loc.removeItem('myCasePartieType')
+        loc.removeItem('myCaseCrossE')
         store.commit('SET_MYCASEID', '')
         store.commit('SET_MYCASEOLDID', '')
         store.commit('SET_MYCASESTATE', null)
+        store.commit('SET_MYCASESHOWBTN', null)
+        store.commit('SET_MYCASEPARTIETYPE', null)
+        store.commit('SET_MYCASECROSSE', null)
       } else {
         if (store.state.myCaseId === '') {
           if (loc.getItem('myCaseId')) {
@@ -51,6 +57,21 @@ const beforeEach = (to, from, next) => {
         if (store.state.myCaseState === null) {
           if (loc.getItem('myCaseState')) {
             store.commit('SET_MYCASESTATE', loc.getItem('myCaseState'))
+          }
+        }
+        if (store.state.myCaseShowBtn === null) {
+          if (loc.getItem('myCaseShowBtn')) {
+            store.commit('SET_MYCASESHOWBTN', JSON.parse(loc.getItem('myCaseShowBtn')))
+          }
+        }
+        if (store.state.myCasePartieType === null) {
+          if (loc.getItem('myCasePartieType')) {
+            store.commit('SET_MYCASEPARTIETYPE', JSON.parse(loc.getItem('myCasePartieType')))
+          }
+        }
+        if (store.state.myCaseCrossE === null) {
+          if (loc.getItem('myCaseCrossE')) {
+            store.commit('SET_MYCASECROSSE', JSON.parse(loc.getItem('myCaseCrossE')))
           }
         }
       }

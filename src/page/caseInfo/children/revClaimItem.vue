@@ -22,7 +22,7 @@ import applInfo from '@/page/caseInfo/children/children/applInfo'
 
 export default {
   name: 'revClaimItem',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { reasInfo, applInfo },
   data () {
     return {

@@ -34,7 +34,7 @@ import seeAgenInfo from '@/page/caseInfo/children/children/seeAgenInfo'
 
 export default {
   name: 'proposerInfo',
-  props: ['caseId', 'caseOldId', 'caseState'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { propInfo, agenInfo, seePropInfo, seeAgenInfo },
   data () {
     return {
@@ -54,14 +54,34 @@ export default {
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.resProp()
+      if (this.partieType !== null) {
+        this.resProp()
+      }
+    }
+  },
+  computed: {
+    resPropUrl () {
+      if (this.partieType === 1) {
+        return '/case/selectObjectByCaseId/1'
+      } else if (this.partieType === 2) {
+        return '/case/selectObjectById/1'
+      }
+    },
+    resPropUrlId () {
+      if (this.partieType === 1) {
+        let _data = {}
+        _data.caseId = this.caseOldId
+        return _data
+      } else if (this.partieType === 2) {
+        let _data = {}
+        _data.id = this.caseId
+        return _data
+      }
     }
   },
   methods: {
     resProp () {
-      axios.post('/case/selectObjectByCaseId/1', {
-        caseId: this.caseOldId
-      }).then(res => {
+      axios.post(this.resPropUrl, this.resPropUrlId).then(res => {
         this.propData = res.data.data.propList
         this.agenData = res.data.data.proxyList
       }).catch(e => {

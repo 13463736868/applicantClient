@@ -7,5 +7,8 @@ export default {
   myCaseState: state => state.myCaseState,
   goPaymentOldId: state => state.goPaymentOldId,
   paymentInfoId: state => state.paymentInfoId,
-  userState: state => state.userState
+  userState: state => state.userState,
+  myCaseShowBtn: state => state.myCaseShowBtn,
+  myCasePartieType: state => state.myCasePartieType,
+  myCaseCrossE: state => state.myCaseCrossE
 }

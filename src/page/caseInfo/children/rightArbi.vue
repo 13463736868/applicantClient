@@ -81,6 +81,16 @@
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="replClick">补正</button></Col>
           </Row>
         </Col>
+        <Col v-if="btnShow.counterclaim" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="counteClick">反请求</button></Col>
+          </Row>
+        </Col>
+        <Col v-if="btnShow.rightOfJ" span="24">
+          <Row>
+            <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="rightOfJClick">管辖权异议</button></Col>
+          </Row>
+        </Col>
       </Row>
     </div>
   </div>
@@ -88,6 +98,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'right_arbi',
@@ -104,20 +115,24 @@ export default {
         avoidShow: false,
         retractShow: false,
         selectShow: false,
-        replClick: false
-      },
-      stateA: [1, 2, '1', '2'],
-      stateB: [3, 6, '3', '6'],
-      stateCA: [4, '4'],
-      stateCB: [5, '5'],
-      stateD: [7, '7']
+        replClick: false,
+        counterclaim: false,
+        rightOfJ: false
+      }
     }
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.isShowBtn()
       this.resCaseItem()
     }
+    if (this.myCaseShowBtn !== null) {
+      this.isShowBtn()
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseShowBtn'
+    ])
   },
   methods: {
     resCaseItem () {
@@ -135,16 +150,23 @@ export default {
       })
     },
     isShowBtn () {
-      if (this.stateA.indexOf(this.caseState) !== -1) {
-        this.btnShow.retractShow = true
-      } else if (this.stateCA.indexOf(this.caseState) !== -1) {
-        this.btnShow.retractShow = true
-        this.btnShow.selectShow = true
-      } else if (this.stateCB.indexOf(this.caseState) !== -1) {
-        this.btnShow.retractShow = true
+      if (this.myCaseShowBtn.debarbArbitrator === 1) {
         this.btnShow.avoidShow = true
-      } else if (this.stateD.indexOf(this.caseState) !== -1) {
+      }
+      if (this.myCaseShowBtn.revocation === 1) {
+        this.btnShow.retractShow = true
+      }
+      if (this.myCaseShowBtn.changeArbitrator === 1) {
+        this.btnShow.selectShow = true
+      }
+      if (this.myCaseShowBtn.applyCorrect === 1) {
         this.btnShow.replClick = true
+      }
+      if (this.myCaseShowBtn.counterclaim === 1) {
+        this.btnShow.counterclaim = true
+      }
+      if (this.myCaseShowBtn.rightOfJurisdiction === 1) {
+        this.btnShow.rightOfJ = true
       }
     },
     avoidClick () {
@@ -158,6 +180,12 @@ export default {
     },
     replClick () {
       console.log('补正')
+    },
+    counteClick () {
+      console.log('反请求')
+    },
+    rightOfJClick () {
+      console.log('管辖权异议')
     }
   }
 }

@@ -169,113 +169,132 @@ export default {
       'setMyCaseId',
       'setMyCaseOldId',
       'setMyCaseState',
-      'setGoPaymentOldId'
+      'setGoPaymentOldId',
+      'setMyCaseShowBtn',
+      'setMyCasePartieType',
+      'setMyCaseCrossE'
     ]),
     renderOperation (h, params) {
-      if (params.row.state === 1 || params.row.state === 4) {
-        return h('div', [
-          h('Button', {
-            props: {
-              type: 'primary',
-              size: 'small'
-            },
-            on: {
-              click: () => {
-                this.resCancCase(params.index)
+      let _revocation = params.row.showBtn.revocation
+      if (params.row.state === 2) {
+        if (_revocation === 1) {
+          return h('div', [
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.goPayment(params.index)
+                }
               }
-            }
-          }, '撤回')
-        ])
-      } else if (params.row.state === 2) {
-        return h('div', [
-          h('Button', {
-            props: {
-              type: 'primary',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                this.goPayment(params.index)
+            }, '去缴费'),
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.resCancCase(params.index)
+                }
               }
-            }
-          }, '去缴费'),
-          h('Button', {
-            props: {
-              type: 'primary',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                this.resCancCase(params.index)
+            }, '撤回')
+          ])
+        } else {
+          return h('div', [
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.goPayment(params.index)
+                }
               }
-            }
-          }, '撤回')
-        ])
+            }, '去缴费')
+          ])
+        }
       } else if (params.row.state === 5) {
-        return h('div', [
-          h('Button', {
-            props: {
-              type: 'primary',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                this.goCourtRoom(params.index)
+        if (_revocation === 1) {
+          return h('div', [
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.goCourtRoom(params.index)
+                }
               }
-            }
-          }, '进入庭室'),
-          h('Button', {
-            props: {
-              type: 'primary',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                this.resCancCase(params.index)
+            }, '进入庭室'),
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.resCancCase(params.index)
+                }
               }
-            }
-          }, '撤回')
-        ])
+            }, '撤回')
+          ])
+        } else {
+          return h('div', [
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              style: {
+                marginRight: '5px'
+              },
+              on: {
+                click: () => {
+                  this.goCourtRoom(params.index)
+                }
+              }
+            }, '进入庭室')
+          ])
+        }
       } else {
-        return h('div', [
-          // h('Button', {
-          //   props: {
-          //     type: 'primary',
-          //     size: 'small'
-          //   },
-          //   style: {
-          //     marginRight: '5px'
-          //   },
-          //   on: {
-          //     click: () => {
-          //       this.goCourtRomm(params.index)
-          //     }
-          //   }
-          // }, '进入庭室'),
-          // h('Button', {
-          //   props: {
-          //     type: 'primary',
-          //     size: 'small'
-          //   },
-          //   on: {
-          //     click: () => {
-          //       this.goPayment(params.index)
-          //     }
-          //   }
-          // }, '去缴费')
-        ])
+        if (_revocation === 1) {
+          return h('div', [
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              on: {
+                click: () => {
+                  this.resCancCase(params.index)
+                }
+              }
+            }, '撤回')
+          ])
+        } else {
+          return h('div', [
+          ])
+        }
       }
     },
     resMineList () {
@@ -330,6 +349,12 @@ export default {
       window.localStorage.setItem('myCaseOldId', this.caseList.bodyList[index].oldId)
       this.setMyCaseState(this.caseList.bodyList[index].state)
       window.localStorage.setItem('myCaseState', this.caseList.bodyList[index].state)
+      this.setMyCaseShowBtn(this.caseList.bodyList[index].showBtn)
+      window.localStorage.setItem('myCaseShowBtn', JSON.stringify(this.caseList.bodyList[index].showBtn))
+      this.setMyCasePartieType(this.caseList.bodyList[index].partieType)
+      window.localStorage.setItem('myCasePartieType', this.caseList.bodyList[index].partieType)
+      this.setMyCaseCrossE(this.caseList.bodyList[index].crossExamination)
+      window.localStorage.setItem('myCaseCrossE', this.caseList.bodyList[index].crossExamination)
       this.$router.push({
         path: '/caseInfo'
       })

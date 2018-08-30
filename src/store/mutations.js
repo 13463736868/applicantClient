@@ -34,5 +34,14 @@ export default {
   },
   [types.SET_USERSTATE] (state, obj) {
     state.userState = obj
+  },
+  [types.SET_MYCASESHOWBTN] (state, obj) {
+    state.myCaseShowBtn = obj
+  },
+  [types.SET_MYCASEPARTIETYPE] (state, obj) {
+    state.myCasePartieType = obj
+  },
+  [types.SET_MYCASECROSSE] (state, obj) {
+    state.myCaseCrossE = obj
   }
 }

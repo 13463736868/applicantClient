@@ -32,5 +32,14 @@ export default {
   },
   setUserState ({commit, state}, obj) {
     commit('SET_USERSTATE', obj)
+  },
+  setMyCaseShowBtn ({commit, state}, obj) {
+    commit('SET_MYCASESHOWBTN', obj)
+  },
+  setMyCasePartieType ({commit, state}, obj) {
+    commit('SET_MYCASEPARTIETYPE', obj)
+  },
+  setMyCaseCrossE ({commit, state}, obj) {
+    commit('SET_MYCASECROSSE', obj)
   }
 }
