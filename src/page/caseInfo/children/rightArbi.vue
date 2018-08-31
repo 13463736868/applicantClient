@@ -93,16 +93,24 @@
         </Col>
       </Row>
     </div>
+    <alert-btn-info :alertShow="alertShow.repl" @alertConfirm="replSave" @alertCancel="alertCanc('repl')" alertTitle="申请补证">
+      <Input v-model="dataObj.repl" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
+    </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
+      <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
+    </alert-btn-info>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
 
 export default {
   name: 'right_arbi',
   props: ['caseId', 'caseOldId', 'caseState'],
+  components: { alertBtnInfo },
   data () {
     return {
       logo: {
@@ -118,6 +126,18 @@ export default {
         replClick: false,
         counterclaim: false,
         rightOfJ: false
+      },
+      alertShow: {
+        avoi: false,
+        retr: false,
+        sele: false,
+        repl: false,
+        coun: false,
+        righ: false
+      },
+      dataObj: {
+        avoi: null,
+        repl: null
       }
     }
   },
@@ -150,6 +170,12 @@ export default {
       })
     },
     isShowBtn () {
+      // this.btnShow.avoidShow = true
+      // this.btnShow.retractShow = true
+      // this.btnShow.selectShow = true
+      // this.btnShow.replClick = true
+      // this.btnShow.counterclaim = true
+      // this.btnShow.rightOfJ = true
       if (this.myCaseShowBtn.debarbArbitrator === 1) {
         this.btnShow.avoidShow = true
       }
@@ -170,7 +196,39 @@ export default {
       }
     },
     avoidClick () {
-      console.log('申请仲裁员回避')
+      this.alertShow.avoi = true
+    },
+    avoiSave () {
+      if (this.dataObj.avoi === null) {
+        this.$Message.warning({
+          content: '回避原因不能为空',
+          duration: 5
+        })
+      } else if (this.dataObj.avoi === '') {
+        this.$Message.warning({
+          content: '回避原因不能为空',
+          duration: 5
+        })
+      } else {
+        axios.post('/case/applyAvoid', {
+          id: this.caseId,
+          reason: this.dataObj.avoi
+        }).then(res => {
+          this.alertShow['avoi'] = false
+          this.dataObj['avoi'] = null
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.alertShow['avoi'] = false
+          this.dataObj['avoi'] = null
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
+      }
     },
     retractClick () {
       console.log('撤回案件')
@@ -179,13 +237,49 @@ export default {
       console.log('选择仲裁员')
     },
     replClick () {
-      console.log('补正')
+      this.alertShow.repl = true
+    },
+    replSave () {
+      if (this.dataObj.repl === null) {
+        this.$Message.warning({
+          content: '补证原因不能为空',
+          duration: 5
+        })
+      } else if (this.dataObj.repl === '') {
+        this.$Message.warning({
+          content: '补证原因不能为空',
+          duration: 5
+        })
+      } else {
+        axios.post('/case/applyAdditions', {
+          caseId: this.caseOldId,
+          reason: this.dataObj.repl
+        }).then(res => {
+          this.alertShow['repl'] = false
+          this.dataObj['repl'] = null
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.alertShow['repl'] = false
+          this.dataObj['repl'] = null
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
+      }
     },
     counteClick () {
       console.log('反请求')
     },
     rightOfJClick () {
       console.log('管辖权异议')
+    },
+    alertCanc (type) {
+      this.alertShow[type] = false
+      this.dataObj[type] = null
     }
   }
 }
