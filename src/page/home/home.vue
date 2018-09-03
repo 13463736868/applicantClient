@@ -36,6 +36,35 @@
         </Row>
       </div>
     </div>
+    <alert-btn-info :alertShow="retrObj.alertShow" @alertConfirm="retrSave" @alertCancel="alertCanc" alertTitle="申请撤回案件">
+      <spin-comp :spinShow="retrObj.spinShow">
+        <div v-if="retrObj.progressText !== null" v-text="retrObj.progressText"></div>
+      </spin-comp>
+      <p style="padding-bottom:10px;">确定要申请撤回案件吗？</p>
+      <Upload
+        ref="upload"
+        name="file"
+        type="drag"
+        action="/api/case/withdraw"
+        :with-credentials="true"
+        :show-upload-list="false"
+        :format="['jpg','jpeg','png','doc','docx','pdf']"
+        :max-size="10240"
+        :data="retrData"
+        :on-format-error="resFormError"
+        :on-exceeded-size="resSizeError"
+        :before-upload="resBefoUpload"
+        :on-progress="resProgress"
+        :on-success="resSuccess"
+        :on-error="resError"
+      >
+        <div class="_text" style="padding:20px 0;">
+          <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+          <p v-if="retrObj.fileObj === null" v-text="'请上传撤回申请书 ( 上传类型只支持 jpg、jpeg、png、doc、docx、pdf )'"></p>
+          <div v-if="retrObj.fileObj !== null" v-text="retrObj.fileObj.name"></div>
+        </div>
+      </Upload>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -44,10 +73,11 @@ import axios from 'axios'
 import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
+import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
 
 export default {
   name: 'home',
-  components: { headTop, spinComp },
+  components: { headTop, spinComp, alertBtnInfo },
   data () {
     return {
       spinShow: true,
@@ -158,11 +188,25 @@ export default {
         total: 0,
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      retrObj: {
+        alertShow: false,
+        progressText: null,
+        fileObj: null,
+        spinShow: false
+      },
+      retrDObj: null
     }
   },
   created () {
     this.resMineList()
+  },
+  computed: {
+    retrData () {
+      let _data = {}
+      _data.caseId = this.retrDObj
+      return _data
+    }
   },
   methods: {
     ...mapActions([
@@ -330,7 +374,87 @@ export default {
       this.resMineList()
     },
     resCancCase (index) {
-      console.log('撤回案件按钮')
+      this.retrObj.alertShow = true
+      this.retrDObj = this.caseList.bodyList[index].oldId
+    },
+    resFormError () {
+      this.$Message.error({
+        content: '文件格式错误只支持 jpg、jpeg、png、doc、docx、pdf',
+        duration: 5
+      })
+    },
+    resSizeError () {
+      this.$Message.error({
+        content: '文件不能超过10MB',
+        duration: 5
+      })
+    },
+    resBefoUpload (file) {
+      this.retrObj.fileObj = file
+      return false
+    },
+    resProgress (event, file) {
+      let _percent = event.percent
+      if (_percent === 100) {
+        this.retrObj.progressText = 99 + '%'
+      } else {
+        this.retrObj.progressText = Math.floor(event.percent) + '%'
+      }
+    },
+    resSuccess (res, file) {
+      if (res.flag === false) {
+        this.retrObj.spinShow = false
+        this.alertCanc('retr')
+        this.$Message.error({
+          content: '错误信息:' + res.message + ' 稍后再试',
+          duration: 5
+        })
+      } else {
+        this.retrObj.progressText = '100%'
+        this.retrObj.spinShow = false
+        this.alertCanc('retr')
+        this.$Message.success({
+          content: '操作成功',
+          duration: 2
+        })
+        this.resMineList()
+      }
+    },
+    resError (error, file) {
+      this.retrObj.spinShow = false
+      this.alertCanc('retr')
+      this.$Message.error({
+        content: '错误信息:' + error.status + ' 稍后再试',
+        duration: 5
+      })
+    },
+    retrSave () {
+      this.retrObj.spinShow = true
+      if (this.retrObj.fileObj === null) {
+        axios.post('/case/withdraw', this.retrData).then(res => {
+          this.retrObj.spinShow = false
+          this.alertCanc('retr')
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+          this.resMineList()
+        }).catch(e => {
+          this.retrObj.spinShow = false
+          this.alertCanc('retr')
+          this.$Message.error({
+            content: '错误信息:' + e.status + ' 稍后再试',
+            duration: 5
+          })
+        })
+      } else {
+        this.$refs.upload.post(this.retrObj.fileObj)
+      }
+    },
+    alertCanc () {
+      this.retrObj.alertShow = false
+      this.retrObj.fileObj = null
+      this.retrDObj = null
     },
     goCourtRoom (index) {
       console.log(this.caseList.bodyList[index])

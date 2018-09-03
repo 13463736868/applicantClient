@@ -483,11 +483,13 @@ export default {
       this.uploadSum--
       if (this.uploadSum === 0) {
         if (res.flag === false) {
+          this.addInfoBtn = false
           this.$Message.error({
             content: '错误信息:' + res.message + '',
             duration: 5
           })
         } else {
+          this.addInfoBtn = false
           this.$Message.success({
             content: '文件上传成功',
             duration: 2
@@ -508,6 +510,7 @@ export default {
     resError (e, file) {
       this.uploadSum--
       if (this.uploadSum === 0) {
+        this.addInfoBtn = false
         this.$Message.error({
           content: '错误信息:' + e.status + ' 稍后再试',
           duration: 5
@@ -639,6 +642,7 @@ export default {
     sendAjax () {
       let _num = this.uploadNum
       if (_num) {
+        this.addInfoBtn = true
         this.uploadSum = this.uploadNum
         for (let k in this.fileObj) {
           if (this.fileObj[k] !== null) {
@@ -648,7 +652,9 @@ export default {
           }
         }
       } else {
+        this.addInfoBtn = true
         axios.post(this.uploadUrl, this.uploadData).then(res => {
+          this.addInfoBtn = false
           this.$Message.success({
             content: '修改成功',
             duration: 2
@@ -664,6 +670,7 @@ export default {
           }
           this.setUserState(_data)
         }).catch(e => {
+          this.addInfoBtn = false
           this.$Message.error({
             content: '错误信息:' + e.status + ' 稍后再试',
             duration: 5

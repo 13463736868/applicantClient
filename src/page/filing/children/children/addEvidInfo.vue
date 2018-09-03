@@ -39,7 +39,7 @@
               :max-size="10240"
               :data="data"
               :on-format-error="resFormError"
-              :on-exceeded-size="resSzieError"
+              :on-exceeded-size="resSizeError"
               :before-upload="resBefoUpload"
               :on-progress="resProgress"
               :on-success="resSuccess"
@@ -104,7 +104,7 @@ export default {
         duration: 5
       })
     },
-    resSzieError (file) {
+    resSizeError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件不能超过10MB',

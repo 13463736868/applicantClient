@@ -12,7 +12,7 @@
           <router-view :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></router-view>
         </Col>
         <Col span="4">
-          <right-arbi :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState"></right-arbi>
+          <right-arbi :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></right-arbi>
         </Col>
       </Row>
     </div>

@@ -384,11 +384,13 @@ export default {
       this.uploadNum--
       if (this.uploadNum === 0) {
         if (res.flag === false) {
+          this.addInfoBtn = false
           this.$Message.error({
             content: '错误信息:' + res.message + '',
             duration: 5
           })
         } else {
+          this.addInfoBtn = false
           this.$Message.success({
             content: '文件上传成功',
             duration: 2
@@ -409,6 +411,7 @@ export default {
     resError (e, file) {
       this.uploadNum--
       if (this.uploadNum === 0) {
+        this.addInfoBtn = false
         this.$Message.error({
           content: '错误信息:' + e.status + ' 稍后再试',
           duration: 5
@@ -549,6 +552,7 @@ export default {
           return
         }
       }
+      this.addInfoBtn = true
       for (let k in this.fileObj) {
         _order++
         this.userAInfo.order = _order

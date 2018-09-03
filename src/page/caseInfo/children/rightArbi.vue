@@ -93,26 +93,64 @@
         </Col>
       </Row>
     </div>
+    <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
+      <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
+    </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.repl" @alertConfirm="replSave" @alertCancel="alertCanc('repl')" alertTitle="申请补证">
       <Input v-model="dataObj.repl" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
     </alert-btn-info>
-    <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
-      <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
+    <alert-btn-info :alertShow="alertShow.coun" @alertConfirm="counSave" @alertCancel="alertCanc('coun')" alertTitle="申请反请求">
+      <p>确定要申请反请求吗？</p>
+    </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.righ" @alertConfirm="righSave" @alertCancel="alertCanc('righ')" alertTitle="申请管辖权异议">
+      <Input v-model="dataObj.righ" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
+    </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.retr" @alertConfirm="retrSave" @alertCancel="alertCanc('retr')" alertTitle="申请撤回案件">
+      <spin-comp :spinShow="spinShow">
+        <div v-if="progressText !== null" v-text="progressText"></div>
+      </spin-comp>
+      <p style="padding-bottom:10px;">确定要申请撤回案件吗？</p>
+      <Upload
+        ref="upload"
+        name="file"
+        type="drag"
+        action="/api/case/withdraw"
+        :with-credentials="true"
+        :show-upload-list="false"
+        :format="['jpg','jpeg','png','doc','docx','pdf']"
+        :max-size="10240"
+        :data="retrData"
+        :on-format-error="resFormError"
+        :on-exceeded-size="resSizeError"
+        :before-upload="resBefoUpload"
+        :on-progress="resProgress"
+        :on-success="resSuccess"
+        :on-error="resError"
+      >
+        <div class="_text" style="padding:20px 0;">
+          <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+          <p v-if="dataObj.retr === null" v-text="'请上传撤回申请书 ( 上传类型只支持 jpg、jpeg、png、doc、docx、pdf )'"></p>
+          <div v-if="dataObj.retr !== null" v-text="dataObj.retr.name"></div>
+        </div>
+      </Upload>
     </alert-btn-info>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
 
 export default {
   name: 'right_arbi',
-  props: ['caseId', 'caseOldId', 'caseState'],
-  components: { alertBtnInfo },
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  components: { spinComp, alertBtnInfo },
   data () {
     return {
+      spinShow: false,
+      progressText: null,
       logo: {
         url: '../../static/images/logoR.png'
       },
@@ -137,7 +175,11 @@ export default {
       },
       dataObj: {
         avoi: null,
-        repl: null
+        retr: null,
+        sele: null,
+        repl: null,
+        coun: null,
+        righ: null
       }
     }
   },
@@ -152,9 +194,18 @@ export default {
   computed: {
     ...mapGetters([
       'myCaseShowBtn'
-    ])
+    ]),
+    retrData () {
+      let _data = {}
+      _data.caseId = this.caseOldId
+      return _data
+    }
   },
   methods: {
+    ...mapActions([
+      'setCaseId',
+      'setMyCaseShowBtn'
+    ]),
     resCaseItem () {
       axios.post('/case/queryCaseItem', {
         id: this.caseId
@@ -212,17 +263,20 @@ export default {
       } else {
         axios.post('/case/applyAvoid', {
           id: this.caseId,
-          reason: this.dataObj.avoi
+          reason: this.dataObj.avoi,
+          partyType: this.partieType
         }).then(res => {
-          this.alertShow['avoi'] = false
-          this.dataObj['avoi'] = null
+          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+          _showBtnObj.debarbArbitrator = 0
+          this.setMyCaseShowBtn(_showBtnObj)
+          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+          this.alertCanc('avoi')
           this.$Message.success({
             content: '操作成功',
             duration: 2
           })
         }).catch(e => {
-          this.alertShow['avoi'] = false
-          this.dataObj['avoi'] = null
+          this.alertCanc('avoi')
           this.$Message.error({
             content: '错误信息:' + e,
             duration: 5
@@ -231,7 +285,83 @@ export default {
       }
     },
     retractClick () {
-      console.log('撤回案件')
+      this.alertShow.retr = true
+    },
+    resFormError () {
+      this.$Message.error({
+        content: '文件格式错误只支持 jpg、jpeg、png、doc、docx、pdf',
+        duration: 5
+      })
+    },
+    resSizeError () {
+      this.$Message.error({
+        content: '文件不能超过10MB',
+        duration: 5
+      })
+    },
+    resBefoUpload (file) {
+      this.dataObj.retr = file
+      return false
+    },
+    resProgress (event, file) {
+      let _percent = event.percent
+      if (_percent === 100) {
+        this.progressText = 99 + '%'
+      } else {
+        this.progressText = Math.floor(event.percent) + '%'
+      }
+    },
+    resSuccess (res, file) {
+      if (res.flag === false) {
+        this.spinShow = false
+        this.alertCanc('retr')
+        this.$Message.error({
+          content: '错误信息:' + res.message + ' 稍后再试',
+          duration: 5
+        })
+      } else {
+        this.progressText = '100%'
+        this.spinShow = false
+        this.alertCanc('retr')
+        this.$Message.success({
+          content: '操作成功',
+          duration: 2
+        })
+      }
+    },
+    resError (error, file) {
+      this.spinShow = false
+      this.alertCanc('retr')
+      this.$Message.error({
+        content: '错误信息:' + error.status + ' 稍后再试',
+        duration: 5
+      })
+    },
+    retrSave () {
+      this.spinShow = true
+      if (this.dataObj.retr === null) {
+        axios.post('/case/withdraw', this.retrData).then(res => {
+          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+          _showBtnObj.revocation = 0
+          this.setMyCaseShowBtn(_showBtnObj)
+          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+          this.spinShow = false
+          this.alertCanc('retr')
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.spinShow = false
+          this.alertCanc('retr')
+          this.$Message.error({
+            content: '错误信息:' + e.status + ' 稍后再试',
+            duration: 5
+          })
+        })
+      } else {
+        this.$refs.upload.post(this.dataObj.retr)
+      }
     },
     selectClick () {
       console.log('选择仲裁员')
@@ -253,17 +383,20 @@ export default {
       } else {
         axios.post('/case/applyAdditions', {
           caseId: this.caseOldId,
-          reason: this.dataObj.repl
+          reason: this.dataObj.repl,
+          partyType: this.partieType
         }).then(res => {
-          this.alertShow['repl'] = false
-          this.dataObj['repl'] = null
+          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+          _showBtnObj.applyCorrect = 0
+          this.setMyCaseShowBtn(_showBtnObj)
+          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+          this.alertCanc('repl')
           this.$Message.success({
             content: '操作成功',
             duration: 2
           })
         }).catch(e => {
-          this.alertShow['repl'] = false
-          this.dataObj['repl'] = null
+          this.alertCanc('repl')
           this.$Message.error({
             content: '错误信息:' + e,
             duration: 5
@@ -272,14 +405,71 @@ export default {
       }
     },
     counteClick () {
-      console.log('反请求')
+      this.alertShow.coun = true
+    },
+    counSave () {
+      axios.post('/case/counterclaim', {
+        id: this.caseId
+      }).then(res => {
+        this.alertCanc('coun')
+        window.localStorage.setItem('caseId', res.data.data.id)
+        this.setCaseId(res.data.data.id)
+        this.$router.push({
+          path: '/filing'
+        })
+      }).catch(e => {
+        this.alertCanc('coun')
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     rightOfJClick () {
-      console.log('管辖权异议')
+      this.alertShow.righ = true
+    },
+    righSave () {
+      if (this.dataObj.righ === null) {
+        this.$Message.warning({
+          content: '管辖权异议原因不能为空',
+          duration: 5
+        })
+      } else if (this.dataObj.righ === '') {
+        this.$Message.warning({
+          content: '管辖权异议原因不能为空',
+          duration: 5
+        })
+      } else {
+        axios.post('/case/dissidence', {
+          id: this.caseId,
+          reason: this.dataObj.righ
+        }).then(res => {
+          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+          _showBtnObj.rightOfJurisdiction = 0
+          this.setMyCaseShowBtn(_showBtnObj)
+          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+          this.alertCanc('righ')
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.alertCanc('righ')
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
+      }
     },
     alertCanc (type) {
       this.alertShow[type] = false
       this.dataObj[type] = null
+    }
+  },
+  watch: {
+    myCaseShowBtn: function (val) {
+      this.isShowBtn()
     }
   }
 }
