@@ -84,40 +84,32 @@ export default {
         status: 0,
         text: ''
       },
-      idcardList: [
-        {
-          value: 1,
-          label: '身份证'
-        },
-        {
-          value: 2,
-          label: '军官证'
-        },
-        {
-          value: 3,
-          label: '户口薄'
-        },
-        {
-          value: 4,
-          label: '实习律师证'
-        },
-        {
-          value: 5,
-          label: '律师职业证'
-        },
-        {
-          value: 6,
-          label: '护照'
-        },
-        {
-          value: 7,
-          label: '驾照'
-        }
-      ],
+      idcardList: [],
       agenData: JSON.parse(JSON.stringify(this.editAgenData))
     }
   },
+  created () {
+    this.cardList()
+  },
   methods: {
+    cardList () {
+      axios.post('/dictionary/personIdcardType').then(res => {
+        let _dataList = res.data.data
+        let _select = []
+        for (let k in _dataList) {
+          let _o = {}
+          _o.value = _dataList[k].itemValue
+          _o.label = _dataList[k].item
+          _select.push(_o)
+        }
+        this.idcardList = _select
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     saveClick () {
       // console.log('type?_regExg_ajax')
       axios.post('/proxy/update', {

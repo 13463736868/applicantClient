@@ -13,7 +13,7 @@
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
-            <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
+            <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
@@ -30,7 +30,7 @@
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
-            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
@@ -47,7 +47,7 @@
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
-            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
@@ -64,7 +64,7 @@
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
-            <p><span class="mr10" v-text="objInfo.enterpriseArr[infoData.enterpriseType === null?0:infoData.enterpriseType]"></span><span v-text="infoData.enterpriseIdcard"></span></p>
+            <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
@@ -86,16 +86,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'prop_info',
   props: ['infoData'],
   data () {
     return {
       fileIndex: 0,
-      objInfo: {
-        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :'],
-        enterpriseArr: ['未知证件 :', '营业执照 :', '组织机构代码 :', '税务登记证 :', '多证合一营业执照 :']
-      }
+      idcardList: [],
+      enterpriseList: []
     }
   },
   beforeUpdate () {
@@ -103,7 +103,26 @@ export default {
       this.fileIndex = this.infoData.fileList.length - 1
     }
   },
+  created () {
+    this.cardList()
+  },
   computed: {
+    idcardName () {
+      for (let k in this.idcardList) {
+        if (this.idcardList[k].itemValue === this.infoData.idcardType) {
+          return this.idcardList[k].item + ' :'
+        }
+      }
+      return '未知证件 :'
+    },
+    priseName () {
+      for (let k in this.enterpriseList) {
+        if (this.enterpriseList[k].itemValue === this.infoData.enterpriseType) {
+          return this.enterpriseList[k].item + ' :'
+        }
+      }
+      return '未知证件 :'
+    },
     isShowFile () {
       if (this.fileNum > -1) {
         return true
@@ -172,6 +191,17 @@ export default {
     }
   },
   methods: {
+    cardList () {
+      axios.all([axios.post('/dictionary/enterpriseIdcardType'), axios.post('/dictionary/personIdcardType')]).then(axios.spread((resO, resT) => {
+        this.enterpriseList = resO.data.data
+        this.idcardList = resT.data.data
+      })).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     editInfo () {
       this.$emit('editInfo')
     },

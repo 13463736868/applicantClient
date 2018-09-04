@@ -11,7 +11,7 @@
                 <Icon @click="seeInfo" class="_see" type="eye"></Icon>
               </span>
             </p>
-            <p><span class="mr10" v-text="objInfo.idcardArr[infoData.idcardType === null?0:infoData.idcardType]"></span><span v-text="infoData.idcard"></span></p>
+            <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
             <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
@@ -34,15 +34,15 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'agen_info',
   props: ['infoData'],
   data () {
     return {
       fileIndex: 0,
-      objInfo: {
-        idcardArr: ['未知证件 :', '身份证 :', '军官证 :', '户口簿 :', '实习律师证 :', '律师职业证 :', '护照 :', '驾照 :']
-      }
+      idcardList: []
     }
   },
   beforeUpdate () {
@@ -50,7 +50,18 @@ export default {
       this.fileIndex = this.infoData.fileList.length - 1
     }
   },
+  created () {
+    this.cardList()
+  },
   computed: {
+    idcardName () {
+      for (let k in this.idcardList) {
+        if (this.idcardList[k].itemValue === this.infoData.idcardType) {
+          return this.idcardList[k].item + ' :'
+        }
+      }
+      return '未知证件 :'
+    },
     isShowFile () {
       if (this.fileNum > -1) {
         return true
@@ -119,6 +130,16 @@ export default {
     }
   },
   methods: {
+    cardList () {
+      axios.post('/dictionary/personIdcardType').then(res => {
+        this.idcardList = res.data.data
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     seeInfo () {
       this.$emit('seeInfo')
     },

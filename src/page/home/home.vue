@@ -84,40 +84,7 @@ export default {
       search: {
         text: ''
       },
-      caseStatusList: [
-        {
-          value: 0,
-          label: '全部'
-        },
-        {
-          value: 1,
-          label: '已提交'
-        },
-        {
-          value: 2,
-          label: '待缴费'
-        },
-        {
-          value: 3,
-          label: '不受理'
-        },
-        {
-          value: 4,
-          label: '已立案'
-        },
-        {
-          value: 5,
-          label: '审理中'
-        },
-        {
-          value: 6,
-          label: '已撤回'
-        },
-        {
-          value: 7,
-          label: '已结案'
-        }
-      ],
+      caseStatusList: [],
       caseStatus: 0,
       caseList: {
         loading: false,
@@ -199,6 +166,7 @@ export default {
     }
   },
   created () {
+    this.dictionary()
     this.resMineList()
   },
   computed: {
@@ -340,6 +308,24 @@ export default {
           ])
         }
       }
+    },
+    dictionary () {
+      axios.post('/dictionary/caseState').then(res => {
+        let _dataList = res.data.data
+        let _select = []
+        for (let k in _dataList) {
+          let _o = {}
+          _o.value = _dataList[k].itemValue
+          _o.label = _dataList[k].item
+          _select.push(_o)
+        }
+        this.caseStatusList = _select
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     resMineList () {
       this.spinShow = true

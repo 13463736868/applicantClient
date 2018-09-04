@@ -47,7 +47,7 @@
       </Row>
     </Row>
     <Row>
-      <Col class="tc mt10" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':seeAgenBtn}" v-bind:disabled="seeAgenBtn" @click="saveClick">保 存</button></Col>
+      <Col class="tc mt10" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':seeAgenBtn}" v-bind:disabled="seeAgenBtn" @click="saveClick">确 定</button></Col>
     </Row>
   </div>
 </template>

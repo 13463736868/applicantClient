@@ -29,11 +29,11 @@
               </Row>
               <Row class="_labelFor">
                 <Col span="24" class="_label">联系邮箱</Col>
-                <Col span="24" class="_input"><span v-text="userAInfo.email"></span><input type="text" v-model="userAInfo.email"></Col>
+                <Col span="24" class="_input"><span v-text="userAInfo.email"></span></Col>
               </Row>
               <Row class="_labelFor">
                 <Col span="24" class="_label">联系地址</Col>
-                <Col span="24" class="_input"><span v-text="userAInfo.address"></span><input type="text" v-model="userAInfo.address"></Col>
+                <Col span="24" class="_input"><p v-text="userAInfo.address" :title="userAInfo.address"></p></Col>
               </Row>
             </Col>
           </Row>
@@ -49,7 +49,7 @@
               </Row>
               <Row class="_labelFor">
                 <Col span="24" class="_label">公司地址<b class="_b">*</b></Col>
-                <Col span="24" class="_input"><span v-text="userAInfo.address"></span></Col>
+                <Col span="24" class="_input"><p v-text="userAInfo.address" :title="userAInfo.address"></p></Col>
               </Row>
               <Row class="_labelFor">
                 <Col span="24" class="_label">公司行业<b class="_b">*</b></Col>
@@ -70,7 +70,7 @@
                 <Col span="24" class="_input"><span v-text="userAInfo.idcard"></span></Col>
               </Row>
               <Row class="_labelFor">
-                <Col span="24" class="_label">公司人数{{scaleName}}<b class="_b">*</b></Col>
+                <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
                 <Col span="24" class="_input"><span v-text="scaleName"></span></Col>
               </Row>
             </Col>
@@ -266,6 +266,13 @@ export default {
       ._input {
         margin-bottom: 10px;
         border-bottom:1px solid #ddd;
+        p {
+          height: 32px;
+          line-height: 32px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         span {
           width: 100%;
           letter-spacing: 1px;

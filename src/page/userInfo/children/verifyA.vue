@@ -402,7 +402,7 @@ export default {
           _data.verifyDesc = res.data.verifyDesc
           if (window.localStorage) {
             let loc = window.localStorage
-            loc.setItem('userInfo', JSON.stringify(_data))
+            loc.setItem('userState', JSON.stringify(_data))
           }
           this.setUserState(_data)
         }

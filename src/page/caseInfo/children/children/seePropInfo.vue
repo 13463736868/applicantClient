@@ -207,15 +207,15 @@ export default {
           return this.idcardList[k].item
         }
       }
-      return ''
+      return '未知证件'
     },
     priseName () {
-      for (let k in this.idcardList) {
-        if (this.idcardList[k].itemValue === this.propData.idcardType) {
-          return this.idcardList[k].item
+      for (let k in this.enterpriseList) {
+        if (this.enterpriseList[k].itemValue === this.propData.enterpriseType) {
+          return this.enterpriseList[k].item
         }
       }
-      return ''
+      return '未知证件'
     }
   },
   methods: {

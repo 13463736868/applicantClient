@@ -263,58 +263,42 @@ export default {
         status: 0,
         text: ''
       },
-      idcardList: [
-        {
-          value: 1,
-          label: '身份证'
-        },
-        {
-          value: 2,
-          label: '军官证'
-        },
-        {
-          value: 3,
-          label: '户口薄'
-        },
-        {
-          value: 4,
-          label: '实习律师证'
-        },
-        {
-          value: 5,
-          label: '律师职业证'
-        },
-        {
-          value: 6,
-          label: '护照'
-        },
-        {
-          value: 7,
-          label: '驾照'
-        }
-      ],
-      enterpriseList: [
-        {
-          value: 1,
-          label: '营业执照'
-        },
-        {
-          value: 2,
-          label: '组织机构代码'
-        },
-        {
-          value: 3,
-          label: '税务登记证'
-        },
-        {
-          value: 4,
-          label: '多证合一营业执照'
-        }
-      ],
+      idcardList: [],
+      enterpriseList: [],
       propData: JSON.parse(JSON.stringify(this.editPropData))
     }
   },
+  created () {
+    this.cardList()
+  },
   methods: {
+    cardList () {
+      axios.all([axios.post('/dictionary/enterpriseIdcardType'), axios.post('/dictionary/personIdcardType')]).then(axios.spread((resO, resT) => {
+        let _dataOList = resO.data.data
+        let _selectO = []
+        let _dataTList = resT.data.data
+        let _selectT = []
+        for (let k in _dataOList) {
+          let _o = {}
+          _o.value = _dataOList[k].itemValue
+          _o.label = _dataOList[k].item
+          _selectO.push(_o)
+        }
+        for (let v in _dataTList) {
+          let _t = {}
+          _t.value = _dataTList[v].itemValue
+          _t.label = _dataTList[v].item
+          _selectT.push(_t)
+        }
+        this.enterpriseList = _selectO
+        this.idcardList = _selectT
+      })).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     changeType () {
       this.propData.idcardType = null
       this.propData.idcard = null
