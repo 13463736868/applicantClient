@@ -34,7 +34,7 @@
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">联系地址</Col>
-          <Col span="24" class="_input"><span v-text="agenData.address"></span></Col>
+          <Col span="24" class="_input"><p v-text="agenData.address" :title="agenData.address"></p></Col>
         </Row>
       </Col>
     </Row>
@@ -110,6 +110,13 @@ export default {
     ._input {
       margin-bottom: 10px;
       border-bottom:1px solid #ddd;
+      p {
+        height: 32px;
+        line-height: 32px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       span {
         width: 100%;
         letter-spacing: 1px;

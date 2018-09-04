@@ -134,6 +134,18 @@
         </div>
       </Upload>
     </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.sele" :isSaveBtn="true" @alertCancel="alertCanc('sele')" alertTitle="选择仲裁员">
+      <Row>
+        <Col span="24" class="pl20 pr20">
+          <Table stripe align="center" :loading="seleList.loading" :columns="seleList.header" :data="seleList.bodyList"></Table>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="12" offset="6" class="tc pt10">
+          <Page simple :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-total @on-change="reschangePage"></Page>
+        </Col>
+      </Row>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -180,6 +192,62 @@ export default {
         repl: null,
         coun: null,
         righ: null
+      },
+      seleList: {
+        loading: false,
+        header: [
+          {
+            title: '名称',
+            key: 'name',
+            align: 'center'
+          },
+          {
+            title: '擅长领域',
+            key: 'professional',
+            align: 'center'
+          },
+          {
+            title: '操作',
+            key: 'id',
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('span', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    color: '#2d8cf0',
+                    cursor: 'pointer'
+                  },
+                  on: {
+                    click: () => {
+                      this.seleSave(params.index)
+                    }
+                  }
+                }, '选择')
+              ])
+            }
+          }
+        ],
+        bodyList: [
+          {
+            id: 1000,
+            name: '王华',
+            professional: '国内贸易'
+          },
+          {
+            id: 1001,
+            name: '王二华',
+            professional: '金融'
+          }
+        ]
+      },
+      pageObj: {
+        total: 0,
+        pageNum: 1,
+        pageSize: 5
       }
     }
   },
@@ -221,12 +289,6 @@ export default {
       })
     },
     isShowBtn () {
-      // this.btnShow.avoidShow = true
-      // this.btnShow.retractShow = true
-      // this.btnShow.selectShow = true
-      // this.btnShow.replClick = true
-      // this.btnShow.counterclaim = true
-      // this.btnShow.rightOfJ = true
       if (this.myCaseShowBtn.debarbArbitrator === 1) {
         this.btnShow.avoidShow = true
       }
@@ -364,7 +426,49 @@ export default {
       }
     },
     selectClick () {
-      console.log('选择仲裁员')
+      this.alertShow.sele = true
+      this.resArbitrator()
+    },
+    resArbitrator () {
+      axios.post('/case/seletArbitrator', {
+        pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
+        pageSize: this.pageObj.pageSize
+      }).then(res => {
+        this.seleList.bodyList = res.data.data.dataList === null ? [] : res.data.data.dataList
+        this.pageObj.total = res.data.data.totalCount
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    reschangePage (page) {
+      this.pageObj.pageNum = page
+      this.resArbitrator()
+    },
+    seleSave (index) {
+      axios.post('/case/appointArbitrator', {
+        caseId: this.caseOldId,
+        id: this.seleList.bodyList[index].id,
+        partyType: this.partieType
+      }).then(res => {
+        let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+        _showBtnObj.changeArbitrator = 0
+        this.setMyCaseShowBtn(_showBtnObj)
+        window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+        this.alertCanc('sele')
+        this.$Message.success({
+          content: '操作成功',
+          duration: 2
+        })
+      }).catch(e => {
+        this.alertCanc('sele')
+        this.$Message.error({
+          content: '错误信息:' + e.status + ' 稍后再试',
+          duration: 5
+        })
+      })
     },
     replClick () {
       this.alertShow.repl = true

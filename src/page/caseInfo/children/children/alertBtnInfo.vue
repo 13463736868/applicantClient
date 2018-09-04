@@ -11,7 +11,7 @@
       </div>
       <div slot="footer">
         <Button type="ghost" size="large" @click="alertCancel">取消</Button>
-        <Button type="primary" size="large" @click="alertConfirm">确定</Button>
+        <Button v-if="isSaveBtn !== true" type="primary" size="large" @click="alertConfirm">确定</Button>
       </div>
     </Modal>
   </div>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'alert_btn_info',
-  props: ['alertShow', 'alertTitle'],
+  props: ['alertShow', 'alertTitle', 'isSaveBtn'],
   data () {
     return {}
   },
