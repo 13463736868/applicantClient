@@ -430,7 +430,7 @@ export default {
       this.resArbitrator()
     },
     resArbitrator () {
-      axios.post('/case/seletArbitrator', {
+      axios.post('/case/selectArbitrator', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize
       }).then(res => {
