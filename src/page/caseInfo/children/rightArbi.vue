@@ -469,7 +469,9 @@ export default {
   },
   watch: {
     myCaseShowBtn: function (val) {
-      this.isShowBtn()
+      if (val !== null) {
+        this.isShowBtn()
+      }
     }
   }
 }

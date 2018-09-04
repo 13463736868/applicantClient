@@ -1,50 +1,42 @@
 <template>
   <div class="_seeAgenInfo">
     <Row>
-      <Col span="23" offset="1" class="_type">
-        <span class="mr10">代理人属性：</span>
-        <span v-if="agenData.type === 1">律师代理</span>
-        <span v-else-if="agenData.type === 2">公民代理</span>
-        <span v-else-if="agenData.type === 3">职员</span>
+      <Col span="10" offset="1">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="agenData.name"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="agenData.idcard"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="agenData.organization"></span></Col>
+        </Row>
       </Col>
-      <Row>
-        <Col span="10" offset="1">
-          <Row class="_labelFor">
-            <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="agenData.name"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="agenData.idcard"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="agenData.organization"></span></Col>
-          </Row>
-        </Col>
-        <Col span="10" offset="2">
-          <Row class="_labelFor">
-            <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="agenData.propName"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><span v-text="agenData.phone"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
-            <Col span="24" class="_input"><span v-text="agenData.email"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
-            <Col span="24" class="_input"><span v-text="agenData.address"></span></Col>
-          </Row>
-        </Col>
-      </Row>
+      <Col span="10" offset="2">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="agenData.propName"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="agenData.phone"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">送达邮箱</Col>
+          <Col span="24" class="_input"><span v-text="agenData.email"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">联系地址</Col>
+          <Col span="24" class="_input"><span v-text="agenData.address"></span></Col>
+        </Row>
+      </Col>
     </Row>
     <Row>
       <Col class="tc mt10" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':seeAgenBtn}" v-bind:disabled="seeAgenBtn" @click="saveClick">确 定</button></Col>
@@ -105,11 +97,6 @@ export default {
   padding: 15px;
   background: #fff;
   font-size: 12px;
-  ._type {
-    margin-bottom: 10px;
-    height: 24px;
-    line-height: 24px;
-  }
   ._labelFor {
     ._label {
       height: 20px;

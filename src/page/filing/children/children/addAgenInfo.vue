@@ -1,68 +1,58 @@
 <template>
   <div class="_addAgenInfo">
     <Row>
-      <Col span="23" offset="1" class="_type">
-        <span class="mr20">代理人属性</span>
-        <RadioGroup v-model="agenData.type">
-          <Radio label="1">律师代理</Radio>
-          <Radio label="2">公民代理</Radio>
-          <Radio label="3">职员</Radio>
-        </RadioGroup>
+      <Col span="10" offset="1">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.name"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===11" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
+          <Col span="24">
+            <Select v-model="agenData.idcardType">
+              <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===12" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.idcard"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===13" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.organization"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
+        </Row>
       </Col>
-      <Row>
-        <Col span="10" offset="1">
-          <Row class="_labelFor">
-            <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.name"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===11" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
-            <Col span="24">
-              <Select v-model="agenData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
-              </Select>
-            </Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===12" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.idcard"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===13" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.organization"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
-          </Row>
-        </Col>
-        <Col span="10" offset="2">
-          <Row class="_labelFor">
-            <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
-            <Col span="24">
-              <Select v-model="agenData.propId">
-                <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
-              </Select>
-            </Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.phone"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===22" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.email"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
-          </Row>
-          <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
-            <Col span="24" class="_input"><input type="text" v-model="agenData.address"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
-          </Row>
-        </Col>
-      </Row>
+      <Col span="10" offset="2">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
+          <Col span="24">
+            <Select v-model="agenData.propId">
+              <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.phone"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===22" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">送达邮箱</Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.email"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">联系地址</Col>
+          <Col span="24" class="_input"><input type="text" v-model="agenData.address"></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
+        </Row>
+      </Col>
     </Row>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
@@ -86,7 +76,6 @@ export default {
       },
       idcardList: [],
       agenData: {
-        type: '1',
         idcardType: null,
         idcard: '',
         organization: '',
@@ -126,7 +115,6 @@ export default {
         caseId: this.caseId,
         propId: this.agenData.propId,
         propName: this.agenData.propName,
-        type: this.agenData.type,
         idcardType: this.agenData.idcardType,
         idcard: this.agenData.idcard,
         phone: this.agenData.phone,
@@ -165,11 +153,6 @@ export default {
   padding: 15px;
   background: #fff;
   font-size: 12px;
-  ._type {
-    margin-bottom: 10px;
-    height: 24px;
-    line-height: 24px;
-  }
   ._labelFor {
     ._label {
       height: 20px;
