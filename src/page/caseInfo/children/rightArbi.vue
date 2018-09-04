@@ -291,21 +291,33 @@ export default {
     isShowBtn () {
       if (this.myCaseShowBtn.debarbArbitrator === 1) {
         this.btnShow.avoidShow = true
+      } else {
+        this.btnShow.avoidShow = false
       }
       if (this.myCaseShowBtn.revocation === 1) {
         this.btnShow.retractShow = true
+      } else {
+        this.btnShow.retractShow = false
       }
       if (this.myCaseShowBtn.changeArbitrator === 1) {
         this.btnShow.selectShow = true
+      } else {
+        this.btnShow.selectShow = false
       }
       if (this.myCaseShowBtn.applyCorrect === 1) {
         this.btnShow.replClick = true
+      } else {
+        this.btnShow.replClick = false
       }
       if (this.myCaseShowBtn.counterclaim === 1) {
         this.btnShow.counterclaim = true
+      } else {
+        this.btnShow.counterclaim = false
       }
       if (this.myCaseShowBtn.rightOfJurisdiction === 1) {
         this.btnShow.rightOfJ = true
+      } else {
+        this.btnShow.rightOfJ = false
       }
     },
     avoidClick () {
