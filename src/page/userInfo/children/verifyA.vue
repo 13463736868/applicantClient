@@ -404,7 +404,7 @@ export default {
             let loc = window.localStorage
             loc.setItem('userInfo', JSON.stringify(_data))
           }
-          this.setUserInfo(_data)
+          this.setUserState(_data)
         }
       }
     },
