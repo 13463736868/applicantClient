@@ -90,32 +90,24 @@ export default function (val, type) {
     } else {
       return false
     }
-  } else if (type === 'idcard1' || type === 'idcard3' || type === 'idcard7') {
-    // 1身份证 3户口簿 6驾照
+  } else if (type === 'idcard') {
+    // 身份证 户口簿
     let reg = new RegExp('^[1-9]{1}[0-9]{16}[0-9xX]$|^[1-9]{1}[0-9]{14}$')
     if (reg.test(val)) {
       return setSFZRegExp(val)
     } else {
       return false
     }
-  } else if (type === 'idcard2') {
-    // 2军官证
-    let reg = new RegExp('^[0-9a-zA-Z]{7,15}$')
-    if (reg.test(val)) {
-      return true
-    } else {
-      return false
-    }
-  } else if (type === 'idcard4') {
-    // 4律师执业证
+  } else if (type === 'idcard4xx') {
+    // 4律师执业证 废弃
     let reg = new RegExp('^[0-9]{17}$|^[0-9]{12}$')
     if (reg.test(val)) {
       return true
     } else {
       return false
     }
-  } else if (type === 'idcard5') {
-    // 5护照
+  } else if (type === 'idcard5xx') {
+    // 5护照 废弃
     let reg = new RegExp('^[A-Z]{1}[0-9]{8,9}$')
     if (reg.test(val)) {
       return true

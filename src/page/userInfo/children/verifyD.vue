@@ -572,7 +572,7 @@ export default {
           if (!setRegExp(this.userAInfo.name, 'name')) {
             this.emInfo.status = 111
             this.emInfo.text = '请输入正确名字格式'
-          } else if (!setRegExp(this.userAInfo.idcard, 'idcard' + this.userAInfo.idcardType)) {
+          } else if (!setRegExp(this.userAInfo.idcard, 'idcard')) {
             this.emInfo.status = 113
             this.emInfo.text = '请输入正确证件号码格式'
           } else if (!setRegExp(this.userAInfo.email, 'email')) {
@@ -627,7 +627,7 @@ export default {
           } else if (!setRegExp(this.userAInfo.legal, 'name')) {
             this.emInfo.status = 221
             this.emInfo.text = '请输入正确名字格式'
-          } else if (!setRegExp(this.userAInfo.idcard, 'idcard' + this.userAInfo.idcardType)) {
+          } else if (!setRegExp(this.userAInfo.idcard, 'idcard')) {
             this.emInfo.status = 223
             this.emInfo.text = '请输入正确证件号码格式'
           } else {

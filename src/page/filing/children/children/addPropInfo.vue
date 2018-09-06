@@ -24,7 +24,7 @@
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===112" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
@@ -39,12 +39,12 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
           </Row>
@@ -77,7 +77,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===214" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
           </Row>
@@ -103,12 +103,12 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===224" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===225" v-text="emInfo.text"></span></Col>
           </Row>
@@ -141,7 +141,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===314" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===315" v-text="emInfo.text"></span></Col>
           </Row>
@@ -167,12 +167,12 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===323" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===324" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===325" v-text="emInfo.text"></span></Col>
           </Row>
@@ -205,7 +205,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===414" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===415" v-text="emInfo.text"></span></Col>
           </Row>
@@ -231,12 +231,12 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===423" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===424" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===425" v-text="emInfo.text"></span></Col>
           </Row>
@@ -252,6 +252,7 @@
 
 <script>
 import axios from 'axios'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'add_prop_info',
@@ -333,6 +334,40 @@ export default {
     },
     saveClick () {
       // console.log('type?_regExg_ajax')
+      if (this.this.propData.type === 1) {
+        if (this.this.propData.name === '' || this.this.propData.idcardType === null || this.this.propData.idcard === '' || this.this.propData.phone === '' || this.this.propData.email === '' || this.this.propData.address === '') {
+          if (this.propData.name === '') {
+            this.emInfo.status = 111
+            this.emInfo.text = '请输入姓名'
+          } else if (this.propData.idcardType === null) {
+            this.emInfo.status = 112
+            this.emInfo.text = '请选择证件类型'
+          } else if (this.propData.idcard === '') {
+            this.emInfo.status = 113
+            this.emInfo.text = '请输入证件号码'
+          } else if (this.propData.phone === '') {
+            this.emInfo.status = 121
+            this.emInfo.text = '请输入手机号'
+          } else if (this.propData.email === '') {
+            this.emInfo.status = 122
+            this.emInfo.text = '请输入邮箱地址'
+          } else if (this.propData.address === '') {
+            this.emInfo.status = 123
+            this.emInfo.text = '请输入联系地址'
+          }
+        } else {
+          if (!setRegExp(this.propData.name, 'name')) {
+            this.emInfo.status = 111
+            this.emInfo.text = '请输入正确名字格式'
+          }
+        }
+      } else if (this.this.propData.type === 2) {
+
+      } else if (this.this.propData.type === 3) {
+
+      } else if (this.this.propData.type === 4) {
+
+      }
       axios.post('/party/add/' + this.addType, {
         caseId: this.caseId,
         type: this.propData.type,
