@@ -60,33 +60,33 @@
       </div>
     </div>
     <div class="_myCaseSub">
-      <Row>
-        <Col v-if="btnShow.avoidShow" span="24">
+      <Row v-if="myCaseShowBtn !== null">
+        <Col v-if="myCaseShowBtn.debarbArbitrator === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="avoidClick">申请仲裁员回避</button></Col>
           </Row>
         </Col>
-        <Col v-if="btnShow.retractShow" span="24">
+        <Col v-if="myCaseShowBtn.revocation === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="retractClick">撤回案件</button></Col>
           </Row>
         </Col>
-        <Col v-if="btnShow.selectShow" span="24">
+        <Col v-if="myCaseShowBtn.changeArbitrator" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="selectClick">选择仲裁员</button></Col>
           </Row>
         </Col>
-        <Col v-if="btnShow.replClick" span="24">
+        <Col v-if="myCaseShowBtn.applyCorrect === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="replClick">补正</button></Col>
           </Row>
         </Col>
-        <Col v-if="btnShow.counterclaim" span="24">
+        <Col v-if="myCaseShowBtn.counterclaim === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="counteClick">反请求</button></Col>
           </Row>
         </Col>
-        <Col v-if="btnShow.rightOfJ" span="24">
+        <Col v-if="myCaseShowBtn.rightOfJurisdiction === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="rightOfJClick">管辖权异议</button></Col>
           </Row>
@@ -169,14 +169,6 @@ export default {
       dataInfoShow: false,
       dataInfo: null,
       addSubmit: false,
-      btnShow: {
-        avoidShow: false,
-        retractShow: false,
-        selectShow: false,
-        replClick: false,
-        counterclaim: false,
-        rightOfJ: false
-      },
       alertShow: {
         avoi: false,
         retr: false,
@@ -231,18 +223,7 @@ export default {
             }
           }
         ],
-        bodyList: [
-          {
-            id: 1000,
-            name: '王华',
-            professional: '国内贸易'
-          },
-          {
-            id: 1001,
-            name: '王二华',
-            professional: '金融'
-          }
-        ]
+        bodyList: []
       },
       pageObj: {
         total: 0,
@@ -254,9 +235,6 @@ export default {
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.resCaseItem()
-    }
-    if (this.myCaseShowBtn !== null) {
-      this.isShowBtn()
     }
   },
   computed: {
@@ -287,38 +265,6 @@ export default {
           duration: 5
         })
       })
-    },
-    isShowBtn () {
-      if (this.myCaseShowBtn.debarbArbitrator === 1) {
-        this.btnShow.avoidShow = true
-      } else {
-        this.btnShow.avoidShow = false
-      }
-      if (this.myCaseShowBtn.revocation === 1) {
-        this.btnShow.retractShow = true
-      } else {
-        this.btnShow.retractShow = false
-      }
-      if (this.myCaseShowBtn.changeArbitrator === 1) {
-        this.btnShow.selectShow = true
-      } else {
-        this.btnShow.selectShow = false
-      }
-      if (this.myCaseShowBtn.applyCorrect === 1) {
-        this.btnShow.replClick = true
-      } else {
-        this.btnShow.replClick = false
-      }
-      if (this.myCaseShowBtn.counterclaim === 1) {
-        this.btnShow.counterclaim = true
-      } else {
-        this.btnShow.counterclaim = false
-      }
-      if (this.myCaseShowBtn.rightOfJurisdiction === 1) {
-        this.btnShow.rightOfJ = true
-      } else {
-        this.btnShow.rightOfJ = false
-      }
     },
     avoidClick () {
       this.alertShow.avoi = true
@@ -394,6 +340,10 @@ export default {
           duration: 5
         })
       } else {
+        let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+        _showBtnObj.revocation = 0
+        this.setMyCaseShowBtn(_showBtnObj)
+        window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
         this.progressText = '100%'
         this.spinShow = false
         this.alertCanc('retr')
@@ -581,13 +531,6 @@ export default {
     alertCanc (type) {
       this.alertShow[type] = false
       this.dataObj[type] = null
-    }
-  },
-  watch: {
-    myCaseShowBtn: function (val) {
-      if (val !== null) {
-        this.isShowBtn()
-      }
     }
   }
 }

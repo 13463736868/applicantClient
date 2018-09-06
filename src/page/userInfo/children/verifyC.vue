@@ -133,9 +133,13 @@ export default {
     }
   },
   created () {
-    this.cardList()
-    this.dictionary()
-    this.resSee()
+    if (this.userType === 1) {
+      this.cardList()
+      this.resSee()
+    } else if (this.userType === 2) {
+      this.dictionary()
+      this.resSee()
+    }
     this.$Message.success({
       content: '恭喜您，信息已审核通过！',
       duration: 2
