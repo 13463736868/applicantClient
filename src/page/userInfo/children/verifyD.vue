@@ -341,7 +341,7 @@ export default {
         }
       }).catch(e => {
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       })
@@ -426,7 +426,6 @@ export default {
     },
     fileBChange (e) {
       let _file = e.target.files[0]
-      console.log(_file)
       if (e.target.files.length <= 0) {
       } else if (_file.type.indexOf('image/') === -1) {
         this.$Message.error({
@@ -512,7 +511,7 @@ export default {
       if (this.uploadSum === 0) {
         this.addInfoBtn = false
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       }
@@ -672,7 +671,7 @@ export default {
         }).catch(e => {
           this.addInfoBtn = false
           this.$Message.error({
-            content: '错误信息:' + e.status + ' 稍后再试',
+            content: '错误信息:' + e + ' 稍后再试',
             duration: 5
           })
         })

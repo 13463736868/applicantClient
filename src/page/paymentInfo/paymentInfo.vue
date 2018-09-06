@@ -57,13 +57,6 @@
             <button class="_exportBtn" @click="exportData">导出数据</button>
           </div>
         </div>
-        <!-- <div class="_page clearfix">
-          <Row>
-            <Col span="12" offset="6" class="tc">
-              <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
-            </Col>
-          </Row>
-        </div> -->
       </Row>
     </div>
   </div>
@@ -148,11 +141,6 @@ export default {
           }
         ],
         bodyList: []
-      },
-      pageObj: {
-        total: 0,
-        pageNum: 1,
-        pageSize: 10
       }
     }
   },
@@ -188,13 +176,17 @@ export default {
       })
     },
     exportData () {
-      // this.$refs.table.exportCsv({
-      //   filename: '缴费单表格'
-      // })
-      this.$Message.info({
-        content: '攻城狮正在努力开发,敬请期待',
-        duration: 5
+      axios.post('/person/paymentDetail/build', this.dataObj).then(res => {
+        this.dowPdf(res.data.data)
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
       })
+    },
+    dowPdf (fileId) {
+      window.open('/api/file/dowload/' + fileId, '_blank')
     }
   }
 }

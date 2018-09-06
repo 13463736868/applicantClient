@@ -413,7 +413,7 @@ export default {
       if (this.uploadNum === 0) {
         this.addInfoBtn = false
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       }

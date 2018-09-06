@@ -22,7 +22,7 @@
             <Col span="10" offset="2">
               <Row class="_labelFor">
                 <Col span="24" class="_label">性别<b class="_b">*</b></Col>
-                <Col span="24" class="_type">
+                <Col span="24" class="_input">
                   <span v-if="userAInfo.sex === 1">男</span>
                   <span v-else-if="userAInfo.sex === 2">女</span>
                 </Col>
@@ -195,7 +195,7 @@ export default {
         this.seeShow = true
       }).catch(e => {
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       })
@@ -291,10 +291,12 @@ export default {
   ._cFile ._mid {
     text-align: center;
     ._imgA, ._imgB {
+      @include hand;
       width: 303px;
       height: 192px;
     }
     ._imgC, ._imgD {
+      @include hand;
       width: 303px;
       height: 432px;
     }

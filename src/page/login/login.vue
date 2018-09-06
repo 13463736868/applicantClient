@@ -152,26 +152,6 @@ export default {
       } else {
         this.user.emStatus = false
         this.user.em = ''
-        // axios.all([axios.post('/checkPhone', {phone: this.user.phone}), axios.post('/login', {phone: this.user.phone, password: this.user.password})]).then(axios.spread((resO, resT) => {
-        //   if (resO.data.data === 0) {
-        //     this.user.emStatus = true
-        //     this.user.em = '该手机号码尚未注册'
-        //   } else if (resO.data.data === 1) {
-        //     if (window.localStorage) {
-        //         let loc = window.localStorage
-        //         loc.setItem('userInfo', JSON.stringify(res.data.data))
-        //       }
-        //     setToken(resT.data.data)
-        //     // this.$store.commit('ADMIN_TOKEN', '111111xxx')
-        //     let redirect = decodeURIComponent(this.$route.query.redirect || '/')
-        //     this.$router.push({
-        //       path: redirect
-        //     })
-        //   }
-        // })).catch(e => {
-        //   console.log(e)
-        // })
-
         axios.post('/login', {
           phone: this.user.phone,
           password: this.user.password

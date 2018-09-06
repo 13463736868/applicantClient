@@ -379,7 +379,7 @@ export default {
           this.spinShow = false
           this.alertCanc('retr')
           this.$Message.error({
-            content: '错误信息:' + e.status + ' 稍后再试',
+            content: '错误信息:' + e + ' 稍后再试',
             duration: 5
           })
         })
@@ -427,7 +427,7 @@ export default {
       }).catch(e => {
         this.alertCanc('sele')
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       })

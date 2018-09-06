@@ -60,7 +60,7 @@ export default {
         this.setUserState(res.data.data)
       }).catch(e => {
         this.$Message.error({
-          content: '错误信息:' + e.status + ' 稍后再试',
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       })
