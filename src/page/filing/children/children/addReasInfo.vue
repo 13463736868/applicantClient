@@ -38,18 +38,24 @@ export default {
   },
   methods: {
     saveClick () {
-      // console.log('type?_regExg_ajax')
-      axios.post('/case/requestUpdate/2', {
-        caseid: this.caseId,
-        content: this.reasData.content
-      }).then(res => {
-        this.$emit('saveClick', res.data.data)
-      }).catch(e => {
+      if (this.reasData.content === '') {
         this.$Message.error({
-          content: '错误信息:' + e,
+          content: '请填写事实与理由',
           duration: 5
         })
-      })
+      } else {
+        axios.post('/case/requestUpdate/2', {
+          caseid: this.caseId,
+          content: this.reasData.content
+        }).then(res => {
+          this.$emit('saveClick', res.data.data)
+        }).catch(e => {
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
+        })
+      }
     },
     cancClick () {
       this.$emit('cancClick')

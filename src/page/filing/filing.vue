@@ -40,7 +40,6 @@ export default {
       alertShow: false,
       alertShowSub: false,
       committeeCode: null,
-      caseInfo: null,
       menuClaim: [
         {
           id: '0',
@@ -86,7 +85,6 @@ export default {
       axios.post('/case/details', {
         id: this.caseId
       }).then(res => {
-        this.caseInfo = res.data.data
         this.setCaseInfo(res.data.data)
       }).catch(e => {
         this.$Message.error({

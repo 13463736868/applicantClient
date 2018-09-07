@@ -18,6 +18,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'case_submit',
@@ -30,6 +31,11 @@ export default {
   },
   created () {
     this.resDictionary('commissionType')
+  },
+  computed: {
+    ...mapGetters([
+      'caseInfo'
+    ])
   },
   methods: {
     resDictionary (itemGroup) {
@@ -52,7 +58,39 @@ export default {
       })
     },
     saveClick () {
-      this.$emit('saveClick', this.committeeStatus)
+      if (this.caseInfo.propList.lenght === 0) {
+        this.$Message.error({
+          content: '请填写申请人',
+          duration: 5
+        })
+      } else if (this.caseInfo.respList.length === 0) {
+        this.$Message.error({
+          content: '请填写被申请人',
+          duration: 5
+        })
+      } else if (this.caseInfo.requestList.length === 0) {
+        this.$Message.error({
+          content: '请填写被请求项',
+          duration: 5
+        })
+      } else if (this.caseInfo.requestReasons === null) {
+        this.$Message.error({
+          content: '请填写事实与理由',
+          duration: 5
+        })
+      } else if (this.caseInfo.arbRequisitionFile === null) {
+        this.$Message.error({
+          content: '请上传仲裁申请书',
+          duration: 5
+        })
+      } else if (this.caseInfo.evidenceList.length === 0) {
+        this.$Message.error({
+          content: '请填写证据',
+          duration: 5
+        })
+      } else {
+        this.$emit('saveClick', this.committeeStatus)
+      }
     }
   }
 }
