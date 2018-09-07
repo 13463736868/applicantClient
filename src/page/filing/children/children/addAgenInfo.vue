@@ -43,12 +43,12 @@
           <Col span="24" class="_em"><span v-show="emInfo.status===22" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">送达邮箱</Col>
+          <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.email"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">联系地址</Col>
+          <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.address"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
         </Row>
@@ -63,6 +63,7 @@
 
 <script>
 import axios from 'axios'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'add_agen_info',
@@ -79,7 +80,7 @@ export default {
         idcardType: null,
         idcard: '',
         organization: '',
-        propName: '',
+        propId: null,
         phone: '',
         name: '',
         email: '',
@@ -110,7 +111,59 @@ export default {
       })
     },
     saveClick () {
-      // console.log('type?_regExg_ajax')
+      if (this.agenData.name === '' || this.agenData.idcardType === null || this.agenData.idcard === '' || this.agenData.organization === '' || this.agenData.propId === null || this.agenData.phone === '' || this.agenData.email === '' || this.agenData.address === '') {
+        if (this.agenData.name === '') {
+          this.emInfo.status = 11
+          this.emInfo.text = '请输入姓名'
+        } else if (this.agenData.idcardType === null) {
+          this.emInfo.status = 12
+          this.emInfo.text = '请选择证件类型'
+        } else if (this.agenData.idcard === '') {
+          this.emInfo.status = 13
+          this.emInfo.text = '请输入证件号码'
+        } else if (this.agenData.organization === '') {
+          this.emInfo.status = 14
+          this.emInfo.text = '请输入工作单位'
+        } else if (this.agenData.propId === null) {
+          this.emInfo.status = 21
+          this.emInfo.text = '请选择委托人'
+        } else if (this.agenData.phone === '') {
+          this.emInfo.status = 22
+          this.emInfo.text = '请输入手机号'
+        } else if (this.agenData.email === '') {
+          this.emInfo.status = 23
+          this.emInfo.text = '请输入邮箱地址'
+        } else if (this.agenData.address === '') {
+          this.emInfo.status = 24
+          this.emInfo.text = '请输入联系地址'
+        }
+      } else {
+        if (!setRegExp(this.agenData.name, 'name')) {
+          this.emInfo.status = 11
+          this.emInfo.text = '请输入正确姓名格式'
+        } else if (!setRegExp(this.agenData.idcard, 'idcard')) {
+          this.emInfo.status = 13
+          this.emInfo.text = '请输入正确证件号码格式'
+        } else if (!setRegExp(this.agenData.organization, 'company')) {
+          this.emInfo.status = 14
+          this.emInfo.text = '请输入正确单位名称'
+        } else if (!setRegExp(this.agenData.phone, 'phone')) {
+          this.emInfo.status = 21
+          this.emInfo.text = '请输入正确手机格式'
+        } else if (!setRegExp(this.agenData.email, 'email')) {
+          this.emInfo.status = 22
+          this.emInfo.text = '请输入正确邮箱格式'
+        } else if (!setRegExp(this.agenData.address, 'address')) {
+          this.emInfo.status = 23
+          this.emInfo.text = '请输入正确地址格式'
+        } else {
+          this.emInfo.status = 0
+          this.emInfo.text = ''
+          this.sendAjax()
+        }
+      }
+    },
+    sendAjax () {
       axios.post('/proxy/add', {
         caseId: this.caseId,
         propId: this.agenData.propId,

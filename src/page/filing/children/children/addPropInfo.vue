@@ -64,7 +64,7 @@
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===212" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -95,7 +95,7 @@
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===222" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
@@ -128,7 +128,7 @@
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===312" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -159,7 +159,7 @@
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===322" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
@@ -192,7 +192,7 @@
                 <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===412" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
@@ -223,7 +223,7 @@
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===422" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
@@ -333,9 +333,8 @@ export default {
       }
     },
     saveClick () {
-      // console.log('type?_regExg_ajax')
-      if (this.this.propData.type === 1) {
-        if (this.this.propData.name === '' || this.this.propData.idcardType === null || this.this.propData.idcard === '' || this.this.propData.phone === '' || this.this.propData.email === '' || this.this.propData.address === '') {
+      if (this.propData.type === 1) {
+        if (this.propData.name === '' || this.propData.idcardType === null || this.propData.idcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
           if (this.propData.name === '') {
             this.emInfo.status = 111
             this.emInfo.text = '请输入姓名'
@@ -359,15 +358,156 @@ export default {
           if (!setRegExp(this.propData.name, 'name')) {
             this.emInfo.status = 111
             this.emInfo.text = '请输入正确名字格式'
+          } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+            this.emInfo.status = 113
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.propData.phone, 'phone')) {
+            this.emInfo.status = 122
+            this.emInfo.text = '请输入正确手机格式'
+          } else if (!setRegExp(this.propData.email, 'email')) {
+            this.emInfo.status = 122
+            this.emInfo.text = '请输入正确邮箱格式'
+          } else if (!setRegExp(this.propData.address, 'address')) {
+            this.emInfo.status = 123
+            this.emInfo.text = '请输入正确地址格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
           }
         }
-      } else if (this.this.propData.type === 2) {
-
-      } else if (this.this.propData.type === 3) {
-
-      } else if (this.this.propData.type === 4) {
-
+      } else if (this.propData.type === 2) {
+        if (this.propData.enterpriseName === '' || this.propData.enterpriseType === null || this.propData.enterpriseIdcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+          if (this.propData.enterpriseName === '') {
+            this.emInfo.status = 211
+            this.emInfo.text = '请输入企业名称'
+          } else if (this.propData.enterpriseType === null) {
+            this.emInfo.status = 212
+            this.emInfo.text = '请选择证照类型'
+          } else if (this.propData.enterpriseIdcard === '') {
+            this.emInfo.status = 213
+            this.emInfo.text = '请输入证照号码'
+          } else if (this.propData.phone === '') {
+            this.emInfo.status = 215
+            this.emInfo.text = '请输入手机号'
+          } else if (this.propData.email === '') {
+            this.emInfo.status = 224
+            this.emInfo.text = '请输入邮箱地址'
+          } else if (this.propData.address === '') {
+            this.emInfo.status = 225
+            this.emInfo.text = '请输入联系地址'
+          }
+        } else {
+          if (!setRegExp(this.propData.enterpriseName, 'company')) {
+            this.emInfo.status = 211
+            this.emInfo.text = '请输入正确名称格式'
+          } else if (!setRegExp(this.propData.enterpriseIdcard, 'entityNo1')) {
+            this.emInfo.status = 213
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.propData.phone, 'phone')) {
+            this.emInfo.status = 215
+            this.emInfo.text = '请输入正确手机格式'
+          } else if (!setRegExp(this.propData.email, 'email')) {
+            this.emInfo.status = 224
+            this.emInfo.text = '请输入正确邮箱格式'
+          } else if (!setRegExp(this.propData.address, 'address')) {
+            this.emInfo.status = 225
+            this.emInfo.text = '请输入正确地址格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
+          }
+        }
+      } else if (this.propData.type === 3) {
+        if (this.propData.enterpriseName === '' || this.propData.enterpriseType === null || this.propData.enterpriseIdcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+          if (this.propData.enterpriseName === '') {
+            this.emInfo.status = 311
+            this.emInfo.text = '请输入名称'
+          } else if (this.propData.enterpriseType === null) {
+            this.emInfo.status = 312
+            this.emInfo.text = '请选择证照类型'
+          } else if (this.propData.enterpriseIdcard === '') {
+            this.emInfo.status = 313
+            this.emInfo.text = '请输入证照号码'
+          } else if (this.propData.phone === '') {
+            this.emInfo.status = 315
+            this.emInfo.text = '请输入手机号'
+          } else if (this.propData.email === '') {
+            this.emInfo.status = 324
+            this.emInfo.text = '请输入邮箱地址'
+          } else if (this.propData.address === '') {
+            this.emInfo.status = 325
+            this.emInfo.text = '请输入联系地址'
+          }
+        } else {
+          if (!setRegExp(this.propData.enterpriseName, 'company')) {
+            this.emInfo.status = 311
+            this.emInfo.text = '请输入正确名称格式'
+          } else if (!setRegExp(this.propData.enterpriseIdcard, 'entityNo1')) {
+            this.emInfo.status = 313
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.propData.phone, 'phone')) {
+            this.emInfo.status = 315
+            this.emInfo.text = '请输入正确手机格式'
+          } else if (!setRegExp(this.propData.email, 'email')) {
+            this.emInfo.status = 324
+            this.emInfo.text = '请输入正确邮箱格式'
+          } else if (!setRegExp(this.propData.address, 'address')) {
+            this.emInfo.status = 325
+            this.emInfo.text = '请输入正确地址格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
+          }
+        }
+      } else if (this.propData.type === 4) {
+        if (this.propData.enterpriseName === '' || this.propData.enterpriseType === null || this.propData.enterpriseIdcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+          if (this.propData.enterpriseName === '') {
+            this.emInfo.status = 411
+            this.emInfo.text = '请输入企业名称'
+          } else if (this.propData.enterpriseType === null) {
+            this.emInfo.status = 412
+            this.emInfo.text = '请选择证照类型'
+          } else if (this.propData.enterpriseIdcard === '') {
+            this.emInfo.status = 413
+            this.emInfo.text = '请输入证照号码'
+          } else if (this.propData.phone === '') {
+            this.emInfo.status = 415
+            this.emInfo.text = '请输入手机号'
+          } else if (this.propData.email === '') {
+            this.emInfo.status = 424
+            this.emInfo.text = '请输入邮箱地址'
+          } else if (this.propData.address === '') {
+            this.emInfo.status = 425
+            this.emInfo.text = '请输入联系地址'
+          }
+        } else {
+          if (!setRegExp(this.propData.enterpriseName, 'company')) {
+            this.emInfo.status = 411
+            this.emInfo.text = '请输入正确名称格式'
+          } else if (!setRegExp(this.propData.enterpriseIdcard, 'entityNo1')) {
+            this.emInfo.status = 413
+            this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.propData.phone, 'phone')) {
+            this.emInfo.status = 415
+            this.emInfo.text = '请输入正确手机格式'
+          } else if (!setRegExp(this.propData.email, 'email')) {
+            this.emInfo.status = 424
+            this.emInfo.text = '请输入正确邮箱格式'
+          } else if (!setRegExp(this.propData.address, 'address')) {
+            this.emInfo.status = 425
+            this.emInfo.text = '请输入正确地址格式'
+          } else {
+            this.emInfo.status = 0
+            this.emInfo.text = ''
+            this.sendAjax()
+          }
+        }
       }
+    },
+    sendAjax () {
       axios.post('/party/add/' + this.addType, {
         caseId: this.caseId,
         type: this.propData.type,

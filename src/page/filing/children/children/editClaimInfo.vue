@@ -45,7 +45,23 @@ export default {
   },
   methods: {
     saveClick () {
-      // console.log('type?_regExg_ajax')
+      if (this.claimData.requestName === null || this.claimData.content === '') {
+        if (this.claimData.requestName === null) {
+          this.$Message.error({
+            content: '请选择申请人',
+            duration: 5
+          })
+        } else if (this.claimData.content === '') {
+          this.$Message.error({
+            content: '请求内容不能为空！',
+            duration: 5
+          })
+        }
+      } else {
+        this.sendAjax()
+      }
+    },
+    sendAjax () {
       axios.post('/case/requestUpdate/1', {
         caseid: this.caseId,
         id: this.claimData.id,
