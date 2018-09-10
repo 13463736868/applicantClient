@@ -59,7 +59,7 @@ axios.interceptors.response.use((res) => {
       // })
       break
   }
-  return Promise.reject(error.status)
+  return Promise.reject(error.message)
 })
 
 Vue.prototype.$http = axios

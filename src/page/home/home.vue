@@ -443,7 +443,26 @@ export default {
       this.retrDObj = null
     },
     goCourtRoom (index) {
-      console.log(this.caseList.bodyList[index])
+      let _info = this.caseList.bodyList[index]
+      let _id = _info.id
+      let _partieType = _info.partieType === 1 ? 3 : (_info.partieType === 2 ? 2 : '')
+      if (_partieType === '') {
+        this.$Message.error({
+          content: '错误信息:用户案件类型未知',
+          duration: 5
+        })
+      } else {
+        axios.post('/encryption', {
+          params: _id + '$' + _partieType
+        }).then(res => {
+          window.open('https://192.168.1.249:3004/view/index.html#/' + res.data.data, '_blank')
+        }).catch(e => {
+          this.$Message.error({
+            content: '错误信息:' + e + ' 稍后再试',
+            duration: 5
+          })
+        })
+      }
     },
     goPayment (index) {
       this.setGoPaymentOldId(this.caseList.bodyList[index].oldId)
