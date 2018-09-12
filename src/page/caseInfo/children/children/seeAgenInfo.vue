@@ -7,6 +7,10 @@
           <Col span="24" class="_input"><span v-text="agenData.name"></span></Col>
         </Row>
         <Row class="_labelFor">
+          <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="nationName"></span></Col>
+        </Row>
+        <Row class="_labelFor">
           <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
           <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
         </Row>
@@ -20,6 +24,14 @@
         </Row>
       </Col>
       <Col span="10" offset="2">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">性别<b class="_b">*</b></Col>
+          <Col span="24" class="_input">
+            <span v-if="agenData.sex === null">未知</span>
+            <span v-else-if="agenData.sex === 1">男</span>
+            <span v-else-if="agenData.sex === 2">女</span>
+          </Col>
+        </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
           <Col span="24" class="_input"><span v-text="agenData.propName"></span></Col>
@@ -54,6 +66,7 @@ export default {
     return {
       seeAgenBtn: false,
       idcardList: [],
+      nationList: [],
       agenData: JSON.parse(JSON.stringify(this.seeAgenData))
     }
   },
@@ -67,14 +80,23 @@ export default {
           return this.idcardList[k].item
         }
       }
-      return ''
+      return '未知'
+    },
+    nationName () {
+      for (let k in this.nationList) {
+        if (this.nationList[k].itemValue === this.agenData.nation) {
+          return this.nationList[k].item
+        }
+      }
+      return '未知'
     }
   },
   methods: {
     cardList () {
-      axios.post('/dictionary/personIdcardType').then(res => {
-        this.idcardList = res.data.data
-      }).catch(e => {
+      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
+        this.idcardList = resO.data.data
+        this.nationList = resT.data.data
+      })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -110,6 +132,7 @@ export default {
     ._input {
       margin-bottom: 10px;
       border-bottom:1px solid #ddd;
+      height: 32px;
       p {
         height: 32px;
         line-height: 32px;
@@ -118,6 +141,7 @@ export default {
         text-overflow: ellipsis;
       }
       span {
+        display: inline-block;
         width: 100%;
         letter-spacing: 1px;
         font-size: 12px;

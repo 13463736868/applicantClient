@@ -15,6 +15,10 @@
             <Col span="24" class="_input"><span v-text="propData.name"></span></Col>
           </Row>
           <Row class="_labelFor">
+            <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+            <Col span="24" class="_input"><span v-text="nationName"></span></Col>
+          </Row>
+          <Row class="_labelFor">
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24" class="_input"><span v-text="idcardName"></span></Col>
           </Row>
@@ -24,6 +28,14 @@
           </Row>
         </Col>
         <Col span="10" offset="2">
+          <Row class="_labelFor">
+            <Col span="24" class="_label">性别<b class="_b">*</b></Col>
+            <Col span="24" class="_input">
+              <span v-if="propData.sex === null">未知</span>
+              <span v-else-if="propData.sex === 1">男</span>
+              <span v-else-if="propData.sex === 2">女</span>
+            </Col>
+          </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><span v-text="propData.phone"></span></Col>
@@ -194,6 +206,7 @@ export default {
       seePropBtn: false,
       idcardList: [],
       enterpriseList: [],
+      nationList: [],
       propData: JSON.parse(JSON.stringify(this.seePropData))
     }
   },
@@ -207,7 +220,7 @@ export default {
           return this.idcardList[k].item
         }
       }
-      return '未知证件'
+      return '未知'
     },
     priseName () {
       for (let k in this.enterpriseList) {
@@ -215,14 +228,23 @@ export default {
           return this.enterpriseList[k].item
         }
       }
-      return '未知证件'
+      return '未知'
+    },
+    nationName () {
+      for (let k in this.nationList) {
+        if (this.nationList[k].itemValue === this.propData.nation) {
+          return this.nationList[k].item
+        }
+      }
+      return '未知'
     }
   },
   methods: {
     cardList () {
-      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/enterpriseIdcardType')]).then(axios.spread((resO, resT) => {
+      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/enterpriseIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT, resS) => {
         this.idcardList = resO.data.data
         this.enterpriseList = resT.data.data
+        this.nationList = resS.data.data
       })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
@@ -264,6 +286,7 @@ export default {
     ._input {
       margin-bottom: 10px;
       border-bottom: 1px solid #ddd;
+      height: 32px;
       p {
         height: 32px;
         line-height: 32px;
@@ -272,6 +295,7 @@ export default {
         text-overflow: ellipsis;
       }
       span {
+        display: inline-block;
         width: 100%;
         letter-spacing: 1px;
         font-size: 12px;

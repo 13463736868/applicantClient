@@ -159,7 +159,7 @@ export default {
           return this.idcardList[k].item
         }
       }
-      return ''
+      return '未知'
     },
     tradeName () {
       for (let k in this.tradeList) {
@@ -167,7 +167,7 @@ export default {
           return this.tradeList[k].item
         }
       }
-      return ''
+      return '未知'
     },
     scaleName () {
       for (let k in this.scaleList) {
@@ -175,7 +175,7 @@ export default {
           return this.scaleList[k].item
         }
       }
-      return ''
+      return '未知'
     }
   },
   methods: {

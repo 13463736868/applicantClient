@@ -18,35 +18,54 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===111" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
+            <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+            <Col span="24">
+              <Select v-model="propData.nation">
+                <Option v-for="item in nationList" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===112" v-text="emInfo.text"></span></Col>
+          </Row>
+          <Row class="_labelFor">
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
               </Select>
             </Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===112" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===113" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===113" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===114" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
+            <Col span="24" class="_label">性别<b class="_b">*</b></Col>
+            <Col span="24" class="_inputR">
+              <RadioGroup v-model="propData.sex">
+                <Radio :label="1">男</Radio>
+                <Radio :label="2">女</Radio>
+              </RadioGroup>
+            </Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
+          </Row>
+          <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===124" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
       </Row>
@@ -266,6 +285,7 @@ export default {
       },
       idcardList: [],
       enterpriseList: [],
+      nationList: [],
       propData: {
         type: 1,
         idcardType: null,
@@ -277,7 +297,10 @@ export default {
         enterpriseType: null,
         enterpriseIdcard: '',
         email: '',
-        address: ''
+        address: '',
+        nation: null,
+        birthdayStr: '',
+        sex: null
       }
     }
   },
@@ -286,11 +309,13 @@ export default {
   },
   methods: {
     cardList () {
-      axios.all([axios.post('/dictionary/enterpriseIdcardType'), axios.post('/dictionary/personIdcardType')]).then(axios.spread((resO, resT) => {
+      axios.all([axios.post('/dictionary/enterpriseIdcardType'), axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT, resS) => {
         let _dataOList = resO.data.data
         let _selectO = []
         let _dataTList = resT.data.data
         let _selectT = []
+        let _dataSList = resS.data.data
+        let _selectS = []
         for (let k in _dataOList) {
           let _o = {}
           _o.value = _dataOList[k].itemValue
@@ -303,8 +328,15 @@ export default {
           _t.label = _dataTList[v].item
           _selectT.push(_t)
         }
+        for (let n in _dataSList) {
+          let _s = {}
+          _s.value = _dataSList[n].itemValue
+          _s.label = _dataSList[n].item
+          _selectS.push(_s)
+        }
         this.enterpriseList = _selectO
         this.idcardList = _selectT
+        this.nationList = _selectS
       })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
@@ -325,7 +357,10 @@ export default {
         enterpriseType: null,
         enterpriseIdcard: '',
         email: '',
-        address: ''
+        address: '',
+        nation: null,
+        birthdayStr: '',
+        sex: null
       }
       this.emInfo = {
         status: 0,
@@ -334,24 +369,30 @@ export default {
     },
     saveClick () {
       if (this.propData.type === 1) {
-        if (this.propData.name === '' || this.propData.idcardType === null || this.propData.idcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+        if (this.propData.name === '' || this.propData.nation === null || this.propData.idcardType === null || this.propData.idcard === '' || this.propData.sex === null || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
           if (this.propData.name === '') {
             this.emInfo.status = 111
             this.emInfo.text = '请输入姓名'
-          } else if (this.propData.idcardType === null) {
+          } else if (this.propData.nation === null) {
             this.emInfo.status = 112
+            this.emInfo.text = '请选择名族'
+          } else if (this.propData.idcardType === null) {
+            this.emInfo.status = 113
             this.emInfo.text = '请选择证件类型'
           } else if (this.propData.idcard === '') {
-            this.emInfo.status = 113
+            this.emInfo.status = 114
             this.emInfo.text = '请输入证件号码'
-          } else if (this.propData.phone === '') {
+          } else if (this.propData.sex === null) {
             this.emInfo.status = 121
+            this.emInfo.text = '请选择性别'
+          } else if (this.propData.phone === '') {
+            this.emInfo.status = 122
             this.emInfo.text = '请输入手机号'
           } else if (this.propData.email === '') {
-            this.emInfo.status = 122
+            this.emInfo.status = 123
             this.emInfo.text = '请输入邮箱地址'
           } else if (this.propData.address === '') {
-            this.emInfo.status = 123
+            this.emInfo.status = 124
             this.emInfo.text = '请输入联系地址'
           }
         } else {
@@ -359,18 +400,19 @@ export default {
             this.emInfo.status = 111
             this.emInfo.text = '请输入正确名字格式'
           } else if (!setRegExp(this.propData.idcard, 'idcard')) {
-            this.emInfo.status = 113
+            this.emInfo.status = 114
             this.emInfo.text = '请输入正确证件号码格式'
           } else if (!setRegExp(this.propData.phone, 'phone')) {
             this.emInfo.status = 122
             this.emInfo.text = '请输入正确手机格式'
           } else if (!setRegExp(this.propData.email, 'email')) {
-            this.emInfo.status = 122
+            this.emInfo.status = 123
             this.emInfo.text = '请输入正确邮箱格式'
           } else if (!setRegExp(this.propData.address, 'address')) {
-            this.emInfo.status = 123
+            this.emInfo.status = 124
             this.emInfo.text = '请输入正确地址格式'
           } else {
+            this.propData.birthdayStr = this.propData.idcard.substr(6, 4) + '-' + this.propData.idcard.substr(10, 2) + '-' + this.propData.idcard.substr(12, 2)
             this.emInfo.status = 0
             this.emInfo.text = ''
             this.sendAjax()
@@ -520,7 +562,10 @@ export default {
         enterpriseType: this.propData.enterpriseType,
         enterpriseIdcard: this.propData.enterpriseIdcard,
         email: this.propData.email,
-        address: this.propData.address
+        address: this.propData.address,
+        nation: this.propData.nation,
+        birthdayStr: this.propData.birthdayStr,
+        sex: this.propData.sex
       }).then(res => {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []
@@ -580,6 +625,10 @@ export default {
         box-shadow: none;
         outline: 0px;
       }
+    }
+    ._inputR {
+      padding: 6px 0;
+      border-bottom:1px solid #ddd;
     }
     ._em {
       height: 16px;

@@ -8,26 +8,45 @@
           <Col span="24" class="_em"><span v-show="emInfo.status===11" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
+          <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+          <Col span="24">
+            <Select v-model="agenData.nation">
+              <Option v-for="item in nationList" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===12" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
           <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
           <Col span="24">
             <Select v-model="agenData.idcardType">
               <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
             </Select>
           </Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===12" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===13" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.idcard"></Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===13" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.organization"></Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===15" v-text="emInfo.text"></span></Col>
         </Row>
       </Col>
       <Col span="10" offset="2">
+        <Row class="_labelFor">
+          <Col span="24" class="_label">性别<b class="_b">*</b></Col>
+          <Col span="24" class="_inputR">
+            <RadioGroup v-model="agenData.sex">
+              <Radio :label="1">男</Radio>
+              <Radio :label="2">女</Radio>
+            </RadioGroup>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
+        </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">委托人<b class="_b">*</b></Col>
           <Col span="24">
@@ -35,22 +54,22 @@
               <Option v-for="item in propArrName" :value="item.value" :key="item.value">{{item.label}}</Option>
             </Select>
           </Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===21" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===22" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.phone"></Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===22" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.email"></Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model="agenData.address"></Col>
-          <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===25" v-text="emInfo.text"></span></Col>
         </Row>
       </Col>
     </Row>
@@ -76,6 +95,7 @@ export default {
         text: ''
       },
       idcardList: [],
+      nationList: [],
       agenData: JSON.parse(JSON.stringify(this.editAgenData))
     }
   },
@@ -84,17 +104,26 @@ export default {
   },
   methods: {
     cardList () {
-      axios.post('/dictionary/personIdcardType').then(res => {
-        let _dataList = res.data.data
-        let _select = []
-        for (let k in _dataList) {
+      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
+        let _dataOList = resO.data.data
+        let _selectO = []
+        let _dataTList = resT.data.data
+        let _selectT = []
+        for (let k in _dataOList) {
           let _o = {}
-          _o.value = _dataList[k].itemValue
-          _o.label = _dataList[k].item
-          _select.push(_o)
+          _o.value = _dataOList[k].itemValue
+          _o.label = _dataOList[k].item
+          _selectO.push(_o)
         }
-        this.idcardList = _select
-      }).catch(e => {
+        for (let v in _dataTList) {
+          let _t = {}
+          _t.value = _dataTList[v].itemValue
+          _t.label = _dataTList[v].item
+          _selectT.push(_t)
+        }
+        this.idcardList = _selectO
+        this.nationList = _selectT
+      })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -102,30 +131,36 @@ export default {
       })
     },
     saveClick () {
-      if (this.agenData.name === '' || this.agenData.idcardType === null || this.agenData.idcard === '' || this.agenData.organization === '' || this.agenData.propId === null || this.agenData.phone === '' || this.agenData.email === '' || this.agenData.address === '') {
+      if (this.agenData.name === '' || this.agenData.nation === null || this.agenData.idcardType === null || this.agenData.idcard === '' || this.agenData.organization === '' || this.agenData.sex === null || this.agenData.propId === null || this.agenData.phone === '' || this.agenData.email === '' || this.agenData.address === '') {
         if (this.agenData.name === '') {
           this.emInfo.status = 11
           this.emInfo.text = '请输入姓名'
-        } else if (this.agenData.idcardType === null) {
+        } else if (this.agenData.nation === null) {
           this.emInfo.status = 12
+          this.emInfo.text = '请选择名族'
+        } else if (this.agenData.idcardType === null) {
+          this.emInfo.status = 13
           this.emInfo.text = '请选择证件类型'
         } else if (this.agenData.idcard === '') {
-          this.emInfo.status = 13
+          this.emInfo.status = 14
           this.emInfo.text = '请输入证件号码'
         } else if (this.agenData.organization === '') {
-          this.emInfo.status = 14
+          this.emInfo.status = 15
           this.emInfo.text = '请输入工作单位'
-        } else if (this.agenData.propId === null) {
+        } else if (this.agenData.sex === null) {
           this.emInfo.status = 21
+          this.emInfo.text = '请选择性别'
+        } else if (this.agenData.propId === null) {
+          this.emInfo.status = 22
           this.emInfo.text = '请选择委托人'
         } else if (this.agenData.phone === '') {
-          this.emInfo.status = 22
+          this.emInfo.status = 23
           this.emInfo.text = '请输入手机号'
         } else if (this.agenData.email === '') {
-          this.emInfo.status = 23
+          this.emInfo.status = 24
           this.emInfo.text = '请输入邮箱地址'
         } else if (this.agenData.address === '') {
-          this.emInfo.status = 24
+          this.emInfo.status = 25
           this.emInfo.text = '请输入联系地址'
         }
       } else {
@@ -133,21 +168,22 @@ export default {
           this.emInfo.status = 11
           this.emInfo.text = '请输入正确姓名格式'
         } else if (!setRegExp(this.agenData.idcard, 'idcard')) {
-          this.emInfo.status = 13
+          this.emInfo.status = 14
           this.emInfo.text = '请输入正确证件号码格式'
         } else if (!setRegExp(this.agenData.organization, 'company')) {
-          this.emInfo.status = 14
+          this.emInfo.status = 15
           this.emInfo.text = '请输入正确单位名称'
         } else if (!setRegExp(this.agenData.phone, 'phone')) {
-          this.emInfo.status = 21
+          this.emInfo.status = 23
           this.emInfo.text = '请输入正确手机格式'
         } else if (!setRegExp(this.agenData.email, 'email')) {
-          this.emInfo.status = 22
+          this.emInfo.status = 24
           this.emInfo.text = '请输入正确邮箱格式'
         } else if (!setRegExp(this.agenData.address, 'address')) {
-          this.emInfo.status = 23
+          this.emInfo.status = 25
           this.emInfo.text = '请输入正确地址格式'
         } else {
+          this.agenData.birthdayStr = this.agenData.idcard.substr(6, 4) + '-' + this.agenData.idcard.substr(10, 2) + '-' + this.agenData.idcard.substr(12, 2)
           this.emInfo.status = 0
           this.emInfo.text = ''
           this.sendAjax()
@@ -166,7 +202,10 @@ export default {
         name: this.agenData.name,
         organization: this.agenData.organization,
         email: this.agenData.email,
-        address: this.agenData.address
+        address: this.agenData.address,
+        nation: this.agenData.nation,
+        birthdayStr: this.agenData.birthdayStr,
+        sex: this.agenData.sex
       }).then(res => {
         if (typeof res.data.data.propName === 'string') {
           res.data.data.propName = res.data.data.propName - 0
@@ -221,6 +260,10 @@ export default {
         box-shadow: none;
         outline: 0px;
       }
+    }
+    ._inputR {
+      padding: 6px 0;
+      border-bottom:1px solid #ddd;
     }
     ._em {
       height: 16px;

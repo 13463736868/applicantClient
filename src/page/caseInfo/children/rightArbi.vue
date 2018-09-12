@@ -71,7 +71,7 @@
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="retractClick">撤回案件</button></Col>
           </Row>
         </Col>
-        <Col v-if="myCaseShowBtn.changeArbitrator" span="24">
+        <Col v-if="myCaseShowBtn.changeArbitrator === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="selectClick">选择仲裁员</button></Col>
           </Row>
@@ -134,7 +134,7 @@
         </div>
       </Upload>
     </alert-btn-info>
-    <alert-btn-info :alertShow="alertShow.sele" :isSaveBtn="true" @alertCancel="alertCanc('sele')" alertTitle="选择仲裁员">
+    <alert-btn-info :alertShow="alertShow.sele" @alertConfirm="seleSave" @alertCancel="alertCanc('sele')" alertTitle="选择仲裁员">
       <Row>
         <Col span="24" class="pl20 pr20">
           <Table stripe align="center" :loading="seleList.loading" :columns="seleList.header" :data="seleList.bodyList"></Table>
@@ -203,32 +203,17 @@ export default {
             key: 'id',
             align: 'center',
             render: (h, params) => {
-              return h('div', [
-                h('span', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    color: '#2d8cf0',
-                    cursor: 'pointer'
-                  },
-                  on: {
-                    click: () => {
-                      this.seleSave(params.index)
-                    }
-                  }
-                }, '选择')
-              ])
+              return this.renderCheck(h, params)
             }
           }
         ],
         bodyList: []
       },
+      seleArr: [],
       pageObj: {
         total: 0,
         pageNum: 1,
-        pageSize: 5
+        pageSize: 1
       }
     }
   },
@@ -252,6 +237,48 @@ export default {
       'setCaseId',
       'setMyCaseShowBtn'
     ]),
+    renderCheck (h, params) {
+      let _id = params.row.id
+      if (this.seleArr.indexOf(_id) === -1) {
+        return h('div', [
+          h('Icon', {
+            props: {
+              type: 'android-checkbox-outline-blank',
+              size: '16'
+            },
+            style: {
+              color: '#2d8cf0',
+              cursor: 'pointer',
+              verticalAlign: 'text-top'
+            },
+            on: {
+              click: () => {
+                this.seleArrChange(params.index, true)
+              }
+            }
+          })
+        ])
+      } else {
+        return h('div', [
+          h('Icon', {
+            props: {
+              type: 'android-checkbox',
+              size: '16'
+            },
+            style: {
+              color: '#2d8cf0',
+              cursor: 'pointer',
+              verticalAlign: 'text-top'
+            },
+            on: {
+              click: () => {
+                this.seleArrChange(params.index, false)
+              }
+            }
+          })
+        ])
+      }
+    },
     resCaseItem () {
       axios.post('/case/queryCaseItem', {
         id: this.caseId
@@ -388,6 +415,8 @@ export default {
       }
     },
     selectClick () {
+      this.pageObj.pageNum = 1
+      this.seleArr = []
       this.alertShow.sele = true
       this.resArbitrator()
     },
@@ -409,28 +438,58 @@ export default {
       this.pageObj.pageNum = page
       this.resArbitrator()
     },
-    seleSave (index) {
-      axios.post('/case/appointArbitrator', {
-        caseId: this.caseOldId,
-        id: this.seleList.bodyList[index].id,
-        partyType: this.partieType
-      }).then(res => {
-        let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
-        _showBtnObj.changeArbitrator = 0
-        this.setMyCaseShowBtn(_showBtnObj)
-        window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
-        this.alertCanc('sele')
+    seleArrChange (index, bool) {
+      let _id = this.seleList.bodyList[index].id
+      if (bool) {
+        if (this.seleArr.indexOf(_id) === -1) {
+          if (this.seleArr.length >= 3) {
+            this.$Message.error({
+              content: '仲裁员最多只能选择三个！',
+              duration: 5
+            })
+          } else {
+            this.seleArr.push(_id)
+          }
+        }
+      } else {
+        if (this.seleArr.indexOf(_id) !== -1) {
+          this.seleArr.splice(this.seleArr.indexOf(_id), 1)
+        }
+      }
+    },
+    seleSave () {
+      if (this.seleArr.length === 0) {
         this.$Message.success({
-          content: '操作成功',
-          duration: 2
-        })
-      }).catch(e => {
-        this.alertCanc('sele')
-        this.$Message.error({
-          content: '错误信息:' + e + ' 稍后再试',
+          content: '请选择仲裁员',
           duration: 5
         })
-      })
+      } else {
+        axios.post('/case/appointArbitrator', {
+          caseId: this.caseOldId,
+          ids: this.seleArr.join(','),
+          partyType: this.partieType
+        }).then(res => {
+          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+          _showBtnObj.changeArbitrator = 0
+          this.setMyCaseShowBtn(_showBtnObj)
+          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+          this.pageObj.pageNum = 1
+          this.seleArr = []
+          this.alertCanc('sele')
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.pageObj.pageNum = 1
+          this.seleArr = []
+          this.alertCanc('sele')
+          this.$Message.error({
+            content: '错误信息:' + e + ' 稍后再试',
+            duration: 5
+          })
+        })
+      }
     },
     replClick () {
       this.alertShow.repl = true
