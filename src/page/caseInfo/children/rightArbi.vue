@@ -71,7 +71,7 @@
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="retractClick">撤回案件</button></Col>
           </Row>
         </Col>
-        <Col v-if="myCaseShowBtn.changeArbitrator === 1" span="24">
+        <Col v-if="myCaseShowBtn.changeArbitrator === 0" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="selectClick">选择仲裁员</button></Col>
           </Row>
@@ -135,6 +135,16 @@
       </Upload>
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.sele" @alertConfirm="seleSave" @alertCancel="alertCanc('sele')" alertTitle="选择仲裁员">
+      <Row class="pb10" v-if="seleShow">
+        <Col span="20" offset="1">
+          <span><b>主 裁： </b></span>
+          <span v-if="seleArrName[0]"><span class="ml5" v-text="seleArrName[0]"></span><Icon @click="resSeleDel(0)" class="ml5 hand" color="#ed3f14" type="close"></Icon></span>
+        </Col>
+        <Col span="20" offset="1">
+          <span><b>边 裁：</b></span>
+          <span v-if="seleArrName[1]"><span class="ml5" v-text="seleArrName[1]"></span><Icon @click="resSeleDel(1)" class="ml5 hand" color="#ed3f14" type="close"></Icon></span>
+        </Col>
+      </Row>
       <Row>
         <Col span="24" class="pl20 pr20">
           <Table stripe align="center" :loading="seleList.loading" :columns="seleList.header" :data="seleList.bodyList"></Table>
@@ -210,10 +220,11 @@ export default {
         bodyList: []
       },
       seleArr: [],
+      seleArrName: [],
       pageObj: {
         total: 0,
         pageNum: 1,
-        pageSize: 1
+        pageSize: 5
       }
     }
   },
@@ -230,6 +241,21 @@ export default {
       let _data = {}
       _data.caseId = this.caseOldId
       return _data
+    },
+    seleShow () {
+      if (this.dataInfo === null) {
+        return false
+      } else {
+        if (this.dataInfo.money === null) {
+          return false
+        } else if (this.dataInfo.money < 1000000) {
+          return false
+        } else if (this.dataInfo.money >= 1000000) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
   },
   methods: {
@@ -438,22 +464,55 @@ export default {
       this.pageObj.pageNum = page
       this.resArbitrator()
     },
+    resSeleDel (num) {
+      this.seleArr[num] = ''
+      this.seleArrName[num] = ''
+      this.resArbitrator()
+    },
     seleArrChange (index, bool) {
       let _id = this.seleList.bodyList[index].id
+      let _name = this.seleList.bodyList[index].name
+      let _num = this.seleShow === true ? 2 : 1
       if (bool) {
         if (this.seleArr.indexOf(_id) === -1) {
-          if (this.seleArr.length >= 3) {
-            this.$Message.error({
-              content: '仲裁员最多只能选择三个！',
-              duration: 5
-            })
+          if (this.seleShow) {
+            if (this.seleArr[0] === '') {
+              this.seleArr[0] = _id
+              this.seleArrName[0] = _name
+              this.seleArr.splice(0, 0)
+              this.seleArrName.splice(0, 0)
+            } else if (this.seleArr[1] === '') {
+              this.seleArr[1] = _id
+              this.seleArrName[1] = _name
+              this.seleArr.splice(0, 0)
+              this.seleArrName.splice(0, 0)
+            } else {
+              if (this.seleArr.length >= _num) {
+                this.$Message.error({
+                  content: '仲裁员最多只能选择二位！',
+                  duration: 5
+                })
+              } else {
+                this.seleArr.push(_id)
+                this.seleArrName.push(_name)
+              }
+            }
           } else {
-            this.seleArr.push(_id)
+            if (this.seleArr.length >= _num) {
+              this.$Message.error({
+                content: '仲裁员最多只能选择一位！',
+                duration: 5
+              })
+            } else {
+              this.seleArr.push(_id)
+              this.seleArrName.push(_name)
+            }
           }
         }
       } else {
         if (this.seleArr.indexOf(_id) !== -1) {
           this.seleArr.splice(this.seleArr.indexOf(_id), 1)
+          this.seleArrName.splice(this.seleArr.indexOf(_id), 1)
         }
       }
     },
@@ -590,6 +649,10 @@ export default {
     alertCanc (type) {
       this.alertShow[type] = false
       this.dataObj[type] = null
+      if (type === 'sele') {
+        this.seleArr = []
+        this.seleArrName = []
+      }
     }
   }
 }
