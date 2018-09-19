@@ -7,7 +7,7 @@
           <Col span="24" class="_input"><span v-text="agenData.name"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+          <Col span="24" class="_label">民族<b class="_b">*</b></Col>
           <Col span="24" class="_input"><span v-text="nationName"></span></Col>
         </Row>
         <Row class="_labelFor">

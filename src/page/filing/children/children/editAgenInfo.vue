@@ -8,7 +8,7 @@
           <Col span="24" class="_em"><span v-show="emInfo.status===11" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">名族<b class="_b">*</b></Col>
+          <Col span="24" class="_label">民族<b class="_b">*</b></Col>
           <Col span="24">
             <Select v-model="agenData.nation">
               <Option v-for="item in nationList" :value="item.value" :key="item.value">{{item.label}}</Option>
@@ -137,7 +137,7 @@ export default {
           this.emInfo.text = '请输入姓名'
         } else if (this.agenData.nation === null) {
           this.emInfo.status = 12
-          this.emInfo.text = '请选择名族'
+          this.emInfo.text = '请选择民族'
         } else if (this.agenData.idcardType === null) {
           this.emInfo.status = 13
           this.emInfo.text = '请选择证件类型'
