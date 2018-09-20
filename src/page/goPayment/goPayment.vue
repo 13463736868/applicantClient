@@ -19,7 +19,7 @@
                     </Col>
                     <Col class="_label" span="11" offset="2">
                       <p>仲裁费：</p>
-                      <p v-text="dataObj.money + ' 元'"></p>
+                      <p v-text="dataObj.money === null ? '' : dataObj.money + ' 元'"></p>
                     </Col>
                   </Row>
                   <Row>
