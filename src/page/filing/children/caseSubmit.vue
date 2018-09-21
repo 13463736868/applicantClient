@@ -34,7 +34,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'caseInfo'
+      'caseInfo',
+      'userInfo'
     ])
   },
   methods: {
@@ -58,38 +59,45 @@ export default {
       })
     },
     saveClick () {
-      if (this.caseInfo.propList.lenght === 0) {
-        this.$Message.error({
-          content: '请填写申请人',
-          duration: 5
-        })
-      } else if (this.caseInfo.respList.length === 0) {
-        this.$Message.error({
-          content: '请填写被申请人',
-          duration: 5
-        })
-      } else if (this.caseInfo.requestList.length === 0) {
-        this.$Message.error({
-          content: '请填写被请求项',
-          duration: 5
-        })
-      } else if (this.caseInfo.requestReasons === null) {
-        this.$Message.error({
-          content: '请填写事实与理由',
-          duration: 5
-        })
-      } else if (this.caseInfo.arbRequisitionFile === null) {
-        this.$Message.error({
-          content: '请上传仲裁申请书',
-          duration: 5
-        })
-      } else if (this.caseInfo.evidenceList.length === 0) {
-        this.$Message.error({
-          content: '请填写证据',
-          duration: 5
-        })
+      if (this.userInfo.verify === '1') {
+        if (this.caseInfo.propList.lenght === 0) {
+          this.$Message.error({
+            content: '请填写申请人',
+            duration: 5
+          })
+        } else if (this.caseInfo.respList.length === 0) {
+          this.$Message.error({
+            content: '请填写被申请人',
+            duration: 5
+          })
+        } else if (this.caseInfo.requestList.length === 0) {
+          this.$Message.error({
+            content: '请填写被请求项',
+            duration: 5
+          })
+        } else if (this.caseInfo.requestReasons === null) {
+          this.$Message.error({
+            content: '请填写事实与理由',
+            duration: 5
+          })
+        } else if (this.caseInfo.arbRequisitionFile === null) {
+          this.$Message.error({
+            content: '请上传仲裁申请书',
+            duration: 5
+          })
+        } else if (this.caseInfo.evidenceList.length === 0) {
+          this.$Message.error({
+            content: '请填写证据',
+            duration: 5
+          })
+        } else {
+          this.$emit('saveClick', this.committeeStatus)
+        }
       } else {
-        this.$emit('saveClick', this.committeeStatus)
+        this.$Message.error({
+          content: '请先完善身份绑定信息',
+          duration: 5
+        })
       }
     }
   }
