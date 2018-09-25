@@ -308,7 +308,7 @@ export default {
     if (this.addType === 1) {
       this.propData.type = 2
     } else if (this.addType === 2) {
-      this.propData = 1
+      this.propData.type = 1
     }
     this.cardList()
   },
