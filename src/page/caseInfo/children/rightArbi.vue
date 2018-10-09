@@ -511,8 +511,8 @@ export default {
         }
       } else {
         if (this.seleArr.indexOf(_id) !== -1) {
-          this.seleArr.splice(this.seleArr.indexOf(_id), 1)
           this.seleArrName.splice(this.seleArr.indexOf(_id), 1)
+          this.seleArr.splice(this.seleArr.indexOf(_id), 1)
         }
       }
     },
