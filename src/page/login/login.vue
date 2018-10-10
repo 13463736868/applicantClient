@@ -53,6 +53,7 @@ import axios from 'axios'
 import { mapActions } from 'vuex'
 import {setToken, removeToken} from '@/cookies'
 import setRegExp from '@/config/regExp.js'
+import vers from '@/config/version.js'
 
 export default {
   name: 'login',
@@ -154,7 +155,8 @@ export default {
         this.user.em = ''
         axios.post('/login', {
           phone: this.user.phone,
-          password: this.user.password
+          password: this.user.password,
+          version: vers.version
         }).then(res => {
           if (window.localStorage) {
             let loc = window.localStorage
