@@ -7,9 +7,14 @@
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="12">
+      <Col span="6">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
+        </Row>
+      </Col>
+      <Col span="6">
+        <Row>
+          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
     </Row>
@@ -25,6 +30,7 @@ export default {
   data () {
     return {
       addSubmit: false,
+      addHash: false,
       committeeList: [],
       committeeStatus: ''
     }
@@ -99,6 +105,24 @@ export default {
           duration: 5
         })
       }
+    },
+    hashClick () {
+      this.addHash = true
+      axios.post('/case/solidifyHash', {
+        caseId: this.caseInfo.id
+      }).then(res => {
+        this.addHash = false
+        this.$Message.success({
+          content: '固化成功',
+          duration: 2
+        })
+      }).catch(e => {
+        this.addHash = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     }
   }
 }
