@@ -46,9 +46,9 @@
               :on-error="resError"
             >
               <div class="_text">
-                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                  <p v-if="fileObj === null" v-text="'上传类型只支持 '+fileType"></p>
-                  <div v-if="fileObj !== null" v-text="fileObj.name"></div>
+                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                <p v-if="fileObj === null" v-text="'上传类型只支持 '+fileType"></p>
+                <div v-if="fileObj !== null" v-text="fileObj.name"></div>
               </div>
             </Upload>
           </Col>
