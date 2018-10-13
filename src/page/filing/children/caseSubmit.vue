@@ -18,21 +18,27 @@
         </Row>
       </Col>
     </Row>
+    <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="案件只能固化一次,确定要固化吗？"></alert-tip>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import alertTip from '@/components/common/alertTip'
 
 export default {
   name: 'case_submit',
+  components: { alertTip },
   data () {
     return {
       addSubmit: false,
       addHash: false,
       committeeList: [],
-      committeeStatus: ''
+      committeeStatus: '',
+      alertShow: {
+        hash: false
+      }
     }
   },
   created () {
@@ -107,6 +113,9 @@ export default {
       }
     },
     hashClick () {
+      this.alertShow.hash = true
+    },
+    hashSave () {
       this.addHash = true
       axios.post('/case/solidifyHash', {
         caseId: this.caseInfo.id
@@ -123,6 +132,9 @@ export default {
           duration: 5
         })
       })
+    },
+    alertCanc (type) {
+      this.alertShow[type] = false
     }
   }
 }

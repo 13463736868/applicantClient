@@ -4,12 +4,12 @@
       <ul class="nav fl" v-if="isRegister">
         <router-link v-for="item in nav.menu" :to="item.url" :key="item.id" tag="li" class="hand fl">{{item.text}}</router-link>
       </ul>
-      <div class="user fr w300">
+      <div class="user fr w350">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
-          <Col span="18 tr">
+          <Col span="20 tr">
             <span class="fcf f13" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
           </Col>
-          <Col span="6">
+          <Col span="4">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>
           </Col>
         </Row>

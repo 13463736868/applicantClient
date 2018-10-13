@@ -65,6 +65,10 @@
         </div>
       </Upload>
     </alert-btn-info>
+    <alert-btn-info :alertShow="alertObj.code" @alertConfirm="codeSave" @alertCancel="alertCode" alertTitle="请输入验证码">
+      <p class="pb5">验证码已发送至手机: <b class="ml5" v-text="codePhone"></b></p>
+      <p><span>验证码：</span><Input class="ml10" v-model="roomCode" placeholder="6位数字验证码" style="width: 100px" /></p>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -74,6 +78,7 @@ import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'home',
@@ -138,6 +143,13 @@ export default {
           {
             title: '申请时间',
             key: 'createTime',
+            minWidth: 30,
+            align: 'center'
+          },
+          {
+            title: '开庭时间',
+            key: 'beginTime',
+            minWidth: 30,
             align: 'center'
           },
           {
@@ -162,7 +174,14 @@ export default {
         fileObj: null,
         spinShow: false
       },
-      retrDObj: null
+      retrDObj: null,
+      roomPhone: null,
+      roomId: null,
+      roomPartie: null,
+      roomCode: null,
+      alertObj: {
+        code: false
+      }
     }
   },
   created () {
@@ -174,6 +193,14 @@ export default {
       let _data = {}
       _data.caseId = this.retrDObj
       return _data
+    },
+    codePhone () {
+      if (this.roomPhone === null) {
+        return ''
+      } else {
+        let _phone = this.roomPhone.substr(0, 3) + '****' + this.roomPhone.substr(7)
+        return _phone
+      }
     }
   },
   methods: {
@@ -442,20 +469,104 @@ export default {
       this.retrObj.fileObj = null
       this.retrDObj = null
     },
+    getFormatDate () {
+      let date = new Date()
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let strD = date.getDate()
+      let hour = date.getHours()
+      let minu = date.getMinutes()
+      let sec = date.getSeconds()
+      let time = ''
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (strD < 10) {
+        strD = '0' + strD
+      }
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+      if (minu < 10) {
+        minu = '0' + minu
+      }
+      if (sec < 10) {
+        sec = '0' + sec
+      }
+      time = year + '-' + month + '-' + strD + ' ' + hour + ':' + minu + ':' + sec
+      return time
+    },
     goCourtRoom (index) {
       let _info = this.caseList.bodyList[index]
-      let _id = _info.id
-      let _partieType = _info.partieType === 1 ? 3 : (_info.partieType === 2 ? 2 : '')
-      if (_partieType === '') {
-        this.$Message.error({
-          content: '错误信息:用户案件类型未知',
+      let newTime = this.getFormatDate()
+      let newD = newTime.substr(0, 10).split('-').join('')
+      let newT = newTime.substr(11, 5).split('-').join('')
+      let beginTime = _info.beginTime
+      let beginD = beginTime.substr(0, 10).split('-').join('')
+      let beginT = beginTime.substr(11, 5).split('-').join('')
+      if (newD !== beginD) {
+        this.$Message.warning({
+          content: '只能在开庭前十分钟及开庭后半小时内进入',
+          duration: 5
+        })
+      } else if (beginT - newT < 11 || newT - beginT < 31) {
+        this.$Message.warning({
+          content: '只能在开庭前十分钟及开庭后半小时内进入',
           duration: 5
         })
       } else {
-        axios.post('/encryption', {
-          params: _id + '$' + _partieType
+        if (_info.partieType === 1 || _info.partieType === 2) {
+          axios.post('/sendPartyPhoneIdectCode', {
+            id: _info.id,
+            oldId: _info.oldId,
+            partieType: _info.partieType
+          }).then(res => {
+            this.roomPhone = res.data.data
+            this.roomId = _info.id
+            this.roomPartie = _info.partieType
+            this.goRoomCode()
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e + ' 稍后再试',
+              duration: 5
+            })
+          })
+        } else {
+          this.$Message.error({
+            content: '错误信息:用户案件类型未知',
+            duration: 5
+          })
+        }
+      }
+    },
+    goRoomCode () {
+      this.alertObj.code = true
+    },
+    alertCode () {
+      this.alertObj.code = false
+      this.roomPhone = null
+      this.roomId = null
+      this.roomPartie = null
+      this.roomCode = null
+    },
+    codeSave () {
+      if (this.roomCode === null || this.roomCode === '') {
+        this.$Message.warning({
+          content: '请输入6位数字验证码',
+          duration: 5
+        })
+      } else if (!setRegExp(this.roomCode, 'regCode')) {
+        this.$Message.warning({
+          content: '验证码输入有误,请重新输入',
+          duration: 5
+        })
+      } else {
+        axios.post('/checkIdentCode', {
+          phone: this.roomPhone,
+          identCode: this.roomCode
         }).then(res => {
-          window.open('https://192.168.1.249:3004/view/index.html#/' + res.data.data, '_blank')
+          this.alertObj.code = false
+          this.goCourtRoomS()
         }).catch(e => {
           this.$Message.error({
             content: '错误信息:' + e + ' 稍后再试',
@@ -463,6 +574,21 @@ export default {
           })
         })
       }
+    },
+    goCourtRoomS () {
+      let _id = this.roomId
+      let _partieType = this.roomPartie === 1 ? 3 : (this.roomPartie === 2 ? 2 : '')
+      axios.post('/encryption', {
+        params: _id + '$' + _partieType
+      }).then(res => {
+        this.alertCode()
+        window.open('https://192.168.1.249:3004/view/index.html#/' + res.data.data, '_blank')
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
     },
     goPayment (index) {
       this.setGoPaymentOldId(this.caseList.bodyList[index].oldId)
