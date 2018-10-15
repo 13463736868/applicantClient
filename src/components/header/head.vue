@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import {removeToken} from '@/cookies'
 import alertTip from '@/components/common/alertTip'
 
