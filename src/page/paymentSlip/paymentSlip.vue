@@ -169,11 +169,11 @@ export default {
       })
     },
     resSearch () {
-      this.pageObj.pageNum = 0
+      this.pageObj.pageNum = 1
       this.resPayList()
     },
     resChangeStatus () {
-      this.pageObj.pageNum = 0
+      this.pageObj.pageNum = 1
       this.resPayList()
     },
     reschangePage (page) {
