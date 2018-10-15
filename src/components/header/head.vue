@@ -92,13 +92,28 @@ export default {
       }
     },
     userOutSave () {
-      if (window.localStorage) {
-        let loc = window.localStorage
-        loc.removeItem('userInfo')
-      }
-      removeToken()
-      this.$router.replace({
-        path: '/login'
+      axios.post('/SignOut').then(res => {
+        if (window.localStorage) {
+          let loc = window.localStorage
+          loc.removeItem('userInfo')
+        }
+        removeToken()
+        this.$router.replace({
+          path: '/login'
+        })
+      }).catch(e => {
+        if (window.localStorage) {
+          let loc = window.localStorage
+          loc.removeItem('userInfo')
+        }
+        removeToken()
+        this.$router.replace({
+          path: '/login'
+        })
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
       })
     },
     userOutCanc () {
