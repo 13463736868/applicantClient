@@ -195,12 +195,12 @@ export default {
     resSee () {
       axios.post(this.resSeeUrl).then(res => {
         this.userAInfo = res.data.data
-        this.entrDocData = this.userAInfo.authorizeBook
         if (this.userType === 1) {
           this.imgUrl.fileA = res.data.data.fileList[0].filepath
           this.imgUrl.fileB = res.data.data.fileList[1].filepath
           this.imgUrl.fileC = res.data.data.fileList[2].filepath
         } else if (this.userType === 2) {
+          this.entrDocData = this.userAInfo.authorizeBook
           this.imgUrl.fileA = res.data.data.fileList[0].filepath
           this.imgUrl.fileB = res.data.data.fileList[1].filepath
           this.imgUrl.fileC = res.data.data.fileList[2].filepath
