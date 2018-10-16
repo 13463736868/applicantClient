@@ -110,6 +110,11 @@ export default {
         id: this.caseId
       }).then(res => {
         this.revEvidData = res.data.data
+        if (this.revEvidData.length === 0) {
+          this.revEvidObj.list = false
+        } else {
+          this.revEvidObj.list = true
+        }
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
