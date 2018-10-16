@@ -97,6 +97,7 @@ export default {
         if (window.localStorage) {
           let loc = window.localStorage
           loc.removeItem('userInfo')
+          loc.removeItem('userState')
         }
         removeToken()
         this.$router.replace({
@@ -106,6 +107,7 @@ export default {
         if (window.localStorage) {
           let loc = window.localStorage
           loc.removeItem('userInfo')
+          loc.removeItem('userState')
         }
         removeToken()
         this.$router.replace({

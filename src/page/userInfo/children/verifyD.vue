@@ -150,17 +150,32 @@
             </Col>
           </form>
         </Row>
-        <Upload
-          ref="upload"
-          name="file"
-          type="drag"
-          :action="uploadUrl"
-          :with-credentials="true"
-          :show-upload-list="false"
-          :data="uploadData"
-          :on-success="resSuccess"
-          :on-error="resError"
-          ></Upload>
+        <div class="_mask pr">
+          <span class="_back"></span>
+          <Upload
+            class="pa"
+            ref="upload"
+            name="file"
+            type="drag"
+            :action="uploadUrl"
+            :with-credentials="true"
+            :show-upload-list="false"
+            :data="uploadData"
+            :on-success="resSuccess"
+            :on-error="resError"
+            ></Upload>
+        </div>
+      </div>
+    </div>
+    <div class="_entrDoc" v-if="editShow === true && userType === 2">
+      <div class="_top">授权委托书</div>
+      <div class="_mid" v-if="entrDocData !== null">
+        <div v-if="entrDoc.list">
+          <entr-info :infoData="entrDocData" @rebirth="changeView('addEntrDoc')"></entr-info>
+        </div>
+        <div v-if="entrDoc.add">
+          <upload-book :fileType="['pdf','jpg','jpeg','png']" uploadUrl="/api/file/upload" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
+        </div>
       </div>
     </div>
     <Row v-if="editShow" class="pb30">
@@ -173,13 +188,21 @@
 <script>
 import axios from 'axios'
 import { mapActions } from 'vuex'
+import entrInfo from '@/page/userInfo/children/children/entrInfo'
+import uploadBook from '@/page/userInfo/children/children/uploadBook'
 import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'verify_d_info',
   props: [ 'userType', 'desc' ],
+  components: { entrInfo, uploadBook },
   data () {
     return {
+      entrDoc: {
+        list: true,
+        add: false
+      },
+      entrDocData: null,
       editShow: false,
       uploadUrl: '',
       uploadSum: 0,
@@ -211,7 +234,8 @@ export default {
         legal: '',
         idcardType: null,
         idcard: '',
-        email: ''
+        email: '',
+        authorizeBook: null
       },
       fileObj: {},
       fileObjA: {
@@ -321,6 +345,7 @@ export default {
           this.userAInfo.legal = _data.legal
           this.userAInfo.idcardType = _data.idcardType
           this.userAInfo.idcard = _data.idcard
+          this.entrDocData = _data.authorizeBook
           try {
             this.imgUrl.fileA = _data.fileList[0].filepath
             this.imgUrl.fileB = _data.fileList[1].filepath
@@ -676,6 +701,31 @@ export default {
           })
         })
       }
+    },
+    dowDocBook () {
+      window.open('/api/file/templet/dowload/1', '_blank')
+    },
+    entrDocSave (_obj) {
+      this.entrDocData = _obj
+      this.userAInfo.authorizeBookId = _obj.id
+      this.changeView('listEntrDoc')
+      this.$Message.success({
+        content: '上传成功',
+        duration: 2
+      })
+    },
+    changeView (type) {
+      if (type === 'listEntrDoc') {
+        if (this.entrDocData !== null) {
+          this.entrDoc.list = true
+        } else {
+          this.entrDoc.list = false
+        }
+        this.entrDoc.add = false
+      } else if (type === 'addEntrDoc') {
+        this.entrDoc.list = false
+        this.entrDoc.add = true
+      }
     }
   }
 }
@@ -688,7 +738,10 @@ export default {
     padding-top: 60px;
     padding-bottom: 60px;
   }
-  ._dInfo ._top, ._dFile ._top {
+  ._entrDoc {
+    padding-bottom: 60px;
+  }
+  ._dInfo ._top, ._dFile ._top, ._entrDoc ._top {
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
@@ -779,6 +832,17 @@ export default {
       width: 303px;
       height: 96%;
       opacity: 0;
+    }
+    ._mask {
+      padding: 5px 0;
+      ._back {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        left: 0;
+        z-index: 2;
+        background: #fff;
+      }
     }
   }
   ._cancelBtn {

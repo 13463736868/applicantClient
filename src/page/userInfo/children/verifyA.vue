@@ -147,17 +147,33 @@
             </Col>
           </form>
         </Row>
-        <Upload
-          ref="upload"
-          name="file"
-          type="drag"
-          :action="uploadUrl"
-          :with-credentials="true"
-          :show-upload-list="false"
-          :data="uploadData"
-          :on-success="resSuccess"
-          :on-error="resError"
-          ></Upload>
+        <div class="_mask pr">
+          <span class="_back"></span>
+          <Upload
+            class="pa"
+            ref="upload"
+            name="file"
+            type="drag"
+            :action="uploadUrl"
+            :with-credentials="true"
+            :show-upload-list="false"
+            :data="uploadData"
+            :on-success="resSuccess"
+            :on-error="resError"
+            ></Upload>
+        </div>
+      </div>
+    </div>
+    <div class="_entrDoc" v-if="userType === 2">
+      <div class="_top">授权委托书</div>
+      <div class="_mid">
+        <div v-if="entrDoc.list">
+          <entr-info :infoData="entrDocData" @rebirth="changeView('addEntrDoc')"></entr-info>
+        </div>
+        <div v-if="entrDoc.add">
+          <upload-book :fileType="['pdf','jpg','jpeg','png']" uploadUrl="/api/file/upload" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
+        </div>
+        <add-icon v-if="entrDocBtn" :imgStatus="3" addText="上传授权委托书" @addClick="changeView('addEntrDoc')"></add-icon>
       </div>
     </div>
     <Row class="pb30">
@@ -170,13 +186,22 @@
 <script>
 import axios from 'axios'
 import { mapActions } from 'vuex'
+import addIcon from '@/components/common/addIcon'
+import entrInfo from '@/page/userInfo/children/children/entrInfo'
+import uploadBook from '@/page/userInfo/children/children/uploadBook'
 import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'verify_a_info',
+  components: { addIcon, entrInfo, uploadBook },
   props: [ 'userType' ],
   data () {
     return {
+      entrDoc: {
+        list: false,
+        add: false
+      },
+      entrDocData: null,
       uploadUrl: '',
       uploadNum: 0,
       addInfoBtn: false,
@@ -207,7 +232,8 @@ export default {
         legal: '',
         idcardType: null,
         idcard: '',
-        email: ''
+        email: '',
+        authorizeBookId: null
       },
       fileObj: {},
       fileObjA: {
@@ -247,6 +273,13 @@ export default {
   computed: {
     uploadData () {
       return this.userAInfo
+    },
+    entrDocBtn () {
+      if (this.entrDoc.list === true || this.entrDoc.add === true) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
@@ -531,7 +564,14 @@ export default {
           } else {
             this.emInfo.status = 0
             this.emInfo.text = ''
-            this.sendAjax()
+            if (this.userAInfo.authorizeBookId === null) {
+              this.$Message.warning({
+                content: '请先上传授权委托书',
+                duration: 5
+              })
+            } else {
+              this.sendAjax()
+            }
           }
         }
       }
@@ -559,6 +599,31 @@ export default {
         let item = this.fileObj[k]
         this.$refs.upload.post(item)
       }
+    },
+    dowDocBook () {
+      window.open('/api/file/templet/dowload/1', '_blank')
+    },
+    entrDocSave (_obj) {
+      this.entrDocData = _obj
+      this.userAInfo.authorizeBookId = _obj.id
+      this.changeView('listEntrDoc')
+      this.$Message.success({
+        content: '上传成功',
+        duration: 2
+      })
+    },
+    changeView (type) {
+      if (type === 'listEntrDoc') {
+        if (this.entrDocData !== null) {
+          this.entrDoc.list = true
+        } else {
+          this.entrDoc.list = false
+        }
+        this.entrDoc.add = false
+      } else if (type === 'addEntrDoc') {
+        this.entrDoc.list = false
+        this.entrDoc.add = true
+      }
     }
   }
 }
@@ -567,11 +632,10 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .verifyAInfo {
-  ._aFile {
-    padding-top: 60px;
+  ._aInfo, ._aFile, ._entrDoc {
     padding-bottom: 60px;
   }
-  ._aInfo ._top, ._aFile ._top {
+  ._aInfo ._top, ._aFile ._top, ._entrDoc ._top {
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
@@ -647,6 +711,17 @@ export default {
       width: 303px;
       height: 96%;
       opacity: 0;
+    }
+    ._mask {
+      padding: 5px 0;
+      ._back {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        left: 0;
+        z-index: 2;
+        background: #fff;
+      }
     }
   }
   ._cancelBtn {

@@ -108,6 +108,18 @@
         </Row>
       </div>
     </div>
+    <div class="_entrDoc" v-if="userType === 2">
+      <div class="_top">授权委托书</div>
+      <div class="_mid">
+        <Row v-if="entrDocData !== null">
+          <Col span="22" offset="1">
+            <p>
+              <span class="mr10 _file" v-text="entrDocData.filename" :title="'点击查看: '+ entrDocData.filename" @click="seeFile(entrDocData.filepath)"></span>
+            </p>
+          </Col>
+        </Row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -119,6 +131,7 @@ export default {
   props: [ 'userType' ],
   data () {
     return {
+      entrDocData: null,
       seeShow: false,
       idcardList: [],
       tradeList: [],
@@ -182,6 +195,7 @@ export default {
     resSee () {
       axios.post(this.resSeeUrl).then(res => {
         this.userAInfo = res.data.data
+        this.entrDocData = this.userAInfo.authorizeBook
         if (this.userType === 1) {
           this.imgUrl.fileA = res.data.data.fileList[0].filepath
           this.imgUrl.fileB = res.data.data.fileList[1].filepath
@@ -223,6 +237,9 @@ export default {
     },
     resSeeImg (type) {
       window.open(this.imgUrl[type], '_blank')
+    },
+    seeFile (path) {
+      window.open(path, '_blank')
     }
   }
 }
@@ -235,7 +252,10 @@ export default {
     padding-top: 60px;
     padding-bottom: 60px;
   }
-  ._cInfo ._top, ._cFile ._top {
+  ._entrDoc {
+    padding-bottom: 60px;
+  }
+  ._cInfo ._top, ._cFile ._top, ._entrDoc ._top {
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
@@ -250,6 +270,17 @@ export default {
     background: #fff;
     margin-top: 10px;
     padding: 20px 10px;
+  }
+  ._entrDoc ._mid{
+    @include borderRadius(3px);
+    @include boxShadow(0 1px 6px -1px #bbb);
+    background: #fff;
+    margin-top: 10px;
+    padding: 10px;
+    ._file {
+      @include hand;
+      color: #337BB5;
+    }
   }
   ._cInfo ._mid {
     ._labelFor {
