@@ -118,6 +118,7 @@ export default {
           {
             title: '案号',
             key: 'code',
+            minWidth: 26,
             align: 'center'
           },
           {
@@ -155,6 +156,7 @@ export default {
           {
             title: '操作',
             key: 'id',
+            minWidth: 40,
             align: 'center',
             render: (h, params) => {
               return this.renderOperation(h, params)

@@ -94,6 +94,16 @@
       </Row>
     </div>
     <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
+      <Row class="pb10" v-if="dataObj.avoiObj !== null">
+        <Col span="22" offset="1">
+          <span><b>主 裁： </b></span>
+          <span v-if="dataObj.avoiObj.nameArr[0]"><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[0]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[0]"></Checkbox></span>
+        </Col>
+        <Col span="22" offset="1" v-if="dataObj.avoiObj.nameArr[1]">
+          <span><b>边 裁：</b></span>
+          <span><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[1]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[1]"></Checkbox></span>
+        </Col>
+      </Row>
       <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.repl" @alertConfirm="replSave" @alertCancel="alertCanc('repl')" alertTitle="申请补证">
@@ -189,6 +199,7 @@ export default {
       },
       dataObj: {
         avoi: null,
+        avoiObj: null,
         retr: null,
         sele: null,
         repl: null,
@@ -320,7 +331,35 @@ export default {
       })
     },
     avoidClick () {
-      this.alertShow.avoi = true
+      axios.post('/case/selectArbitrator', {
+        pageIndex: 0,
+        pageSize: 10,
+        id: this.caseId
+      }).then(res => {
+        let _res = res.data.data.dataList
+        this.dataObj.avoiObj = {}
+        this.dataObj.avoiObj.idArr = []
+        this.dataObj.avoiObj.nameArr = []
+        this.dataObj.avoiObj.statusArr = []
+        for (let k in _res) {
+          this.dataObj.avoiObj.idArr.push(_res[k].id)
+          this.dataObj.avoiObj.nameArr.push(_res[k].name)
+          this.dataObj.avoiObj.statusArr.push(false)
+        }
+        if (this.dataObj.avoiObj.idArr !== []) {
+          this.alertShow.avoi = true
+        } else {
+          this.$Message.warning({
+            content: '获取仲裁员列表出错,请稍后再试',
+            duration: 5
+          })
+        }
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
     },
     avoiSave () {
       if (this.dataObj.avoi === null) {
@@ -334,27 +373,73 @@ export default {
           duration: 5
         })
       } else {
-        axios.post('/case/applyAvoid', {
-          id: this.caseId,
-          reason: this.dataObj.avoi,
-          partyType: this.partieType
-        }).then(res => {
-          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
-          _showBtnObj.debarbArbitrator = 0
-          this.setMyCaseShowBtn(_showBtnObj)
-          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
-          this.alertCanc('avoi')
-          this.$Message.success({
-            content: '操作成功',
-            duration: 2
-          })
-        }).catch(e => {
-          this.alertCanc('avoi')
-          this.$Message.error({
-            content: '错误信息:' + e,
-            duration: 5
-          })
-        })
+        if (this.dataObj.avoiObj.idArr.length < 2) {
+          if (this.dataObj.avoiObj.statusArr[0] === false) {
+            this.$Message.warning({
+              content: '请先勾选一个仲裁员',
+              duration: 5
+            })
+          } else {
+            axios.post('/case/applyAvoid', {
+              id: this.caseId,
+              reason: this.dataObj.avoi,
+              partyType: this.partieType,
+              ids: this.dataObj.avoiObj.idArr.join(',')
+            }).then(res => {
+              let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+              _showBtnObj.debarbArbitrator = 0
+              this.setMyCaseShowBtn(_showBtnObj)
+              window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+              this.alertCanc('avoi')
+              this.$Message.success({
+                content: '操作成功',
+                duration: 2
+              })
+            }).catch(e => {
+              this.alertCanc('avoi')
+              this.$Message.error({
+                content: '错误信息:' + e,
+                duration: 5
+              })
+            })
+          }
+        } else if (this.dataObj.avoiObj.idArr.length >= 2) {
+          if (this.dataObj.avoiObj.statusArr[0] === false && this.dataObj.avoiObj.statusArr[1] === false) {
+            this.$Message.warning({
+              content: '最少选择一个仲裁员进行回避',
+              duration: 5
+            })
+          } else {
+            if (this.dataObj.avoiObj.statusArr[0] === false) {
+              this.dataObj.avoiObj.idArr[0] = -1
+            }
+            if (this.dataObj.avoiObj.statusArr[1] === false) {
+              this.dataObj.avoiObj.idArr[1] = -1
+            }
+            axios.post('/case/applyAvoid', {
+              id: this.caseId,
+              reason: this.dataObj.avoi,
+              partyType: this.partieType,
+              ids: this.dataObj.avoiObj.idArr.join(',')
+            }).then(res => {
+              let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+              _showBtnObj.debarbArbitrator = 0
+              this.setMyCaseShowBtn(_showBtnObj)
+              window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+              this.alertCanc('avoi')
+              this.$Message.success({
+                content: '操作成功',
+                duration: 2
+              })
+            }).catch(e => {
+              this.alertCanc('avoi')
+              this.$Message.error({
+                content: '错误信息:' + e,
+                duration: 5
+              })
+            })
+          }
+        }
       }
     },
     retractClick () {
