@@ -99,6 +99,7 @@ export default {
       if (window.localStorage) {
         let loc = window.localStorage
         loc.removeItem('userInfo')
+        loc.removeItem('userState')
       }
     },
     showPass () {
