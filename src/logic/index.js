@@ -98,6 +98,7 @@ const beforeEach = (to, from, next) => {
       next()
     } else {
       store.commit('SET_USERINFO', null)
+      store.commit('SET_USERSTATE', null)
       store.commit('SET_CASEID', '')
       store.commit('SET_CASEINFO', null)
       store.commit('SET_MYCASEID', '')
@@ -117,6 +118,7 @@ const beforeEach = (to, from, next) => {
         })
       } else {
         store.commit('SET_USERINFO', null)
+        store.commit('SET_USERSTATE', null)
         store.commit('SET_CASEID', '')
         store.commit('SET_CASEINFO', null)
         store.commit('SET_MYCASEID', '')
