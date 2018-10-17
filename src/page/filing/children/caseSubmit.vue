@@ -165,12 +165,14 @@ export default {
         caseId: this.caseInfo.id
       }).then(res => {
         this.addHash = false
+        this.alertCanc('hash')
         this.$Message.success({
           content: '固化成功',
           duration: 2
         })
       }).catch(e => {
         this.addHash = false
+        this.alertCanc('hash')
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
