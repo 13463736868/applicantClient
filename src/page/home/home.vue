@@ -269,53 +269,77 @@ export default {
         }
       } else if (params.row.state === 5) {
         if (_revocation === 1) {
-          return h('div', [
-            h('Button', {
-              props: {
-                type: 'primary',
-                size: 'small'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              on: {
-                click: () => {
-                  this.goCourtRoom(params.index)
+          if (params.row.beginTime === null || params.row.beginTime === '') {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.goCourtRoom(params.index)
+                  }
                 }
-              }
-            }, '进入庭室'),
-            h('Button', {
-              props: {
-                type: 'primary',
-                size: 'small'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              on: {
-                click: () => {
-                  this.resCancCase(params.index)
+              }, '进入庭室'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.resCancCase(params.index)
+                  }
                 }
-              }
-            }, '撤回')
-          ])
+              }, '撤回')
+            ])
+          } else {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.goCourtRoom(params.index)
+                  }
+                }
+              }, '进入庭室')
+            ])
+          }
         } else {
-          return h('div', [
-            h('Button', {
-              props: {
-                type: 'primary',
-                size: 'small'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              on: {
-                click: () => {
-                  this.goCourtRoom(params.index)
+          if (params.row.beginTime === null || params.row.beginTime === '') {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.goCourtRoom(params.index)
+                  }
                 }
-              }
-            }, '进入庭室')
-          ])
+              }, '进入庭室')
+            ])
+          } else {
+            return h('div', [
+            ])
+          }
         }
       } else {
         if (_revocation === 1) {
@@ -584,7 +608,7 @@ export default {
         params: _id + '$' + _partieType
       }).then(res => {
         this.alertCode()
-        window.open('https://192.168.1.249:3004/view/index.html#/' + res.data.data, '_blank')
+        window.open('https://yun.youzhengkeji.com:3004/view/index.html#/' + res.data.data, '_blank')
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',
