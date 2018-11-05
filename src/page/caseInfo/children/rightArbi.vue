@@ -145,6 +145,14 @@
       </Upload>
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.sele" @alertConfirm="seleSave" @alertCancel="alertCanc('sele')" alertTitle="选择仲裁员">
+      <Row class="mb5">
+        <Col span="3" offset="1">
+          <label class="lh25 f12 fb fl mr15">搜 索 :</label>
+        </Col>
+        <Col span="8">
+          <Input :maxlength="15" size="small" v-model.trim="searchText" icon="ios-search-strong" placeholder=""></Input>
+        </Col>
+      </Row>
       <Row class="pb10" v-if="seleShow">
         <Col span="20" offset="1">
           <span><b>主 裁： </b></span>
@@ -236,13 +244,15 @@ export default {
         total: 0,
         pageNum: 1,
         pageSize: 5
-      }
+      },
+      searchText: ''
     }
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.resCaseItem()
     }
+    this.$watch('searchText', this.debounce(this.resSearch, 1000))
   },
   computed: {
     ...mapGetters([
@@ -525,16 +535,34 @@ export default {
         this.$refs.upload.post(this.dataObj.retr)
       }
     },
+    debounce (fn, idle) {
+      let setTm
+      if (!idle || idle <= 0) return fn
+      return () => {
+        clearTimeout(setTm)
+        setTm = setTimeout(fn.bind(this, ...arguments), idle)
+      }
+    },
+    resSearch () {
+      if (!this.seleShow) {
+        this.seleArr = []
+        this.seleArrName = []
+      }
+      this.pageObj.pageNum = 1
+      this.resArbitrator()
+    },
     selectClick () {
       this.pageObj.pageNum = 1
       this.seleArr = []
+      this.seleArrName = []
       this.alertShow.sele = true
       this.resArbitrator()
     },
     resArbitrator () {
       axios.post('/case/selectArbitrator', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
-        pageSize: this.pageObj.pageSize
+        pageSize: this.pageObj.pageSize,
+        keyword: this.searchText
       }).then(res => {
         this.seleList.bodyList = res.data.data.dataList === null ? [] : res.data.data.dataList
         this.pageObj.total = res.data.data.totalCount
@@ -737,6 +765,7 @@ export default {
       if (type === 'sele') {
         this.seleArr = []
         this.seleArrName = []
+        this.searchText = ''
       }
     }
   }

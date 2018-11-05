@@ -5,12 +5,15 @@
     </head-top>
     <div class="_center">
       <div class="_center_mid not_s">
-        <Row>
+        <Row v-if="regiType">
           <Col span="24" class="tc pb15">注册为</Col>
         </Row>
-        <Row class="pb20">
+        <Row v-if="regiType" class="pb20">
           <Col span="8" offset="4" class="_selectBtn" :class="{'_active':registerType}" @click.native="resChange('company')"><Icon type="checkmark" class="_icon" size="20"></Icon>企业用户</Col>
           <Col span="8" class="_selectBtn" :class="{'_active':!registerType}" @click.native="resChange('personal')"><Icon type="checkmark" class="_icon" size="20"></Icon>个人用户</Col>
+        </Row>
+        <Row v-if="!regiType" class="pb20">
+          <Col span="8" offset="8" class="_selectBtn" :class="{'_active':registerType}" @click.native="resChange('company')"><Icon type="checkmark" class="_icon" size="20"></Icon>企业用户</Col>
         </Row>
         <div class="_company" v-show="registerType">
           <div class="_phone">
@@ -136,6 +139,7 @@
 import axios from 'axios'
 import headTop from '@/components/header/head'
 import setRegExp from '@/config/regExp.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'register',
@@ -175,6 +179,15 @@ export default {
         },
         emStatus: 0,
         emText: ''
+      }
+    }
+  },
+  computed: {
+    regiType () {
+      if (regi.regiType === 1) {
+        return true
+      } else {
+        return false
       }
     }
   },
