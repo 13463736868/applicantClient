@@ -30,13 +30,6 @@
             </Col>
           </Row>
         </div>
-        <div class="_forget bc">
-          <Row>
-            <Col span="6">
-              <label class="hand" @click="resForget">忘记密码</label>
-            </Col>
-          </Row>
-        </div>
         <div class="_code bc">
           <Row>
             <Col span="6">
@@ -52,7 +45,8 @@
           <button class="_loginBtn" v-bind:disabled="user.loginBtn" :class="{'_active':user.loginBtn}" @click="resLogin">确 认</button>
         </div>
         <div class="_register bc w350 tc">
-          <span class="_loginBtn" @click="resRegister">没有帐号? 注册</span>
+          <span class="_loginBtn" @click="resRegister">注册 / </span>
+          <span class="_loginBtn" @click="resForget">忘记密码?</span>
         </div>
       </div>
     </div>
@@ -258,14 +252,14 @@ export default {
     ._bodyer {
       @include boxShadow(0 1px 6px -1px #bbb);
       background: #ffffff;
-      height: 325px;
-      padding-top: 15px;
+      height: 300px;
+      padding-top: 20px;
       ._phone, ._password, ._code {
-        width: 350px;
-        padding: 25px 0 5px;
+        width: 330px;
+        padding: 15px 0 5px;
         border-bottom: 1px solid #ddd;
         letter-spacing: 1px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         ._input {
           width: 70%;
           letter-spacing: 1px;
