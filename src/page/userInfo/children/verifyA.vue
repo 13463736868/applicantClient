@@ -7,7 +7,7 @@
           <Col span="10" offset="1">
             <Row class="_labelFor">
               <Col span="24" class="_label">真实姓名<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.name"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.name"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===111" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
@@ -21,7 +21,7 @@
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.idcard"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.idcard"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===113" v-text="emInfo.text"></span></Col>
             </Row>
           </Col>
@@ -38,12 +38,12 @@
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">联系邮箱</Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.email"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">联系地址</Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.address"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.address"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
             </Row>
           </Col>
@@ -52,17 +52,17 @@
           <Col span="10" offset="1">
             <Row class="_labelFor">
               <Col span="24" class="_label">公司名称<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input v-model="userAInfo.name" type="text"></Col>
+              <Col span="24" class="_input"><input v-model.trim="userAInfo.name" type="text"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===211" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">营业执照号码<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input v-model="userAInfo.code" type="text"></Col>
+              <Col span="24" class="_input"><input v-model.trim="userAInfo.code" type="text"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===212" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">公司地址<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input v-model="userAInfo.address" type="text"></Col>
+              <Col span="24" class="_input"><input v-model.trim="userAInfo.address" type="text"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===213" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
@@ -78,7 +78,7 @@
           <Col span="10" offset="2">
             <Row class="_labelFor">
               <Col span="24" class="_label">法定人姓名<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.legal"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.legal"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
@@ -92,7 +92,7 @@
             </Row>
             <Row class="_labelFor">
               <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-              <Col span="24" class="_input"><input type="text" v-model="userAInfo.idcard"></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.idcard"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">

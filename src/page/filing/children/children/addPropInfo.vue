@@ -14,7 +14,7 @@
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===111" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -37,7 +37,7 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===114" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
@@ -54,17 +54,17 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===124" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
@@ -73,7 +73,7 @@
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">企业名称<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input v-model="propData.enterpriseName" type="text"></Col>
+            <Col span="24" class="_input"><input v-model.trim="propData.enterpriseName" type="text"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===211" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -92,19 +92,19 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系人</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.linkMan"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.linkMan"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===214" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
             <Col span="24" class="_label">法定代表人</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -118,17 +118,17 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===224" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===225" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
@@ -137,7 +137,7 @@
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">名称<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input v-model="propData.enterpriseName" type="text"></Col>
+            <Col span="24" class="_input"><input v-model.trim="propData.enterpriseName" type="text"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===311" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -151,24 +151,24 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input v-model="propData.enterpriseIdcard" type="text"></Col>
+            <Col span="24" class="_input"><input v-model.trim="propData.enterpriseIdcard" type="text"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===313" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系人</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.linkMan"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.linkMan"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===314" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===315" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
             <Col span="24" class="_label">经营者</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===321" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -182,17 +182,17 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===323" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===324" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===325" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
@@ -201,7 +201,7 @@
         <Col span="10" offset="1">
           <Row class="_labelFor">
             <Col span="24" class="_label">组织名称<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input v-model="propData.enterpriseName" type="text"></Col>
+            <Col span="24" class="_input"><input v-model.trim="propData.enterpriseName" type="text"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===411" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -215,24 +215,24 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证照号码<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input v-model="propData.enterpriseIdcard" type="text"></Col>
+            <Col span="24" class="_input"><input v-model.trim="propData.enterpriseIdcard" type="text"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===413" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系人</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.linkMan"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.linkMan"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===414" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===415" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
             <Col span="24" class="_label">负责人</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===421" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
@@ -246,17 +246,17 @@
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">证件号码</Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===423" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===424" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
             <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
-            <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===425" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>

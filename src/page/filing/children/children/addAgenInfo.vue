@@ -4,7 +4,7 @@
       <Col span="10" offset="1">
         <Row class="_labelFor">
           <Col span="24" class="_label">姓名<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.name"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.name"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===11" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
@@ -27,12 +27,12 @@
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.idcard"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.idcard"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.organization"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.organization"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===15" v-text="emInfo.text"></span></Col>
         </Row>
       </Col>
@@ -58,17 +58,17 @@
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.phone"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.phone"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===23" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.email"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.email"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===24" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
-          <Col span="24" class="_input"><input type="text" v-model="agenData.address"></Col>
+          <Col span="24" class="_input"><input type="text" v-model.trim="agenData.address"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===25" v-text="emInfo.text"></span></Col>
         </Row>
       </Col>

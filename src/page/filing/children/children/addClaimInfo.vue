@@ -14,7 +14,7 @@
         <Row class="_labelFor">
           <Col span="24" class="_label">请求内容<b class="_b">*</b></Col>
           <Col span="24">
-            <textarea class="_textarea" v-model="claimData.content" rows="8"></textarea>
+            <textarea class="_textarea" v-model.trim="claimData.content" rows="8"></textarea>
           </Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
         </Row>
