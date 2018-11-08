@@ -7,7 +7,7 @@
       <Col span="22" offset="1">
         <Row class="_labelFor">
           <Col span="4" class="_label">证据项名称<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model="data.name"></Col>
+          <Col span="16" class="_input"><input type="text" v-model.trim="data.name"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
@@ -22,7 +22,7 @@
         </Row>
         <Row class="_labelFor">
           <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model="data.memo"></Col>
+          <Col span="16" class="_input"><input type="text" v-model.trim="data.memo"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
