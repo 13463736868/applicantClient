@@ -637,7 +637,7 @@ export default {
         })
       } else {
         axios.post('/case/appointArbitrator', {
-          caseId: this.caseOldId,
+          caseId: this.caseId,
           ids: this.seleArr.join(','),
           partyType: this.partieType
         }).then(res => {

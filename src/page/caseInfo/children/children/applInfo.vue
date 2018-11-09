@@ -7,7 +7,7 @@
             <p>
               <span class="mr10 _file" v-text="infoData.filename" :title="'点击查看: '+infoData.filename" @click="seeFile(infoData.filepath)"></span>
               <span class="_icon">
-                <Icon @click="dowInfo(infoData.id)" class="_dow" type="archive"></Icon>
+                <!-- <Icon @click="dowInfo(infoData.id)" class="_dow" type="archive"></Icon> -->
               </span>
             </p>
           </Col>

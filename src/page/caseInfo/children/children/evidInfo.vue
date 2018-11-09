@@ -21,7 +21,7 @@
               <span class="mr10">附件名称 :</span>
               <span class="_file" v-text="infoData.fileName" :title="'点击查看: '+infoData.fileName" @click="seeFile(infoData.filePath)"></span>
               <span class="_icon">
-                <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon>
+                <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
               </span>
             </p>
           </Col>
