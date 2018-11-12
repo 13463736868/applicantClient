@@ -679,7 +679,7 @@ export default {
         })
       } else {
         axios.post('/case/applyAdditions', {
-          caseId: this.caseOldId,
+          caseId: this.caseId,
           reason: this.dataObj.repl,
           partyType: this.partieType
         }).then(res => {

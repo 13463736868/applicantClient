@@ -281,10 +281,13 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.goCourtRoom(params.index)
+                    this.resCancCase(params.index)
                   }
                 }
-              }, '进入庭室'),
+              }, '撤回')
+            ])
+          } else {
+            return h('div', [
               h('Button', {
                 props: {
                   type: 'primary',
@@ -298,10 +301,7 @@ export default {
                     this.resCancCase(params.index)
                   }
                 }
-              }, '撤回')
-            ])
-          } else {
-            return h('div', [
+              }, '撤回'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -321,6 +321,9 @@ export default {
         } else {
           if (params.row.beginTime === null || params.row.beginTime === '') {
             return h('div', [
+            ])
+          } else {
+            return h('div', [
               h('Button', {
                 props: {
                   type: 'primary',
@@ -335,9 +338,6 @@ export default {
                   }
                 }
               }, '进入庭室')
-            ])
-          } else {
-            return h('div', [
             ])
           }
         }
