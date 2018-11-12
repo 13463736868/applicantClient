@@ -25,11 +25,6 @@ export default {
   props: ['infoData'],
   data () {
     return {}
-  },
-  methods: {
-    seeInfo () {
-      this.$emit('seeInfo')
-    }
   }
 }
 </script>
