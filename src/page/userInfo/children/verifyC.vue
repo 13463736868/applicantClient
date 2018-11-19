@@ -150,6 +150,7 @@ export default {
       this.cardList()
       this.resSee()
     } else if (this.userType === 2) {
+      this.cardList()
       this.dictionary()
       this.resSee()
     }
