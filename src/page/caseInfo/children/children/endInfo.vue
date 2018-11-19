@@ -4,7 +4,7 @@
       <Col span="22" offset="1">
         <p>结案方式：<span v-text="infoData.caseDocumentType"></span></p>
         <p>结案日期：<span v-text="infoData.endCaseDate"></span></p>
-        <p>结案文书：<span class="_file" v-text="infoData.filename" @click="seeFile(infoData.filepath)"></span></p>
+        <p>结案文书：<span class="_file" v-text="infoData.filename" @click="seeFile(infoData.filepath)"></span><Icon @click="dowInfo" class="_dowFile" type="archive"></Icon></p>
       </Col>
     </Row>
   </div>
@@ -20,6 +20,9 @@ export default {
   methods: {
     seeFile (path) {
       window.open(path, '_blank')
+    },
+    dowInfo () {
+      window.open('/api/file/dowloadByUrl/?filename=' + this.infoData.filename + '&filepath=' + this.infoData.filepath, '_blank')
     }
   }
 }
