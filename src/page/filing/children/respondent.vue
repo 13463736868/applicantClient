@@ -108,7 +108,7 @@ export default {
       this.changeView('listResp')
       for (let k in this.respData) {
         if (this.respData[k].id === _obj.id) {
-          this.respData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
+          this.respData[k].fileList.unshift(JSON.parse(JSON.stringify(_obj.fileObj)))
           this.setFiling({type: 'respList', data: this.respData})
           this.$Message.success({
             content: '上传成功',

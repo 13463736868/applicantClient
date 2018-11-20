@@ -152,7 +152,7 @@ export default {
       this.changeView('listProp')
       for (let k in this.propData) {
         if (this.propData[k].id === _obj.id) {
-          this.propData[k].fileList.push(JSON.parse(JSON.stringify(_obj.fileObj)))
+          this.propData[k].fileList.unshift(JSON.parse(JSON.stringify(_obj.fileObj)))
           this.setFiling({type: 'propList', data: this.propData})
           this.$Message.success({
             content: '上传成功',
@@ -267,7 +267,7 @@ export default {
       this.changeView('listAgen')
       for (let k in this.agenData) {
         if (this.agenData[k].id === _obj.id) {
-          this.agenData[k].fileList.push(_obj.fileObj)
+          this.agenData[k].fileList.unshift(JSON.parse(JSON.stringify(_obj.fileObj)))
           this.setFiling({type: 'proxyList', data: this.agenData})
           this.$Message.success({
             content: '上传成功',
