@@ -4,7 +4,7 @@
       <Col span="22" offset="1">
         <p>结案方式：<span v-text="infoData.caseDocumentType"></span></p>
         <p>结案日期：<span v-text="infoData.endCaseDate"></span></p>
-        <p>结案文书：<span class="_file" v-text="infoData.filename" @click="seeFile(infoData.filepath)"></span><Icon @click="dowInfo" class="_dowFile" type="archive"></Icon></p>
+        <p>结案文书：<span class="_file" v-text="infoData.filename" @click="seeFile(infoData.filepath)"></span><Icon v-if="isIcon" @click="dowInfo" class="_dowFile" type="archive"></Icon></p>
       </Col>
     </Row>
   </div>
@@ -16,6 +16,15 @@ export default {
   props: ['infoData'],
   data () {
     return {}
+  },
+  computed: {
+    isIcon () {
+      if (this.infoData.filename === null || this.infoData.filepath === null) {
+        return false
+      } else {
+        return true
+      }
+    }
   },
   methods: {
     seeFile (path) {
