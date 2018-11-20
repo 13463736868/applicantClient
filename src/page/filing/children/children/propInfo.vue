@@ -80,6 +80,9 @@
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
+        <div v-if="!isShowFile">
+          <img class="_defaultImg" :src="defaultSrc" title="点击上传附件" alt="" @click="uploadImg(infoData.id)">
+        </div>
       </Col>
     </Row>
   </div>
@@ -107,6 +110,13 @@ export default {
     this.cardList()
   },
   computed: {
+    defaultSrc () {
+      if (this.infoData.type === 2 || this.infoData.type === 3 || this.infoData.type === 4) {
+        return '../../static/images/enterpriseCard.png'
+      } else {
+        return '../../static/images/idcardF.png'
+      }
+    },
     idcardName () {
       for (let k in this.idcardList) {
         if (this.idcardList[k].itemValue === this.infoData.idcardType) {
@@ -313,6 +323,13 @@ export default {
         width: 50%;
         height: 60%;
       }
+    }
+    ._defaultImg {
+      @include hand;
+      clear: both;
+      display: block;
+      margin: 10px auto;
+      height: 140px;
     }
   }
 }

@@ -30,6 +30,9 @@
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
+        <div v-if="!isShowFile">
+          <img class="_defaultImg" :src="defaultSrc" title="点击上传附件" alt="" @click="uploadImg(infoData.id)">
+        </div>
       </Col>
     </Row>
   </div>
@@ -44,7 +47,8 @@ export default {
   data () {
     return {
       fileIndex: 0,
-      idcardList: []
+      idcardList: [],
+      defaultSrc: '../../static/images/idcardF.png'
     }
   },
   beforeUpdate () {
@@ -271,6 +275,13 @@ export default {
         width: 50%;
         height: 60%;
       }
+    }
+    ._defaultImg {
+      @include hand;
+      clear: both;
+      display: block;
+      margin: 18px auto;
+      height: 152px;
     }
   }
 }
