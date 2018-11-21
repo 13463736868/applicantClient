@@ -106,7 +106,7 @@
       </Row>
       <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
     </alert-btn-info>
-    <alert-btn-info :alertShow="alertShow.repl" @alertConfirm="replSave" @alertCancel="alertCanc('repl')" alertTitle="申请补证">
+    <alert-btn-info :alertShow="alertShow.repl" @alertConfirm="replSave" @alertCancel="alertCanc('repl')" alertTitle="申请补正">
       <Input v-model="dataObj.repl" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.coun" @alertConfirm="counSave" @alertCancel="alertCanc('coun')" alertTitle="申请反请求">
@@ -669,12 +669,12 @@ export default {
     replSave () {
       if (this.dataObj.repl === null) {
         this.$Message.warning({
-          content: '补证原因不能为空',
+          content: '补正原因不能为空',
           duration: 5
         })
       } else if (this.dataObj.repl === '') {
         this.$Message.warning({
-          content: '补证原因不能为空',
+          content: '补正原因不能为空',
           duration: 5
         })
       } else {
