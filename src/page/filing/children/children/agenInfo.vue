@@ -8,9 +8,9 @@
               <span class="mr10">姓名 :</span>
               <span v-text="infoData.name"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
@@ -23,7 +23,7 @@
       </Col>
       <Col class="_listR clearfix not_s" span="9" offset="1">
         <div v-if="isShowFile">
-          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled"></Icon>
+          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled" title="删除"></Icon>
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
