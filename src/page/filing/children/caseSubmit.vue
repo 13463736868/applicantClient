@@ -163,6 +163,7 @@ export default {
       this.alertShow.hash = true
     },
     hashSave () {
+      this.alertShow.hash = false
       this.addHash = true
       axios.post('/case/solidifyHash', {
         caseId: this.caseInfo.id

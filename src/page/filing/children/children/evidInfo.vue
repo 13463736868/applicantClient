@@ -17,17 +17,17 @@
               <span v-else-if="infoData.state === 2">否</span>
             </p>
             <p>
-              <span class="mr10">是否固化过 :</span>
-              <span v-if="hashStatus === true">已固化</span>
-              <span v-else-if="hashStatus === false">未固化</span>
-            </p>
-            <p>
               <span class="mr10">证据项描述 :</span>
               <span v-text="infoData.memo"></span>
             </p>
             <p>
               <span class="mr10">附件名称 :</span>
               <span class="_file" v-text="infoData.fileName" :title="'点击查看: '+infoData.fileName" @click="seeFile(infoData.filePath)"></span>
+            </p>
+            <p>
+              <span class="mr10">固化状态 :</span>
+              <span v-if="hashStatus === true" style="color:#19be6b;">已固化</span>
+              <span v-else-if="hashStatus === false" style="color:#ff9900;">未固化</span>
             </p>
           </Col>
         </Row>
