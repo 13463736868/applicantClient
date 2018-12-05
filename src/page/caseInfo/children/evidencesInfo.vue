@@ -94,10 +94,14 @@ export default {
     resEvid () {
       axios.post(this.resEvidUrl, this.resEvidUrlId).then(res => {
         this.evidData = res.data.data.evidenceList
-        if (this.evidData.length === 0) {
-          this.evidObj.list = false
+        if (this.evidData !== null) {
+          if (this.evidData.length === 0) {
+            this.evidObj.list = false
+          } else {
+            this.evidObj.list = true
+          }
         } else {
-          this.evidObj.list = true
+          this.evidObj.list = false
         }
       }).catch(e => {
         this.$Message.error({
@@ -111,10 +115,14 @@ export default {
         id: this.caseId
       }).then(res => {
         this.revEvidData = res.data.data
-        if (this.revEvidData.length === 0) {
-          this.revEvidObj.list = false
+        if (this.revEvidData !== null) {
+          if (this.revEvidData.length === 0) {
+            this.revEvidObj.list = false
+          } else {
+            this.revEvidObj.list = true
+          }
         } else {
-          this.revEvidObj.list = true
+          this.revEvidObj.list = false
         }
       }).catch(e => {
         this.$Message.error({
