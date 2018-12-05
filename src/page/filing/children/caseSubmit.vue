@@ -18,13 +18,13 @@
         </Row>
       </Col>
     </Row>
-    <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="案件只能固化一次,确定要固化吗？"></alert-tip>
+    <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="固化后证据不允许删除，确定要固化吗？"></alert-tip>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import alertTip from '@/components/common/alertTip'
 
 export default {
@@ -52,6 +52,9 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'setFiling'
+    ]),
     resDictionary (itemGroup) {
       axios.post('/dictionary/' + itemGroup).then(res => {
         let _dataList = res.data.data
@@ -165,9 +168,10 @@ export default {
         caseId: this.caseInfo.id
       }).then(res => {
         this.addHash = false
+        this.changeEviden()
         this.alertCanc('hash')
         this.$Message.success({
-          content: '固化成功',
+          content: res.data.message,
           duration: 2
         })
       }).catch(e => {
@@ -178,6 +182,14 @@ export default {
           duration: 5
         })
       })
+    },
+    changeEviden () {
+      for (let k in this.caseInfo.evidenceList) {
+        if (this.caseInfo.evidenceList[k].isSolidify !== 1) {
+          this.caseInfo.evidenceList[k].isSolidify = 1
+        }
+      }
+      this.setFiling({type: 'evidenceList', data: JSON.parse(JSON.stringify(this.caseInfo.evidenceList))})
     },
     alertCanc (type) {
       this.alertShow[type] = false

@@ -7,7 +7,7 @@
             <p>
               <span class="mr10">证据项名称 :</span>
               <span v-text="infoData.name"></span>
-              <span class="_icon">
+              <span v-if="!hashStatus" class="_icon">
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>
@@ -15,6 +15,11 @@
               <span class="mr10">是否有原件 :</span>
               <span v-if="infoData.state === 1">是</span>
               <span v-else-if="infoData.state === 2">否</span>
+            </p>
+            <p>
+              <span class="mr10">是否固化过 :</span>
+              <span v-if="hashStatus === true">已固化</span>
+              <span v-else-if="hashStatus === false">未固化</span>
             </p>
             <p>
               <span class="mr10">证据项描述 :</span>
@@ -37,6 +42,15 @@ export default {
   props: ['infoData'],
   data () {
     return {}
+  },
+  computed: {
+    hashStatus () {
+      if (this.infoData.isSolidify === 1) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     seeFile (path) {
