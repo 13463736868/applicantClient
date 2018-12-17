@@ -608,7 +608,7 @@ export default {
         params: _id + '$' + _partieType
       }).then(res => {
         this.alertCode()
-        window.open('https://yun.youzhengkeji.com:3004/view/index.html#/' + res.data.data, '_blank')
+        window.open('https://trialonline.yczcw.com.cn:3004/view/index.html#/' + res.data.data, '_blank')
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',

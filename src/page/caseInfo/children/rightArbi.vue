@@ -103,6 +103,10 @@
           <span><b>边 裁：</b></span>
           <span><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[1]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[1]"></Checkbox></span>
         </Col>
+        <Col span="22" offset="1" v-if="dataObj.avoiObj.nameArr[2]">
+          <span><b>边 裁：</b></span>
+          <span><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[2]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[2]"></Checkbox></span>
+        </Col>
       </Row>
       <Input v-model="dataObj.avoi" type="textarea" :autosize="{minRows: 3,maxRows: 10}" placeholder="请输入原因..." />
     </alert-btn-info>
@@ -413,8 +417,8 @@ export default {
               })
             })
           }
-        } else if (this.dataObj.avoiObj.idArr.length >= 2) {
-          if (this.dataObj.avoiObj.statusArr[0] === false && this.dataObj.avoiObj.statusArr[1] === false) {
+        } else if (this.dataObj.avoiObj.idArr.length > 2) {
+          if (this.dataObj.avoiObj.statusArr[0] === false && this.dataObj.avoiObj.statusArr[1] === false && this.dataObj.avoiObj.statusArr[2] === false) {
             this.$Message.warning({
               content: '最少选择一个仲裁员进行回避',
               duration: 5
@@ -425,6 +429,9 @@ export default {
             }
             if (this.dataObj.avoiObj.statusArr[1] === false) {
               this.dataObj.avoiObj.idArr[1] = -1
+            }
+            if (this.dataObj.avoiObj.statusArr[2] === false) {
+              this.dataObj.avoiObj.idArr[2] = -1
             }
             axios.post('/case/applyAvoid', {
               id: this.caseId,
@@ -449,6 +456,11 @@ export default {
               })
             })
           }
+        } else {
+          this.$Message.warning({
+            content: '仲裁员人数有误，请稍后再试',
+            duration: 5
+          })
         }
       }
     },
