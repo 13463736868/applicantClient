@@ -99,10 +99,7 @@
           <Col span="10" offset="2">
             <img class="_imgB" :src="imgUrl.fileB" @click="resSeeImg('fileB')">
           </Col>
-          <Col class="pt20" span="10" offset="1">
-            <img class="_imgC" :src="imgUrl.fileC" @click="resSeeImg('fileC')">
-          </Col>
-          <Col class="pt20" span="10" offset="2">
+          <Col class="pt20" span="10" offset="7">
             <img class="_imgD" :src="imgUrl.fileD" @click="resSeeImg('fileD')">
           </Col>
         </Row>
@@ -204,8 +201,7 @@ export default {
           this.entrDocData = this.userAInfo.authorizeBook
           this.imgUrl.fileA = res.data.data.fileList[0].filepath
           this.imgUrl.fileB = res.data.data.fileList[1].filepath
-          this.imgUrl.fileC = res.data.data.fileList[2].filepath
-          this.imgUrl.fileD = res.data.data.fileList[3].filepath
+          this.imgUrl.fileD = res.data.data.fileList[2].filepath
         }
         this.seeShow = true
       }).catch(e => {

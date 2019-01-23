@@ -140,11 +140,7 @@
               <img class="_imgB" :src="imgUrl.fileB" ref="fileB">
               <input type="file" class="_file" @change="fileBChange" accept="image/*">
             </Col>
-            <Col class="pt20" span="10" offset="1" ref="fileC">
-              <img class="_imgC" :src="imgUrl.fileC">
-              <input type="file" class="_file" @change="fileCChange" accept="image/*">
-            </Col>
-            <Col class="pt20" span="10" offset="2" ref="fileD">
+            <Col class="pt20" span="10" offset="7" ref="fileD">
               <img class="_imgD" :src="imgUrl.fileD">
               <input type="file" class="_file" @change="fileDChange" accept="image/*">
             </Col>
@@ -246,7 +242,6 @@ export default {
       fileObjB: {
         fileA: null,
         fileB: null,
-        fileC: null,
         fileD: null
       },
       imgUrl: {
@@ -265,7 +260,6 @@ export default {
       imgUrlIdB: {
         fileA: null,
         fileB: null,
-        fileC: null,
         fileD: null
       }
     }
@@ -349,13 +343,11 @@ export default {
           try {
             this.imgUrl.fileA = _data.fileList[0].filepath
             this.imgUrl.fileB = _data.fileList[1].filepath
-            this.imgUrl.fileC = _data.fileList[2].filepath
-            this.imgUrl.fileD = _data.fileList[3].filepath
+            this.imgUrl.fileD = _data.fileList[2].filepath
             this.imgUrlCopy = JSON.parse(JSON.stringify(this.imgUrl))
             this.imgUrlId.fileA = _data.fileList[0].id
             this.imgUrlId.fileB = _data.fileList[1].id
-            this.imgUrlId.fileC = _data.fileList[2].id
-            this.imgUrlId.fileD = _data.fileList[3].id
+            this.imgUrlId.fileD = _data.fileList[2].id
           } catch (e) {
             this.$Message.error({
               content: '错误信息:' + e + ' 稍后再试',
@@ -558,13 +550,11 @@ export default {
         this.fileObj = {
           fileA: null,
           fileB: null,
-          fileC: null,
           fileD: null
         }
         this.imgUrlId = {
           fileA: null,
           fileB: null,
-          fileC: null,
           fileD: null
         }
         this.$refs._formB.reset()

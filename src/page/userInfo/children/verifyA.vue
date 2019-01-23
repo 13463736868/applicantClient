@@ -137,11 +137,7 @@
               <img class="_imgB" :src="imgUrl.fileB" ref="fileB">
               <input type="file" class="_file" @change="fileBChange" accept="image/*">
             </Col>
-            <Col class="pt20" span="10" offset="1" ref="fileC">
-              <img class="_imgC" :src="imgUrl.fileC">
-              <input type="file" class="_file" @change="fileCChange" accept="image/*">
-            </Col>
-            <Col class="pt20" span="10" offset="2" ref="fileD">
+            <Col class="pt20" span="10" offset="7" ref="fileD">
               <img class="_imgD" :src="imgUrl.fileD">
               <input type="file" class="_file" @change="fileDChange" accept="image/*">
             </Col>
@@ -244,7 +240,6 @@ export default {
       fileObjB: {
         fileA: null,
         fileB: null,
-        fileC: null,
         fileD: null
       },
       imgUrl: {
@@ -267,7 +262,7 @@ export default {
       this.uploadUrl = '/api/person/perfect/company/1'
       this.userAInfo = this.userAInfoB
       this.fileObj = this.fileObjB
-      this.uploadNum = 4
+      this.uploadNum = 3
     }
   },
   computed: {
@@ -464,10 +459,9 @@ export default {
         this.fileObj = {
           fileA: null,
           fileB: null,
-          fileC: null,
           fileD: null
         }
-        this.uploadNum = 4
+        this.uploadNum = 3
         this.$refs._formB.reset()
       }
       this.imgUrl = {
@@ -581,7 +575,7 @@ export default {
       if (this.userType === 1) {
         this.uploadNum = 3
       } else if (this.userType === 2) {
-        this.uploadNum = 4
+        this.uploadNum = 3
       }
       for (let k in this.fileObj) {
         if (this.fileObj[k] === null) {
