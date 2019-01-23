@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import regi from '@/config/regiType.js'
+
 export default {
   name: 'end_info',
   props: ['infoData'],
@@ -31,7 +33,7 @@ export default {
       window.open(path, '_blank')
     },
     dowInfo () {
-      window.open('/api/file/dowloadByUrl/?filename=' + this.infoData.filename + '&filepath=' + this.infoData.filepath, '_blank')
+      window.open(regi.api + '/file/dowloadByUrl/?filename=' + this.infoData.filename + '&filepath=' + this.infoData.filepath, '_blank')
     }
   }
 }

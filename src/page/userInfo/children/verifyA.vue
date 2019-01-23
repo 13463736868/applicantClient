@@ -167,7 +167,7 @@
           <entr-info :infoData="entrDocData" @rebirth="changeView('addEntrDoc')"></entr-info>
         </div>
         <div v-if="entrDoc.add">
-          <upload-book :fileType="['pdf','jpg','jpeg','png']" uploadUrl="/api/file/upload" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
+          <upload-book :fileType="['pdf','jpg','jpeg','png']" :uploadUrl="resUploadUrl" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
         </div>
         <add-icon v-if="entrDocBtn" :imgStatus="3" addText="上传授权委托书" @addClick="changeView('addEntrDoc')"></add-icon>
       </div>
@@ -186,6 +186,7 @@ import addIcon from '@/components/common/addIcon'
 import entrInfo from '@/page/userInfo/children/children/entrInfo'
 import uploadBook from '@/page/userInfo/children/children/uploadBook'
 import setRegExp from '@/config/regExp.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'verify_a_info',
@@ -253,19 +254,22 @@ export default {
   created () {
     this.cardList()
     if (this.userType === 1) {
-      this.uploadUrl = '/api/person/perfect/1'
+      this.uploadUrl = regi.api + '/person/perfect/1'
       this.userAInfo = this.userAInfoA
       this.fileObj = this.fileObjA
       this.uploadNum = 3
     } else if (this.userType === 2) {
       this.dictionary()
-      this.uploadUrl = '/api/person/perfect/company/1'
+      this.uploadUrl = regi.api + '/person/perfect/company/1'
       this.userAInfo = this.userAInfoB
       this.fileObj = this.fileObjB
       this.uploadNum = 3
     }
   },
   computed: {
+    resUploadUrl () {
+      return regi.api + '/file/upload'
+    },
     uploadData () {
       return this.userAInfo
     },
@@ -595,7 +599,7 @@ export default {
       }
     },
     dowDocBook () {
-      window.open('/api/file/templet/dowload/1', '_blank')
+      window.open(regi.api + '/file/templet/dowload/1', '_blank')
     },
     entrDocSave (_obj) {
       this.entrDocData = _obj

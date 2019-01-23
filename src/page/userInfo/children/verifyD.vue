@@ -170,7 +170,7 @@
           <entr-info :infoData="entrDocData" @rebirth="changeView('addEntrDoc')"></entr-info>
         </div>
         <div v-if="entrDoc.add">
-          <upload-book :fileType="['pdf','jpg','jpeg','png']" uploadUrl="/api/file/upload" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
+          <upload-book :fileType="['pdf','jpg','jpeg','png']" :uploadUrl="resUploadUrl" @dowDoc="dowDocBook" @saveClick="entrDocSave" @cancClick="changeView('listEntrDoc')"></upload-book>
         </div>
       </div>
     </div>
@@ -187,6 +187,7 @@ import { mapActions } from 'vuex'
 import entrInfo from '@/page/userInfo/children/children/entrInfo'
 import uploadBook from '@/page/userInfo/children/children/uploadBook'
 import setRegExp from '@/config/regExp.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'verify_d_info',
@@ -267,18 +268,21 @@ export default {
   created () {
     if (this.userType === 1) {
       this.cardList()
-      this.uploadUrl = '/api/person/perfect/2'
+      this.uploadUrl = regi.api + '/person/perfect/2'
       this.fileObj = this.fileObjA
       this.imgUrlId = this.imgUrlIdA
     } else if (this.userType === 2) {
       this.cardList()
       this.dictionary()
-      this.uploadUrl = '/api/person/perfect/company/2'
+      this.uploadUrl = regi.api + '/person/perfect/company/2'
       this.fileObj = this.fileObjB
       this.imgUrlId = this.imgUrlIdA
     }
   },
   computed: {
+    resUploadUrl () {
+      return regi.api + '/file/upload'
+    },
     resEditUrl () {
       if (this.userType === 1) {
         return '/person/selectPerfect'
@@ -693,7 +697,7 @@ export default {
       }
     },
     dowDocBook () {
-      window.open('/api/file/templet/dowload/1', '_blank')
+      window.open(regi.api + '/file/templet/dowload/1', '_blank')
     },
     entrDocSave (_obj) {
       this.entrDocData = _obj

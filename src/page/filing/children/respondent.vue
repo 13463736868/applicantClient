@@ -14,7 +14,7 @@
         <edit-prop-info :editType="2" :caseId="caseId" :editPropData="editRespData" @saveClick="editRespSave" @cancClick="changeView('listResp')"></edit-prop-info>
       </div>
       <div v-if="respShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadRespId" :fileType="['jpg','jpeg','png']" uploadUrl="/api/file/uploadParty/2" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadRespId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrl(2)" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
       </div>
       <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
@@ -34,6 +34,7 @@ import propInfo from '@/page/filing/children/children/propInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
 import uploadAnnex from '@/page/filing/children/children/uploadAnnex'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'respondent',
@@ -67,7 +68,10 @@ export default {
     ...mapGetters([
       'caseId',
       'caseInfo'
-    ])
+    ]),
+    uploadUrl (type) {
+      return regi.api + '/file/uploadParty/' + type
+    }
   },
   methods: {
     ...mapActions([

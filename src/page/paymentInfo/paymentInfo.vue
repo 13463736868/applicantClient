@@ -66,6 +66,7 @@
 import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'payment_info',
@@ -186,7 +187,7 @@ export default {
       })
     },
     dowPdf (fileId) {
-      window.open('/api/file/dowload/' + fileId, '_blank')
+      window.open(regi.api + '/file/dowload/' + fileId, '_blank')
     }
   }
 }

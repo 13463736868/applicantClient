@@ -128,7 +128,7 @@
         ref="upload"
         name="file"
         type="drag"
-        action="/api/case/withdraw"
+        :action="resAction"
         :with-credentials="true"
         :show-upload-list="false"
         :format="['jpg','jpeg','png','doc','docx','pdf']"
@@ -186,6 +186,7 @@ import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'right_arbi',
@@ -262,6 +263,9 @@ export default {
     ...mapGetters([
       'myCaseShowBtn'
     ]),
+    resAction () {
+      return regi.api + '/case/withdraw'
+    },
     retrData () {
       let _data = {}
       _data.caseId = this.caseOldId

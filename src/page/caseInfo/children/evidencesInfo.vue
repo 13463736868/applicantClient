@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-if="evidObj.add">
-        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" uploadUrl="/api/case/supplyEvidence" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
       <div v-if="partieType === 1 && myCaseCrossE === 1">
         <add-icon v-if="evidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div v-if="revEvidObj.add">
-        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" uploadUrl="/api/case/supplyEvidence" @saveClick="addRevEvidSave" @cancClick="changeView('listRevEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addRevEvidSave" @cancClick="changeView('listRevEvid')"></add-evid-info>
       </div>
       <div v-if="partieType === 2 && myCaseCrossE === 1">
         <add-icon v-if="revEvidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addRevEvid')"></add-icon>
@@ -37,6 +37,7 @@ import { mapGetters } from 'vuex'
 import addIcon from '@/components/common/addIcon'
 import evidInfo from '@/page/caseInfo/children/children/evidInfo'
 import addEvidInfo from '@/page/caseInfo/children/children/addEvidInfo'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidencesInfo',
@@ -70,6 +71,9 @@ export default {
     ...mapGetters([
       'myCaseCrossE'
     ]),
+    uploadUrl () {
+      return regi.api + '/case/supplyEvidence'
+    },
     resEvidUrl () {
       if (this.partieType === 1) {
         return '/case/selectObjectByCaseId/4'

@@ -40,7 +40,7 @@
         <appl-info :infoData="applData" @delInfo="delApplInfo"></appl-info>
       </div>
       <div v-if="applShow.add">
-        <upload-appl-book :caseId="caseId" :fileType="['pdf']" uploadUrl="/api/file/uploadApplication" @saveClick="uploadApplSave" @cancClick="changeView('listAppl')"></upload-appl-book>
+        <upload-appl-book :caseId="caseId" :fileType="['pdf']" :uploadUrl="uploadUrl" @saveClick="uploadApplSave" @cancClick="changeView('listAppl')"></upload-appl-book>
       </div>
       <add-icon v-if="applShowBtn" :imgStatus="3" addText="上传申请书" @addClick="changeView('addAppl')"></add-icon>
     </div>
@@ -64,6 +64,7 @@ import addReasInfo from '@/page/filing/children/children/addReasInfo'
 import editReasInfo from '@/page/filing/children/children/editReasInfo'
 import applInfo from '@/page/filing/children/children/applInfo'
 import uploadApplBook from '@/page/filing/children/children/uploadApplBook'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'claimItems',
@@ -113,6 +114,9 @@ export default {
       'caseId',
       'caseInfo'
     ]),
+    uploadUrl () {
+      return regi.api + '/file/uploadApplication'
+    },
     reasShowBtn () {
       if (this.reasShow.list === true || this.reasShow.add === true || this.reasShow.edit === true) {
         return false

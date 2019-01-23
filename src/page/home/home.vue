@@ -45,7 +45,7 @@
         ref="upload"
         name="file"
         type="drag"
-        action="/api/case/withdraw"
+        :action="resAction"
         :with-credentials="true"
         :show-upload-list="false"
         :format="['jpg','jpeg','png','doc','docx','pdf']"
@@ -79,6 +79,7 @@ import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
 import setRegExp from '@/config/regExp.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'home',
@@ -191,6 +192,9 @@ export default {
     this.resMineList()
   },
   computed: {
+    resAction () {
+      return regi.api + '/case/withdraw'
+    },
     retrData () {
       let _data = {}
       _data.caseId = this.retrDObj

@@ -79,6 +79,7 @@
 
 <script>
 import axios from 'axios'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'prop_info',
@@ -215,7 +216,7 @@ export default {
       window.open(path, '_blank')
     },
     dowImg (id) {
-      window.open('/api/file/dowload/' + id, '_blank')
+      window.open(regi.api + '/file/dowload/' + id, '_blank')
     }
   }
 }

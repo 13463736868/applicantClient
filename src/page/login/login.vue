@@ -59,6 +59,7 @@ import { mapActions } from 'vuex'
 import {setToken, removeToken} from '@/cookies'
 import setRegExp from '@/config/regExp.js'
 import vers from '@/config/version.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'login',
@@ -101,7 +102,7 @@ export default {
   },
   computed: {
     codeImgSrc () {
-      return '/api/verify/code' + this.codeSrc
+      return regi.api + '/verify/code' + this.codeSrc
     }
   },
   methods: {

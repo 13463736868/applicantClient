@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-if="evidShow.add">
-        <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" uploadUrl="/api/case/evidenceAdd" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
       <add-icon v-if="evidShow.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
     </div>
@@ -24,6 +24,7 @@ import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import evidInfo from '@/page/filing/children/children/evidInfo'
 import addEvidInfo from '@/page/filing/children/children/addEvidInfo'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidences',
@@ -51,7 +52,10 @@ export default {
     ...mapGetters([
       'caseId',
       'caseInfo'
-    ])
+    ]),
+    uploadUrl () {
+      return regi.api + '/case/evidenceAdd'
+    }
   },
   methods: {
     ...mapActions([
