@@ -58,7 +58,7 @@
             </Col>
             <Col span="10" offset="2">
               <Row class="_labelFor">
-                <Col span="24" class="_label">法定人姓名<b class="_b">*</b></Col>
+                <Col span="24" class="_label">法定代表人姓名<b class="_b">*</b></Col>
                 <Col span="24" class="_input"><span v-text="userAInfo.legal"></span></Col>
               </Row>
               <Row class="_labelFor">

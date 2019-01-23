@@ -77,7 +77,7 @@
           </Col>
           <Col span="10" offset="2">
             <Row class="_labelFor">
-              <Col span="24" class="_label">法定人姓名<b class="_b">*</b></Col>
+              <Col span="24" class="_label">法定代表人姓名<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.legal"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
             </Row>
@@ -534,7 +534,7 @@ export default {
             this.emInfo.text = '请选择公司行业'
           } else if (this.userAInfo.legal === '') {
             this.emInfo.status = 221
-            this.emInfo.text = '请输入法定人姓名'
+            this.emInfo.text = '请输入法定代表人姓名'
           } else if (this.userAInfo.idcardType === null) {
             this.emInfo.status = 222
             this.emInfo.text = '请选择证件类型'
