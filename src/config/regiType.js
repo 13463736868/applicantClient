@@ -1,7 +1,7 @@
 'use strict'
-// regiType 1 线上;2 本地(个人注册)
+// regiType 1 线上;2 本地(个人注册)  anyang:/upcase
 const regiType = 1
-const api = '/api'
+const api = '/upcase'
 const type = 'AnYang'
 const infoMap = {
   'AnYang': {

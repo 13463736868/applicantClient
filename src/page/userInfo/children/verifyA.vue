@@ -244,10 +244,10 @@ export default {
         fileD: null
       },
       imgUrl: {
-        fileA: '../../../static/images/idcardF.png',
-        fileB: '../../../static/images/idcardB.png',
-        fileC: '../../../static/images/idcardP.png',
-        fileD: '../../../static/images/enterpriseCard.png'
+        fileA: require('../static/images/idcardF.png'),
+        fileB: require('../static/images/idcardB.png'),
+        fileC: require('../static/images/idcardP.png'),
+        fileD: require('../static/images/enterpriseCard.png')
       }
     }
   },
@@ -469,10 +469,10 @@ export default {
         this.$refs._formB.reset()
       }
       this.imgUrl = {
-        fileA: '../../../static/images/idcardF.png',
-        fileB: '../../../static/images/idcardB.png',
-        fileC: '../../../static/images/idcardP.png',
-        fileD: '../../../static/images/enterpriseCard.png'
+        fileA: require('../static/images/idcardF.png'),
+        fileB: require('../static/images/idcardB.png'),
+        fileC: require('../static/images/idcardP.png'),
+        fileD: require('../static/images/enterpriseCard.png')
       }
     },
     saveClick () {

@@ -197,7 +197,7 @@ export default {
       spinShow: false,
       progressText: null,
       logo: {
-        url: '../../static/images/logoR.png'
+        url: require('../../static/images/logoR.png')
       },
       dataInfoShow: false,
       dataInfo: null,

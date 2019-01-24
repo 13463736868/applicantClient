@@ -67,12 +67,12 @@ export default {
     return {
       style: {
         bg: {
-          backgroundImage: "url('../../static/images/login_bg.png')",
+          backgroundImage: 'url(' + require('../../static/images/login_bg.png') + ')',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover'
         },
         icon: {
-          src: '../../static/images/login_icon.png'
+          src: require('../../static/images/login_icon.png')
         },
         loginLogo: {
           width: '210px',
@@ -219,7 +219,7 @@ export default {
 ._login {
   width: 100%;
   height: 100%;
-  background: url('/static/images/login_bg.png') no-repeat center center;
+  background: url('../../static/images/login_bg.png') no-repeat center center;
   background-size: cover;
   display: flex;
   flex-direction: column;

@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     imgUrl () {
-      return '../../static/images/addIcon' + this.imgStatus + '.png'
+      return require('../../static/images/addIcon' + this.imgStatus + '.png')
     }
   },
   methods: {
