@@ -7,16 +7,16 @@
           <Col span="22" offset="1">
             <div class="_logo">
               <img :src="logo.url" alt="">
-              <div class="f14 pt5"><b>中国盐城仲裁委员会</b></div>
-              <div><b>YanCheng Arbitration Commission</b></div>
+              <div class="f14 pt5"><b v-text="dataMap.name"></b></div>
+              <div><b v-text="dataMap.excName"></b></div>
             </div>
             <p>
               <span class="mr10"><b>电话 :</b></span>
-              <span class="mr10">0515-88123589</span>
+              <span class="mr10" v-text="dataMap.tel"></span>
             </p>
             <p>
               <span class="mr10"><b>地址 :</b></span>
-              <span class="mr10">江苏省盐城市人民南路106号</span>
+              <span class="mr10" v-text="dataMap.address"></span>
             </p>
           </Col>
         </Row>
@@ -263,6 +263,9 @@ export default {
     ...mapGetters([
       'myCaseShowBtn'
     ]),
+    dataMap () {
+      return regi.dataMap
+    },
     resAction () {
       return regi.api + '/case/withdraw'
     },
