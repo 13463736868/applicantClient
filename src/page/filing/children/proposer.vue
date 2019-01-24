@@ -14,7 +14,7 @@
         <edit-prop-info :editType="1" :caseId="caseId" :editPropData="editPropData" @saveClick="editPropSave" @cancClick="changeView('listProp')"></edit-prop-info>
       </div>
       <div v-if="propShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadPropId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrl(1)" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadPropId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrlA" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
       </div>
       <add-icon v-if="propShow.addBtn" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
     </div>
@@ -32,7 +32,7 @@
         <edit-agen-info :caseId="caseId" :propArrName="propDataName" :editAgenData="editAgenData" @saveClick="editAgenSave" @cancClick="changeView('listAgen')"></edit-agen-info>
       </div>
       <div v-if="agenShow.upload">
-        <upload-annex :caseId="caseId" :infoId="uploadAgenId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrl(3)" @saveClick="uploadAgenSave" @cancClick="changeView('listAgen')"></upload-annex>
+        <upload-annex :caseId="caseId" :infoId="uploadAgenId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrlC" @saveClick="uploadAgenSave" @cancClick="changeView('listAgen')"></upload-annex>
       </div>
       <add-icon v-if="agenShow.addBtn" :imgStatus="1" addText="添加代理人" @addClick="changeView('addAgen')"></add-icon>
     </div>
@@ -111,8 +111,11 @@ export default {
       'caseId',
       'caseInfo'
     ]),
-    uploadUrl (type) {
-      return regi.api + '/file/uploadParty/' + type
+    uploadUrlA () {
+      return regi.api + '/file/uploadParty/1'
+    },
+    uploadUrlC () {
+      return regi.api + '/file/uploadParty/3'
     }
   },
   methods: {
