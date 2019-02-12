@@ -12,6 +12,20 @@
         <Col span="8">
           <Input v-model="search.text" icon="ios-search-strong" placeholder="" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch"></Input>
         </Col>
+        <Col span="2" offset="2">
+          <label class="lh32 f16 fc6 fr mr15">状态</label>
+        </Col>
+        <Col span="6">
+          <Select v-model="perfectStatus" style="width:200px" @on-change="resChangeStatus()">
+            <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Col>
+        <Col span="2">
+          <Button type="primary" @click="resAddUpload">批量导入</Button>
+        </Col>
+        <Col span="2">
+          <Button type="primary" @click="resSubmit">批量提交</Button>
+        </Col>
       </Row>
       <div class="_caseList clearfix">
         <Row>
@@ -29,6 +43,36 @@
       </div>
     </div>
     <alert-tip :alertShow="alertShowSub" @alertCancel="caseDelCanc" @alertConfirm="caseDelSave" alertTitle="提示" alertText="确定要删除这个案件吗？"></alert-tip>
+    <alert-btn-info :isCancBtn="true" :isSaveBtn="true" :alertShow="alertShow.addcase" alertTitle="操作">
+      <div v-text="alertShow.text"></div>
+      <Row>
+        <Col v-if="alertShow.stepNum === 1" span="24">
+          <upload-book childName="上传excel文件" :dowShow="true" :fileType="['xls','xlsx']" :uploadUrl="resUploadUrlA" @dowDoc="dowDocBook" @saveClick="excSave" @cancClick="alertCanc('addC')"></upload-book>
+        </Col>
+        <Col v-if="alertShow.stepNum === 2" span="24">
+          <upload-book childName="上传zip压缩文件" :dowShow="false" :fileType="['zip']" :uploadUrl="resUploadUrlB" @saveClick="zipSave" @cancClick="alertCanc('addC')"></upload-book>
+        </Col>
+      </Row>
+    </alert-btn-info>
+    <alert-btn-info :isSaveBtn="true" :alertShow="alertShow.info" @alertCancel="alertCanc('info')" alertTitle="批量导入状态">
+      <Row>
+        <Col span="24" class="pl20 pr20">
+          <Table stripe align="center" :loading="seleList.loading" :columns="seleList.header" :data="seleList.bodyList"></Table>
+        </Col>
+      </Row>
+    </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.submit" @alertCancel="alertCanc('submit')" @alertConfirm="submitSave" alertTitle="提示">
+      <Row class="_labelFor">
+        <Col span="6" offset="1">
+          <p><span class="_span">*</span><b>选择仲裁机构：</b></p>
+        </Col>
+        <Col span="16">
+          <Select v-model="alertShow.committee">
+            <Option v-for="item in alertShow.committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Col>
+      </Row>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -36,12 +80,15 @@
 import axios from 'axios'
 import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
-import alertTip from '@/components/common/alertTip'
 import spinComp from '@/components/common/spin'
+import alertTip from '@/components/common/alertTip'
+import alertBtnInfo from '@/components/common/alertBtnInfo'
+import uploadBook from '@/page/notApplied/children/uploadBook'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'notApplied',
-  components: { headTop, alertTip, spinComp },
+  components: { headTop, alertTip, spinComp, alertBtnInfo, uploadBook },
   data () {
     return {
       alertShowSub: false,
@@ -53,6 +100,14 @@ export default {
       caseList: {
         loading: false,
         header: [
+          {
+            title: '选择',
+            key: 'id',
+            align: 'center',
+            render: (h, params) => {
+              return this.renderCheck(h, params)
+            }
+          },
           {
             title: '案件编号',
             key: 'id',
@@ -72,6 +127,15 @@ export default {
                   }
                 }
               }, params.row.id)
+            }
+          },
+          {
+            title: '合同编号',
+            key: 'contractNo',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.contractNo === null ? '' : params.row.contractNo)
             }
           },
           {
@@ -99,6 +163,15 @@ export default {
             render: (h, params) => {
               return h('span', {
               }, params.row.createtime === null ? '' : params.row.createtime)
+            }
+          },
+          {
+            title: '是否完善',
+            key: 'isPerfect',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.isPerfect === 2 ? '否' : (params.row.isPerfect === 1 ? '是' : '未知'))
             }
           },
           {
@@ -145,22 +218,164 @@ export default {
         total: 0,
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      alertShow: {
+        addcase: false,
+        text: '第一步：',
+        stepNum: 1,
+        info: false,
+        idsList: [],
+        submit: false,
+        committee: '',
+        committeeList: []
+      },
+      seleList: {
+        loading: false,
+        header: [
+          {
+            title: '文件名称',
+            key: 'file',
+            align: 'center'
+          },
+          {
+            title: '状态',
+            key: 'desc',
+            align: 'center'
+          }
+        ],
+        bodyList: []
+      },
+      perfectStatusList: [],
+      perfectStatus: 0
     }
   },
   created () {
+    this.dictionary()
     this.resPrepareList()
+  },
+  computed: {
+    resUploadUrlA () {
+      return regi.api + '/caseImport/import'
+    },
+    resUploadUrlB () {
+      return regi.api + '/file/upload/zipFile'
+    }
   },
   methods: {
     ...mapActions([
       'setCaseId'
     ]),
+    renderCheck (h, params) {
+      let _obj = params.row
+      if (_obj.isPerfect === 1) {
+        if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
+          return h('div', [
+            h('Icon', {
+              props: {
+                type: 'android-checkbox-outline-blank',
+                size: '16'
+              },
+              style: {
+                color: '#2d8cf0',
+                cursor: 'pointer',
+                verticalAlign: 'text-top'
+              },
+              on: {
+                click: () => {
+                  this.seleArrChange(params.index, true)
+                }
+              }
+            })
+          ])
+        } else {
+          return h('div', [
+            h('Icon', {
+              props: {
+                type: 'android-checkbox',
+                size: '16'
+              },
+              style: {
+                color: '#2d8cf0',
+                cursor: 'pointer',
+                verticalAlign: 'text-top'
+              },
+              on: {
+                click: () => {
+                  this.seleArrChange(params.index, false)
+                }
+              }
+            })
+          ])
+        }
+      } else {
+        return h('div', [
+        ])
+      }
+    },
+    seleArrChange (index, bool) {
+      let info = this.caseList.bodyList[index]
+      if (bool) {
+        if (this.alertShow.idsList.indexOf(info.id) === -1) {
+          if (this.alertShow.idsList.length >= 10) {
+            this.$Message.error({
+              content: '最多只能选择十个案件',
+              duration: 5
+            })
+            return false
+          } else {
+            this.alertShow.idsList.push(info.id)
+          }
+        }
+      } else {
+        if (this.alertShow.idsList.indexOf(info.id) !== -1) {
+          this.alertShow.idsList.splice(this.alertShow.idsList.indexOf(info.id), 1)
+        }
+      }
+    },
+    resDictionary (itemGroup) {
+      axios.post('/dictionary/' + itemGroup).then(res => {
+        let _dataList = res.data.data
+        let _select = []
+        for (let k in _dataList) {
+          let _o = {}
+          _o.value = _dataList[k].itemValue
+          _o.label = _dataList[k].item
+          _select.push(_o)
+        }
+        this.alertShow.committeeList = _select
+        this.alertShow.committee = this.alertShow.committeeList === '' ? '' : this.alertShow.committeeList[0].value
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    dictionary () {
+      axios.post('/dictionary/perfectType').then(res => {
+        let _dataList = res.data.data
+        let _select = []
+        for (let k in _dataList) {
+          let _o = {}
+          _o.value = _dataList[k].itemValue
+          _o.label = _dataList[k].item
+          _select.push(_o)
+        }
+        this.perfectStatusList = _select
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     resPrepareList () {
       this.spinShow = true
       axios.post('/case/prepareList', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
-        keyword: this.search.text
+        keyword: this.search.text,
+        perfectType: this.perfectStatus
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -173,6 +388,10 @@ export default {
           duration: 5
         })
       })
+    },
+    resChangeStatus () {
+      this.pageObj.pageNum = 1
+      this.resPrepareList()
     },
     goCaseSee (index) {
       this.setCaseId(this.caseList.bodyList[index].id)
@@ -213,6 +432,75 @@ export default {
     reschangePage (page) {
       this.pageObj.pageNum = page
       this.resPrepareList()
+    },
+    dowDocBook () {
+      window.open(regi.api + '/file/templet/dowload/2', '_blank')
+    },
+    resAddUpload () {
+      this.alertShow.addcase = true
+    },
+    excSave (obj) {
+      this.$Message.success({
+        content: '' + obj + '',
+        duration: 5
+      })
+      this.alertShow.text = '第二步：'
+      this.alertShow.stepNum = 2
+    },
+    zipSave (obj) {
+      this.alertCanc('addC')
+      if (obj === null || obj === []) {
+      } else {
+        this.seleList.bodyList = obj
+        this.alertShow.info = true
+      }
+    },
+    resSubmit () {
+      if (this.alertShow.idsList.length === 0) {
+        this.$Message.error({
+          content: '请先选择一个案件',
+          duration: 5
+        })
+      } else {
+        this.resDictionary('commissionType')
+        this.alertShow.submit = true
+      }
+    },
+    submitSave () {
+      this.alertCanc('submit')
+      this.spinShow = true
+      axios.post('/case/submit', {
+        caseId: JSON.stringify(this.alertShow.idsList),
+        commissionType: this.alertShow.committee
+      }).then(res => {
+        this.alertShow.idsList = []
+        this.spinShow = false
+        this.resChangeStatus()
+        this.$Message.success({
+          content: res.message,
+          duration: 10,
+          closable: true
+        })
+      }).catch(e => {
+        this.spinShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    alertCanc (type) {
+      if (type === 'addC') {
+        this.alertShow.addcase = false
+        this.alertShow.text = '第一步：'
+        this.alertShow.stepNum = 1
+      } else if (type === 'info') {
+        this.alertShow.info = false
+        this.seleList.bodyList = []
+        this.resChangeStatus()
+      } else if (type === 'submit') {
+        this.alertShow.submit = false
+      }
     }
   }
 }
@@ -232,6 +520,16 @@ export default {
   }
   ._caseList {
     margin-bottom: 20px;
+  }
+}
+._labelFor {
+  margin-bottom: 10px;
+  p {
+    padding: 7px 0;
+  }
+  ._span {
+    vertical-align: middle;
+    color: #ff7a7a;
   }
 }
 </style>
