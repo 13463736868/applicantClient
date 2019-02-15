@@ -1,8 +1,8 @@
 'use strict'
-// regiType 1 线上;2 本地(个人注册)  anyang:/upcase
+// regiType 1 线上;2 本地(个人注册)  anyang:/upcase ;src/axios;src/router;index.html
 const regiType = 1
-const api = '/upcase'
-const type = 'AnYang'
+const api = '/api'
+const type = 'YanCheng'
 const infoMap = {
   'AnYang': {
     name: '中国安阳仲裁委员会',
