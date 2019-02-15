@@ -4,13 +4,13 @@
       <span class="f36 fcf">缴费单查询</span>
     </head-top>
     <div class="_center pr">
-      <Row v-if="dataObj !== null">
+      <Row v-if="publicData !== null">
         <Col span="14" offset="5">
           <div class="_payment">
             <div class="_top">缴费单详情</div>
             <div class="_mid">
-              <p><b>支付方式：</b><span>对公转账</span></p>
-              <p><b>金额：</b><span v-text="dataObj.cost"></span> 元</p>
+              <p><b>支付方式：</b><span v-text="publicData.paymentStyleName"></span></p>
+              <p><b>金额：</b><span v-text="publicData.costTotal"></span> 元</p>
               <p><b>缴费状态：</b></p>
               <Row class="_line">
                 <Col class="_record" span="1">
@@ -32,30 +32,30 @@
               <Row class="_text">
                 <Col span="9">
                   <p>确认付款</p>
-                  <span v-text="dataObj.acceptTime"></span>
+                  <span v-text="publicData.createTime"></span>
                 </Col>
                 <Col class="tc" span="5">
                   <p>进行中</p>
                 </Col>
                 <Col class="tr" span="9">
                   <p>完成缴费</p>
-                  <span v-text="dataObj.acceptTime"></span>
+                  <span v-text="publicData.createTime"></span>
                 </Col>
               </Row>
             </div>
           </div>
         </Col>
       </Row>
-      <Row v-if="dataObj !== null">
+      <Row>
         <div class="_payList clearfix">
           <Row>
             <Col span="24" class="pl20 pr20">
               <Table ref="table" stripe border align="center" :loading="payList.loading" :columns="payList.header" :data="payList.bodyList"></Table>
             </Col>
           </Row>
-          <div>
+          <!-- <div>
             <button class="_exportBtn" @click="exportData">导出数据</button>
-          </div>
+          </div> -->
         </div>
       </Row>
     </div>
@@ -74,22 +74,30 @@ export default {
   props: [],
   data () {
     return {
-      id: null,
+      publicData: null,
       dataObj: null,
       payList: {
         loading: false,
         header: [
           {
-            title: '序号',
-            key: 'id',
+            title: '案件编号',
+            key: 'oldId',
             align: 'center',
             render: (h, params) => {
-              return h('span', {
+              return h('a', {
                 props: {
                   type: 'text',
                   size: 'small'
+                },
+                style: {
+                  color: '#2d8cf0'
+                },
+                on: {
+                  click: () => {
+                    this.goCaseInfo(params.index)
+                  }
                 }
-              }, '0' + (params.index + 1))
+              }, params.row.oldId)
             }
           },
           {
@@ -113,22 +121,23 @@ export default {
             align: 'center'
           },
           {
-            title: '提交申请时间',
-            key: 'createtime',
+            title: '纠纷类型',
+            key: 'caseType',
             align: 'center'
           },
           {
-            title: '审核通过时间',
-            key: 'acceptTime',
+            title: '案件状态',
+            key: 'caseState',
             align: 'center'
           },
           {
-            title: '收款方',
-            key: 'receivables',
+            title: '申请时间',
+            key: 'createTime',
+            minWidth: 30,
             align: 'center'
           },
           {
-            title: '仲裁收费',
+            title: '仲裁收费(元)',
             key: 'cost',
             align: 'center',
             render: (h, params) => {
@@ -142,13 +151,20 @@ export default {
           }
         ],
         bodyList: []
+      },
+      pageObj: {
+        total: 0,
+        pageNum: 1,
+        pageSize: 10
       }
     }
   },
   created () {
-    if (this.paymentInfoId) {
-      this.id = this.paymentInfoId
+    if (this.paymentInfoId !== '') {
+      this.publicData = JSON.parse(this.paymentInfoId)
       this.resPayment()
+    } else {
+      this.goPaymentSlip()
     }
   },
   beforeDestroy () {
@@ -161,14 +177,24 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setPaymentInfoId'
+      'setPaymentInfoId',
+      'setMyCaseId',
+      'setMyCaseOldId',
+      'setMyCaseState',
+      'setGoPaymentCaseIds',
+      'setMyCaseShowBtn',
+      'setMyCasePartieType',
+      'setMyCaseCrossE'
     ]),
     resPayment () {
-      axios.post('/person/paymentDetail', {
-        caseId: this.id
+      axios.post('/payment/details', {
+        id: this.publicData.id,
+        pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
+        pageSize: this.pageObj.pageSize
       }).then(res => {
-        this.dataObj = res.data.data[0]
-        this.payList.bodyList = res.data.data
+        let _data = res.data.data
+        this.payList.bodyList = _data.dataList
+        this.pageObj.total = _data.totalCount
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',
@@ -188,6 +214,28 @@ export default {
     },
     dowPdf (fileId) {
       window.open(regi.api + '/file/dowload/' + fileId, '_blank')
+    },
+    goPaymentSlip () {
+      this.$router.push({
+        path: '/paymentSlip'
+      })
+    },
+    goCaseInfo (index) {
+      this.setMyCaseId(this.payList.bodyList[index].id)
+      window.localStorage.setItem('myCaseId', this.payList.bodyList[index].id)
+      this.setMyCaseOldId(this.payList.bodyList[index].oldId)
+      window.localStorage.setItem('myCaseOldId', this.payList.bodyList[index].oldId)
+      this.setMyCaseState(this.payList.bodyList[index].state)
+      window.localStorage.setItem('myCaseState', this.payList.bodyList[index].state)
+      this.setMyCaseShowBtn(this.payList.bodyList[index].showBtn)
+      window.localStorage.setItem('myCaseShowBtn', JSON.stringify(this.payList.bodyList[index].showBtn))
+      this.setMyCasePartieType(this.payList.bodyList[index].partieType)
+      window.localStorage.setItem('myCasePartieType', this.payList.bodyList[index].partieType)
+      this.setMyCaseCrossE(this.payList.bodyList[index].crossExamination)
+      window.localStorage.setItem('myCaseCrossE', this.payList.bodyList[index].crossExamination)
+      this.$router.push({
+        path: '/caseInfo'
+      })
     }
   }
 }

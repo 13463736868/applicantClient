@@ -36,6 +36,9 @@
         </Row>
       </div>
     </div>
+    <alert-btn-info :alertShow="alertShow.canc" @alertCancel="alertCanc('canc')" @alertConfirm="cancSave" alertTitle="提示">
+      <p>确定要撤回这个缴费批次吗？</p>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -44,10 +47,11 @@ import axios from 'axios'
 import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
+import alertBtnInfo from '@/components/common/alertBtnInfo'
 
 export default {
   name: 'paymentSlip',
-  components: { headTop, spinComp },
+  components: { headTop, spinComp, alertBtnInfo },
   data () {
     return {
       spinShow: true,
@@ -61,7 +65,7 @@ export default {
         header: [
           {
             title: '缴费单号',
-            key: 'payCode',
+            key: 'paymentNumber',
             align: 'center',
             render: (h, params) => {
               return h('span', {
@@ -78,28 +82,89 @@ export default {
                     this.goPaymentInfo(params.index)
                   }
                 }
-              }, params.row.payCode)
+              }, params.row.paymentNumber)
             }
           },
           {
-            title: '支付时间',
-            key: 'payTime',
+            title: '订单状态',
+            key: 'statusName',
             align: 'center'
           },
           {
-            title: '支付方式',
-            key: 'payMode',
+            title: '案件个数',
+            key: 'caseNum',
             align: 'center'
           },
           {
-            title: '收款方',
-            key: 'accountName',
+            title: '提交时间',
+            key: 'createTime',
             align: 'center'
           },
           {
-            title: '支付金额',
-            key: 'money',
-            align: 'center'
+            title: '总支付金额(元)',
+            key: 'costTotal',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                }
+              }, params.row.costTotal + ' 元')
+            }
+          },
+          {
+            title: '操作',
+            key: 'id',
+            align: 'center',
+            render: (h, params) => {
+              if (params.row.status === 1) {
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'primary',
+                      size: 'small'
+                    },
+                    style: {
+                      marginRight: '5px'
+                    },
+                    on: {
+                      click: () => {
+                        this.seeFile(params.row.filepath)
+                      }
+                    }
+                  }, '查看缴费凭证'),
+                  h('Button', {
+                    props: {
+                      type: 'primary',
+                      size: 'small'
+                    },
+                    on: {
+                      click: () => {
+                        this.resCanc(params.index)
+                      }
+                    }
+                  }, '撤回')
+                ])
+              } else {
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'primary',
+                      size: 'small'
+                    },
+                    style: {
+                      marginRight: '5px'
+                    },
+                    on: {
+                      click: () => {
+                        this.seeFile(params.row.filepath)
+                      }
+                    }
+                  }, '查看缴费凭证')
+                ])
+              }
+            }
           }
         ],
         bodyList: []
@@ -108,6 +173,10 @@ export default {
         total: 0,
         pageNum: 1,
         pageSize: 10
+      },
+      alertShow: {
+        canc: false,
+        id: null
       }
     }
   },
@@ -143,10 +212,10 @@ export default {
     },
     resPayList () {
       this.spinShow = true
-      axios.post('/person/paymentList', {
+      axios.post('/payment/list', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
-        keyword: this.search.text,
+        paymentNumber: this.search.text,
         commissionType: this.committeeStatus
       }).then(res => {
         let _data = res.data.data
@@ -162,8 +231,8 @@ export default {
       })
     },
     goPaymentInfo (index) {
-      this.setPaymentInfoId(this.payList.bodyList[index].caseId)
-      window.localStorage.setItem('paymentInfoId', this.payList.bodyList[index].caseId)
+      this.setPaymentInfoId(JSON.stringify(this.payList.bodyList[index]))
+      window.localStorage.setItem('paymentInfoId', JSON.stringify(this.payList.bodyList[index]))
       this.$router.push({
         path: '/paymentInfo'
       })
@@ -179,6 +248,36 @@ export default {
     reschangePage (page) {
       this.pageObj.pageNum = page
       this.resPayList()
+    },
+    seeFile (path) {
+      window.open(path, '_blank')
+    },
+    resCanc (index) {
+      this.alertShow.id = this.payList.bodyList[index].id
+      this.alertShow.canc = true
+    },
+    cancSave () {
+      this.alertShow.canc = false
+      axios.post('/payment/withdraw', {
+        id: this.alertShow.id
+      }).then(res => {
+        this.resSearch()
+        this.$Message.success({
+          content: '撤回成功',
+          duration: 2
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    alertCanc (type) {
+      if (type === 'canc') {
+        this.alertShow.id = null
+        this.alertShow.canc = false
+      }
     }
   }
 }

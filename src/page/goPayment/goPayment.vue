@@ -230,7 +230,7 @@ export default {
     },
     addpSave (obj) {
       this.$Message.success({
-        content: '缴费单号' + obj,
+        content: '缴费单号:' + obj,
         duration: 10,
         closable: true
       })
