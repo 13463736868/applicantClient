@@ -7,7 +7,13 @@
       <div class="user fr w350">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
           <Col span="20 tr">
-            <span class="fcf f13" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span>
+            <!-- <span class="fcf f13" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span> -->
+            <Dropdown v-if="isRegister" @on-click="changeDown">
+              <span class="hand fcf" v-if="userName !== null" v-text="userName + '，您好！'"></span>
+              <DropdownMenu class="tl" slot="list">
+                <DropdownItem name="resOnes">个人信息</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </Col>
           <Col span="4">
             <Icon class="hand" type="close" size="26" color="#ffffff" @click="loginOut"></Icon>
@@ -71,11 +77,6 @@ export default {
             id: '3',
             text: '缴费单查询',
             url: '/paymentSlip'
-          },
-          {
-            id: '4',
-            text: '身份绑定信息',
-            url: '/userInfo'
           }
         ]
       }
@@ -127,6 +128,15 @@ export default {
         let loc = window.localStorage
         let _userInfo = loc.getItem('userInfo')
         this.userName = _userInfo === null ? null : JSON.parse(_userInfo).phone
+      }
+    },
+    changeDown (name) {
+      switch (name) {
+        case 'resOnes':
+          this.$router.replace({
+            path: '/userInfo'
+          })
+          break
       }
     }
   }
