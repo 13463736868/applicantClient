@@ -5,6 +5,11 @@
     </head-top>
     <div class="_center pr">
       <Row>
+        <Col span="24" class="pl20 pr20 pb20">
+          <Table stripe border align="center" :loading="caseList.loading" :columns="caseList.header" :data="caseList.bodyList"></Table>
+        </Col>
+      </Row>
+      <Row>
         <Col span="14" offset="5">
           <div class="_payment">
             <div class="_top">对公转帐</div>
@@ -14,41 +19,42 @@
                 <Col span="22" offset="1">
                   <Row>
                     <Col class="_label" span="11">
-                      <p>帐户：</p>
-                      <p v-text="dataObj.account"></p>
-                    </Col>
-                    <Col class="_label" span="11" offset="2">
-                      <p>仲裁费：</p>
-                      <p v-text="dataObj.money === null ? '' : dataObj.money + ' 元'"></p>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col class="_label" span="11">
-                      <p>开户名称：</p>
-                      <p v-text="dataObj.accountName"></p>
-                    </Col>
-                    <Col class="_label" span="11" offset="2">
-                      <p>立案秘书：</p>
-                      <p v-text="dataObj.name"></p>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col class="_label" span="11">
                       <p>开户银行：</p>
                       <p v-text="dataObj.bank"></p>
                     </Col>
                     <Col class="_label" span="11" offset="2">
-                      <p>电话：</p>
-                      <p v-text="dataObj.phone"></p>
+                      <p>开户名称：</p>
+                      <p v-text="dataObj.accountName"></p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col class="_label" span="11">
+                      <p>帐户：</p>
+                      <p v-text="dataObj.account"></p>
+                    </Col>
+                    <Col class="_label" span="11" offset="2">
+                      <p>仲裁费(合计)：</p>
+                      <p v-text="costTotal === 0 ? '' : costTotal + ' 元'"></p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
             </div>
           </div>
+          <Row class="pb40">
+            <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="goHome">返 回</button></Col>
+            <Col class="tc" span="10" offset="2"><button class="_saveBtn" @click="addPayment">确认已交费</button></Col>
+          </Row>
         </Col>
       </Row>
     </div>
+    <alert-btn-info :isCancBtn="true" :isSaveBtn="true" :alertShow="alertShow.addP" alertTitle="操作">
+      <Row>
+        <Col span="24">
+          <upload-book :caseIds="caseIds" :costTotal="costTotal" :moneyTotal="moneyTotal" childName="上传缴费凭证文件" :fileType="['jpg','jpeg','png', 'pdf']" :uploadUrl="resAddpUrl" @saveClick="addpSave" @cancClick="alertCanc('addP')"></upload-book>
+        </Col>
+      </Row>
+    </alert-btn-info>
   </div>
 </template>
 
@@ -56,38 +62,160 @@
 import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import headTop from '@/components/header/head'
+import alertBtnInfo from '@/components/common/alertBtnInfo'
+import uploadBook from '@/page/goPayment/children/uploadBook'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'go_payment',
-  components: { headTop },
+  components: { headTop, alertBtnInfo, uploadBook },
   props: [],
   data () {
     return {
-      oldId: null,
-      dataObj: null
+      caseIds: null,
+      dataObj: null,
+      costTotal: 0,
+      moneyTotal: 0,
+      spinShow: false,
+      caseList: {
+        loading: false,
+        header: [
+          {
+            title: '案件编号',
+            key: 'oldId',
+            align: 'center',
+            render: (h, params) => {
+              return h('a', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                style: {
+                  color: '#2d8cf0'
+                },
+                on: {
+                  click: () => {
+                    this.goCaseInfo(params.index)
+                  }
+                }
+              }, params.row.oldId)
+            }
+          },
+          {
+            title: '申请人',
+            key: 'applicantName',
+            align: 'center'
+          },
+          {
+            title: '被申请人',
+            key: 'respondentName',
+            align: 'center'
+          },
+          {
+            title: '纠纷类型',
+            key: 'caseType',
+            align: 'center'
+          },
+          {
+            title: '案件状态',
+            key: 'caseState',
+            align: 'center'
+          },
+          {
+            title: '申请时间',
+            key: 'createTime',
+            minWidth: 30,
+            align: 'center'
+          },
+          {
+            title: '仲裁费用(元)',
+            key: 'cost',
+            minWidth: 30,
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                style: {
+                  fontWeight: '700'
+                }
+              }, params.row.cost)
+            }
+          }
+        ],
+        bodyList: []
+      },
+      alertShow: {
+        addP: false
+      }
     }
   },
   created () {
-    if (this.goPaymentOldId) {
-      this.oldId = this.goPaymentOldId
+    if (this.goPaymentCaseIds !== '') {
+      this.caseIds = this.goPaymentCaseIds
+      this.resMineList()
       this.resPayment()
+    } else {
+      this.goHome()
     }
   },
   beforeDestroy () {
-    this.setGoPaymentOldId('')
+    this.setGoPaymentCaseIds('')
   },
   computed: {
     ...mapGetters([
-      'goPaymentOldId'
-    ])
+      'goPaymentCaseIds'
+    ]),
+    resAddpUrl () {
+      return regi.api + '/payment/add'
+    }
   },
   methods: {
     ...mapActions([
-      'setGoPaymentOldId'
+      'setMyCaseId',
+      'setMyCaseOldId',
+      'setMyCaseState',
+      'setGoPaymentCaseIds',
+      'setMyCaseShowBtn',
+      'setMyCasePartieType',
+      'setMyCaseCrossE'
     ]),
+    resMineList () {
+      this.spinShow = true
+      axios.post('/case/mine', {
+        pageIndex: 0,
+        pageSize: 999,
+        keyword: '',
+        caseState: 2,
+        caseIds: this.caseIds
+      }).then(res => {
+        let _data = res.data.data
+        this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
+        this.rescostTotal()
+        this.spinShow = false
+      }).catch(e => {
+        this.spinShow = false
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
+    rescostTotal () {
+      let _costNum = 0
+      let _moneyNum = 0
+      this.caseList.bodyList.forEach((a) => {
+        _costNum += (a.cost - 0)
+        _moneyNum += (a.money - 0)
+      })
+      this.costTotal = _costNum
+      this.moneyTotal = _moneyNum
+    },
     resPayment () {
       axios.post('/case/payFee', {
-        caseId: this.oldId
+        caseId: 389
       }).then(res => {
         this.dataObj = res.data.data
       }).catch(e => {
@@ -96,6 +224,44 @@ export default {
           duration: 5
         })
       })
+    },
+    addPayment () {
+      this.alertShow.addP = true
+    },
+    addpSave (obj) {
+      this.$Message.success({
+        content: '缴费单号' + obj,
+        duration: 10,
+        closable: true
+      })
+      this.goHome()
+    },
+    goHome () {
+      this.$router.push({
+        path: '/home'
+      })
+    },
+    goCaseInfo (index) {
+      this.setMyCaseId(this.caseList.bodyList[index].id)
+      window.localStorage.setItem('myCaseId', this.caseList.bodyList[index].id)
+      this.setMyCaseOldId(this.caseList.bodyList[index].oldId)
+      window.localStorage.setItem('myCaseOldId', this.caseList.bodyList[index].oldId)
+      this.setMyCaseState(this.caseList.bodyList[index].state)
+      window.localStorage.setItem('myCaseState', this.caseList.bodyList[index].state)
+      this.setMyCaseShowBtn(this.caseList.bodyList[index].showBtn)
+      window.localStorage.setItem('myCaseShowBtn', JSON.stringify(this.caseList.bodyList[index].showBtn))
+      this.setMyCasePartieType(this.caseList.bodyList[index].partieType)
+      window.localStorage.setItem('myCasePartieType', this.caseList.bodyList[index].partieType)
+      this.setMyCaseCrossE(this.caseList.bodyList[index].crossExamination)
+      window.localStorage.setItem('myCaseCrossE', this.caseList.bodyList[index].crossExamination)
+      this.$router.push({
+        path: '/caseInfo'
+      })
+    },
+    alertCanc (type) {
+      if (type === 'addP') {
+        this.alertShow.addP = false
+      }
     }
   }
 }
@@ -110,7 +276,7 @@ export default {
   @include bc;
   padding-top: 40px;
   ._payment {
-    padding-bottom: 60px;
+    padding-bottom: 30px;
     ._top {
       @include backgroundLine(right, #1a2b58, #126eaf);
       @include borderRadius(5px);
@@ -143,6 +309,17 @@ export default {
         }
       }
     }
+  }
+  ._cancelBtn {
+    @include btn(#fff, 90px, 14px, 32px);
+    @include boxShadow(0 1px 6px -1px #bbb);
+    @include borderRadius(4px);
+    color: #126eaf;
+  }
+  ._saveBtn {
+    @include btn(#126eaf, 90px, 14px, 32px);
+    @include boxShadow(0 1px 6px -1px #bbb);
+    @include borderRadius(4px);
   }
 }
 </style>

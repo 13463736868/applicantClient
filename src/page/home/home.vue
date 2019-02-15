@@ -12,13 +12,16 @@
         <Col span="8">
           <Input v-model="search.text" icon="ios-search-strong" placeholder="" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch"></Input>
         </Col>
-        <Col span="8">
+        <Col span="6">
           <label class="lh32 f16 fc6 fr mr15">案件状态</label>
         </Col>
         <Col span="6">
           <Select v-model="caseStatus" style="width:200px" @on-change="resChangeStatus()">
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
+        </Col>
+        <Col span="2">
+          <Button type="primary" @click="resPayment">批量缴费</Button>
         </Col>
       </Row>
       <div class="_caseList clearfix">
@@ -95,6 +98,14 @@ export default {
       caseList: {
         loading: false,
         header: [
+          {
+            title: '选择',
+            key: 'id',
+            align: 'center',
+            render: (h, params) => {
+              return this.renderCheck(h, params)
+            }
+          },
           {
             title: '案件编号',
             key: 'oldId',
@@ -184,6 +195,9 @@ export default {
       roomCode: null,
       alertObj: {
         code: false
+      },
+      alertShow: {
+        idsList: []
       }
     }
   },
@@ -214,11 +228,78 @@ export default {
       'setMyCaseId',
       'setMyCaseOldId',
       'setMyCaseState',
-      'setGoPaymentOldId',
+      'setGoPaymentCaseIds',
       'setMyCaseShowBtn',
       'setMyCasePartieType',
       'setMyCaseCrossE'
     ]),
+    renderCheck (h, params) {
+      let _obj = params.row
+      if (_obj.state === 2) {
+        if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
+          return h('div', [
+            h('Icon', {
+              props: {
+                type: 'android-checkbox-outline-blank',
+                size: '16'
+              },
+              style: {
+                color: '#2d8cf0',
+                cursor: 'pointer',
+                verticalAlign: 'text-top'
+              },
+              on: {
+                click: () => {
+                  this.seleArrChange(params.index, true)
+                }
+              }
+            })
+          ])
+        } else {
+          return h('div', [
+            h('Icon', {
+              props: {
+                type: 'android-checkbox',
+                size: '16'
+              },
+              style: {
+                color: '#2d8cf0',
+                cursor: 'pointer',
+                verticalAlign: 'text-top'
+              },
+              on: {
+                click: () => {
+                  this.seleArrChange(params.index, false)
+                }
+              }
+            })
+          ])
+        }
+      } else {
+        return h('div', [
+        ])
+      }
+    },
+    seleArrChange (index, bool) {
+      let info = this.caseList.bodyList[index]
+      if (bool) {
+        if (this.alertShow.idsList.indexOf(info.id) === -1) {
+          if (this.alertShow.idsList.length >= 10) {
+            this.$Message.error({
+              content: '最多只能选择十个案件',
+              duration: 5
+            })
+            return false
+          } else {
+            this.alertShow.idsList.push(info.id)
+          }
+        }
+      } else {
+        if (this.alertShow.idsList.indexOf(info.id) !== -1) {
+          this.alertShow.idsList.splice(this.alertShow.idsList.indexOf(info.id), 1)
+        }
+      }
+    },
     renderOperation (h, params) {
       let _revocation = params.row.showBtn.revocation
       if (params.row.state === 2) {
@@ -605,6 +686,13 @@ export default {
         })
       }
     },
+    resPayment () {
+      this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
+      window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
+      this.$router.push({
+        path: '/goPayment'
+      })
+    },
     goCourtRoomS () {
       let _id = this.roomId
       let _partieType = this.roomPartie === 1 ? 3 : (this.roomPartie === 2 ? 2 : '')
@@ -621,8 +709,10 @@ export default {
       })
     },
     goPayment (index) {
-      this.setGoPaymentOldId(this.caseList.bodyList[index].oldId)
-      window.localStorage.setItem('goPaymentOldId', this.caseList.bodyList[index].oldId)
+      let _arr = []
+      _arr.push(this.caseList.bodyList[index].id)
+      this.setGoPaymentCaseIds(JSON.stringify(_arr))
+      window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(_arr))
       this.$router.push({
         path: '/goPayment'
       })

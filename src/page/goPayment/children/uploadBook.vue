@@ -7,7 +7,6 @@
       <Col span="24">
         <Row class="_labelFor">
           <Col span="12" class="_label"><span v-text="childName"></span><b class="_b">*</b></Col>
-          <Col v-if="dowShow" span="12" class="_label tr"><span class="_enDow hand" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="14" color="#ff7a7a"/>批量导入用户模版下载</span></Col>
           <Col span="24">
             <Upload
               ref="upload"
@@ -18,7 +17,7 @@
               :show-upload-list="false"
               :format="fileType"
               :max-size="10240"
-              :data="data"
+              :data="resData"
               :on-format-error="resFormError"
               :on-exceeded-size="resSzieError"
               :before-upload="resBefoUpload"
@@ -50,7 +49,7 @@ import spinComp from '@/components/common/spin'
 export default {
   name: 'upload_appl_book',
   components: { spinComp },
-  props: ['uploadUrl', 'fileType', 'childName', 'dowShow'],
+  props: ['uploadUrl', 'fileType', 'childName', 'caseIds', 'costTotal', 'moneyTotal'],
   data () {
     return {
       spinShow: false,
@@ -59,9 +58,14 @@ export default {
         status: 0,
         text: ''
       },
-      data: {},
+      objData: {},
       fileObj: null
     }
+  },
+  created () {
+    this.objData.caseIds = this.caseIds
+    this.objData.costTotal = this.costTotal
+    this.objData.moneyTotal = this.moneyTotal
   },
   computed: {
     addFileBtn () {
@@ -70,6 +74,9 @@ export default {
       } else {
         return false
       }
+    },
+    resData () {
+      return this.objData
     }
   },
   methods: {
@@ -133,9 +140,6 @@ export default {
     },
     cancClick () {
       this.$emit('cancClick')
-    },
-    dowDoc () {
-      this.$emit('dowDoc')
     }
   }
 }
@@ -147,7 +151,6 @@ export default {
   @include borderRadius(3px);
   // @include boxShadow(0 1px 6px -1px #bbb);
   // margin-top: 10px;
-  padding: 10px 15px 0;
   background: #fff;
   font-size: 12px;
   ._labelFor {

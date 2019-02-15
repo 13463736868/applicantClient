@@ -24,8 +24,8 @@ export default {
   setMyCaseState ({commit, state}, obj) {
     commit('SET_MYCASESTATE', obj)
   },
-  setGoPaymentOldId ({commit, state}, id) {
-    commit('SET_GOPAYMENTOLDID', id)
+  setGoPaymentCaseIds ({commit, state}, id) {
+    commit('SET_GOPAYMENTCASEIDS', id)
   },
   setPaymentInfoId ({commit, state}, id) {
     commit('SET_PAYMENTINFOID', id)

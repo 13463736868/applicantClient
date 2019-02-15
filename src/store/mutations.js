@@ -26,8 +26,8 @@ export default {
   [types.SET_MYCASESTATE] (state, obj) {
     state.myCaseState = obj
   },
-  [types.SET_GOPAYMENTOLDID] (state, id) {
-    state.goPaymentOldId = id
+  [types.SET_GOPAYMENTCASEIDS] (state, id) {
+    state.goPaymentCaseIds = id
   },
   [types.SET_PAYMENTINFOID] (state, id) {
     state.paymentInfoId = id
