@@ -17,12 +17,12 @@ axios.interceptors.request.use((config) => {
     config.data = qs.stringify(config.data)
   }
   if (!Vue.config.productionTip) {
-    config.url = '/upcase' + config.url
+    config.url = '/api' + config.url
     // if (store.state.admin_token) {//如果不用cookie的话 给每个http header加token
     //   config.headers.Authorization = `token $(store.state.admin_token)`
     // }
   } else {
-    config.url = '/upcase' + config.url
+    config.url = '/api' + config.url
   }
   return config
 }, (error) => {
