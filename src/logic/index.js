@@ -76,12 +76,12 @@ const beforeEach = (to, from, next) => {
         }
       }
       if (to.fullPath.indexOf('goPayment') === -1) {
-        loc.removeItem('goPaymentOldId')
-        // store.commit('SET_GOPAYMENTOLDID', '') 销毁组件前已经清理了
+        loc.removeItem('goPaymentCaseIds')
+        // store.commit('SET_GOPAYMENTCASEIDS', '') 销毁组件前已经清理了
       } else {
-        if (store.state.goPaymentOldId === '') {
-          if (loc.getItem('goPaymentOldId')) {
-            store.commit('SET_GOPAYMENTOLDID', loc.getItem('goPaymentOldId'))
+        if (store.state.goPaymentCaseIds === '') {
+          if (loc.getItem('goPaymentCaseIds')) {
+            store.commit('SET_GOPAYMENTCASEIDS', loc.getItem('goPaymentCaseIds'))
           }
         }
       }
@@ -103,7 +103,7 @@ const beforeEach = (to, from, next) => {
       store.commit('SET_CASEINFO', null)
       store.commit('SET_MYCASEID', '')
       store.commit('SET_MYCASESTATE', null)
-      store.commit('SET_GOPAYMENTOLDID', '')
+      store.commit('SET_GOPAYMENTCASEIDS', '')
       next({
         path: '/login',
         query: {redirect: to.fullPath}
@@ -123,7 +123,7 @@ const beforeEach = (to, from, next) => {
         store.commit('SET_CASEINFO', null)
         store.commit('SET_MYCASEID', '')
         store.commit('SET_MYCASESTATE', null)
-        store.commit('SET_GOPAYMENTOLDID', '')
+        store.commit('SET_GOPAYMENTCASEIDS', '')
         next()
       }
     } else {
