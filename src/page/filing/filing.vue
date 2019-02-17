@@ -125,8 +125,10 @@ export default {
     caseSubSave () {
       this.spinShow = true
       this.alertShowSub = false
+      let _arr = []
+      _arr.push(this.caseId)
       axios.post('/case/submit', {
-        caseId: this.caseId,
+        caseId: JSON.stringify(_arr),
         commissionType: this.committeeCode
       }).then(res => {
         this.spinShow = false
