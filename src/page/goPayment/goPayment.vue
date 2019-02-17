@@ -214,9 +214,7 @@ export default {
       this.moneyTotal = _moneyNum
     },
     resPayment () {
-      axios.post('/case/payFee', {
-        caseId: 389
-      }).then(res => {
+      axios.post('/case/payFee').then(res => {
         this.dataObj = res.data.data
       }).catch(e => {
         this.$Message.error({

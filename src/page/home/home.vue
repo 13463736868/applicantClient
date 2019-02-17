@@ -687,11 +687,18 @@ export default {
       }
     },
     resPayment () {
-      this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
-      window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
-      this.$router.push({
-        path: '/goPayment'
-      })
+      if (this.alertShow.idsList.length === 0) {
+        this.$Message.error({
+          content: '请先选择一个案件',
+          duration: 5
+        })
+      } else {
+        this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
+        window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
+        this.$router.push({
+          path: '/goPayment'
+        })
+      }
     },
     goCourtRoomS () {
       let _id = this.roomId
