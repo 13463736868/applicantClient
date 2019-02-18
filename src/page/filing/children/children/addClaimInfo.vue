@@ -18,6 +18,13 @@
           </Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
         </Row>
+        <Row class="_labelFor">
+          <Col span="24" class="_label">请求金额(元)<b class="_b">*</b></Col>
+          <Col span="24">
+            <Input v-model="claimData.disputeFee" @on-change="dispMoney"/>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
+        </Row>
       </Col>
     </Row>
     <Row>
@@ -29,6 +36,7 @@
 
 <script>
 import axios from 'axios'
+import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'add_claim_info',
@@ -42,11 +50,28 @@ export default {
       },
       claimData: {
         requestName: null,
-        content: ''
-      }
+        content: '',
+        disputeFee: 0
+      },
+      dispSwitch: false
     }
   },
   methods: {
+    dispMoney () {
+      if (this.claimData.disputeFee === null || this.claimData.disputeFee === '') {
+        this.emInfo.status = 3
+        this.emInfo.text = '请填写请求金额！可以为 0'
+        this.dispSwitch = true
+      } else if (!setRegExp(this.claimData.disputeFee, 'money')) {
+        this.emInfo.status = 3
+        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999999)'
+        this.dispSwitch = true
+      } else {
+        this.emInfo.status = 0
+        this.emInfo.text = ''
+        this.dispSwitch = false
+      }
+    },
     saveClick () {
       if (this.claimData.requestName === null || this.claimData.content === '') {
         if (this.claimData.requestName === null) {
@@ -61,14 +86,22 @@ export default {
           })
         }
       } else {
-        this.sendAjax()
+        if (this.dispSwitch) {
+          this.$Message.error({
+            content: this.emInfo.text,
+            duration: 5
+          })
+        } else {
+          this.sendAjax()
+        }
       }
     },
     sendAjax () {
       axios.post('/case/requestAdd/1', {
         caseid: this.caseId,
         requestName: this.claimData.requestName,
-        content: this.claimData.content
+        content: this.claimData.content,
+        disputeFee: this.claimData.disputeFee
       }).then(res => {
         if (typeof res.data.data.requestName === 'string') {
           res.data.data.requestName = res.data.data.requestName - 0
