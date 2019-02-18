@@ -25,6 +25,7 @@ const evidences = r => require.ensure([], () => r(require('@/page/filing/childre
 const notApplied = r => require.ensure([], () => r(require('@/page/notApplied/notApplied.vue')), 'notApplied')
 const paymentSlip = r => require.ensure([], () => r(require('@/page/paymentSlip/paymentSlip.vue')), 'paymentSlip')
 const userInfo = r => require.ensure([], () => r(require('@/page/userInfo/userInfo.vue')), 'userInfo')
+const caseType = r => require.ensure([], () => r(require('@/page/caseType/caseType.vue')), 'caseType')
 
 Vue.use(Router)
 
@@ -73,6 +74,14 @@ export default new Router({
         requireAuth: true
       },
       component: paymentInfo
+    },
+    {
+      path: '/caseType',
+      name: 'caseType',
+      meta: {
+        requireAuth: true
+      },
+      component: caseType
     },
     {
       path: '/caseInfo',

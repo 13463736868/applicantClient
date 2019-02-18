@@ -1,18 +1,24 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="4" class="_label">选择仲裁机构<b class="_b">*</b></Col>
-      <Col span="8">
+      <Col span="3" class="_label">选择仲裁机构<b class="_b">*</b></Col>
+      <Col span="4">
         <Select v-model="committeeStatus">
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="6">
+      <Col span="3" offset="1" class="_label">案件类型<b class="_b">*</b></Col>
+      <Col span="4">
+        <Select v-model="caseTypeStatus">
+          <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+      </Col>
+      <Col span="4">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
         </Row>
       </Col>
-      <Col span="6">
+      <Col span="4" offset="1">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
@@ -36,6 +42,9 @@ export default {
       addHash: false,
       committeeList: [],
       committeeStatus: '',
+      caseTypeList: [],
+      caseTypeStatus: '',
+      caseMap: {},
       alertShow: {
         hash: false
       }
@@ -43,6 +52,7 @@ export default {
   },
   created () {
     this.resDictionary('commissionType')
+    this.resCaseType()
   },
   computed: {
     ...mapGetters([
@@ -108,7 +118,7 @@ export default {
               duration: 5
             })
           } else {
-            this.$emit('saveClick', this.committeeStatus)
+            this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
           }
         } else {
           this.$Message.error({
@@ -149,7 +159,7 @@ export default {
               duration: 5
             })
           } else {
-            this.$emit('saveClick', this.committeeStatus)
+            this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
           }
         } else {
           this.$Message.error({
@@ -191,6 +201,26 @@ export default {
         }
       }
       this.setFiling({type: 'evidenceList', data: JSON.parse(JSON.stringify(this.caseInfo.evidenceList))})
+    },
+    resCaseType () {
+      axios.post('/caseType/list', {
+        pageIndex: 0,
+        pageSize: 999
+      }).then(res => {
+        let _dataList = res.data.data.dataList
+        this.caseTypeList = _dataList.map((a, b) => {
+          let _o = {}
+          _o.value = a.caseTypeCode
+          _o.label = a.caseTypeName
+          this.caseMap[_o.value] = _o.label
+          return _o
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
     },
     alertCanc (type) {
       this.alertShow[type] = false

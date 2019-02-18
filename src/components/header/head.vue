@@ -77,6 +77,11 @@ export default {
             id: '3',
             text: '缴费单查询',
             url: '/paymentSlip'
+          },
+          {
+            id: '4',
+            text: '案件类型管理',
+            url: '/caseType'
           }
         ]
       }

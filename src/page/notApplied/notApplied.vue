@@ -72,6 +72,16 @@
           </Select>
         </Col>
       </Row>
+      <Row class="_labelFor">
+        <Col span="6" offset="1">
+          <p><span class="_span">*</span><b>案件类型：</b></p>
+        </Col>
+        <Col span="16">
+          <Select v-model="caseTypeStatus">
+            <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Col>
+      </Row>
     </alert-btn-info>
   </div>
 </template>
@@ -246,12 +256,16 @@ export default {
         bodyList: []
       },
       perfectStatusList: [],
-      perfectStatus: 0
+      perfectStatus: 0,
+      caseTypeList: [],
+      caseTypeStatus: '',
+      caseMap: {}
     }
   },
   created () {
     this.dictionary()
     this.resPrepareList()
+    this.resCaseType()
   },
   computed: {
     resUploadUrlA () {
@@ -469,15 +483,19 @@ export default {
     submitSave () {
       this.alertCanc('submit')
       this.spinShow = true
+      let caseTypeCode = this.caseTypeStatus === '' ? null : this.caseTypeStatus
+      let caseTypeName = this.caseMap[this.caseTypeStatus] === '' ? null : this.caseMap[this.caseTypeStatus]
       axios.post('/case/submit', {
         caseId: JSON.stringify(this.alertShow.idsList),
-        commissionType: this.alertShow.committee
+        commissionType: this.alertShow.committee,
+        caseTypeCode: caseTypeCode,
+        caseTypeName: caseTypeName
       }).then(res => {
         this.alertShow.idsList = []
         this.spinShow = false
         this.resChangeStatus()
         this.$Message.success({
-          content: res.message,
+          content: res.data.message,
           duration: 10,
           closable: true
         })
@@ -485,6 +503,26 @@ export default {
         this.spinShow = false
         this.$Message.error({
           content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    resCaseType () {
+      axios.post('/caseType/list', {
+        pageIndex: 0,
+        pageSize: 999
+      }).then(res => {
+        let _dataList = res.data.data.dataList
+        this.caseTypeList = _dataList.map((a, b) => {
+          let _o = {}
+          _o.value = a.caseTypeCode
+          _o.label = a.caseTypeName
+          this.caseMap[_o.value] = _o.label
+          return _o
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
           duration: 5
         })
       })
