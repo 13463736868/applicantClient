@@ -17,7 +17,7 @@
               :with-credentials="true"
               :show-upload-list="false"
               :format="fileType"
-              :max-size="10240"
+              :max-size="204800"
               :data="data"
               :on-format-error="resFormError"
               :on-exceeded-size="resSzieError"
@@ -83,7 +83,7 @@ export default {
     resSzieError (file) {
       this.spinShow = false
       this.$Message.error({
-        content: '文件不能超过10MB',
+        content: '文件不能超过200MB',
         duration: 5
       })
     },
@@ -147,7 +147,7 @@ export default {
   @include borderRadius(3px);
   // @include boxShadow(0 1px 6px -1px #bbb);
   // margin-top: 10px;
-  padding: 10px 15px 0;
+  padding: 0 15px;
   background: #fff;
   font-size: 12px;
   ._labelFor {

@@ -44,13 +44,16 @@
     </div>
     <alert-tip :alertShow="alertShowSub" @alertCancel="caseDelCanc" @alertConfirm="caseDelSave" alertTitle="提示" alertText="确定要删除这个案件吗？"></alert-tip>
     <alert-btn-info :isCancBtn="true" :isSaveBtn="true" :alertShow="alertShow.addcase" alertTitle="操作">
-      <div v-text="alertShow.text"></div>
+      <Row>
+        <Col span="12"><span class="lh24" v-text="alertShow.text"></span></Col>
+        <Col span="12" class="tr"><span class="lh24 hand _step" @click="resChangeStep" v-text="alertShow.btnText"></span></Col>
+      </Row>
       <Row>
         <Col v-if="alertShow.stepNum === 1" span="24">
           <upload-book childName="上传excel文件" :dowShow="true" :fileType="['xls','xlsx']" :uploadUrl="resUploadUrlA" @dowDoc="dowDocBook" @saveClick="excSave" @cancClick="alertCanc('addC')"></upload-book>
         </Col>
         <Col v-if="alertShow.stepNum === 2" span="24">
-          <upload-book childName="上传zip压缩文件" :dowShow="false" :fileType="['zip']" :uploadUrl="resUploadUrlB" @saveClick="zipSave" @cancClick="alertCanc('addC')"></upload-book>
+          <upload-book childName="上传zip压缩文件" :dowShow="true" :fileType="['zip']" :uploadUrl="resUploadUrlB"  @dowDoc="dowDocBookB" @saveClick="zipSave" @cancClick="alertCanc('addC')"></upload-book>
         </Col>
       </Row>
     </alert-btn-info>
@@ -237,7 +240,8 @@ export default {
         idsList: [],
         submit: false,
         committee: '',
-        committeeList: []
+        committeeList: [],
+        btnText: '下一步'
       },
       seleList: {
         loading: false,
@@ -450,6 +454,9 @@ export default {
     dowDocBook () {
       window.open(regi.api + '/file/templet/dowload/2', '_blank')
     },
+    dowDocBookB () {
+      window.open(regi.api + '/file/templet/dowload/4', '_blank')
+    },
     resAddUpload () {
       this.alertShow.addcase = true
     },
@@ -527,11 +534,23 @@ export default {
         })
       })
     },
+    resChangeStep () {
+      if (this.alertShow.stepNum === 1) {
+        this.alertShow.text = '第二步：'
+        this.alertShow.stepNum = 2
+        this.alertShow.btnText = '上一步'
+      } else if (this.alertShow.stepNum === 2) {
+        this.alertShow.text = '第一步：'
+        this.alertShow.stepNum = 1
+        this.alertShow.btnText = '下一步'
+      }
+    },
     alertCanc (type) {
       if (type === 'addC') {
         this.alertShow.addcase = false
         this.alertShow.text = '第一步：'
         this.alertShow.stepNum = 1
+        this.alertShow.btnText = '下一步'
       } else if (type === 'info') {
         this.alertShow.info = false
         this.seleList.bodyList = []
@@ -569,5 +588,8 @@ export default {
     vertical-align: middle;
     color: #ff7a7a;
   }
+}
+._step {
+  color: #337BB5;
 }
 </style>
