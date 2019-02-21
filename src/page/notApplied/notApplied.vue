@@ -467,6 +467,7 @@ export default {
       })
       this.alertShow.text = '第二步：'
       this.alertShow.stepNum = 2
+      this.alertShow.btnText = '上一步'
     },
     zipSave (obj) {
       this.alertCanc('addC')
