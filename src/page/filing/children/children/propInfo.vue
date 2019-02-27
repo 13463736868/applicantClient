@@ -77,6 +77,7 @@
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
+            <Button style="background:#156FAE;border:1" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
@@ -315,7 +316,8 @@ export default {
         display: block;
         margin: 12px auto;
         width: 96%;
-        height: 85%;
+        // height: 85%;
+        height: 65%;
       }
       ._fileImg._iconImg {
         @include hand;

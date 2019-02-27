@@ -210,8 +210,8 @@ export default {
         _costNum += (a.cost - 0)
         _moneyNum += (a.money - 0)
       })
-      this.costTotal = _costNum
-      this.moneyTotal = _moneyNum
+      this.costTotal = _costNum.toFixed(2)
+      this.moneyTotal = _moneyNum.toFixed(2)
     },
     resPayment () {
       axios.post('/case/payFee').then(res => {

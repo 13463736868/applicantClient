@@ -139,7 +139,7 @@ export default {
       }).then(res => {
         this.spinShow = false
         this.$Message.success({
-          content: '提交仲裁成功,将跳转到我的案件',
+          content: res.data.message + ',将跳转到我的案件',
           duration: 2,
           onClose: () => {
             setTimeout(() => {
