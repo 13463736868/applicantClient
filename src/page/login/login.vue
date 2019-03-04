@@ -190,10 +190,16 @@ export default {
           }
           setToken(res.data.data.token)
           this.setUserInfo(res.data.data)
-          let redirect = decodeURIComponent(this.$route.query.redirect || '/')
-          this.$router.push({
-            path: redirect
-          })
+          if (res.data.data.verify === '-1' || res.data.data.verify === '2') {
+            this.$router.push({
+              path: '/userInfo'
+            })
+          } else {
+            let redirect = decodeURIComponent(this.$route.query.redirect || '/')
+            this.$router.push({
+              path: redirect
+            })
+          }
         }).catch(e => {
           this.user.password = ''
           this.user.code = ''

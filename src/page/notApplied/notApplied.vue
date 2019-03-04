@@ -480,7 +480,7 @@ export default {
     resSubmit () {
       if (this.alertShow.idsList.length === 0) {
         this.$Message.error({
-          content: '请先选择一个案件',
+          content: '请先选择一个已经完善的案件',
           duration: 5
         })
       } else {

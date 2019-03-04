@@ -63,7 +63,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setFiling'
+      'setFiling',
+      'setUserState'
     ]),
     resDictionary (itemGroup) {
       axios.post('/dictionary/' + itemGroup).then(res => {
@@ -87,86 +88,89 @@ export default {
     saveClick () {
       if (this.userState === null) {
         if (this.userInfo.verify === '1') {
-          if (this.caseInfo.propList.lenght === 0) {
-            this.$Message.error({
-              content: '请填写申请人',
-              duration: 5
-            })
-          } else if (this.caseInfo.respList.length === 0) {
-            this.$Message.error({
-              content: '请填写被申请人',
-              duration: 5
-            })
-          } else if (this.caseInfo.requestList.length === 0) {
-            this.$Message.error({
-              content: '请填写被请求项',
-              duration: 5
-            })
-          } else if (this.caseInfo.requestReasons === null) {
-            this.$Message.error({
-              content: '请填写事实与理由',
-              duration: 5
-            })
-          } else if (this.caseInfo.arbRequisitionFile === null) {
-            this.$Message.error({
-              content: '请上传仲裁申请书',
-              duration: 5
-            })
-          } else if (this.caseInfo.evidenceList.length === 0) {
-            this.$Message.error({
-              content: '请填写证据',
-              duration: 5
-            })
-          } else {
-            this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
-          }
+          this.resReg()
         } else {
-          this.$Message.error({
-            content: '请先完善身份绑定信息',
-            duration: 5
+          axios.post('/person/checkState').then(res => {
+            if (res.data.data.verify === '1') {
+              if (window.localStorage) {
+                let loc = window.localStorage
+                loc.setItem('userState', JSON.stringify(res.data.data))
+              }
+              this.setUserState(res.data.data)
+              this.resReg()
+            } else {
+              this.$Message.error({
+                content: '请先完善通过身份绑定信息',
+                duration: 5
+              })
+            }
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e + ' 稍后再试',
+              duration: 5
+            })
           })
         }
       } else {
         if (this.userState.verify === '1') {
-          if (this.caseInfo.propList.lenght === 0) {
-            this.$Message.error({
-              content: '请填写申请人',
-              duration: 5
-            })
-          } else if (this.caseInfo.respList.length === 0) {
-            this.$Message.error({
-              content: '请填写被申请人',
-              duration: 5
-            })
-          } else if (this.caseInfo.requestList.length === 0) {
-            this.$Message.error({
-              content: '请填写被请求项',
-              duration: 5
-            })
-          } else if (this.caseInfo.requestReasons === null) {
-            this.$Message.error({
-              content: '请填写事实与理由',
-              duration: 5
-            })
-          } else if (this.caseInfo.arbRequisitionFile === null) {
-            this.$Message.error({
-              content: '请上传仲裁申请书',
-              duration: 5
-            })
-          } else if (this.caseInfo.evidenceList.length === 0) {
-            this.$Message.error({
-              content: '请填写证据',
-              duration: 5
-            })
-          } else {
-            this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
-          }
+          this.resReg()
         } else {
-          this.$Message.error({
-            content: '请先完善身份绑定信息',
-            duration: 5
+          axios.post('/person/checkState').then(res => {
+            if (res.data.data.verify === '1') {
+              if (window.localStorage) {
+                let loc = window.localStorage
+                loc.setItem('userState', JSON.stringify(res.data.data))
+              }
+              this.setUserState(res.data.data)
+              this.resReg()
+            } else {
+              this.$Message.error({
+                content: '请先完善通过身份绑定信息',
+                duration: 5
+              })
+            }
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e + ' 稍后再试',
+              duration: 5
+            })
           })
         }
+      }
+    },
+    resReg () {
+      if (this.caseInfo.propList.lenght === 0) {
+        this.$Message.error({
+          content: '请填写申请人',
+          duration: 5
+        })
+      } else if (this.caseInfo.respList.length === 0) {
+        this.$Message.error({
+          content: '请填写被申请人',
+          duration: 5
+        })
+      } else if (this.caseInfo.requestList.length === 0) {
+        this.$Message.error({
+          content: '请填写被请求项',
+          duration: 5
+        })
+      } else if (this.caseInfo.requestReasons === null) {
+        this.$Message.error({
+          content: '请填写事实与理由',
+          duration: 5
+        })
+      } else if (this.caseInfo.arbRequisitionFile === null) {
+        this.$Message.error({
+          content: '请上传仲裁申请书',
+          duration: 5
+        })
+      } else if (this.caseInfo.evidenceList.length === 0) {
+        this.$Message.error({
+          content: '请填写证据',
+          duration: 5
+        })
+      } else {
+        this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
       }
     },
     hashClick () {
