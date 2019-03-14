@@ -268,13 +268,13 @@ export default {
   created () {
     if (this.userType === 1) {
       this.cardList()
-      this.uploadUrl = regi.api + '/person/perfect/2'
+      this.uploadUrl = '/person/perfect/2'
       this.fileObj = this.fileObjA
       this.imgUrlId = this.imgUrlIdA
     } else if (this.userType === 2) {
       this.cardList()
       this.dictionary()
-      this.uploadUrl = regi.api + '/person/perfect/company/2'
+      this.uploadUrl = '/person/perfect/company/2'
       this.fileObj = this.fileObjB
       this.imgUrlId = this.imgUrlIdA
     }
@@ -659,11 +659,14 @@ export default {
     },
     sendAjax () {
       let _num = this.uploadNum
+      let _order = 0
       if (_num) {
         this.addInfoBtn = true
         this.uploadSum = this.uploadNum
         for (let k in this.fileObj) {
+          _order++
           if (this.fileObj[k] !== null) {
+            this.userAInfo.order = _order
             this.userAInfo.fileId = this.imgUrlId[k]
             let item = this.fileObj[k]
             this.$refs.upload.post(item)
