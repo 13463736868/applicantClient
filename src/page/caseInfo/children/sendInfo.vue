@@ -67,7 +67,7 @@
             <p class="p5 tr"><b>附件：</b></p>
           </Col>
           <Col span="16">
-            <p class="p5 alert_file"><span class="hand" style="color:#126eaf" title="点击查看" v-text="alertObj.filename" @click="resSeeFile(alertObj.filepath)"></span></p>
+              <p v-for="item in alertObj.fileList" :key="item.id" class="p5 alert_file"><span class="hand" style="color:#126eaf" title="点击查看" v-text="item.filename" @click="resSeeFile(item.filepath)"></span></p>
           </Col>
         </Row>
       </div>
@@ -212,47 +212,35 @@ export default {
       })
     },
     resSeeEInfo (type, index) {
-      let _data = {}
-      let _url = ''
+      let _res = null
       if (type === 'email') {
-        _url = '/case/findEmailMessageList'
-        _data.emailId = this.emailWarnList.bodyList[index].emailId
+        _res = this.emailWarnList.bodyList[index].emailId
       } else if (type === 'sms') {
-        _url = '/case/findSmsMessageList'
-        _data.smsId = this.smsWarnList.bodyList[index].smsId
+        _res = this.smsWarnList.bodyList[index].smsId
       }
-      axios.post(_url, _data).then(res => {
-        let _res = res.data.data[0]
-        if (type === 'email') {
-          this.alertObj.type = '接收者邮箱：'
-          this.alertObj.title = _res.title
-          this.alertObj.name = _res.toName
-          this.alertObj.eOrS = _res.sendTo
-          this.alertObj.time = _res.sendtime
-          this.alertObj.content = _res.content
-          if (_res.filename !== null) {
-            this.alertObj.fileShow = true
-            this.alertObj.filename = _res.filename
-            this.alertObj.filepath = _res.filepath
-          } else {
-            this.alertObj.fileShow = false
-          }
-        } else if (type === 'sms') {
-          this.alertObj.type = '接收者手机：'
-          this.alertObj.title = _res.title
-          this.alertObj.name = _res.toName
-          this.alertObj.eOrS = _res.receiver
-          this.alertObj.time = _res.sendtime
-          this.alertObj.content = _res.content
+      if (type === 'email') {
+        this.alertObj.type = '接收者邮箱：'
+        this.alertObj.title = _res.title
+        this.alertObj.name = _res.toName
+        this.alertObj.eOrS = _res.sendTo
+        this.alertObj.time = _res.sendTime
+        this.alertObj.content = _res.content
+        if (_res.fileList !== null && _res.fileList.length !== 0) {
+          this.alertObj.fileShow = true
+          this.alertObj.fileList = _res.fileList
+        } else {
           this.alertObj.fileShow = false
         }
-        this.alertShowSub = true
-      }).then(e => {
-        // this.$Message.error({
-        //   content: '错误信息:' + e,
-        //   duration: 5
-        // })
-      })
+      } else if (type === 'sms') {
+        this.alertObj.type = '接收者手机：'
+        this.alertObj.title = _res.title
+        this.alertObj.name = _res.toName
+        this.alertObj.eOrS = _res.receiver
+        this.alertObj.time = _res.sendTime
+        this.alertObj.content = _res.content
+        this.alertObj.fileShow = false
+      }
+      this.alertShowSub = true
     },
     seeInfoSave () {
       this.alertShowSub = false
