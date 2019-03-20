@@ -214,9 +214,9 @@ export default {
     resSeeEInfo (type, index) {
       let _res = null
       if (type === 'email') {
-        _res = this.emailWarnList.bodyList[index].emailId
+        _res = this.emailWarnList.bodyList[index]
       } else if (type === 'sms') {
-        _res = this.smsWarnList.bodyList[index].smsId
+        _res = this.smsWarnList.bodyList[index]
       }
       if (type === 'email') {
         this.alertObj.type = '接收者邮箱：'
