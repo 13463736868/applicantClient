@@ -26,6 +26,14 @@ const infoMap = {
     tel: '0515-88123589',
     address: '江苏省盐城市人民南路106号',
     goRoom: 'https://trialonline.yczcw.com.cn:3004/view/index.html#/',
+    note: '前后不分离,注释掉zip上传俩处地方'
+  },
+  'HuiZhou': {
+    name: '中国惠州仲裁委员会',
+    excName: 'HuiZhou Arbitration Commission',
+    tel: '0752-2112666',
+    address: '广东省惠州市惠城区鹅岭南路车世界广场三楼A区',
+    goRoom: 'https://yun.youzhengkeji.com:3004/view/index.html#/',
     note: '前后不分离'
   },
   'YouZheng': {
