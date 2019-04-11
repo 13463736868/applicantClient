@@ -1,16 +1,16 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label">选择仲裁机构<b class="_b">*</b></Col>
+      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="committeeStatus">
-          <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')">
+          <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="3" offset="1" class="_label">案件类型<b class="_b">*</b></Col>
+      <Col span="3" offset="1" class="_label">选择仲裁机构<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="caseTypeStatus">
-          <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Select v-model="committeeStatus">
+          <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
       </Col>
       <Col span="4">
@@ -40,18 +40,17 @@ export default {
     return {
       addSubmit: false,
       addHash: false,
-      committeeList: [],
       committeeStatus: '',
       caseTypeList: [],
       caseTypeStatus: '',
       caseMap: {},
+      caseNameMap: {},
       alertShow: {
         hash: false
       }
     }
   },
   created () {
-    this.resDictionary('commissionType')
     this.resCaseType()
   },
   computed: {
@@ -66,25 +65,6 @@ export default {
       'setFiling',
       'setUserState'
     ]),
-    resDictionary (itemGroup) {
-      axios.post('/dictionary/' + itemGroup).then(res => {
-        let _dataList = res.data.data
-        let _select = []
-        for (let k in _dataList) {
-          let _o = {}
-          _o.value = _dataList[k].itemValue
-          _o.label = _dataList[k].item
-          _select.push(_o)
-        }
-        this.committeeList = _select
-        this.committeeStatus = this.committeeList === '' ? '' : this.committeeList[0].value
-      }).catch(e => {
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
-    },
     saveClick () {
       if (this.userState === null) {
         if (this.userInfo.verify === '1') {
@@ -170,7 +150,21 @@ export default {
           duration: 5
         })
       } else {
-        this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
+        if (this.caseTypeStatus === '') {
+          this.$Message.error({
+            content: '案件类型不能为空',
+            duration: 5
+          })
+          return false
+        }
+        if (this.committeeStatus === '') {
+          this.$Message.error({
+            content: '提交仲裁委不能为空',
+            duration: 5
+          })
+          return false
+        }
+        this.$emit('saveClick', {committeeCode: this.committeeStatus, caseTypeId: this.caseTypeStatus, caseTypeName: this.caseNameMap[this.caseTypeStatus]})
       }
     },
     hashClick () {
@@ -206,19 +200,24 @@ export default {
       }
       this.setFiling({type: 'evidenceList', data: JSON.parse(JSON.stringify(this.caseInfo.evidenceList))})
     },
+    resAction (type) {
+      if (type === 'change_subm') {
+        this.committeeStatus = ''
+      }
+    },
     resCaseType () {
-      axios.post('/caseType/list', {
-        pageIndex: 0,
-        pageSize: 999
-      }).then(res => {
-        let _dataList = res.data.data.dataList
+      axios.post('/caseType/list').then(res => {
+        let _dataList = res.data.data
         this.caseTypeList = _dataList.map((a, b) => {
           let _o = {}
-          _o.value = a.caseTypeCode
+          _o.value = a.id
           _o.label = a.caseTypeName
-          this.caseMap[_o.value] = _o.label
+          _o.status = a.status
+          this.caseMap[a.id] = a.arbitrationList
+          this.caseNameMap[a.id] = a.caseTypeName
           return _o
         })
+        this.alertShow.submit = true
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',

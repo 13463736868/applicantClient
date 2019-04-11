@@ -67,21 +67,21 @@
     <alert-btn-info :alertShow="alertShow.submit" @alertCancel="alertCanc('submit')" @alertConfirm="submitSave" alertTitle="提示">
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>选择仲裁机构：</b></p>
+          <p><span class="_span">*</span><b>案件类型：</b></p>
         </Col>
         <Col span="16">
-          <Select v-model="alertShow.committee">
-            <Option v-for="item in alertShow.committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')">
+            <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
       </Row>
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>案件类型：</b></p>
+          <p><span class="_span">*</span><b>选择仲裁机构：</b></p>
         </Col>
         <Col span="16">
-          <Select v-model="caseTypeStatus">
-            <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select v-model="alertShow.committee">
+            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
           </Select>
         </Col>
       </Row>
@@ -240,7 +240,6 @@ export default {
         idsList: [],
         submit: false,
         committee: '',
-        committeeList: [],
         btnText: '下一步'
       },
       seleList: {
@@ -263,13 +262,13 @@ export default {
       perfectStatus: 0,
       caseTypeList: [],
       caseTypeStatus: '',
-      caseMap: {}
+      caseMap: {},
+      caseNameMap: {}
     }
   },
   created () {
     this.dictionary()
     this.resPrepareList()
-    this.resCaseType()
   },
   computed: {
     resUploadUrlA () {
@@ -349,25 +348,6 @@ export default {
           this.alertShow.idsList.splice(this.alertShow.idsList.indexOf(info.id), 1)
         }
       }
-    },
-    resDictionary (itemGroup) {
-      axios.post('/dictionary/' + itemGroup).then(res => {
-        let _dataList = res.data.data
-        let _select = []
-        for (let k in _dataList) {
-          let _o = {}
-          _o.value = _dataList[k].itemValue
-          _o.label = _dataList[k].item
-          _select.push(_o)
-        }
-        this.alertShow.committeeList = _select
-        this.alertShow.committee = this.alertShow.committeeList === '' ? '' : this.alertShow.committeeList[0].value
-      }).catch(e => {
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
     },
     dictionary () {
       axios.post('/dictionary/perfectType').then(res => {
@@ -484,22 +464,40 @@ export default {
           duration: 5
         })
       } else {
-        this.resDictionary('commissionType')
-        this.alertShow.submit = true
+        this.resCaseType()
+      }
+    },
+    resAction (type) {
+      if (type === 'change_subm') {
+        this.alertShow.committee = ''
       }
     },
     submitSave () {
       this.alertCanc('submit')
+      if (this.caseTypeStatus === '') {
+        this.$Message.error({
+          content: '案件类型不能为空',
+          duration: 5
+        })
+        return false
+      }
+      if (this.alertShow.committee === '') {
+        this.$Message.error({
+          content: '提交仲裁委不能为空',
+          duration: 5
+        })
+        return false
+      }
       this.spinShow = true
-      let caseTypeCode = this.caseTypeStatus === '' ? null : this.caseTypeStatus
-      let caseTypeName = this.caseMap[this.caseTypeStatus] === '' ? null : this.caseMap[this.caseTypeStatus]
       axios.post('/case/submit', {
         caseId: JSON.stringify(this.alertShow.idsList),
         commissionType: this.alertShow.committee,
-        caseTypeCode: caseTypeCode,
-        caseTypeName: caseTypeName
+        caseTypeId: this.caseTypeStatus,
+        caseTypeName: this.caseNameMap[this.caseTypeStatus]
       }).then(res => {
         this.alertShow.idsList = []
+        this.caseMap = {}
+        this.caseNameMap = {}
         this.spinShow = false
         this.resChangeStatus()
         this.$Message.success({
@@ -509,6 +507,8 @@ export default {
         })
       }).catch(e => {
         this.spinShow = false
+        this.caseMap = {}
+        this.caseNameMap = {}
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -516,18 +516,18 @@ export default {
       })
     },
     resCaseType () {
-      axios.post('/caseType/list', {
-        pageIndex: 0,
-        pageSize: 999
-      }).then(res => {
-        let _dataList = res.data.data.dataList
+      axios.post('/caseType/list').then(res => {
+        let _dataList = res.data.data
         this.caseTypeList = _dataList.map((a, b) => {
           let _o = {}
-          _o.value = a.caseTypeCode
+          _o.value = a.id
           _o.label = a.caseTypeName
-          this.caseMap[_o.value] = _o.label
+          _o.status = a.status
+          this.caseMap[a.id] = a.arbitrationList
+          this.caseNameMap[a.id] = a.caseTypeName
           return _o
         })
+        this.alertShow.submit = true
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',

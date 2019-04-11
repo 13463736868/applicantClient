@@ -40,7 +40,7 @@ export default {
       alertShow: false,
       alertShowSub: false,
       committeeCode: null,
-      caseTypeCode: null,
+      caseTypeId: null,
       caseTypeName: null,
       menuClaim: [
         {
@@ -122,9 +122,9 @@ export default {
     },
     caseSubInfo (obj) {
       this.alertShowSub = true
-      this.committeeCode = obj.committeeStatus
-      this.caseTypeCode = obj.caseTypeCode === '' ? null : obj.caseTypeCode
-      this.caseTypeName = obj.caseTypeCode === '' ? null : obj.caseTypeName
+      this.committeeCode = obj.committeeCode
+      this.caseTypeId = obj.caseTypeId
+      this.caseTypeName = obj.caseTypeName
     },
     caseSubSave () {
       this.spinShow = true
@@ -134,7 +134,7 @@ export default {
       axios.post('/case/submit', {
         caseId: JSON.stringify(_arr),
         commissionType: this.committeeCode,
-        caseTypeCode: this.caseTypeCode,
+        caseTypeId: this.caseTypeId,
         caseTypeName: this.caseTypeName
       }).then(res => {
         this.spinShow = false
