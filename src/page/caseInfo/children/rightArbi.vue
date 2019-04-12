@@ -618,7 +618,6 @@ export default {
               break
             }
           }
-          console.log(this.seleArr, this.seleArrName)
           if (!_t) {
             this.$Message.error({
               content: '仲裁员最多只能选择' + _num + '位！',
