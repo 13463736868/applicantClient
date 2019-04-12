@@ -572,8 +572,8 @@ export default {
     },
     selectClick () {
       this.pageObj.pageNum = 1
-      this.seleArr = []
-      this.seleArrName = []
+      this.seleArr = this.seleShow === true ? ['', ''] : ['']
+      this.seleArrName = this.seleShow === true ? ['', ''] : ['']
       this.alertShow.sele = true
       this.resArbitrator()
     },
@@ -604,41 +604,26 @@ export default {
     seleArrChange (index, bool) {
       let _id = this.seleList.bodyList[index].id
       let _name = this.seleList.bodyList[index].name
-      let _num = this.seleShow === true ? 2 : 1
+      let _num = this.seleShow === true ? '二' : '一'
       if (bool) {
         if (this.seleArr.indexOf(_id) === -1) {
-          if (this.seleShow) {
-            if (this.seleArr[0] === '') {
-              this.seleArr[0] = _id
-              this.seleArrName[0] = _name
-              this.seleArr.splice(0, 0)
-              this.seleArrName.splice(0, 0)
-            } else if (this.seleArr[1] === '') {
-              this.seleArr[1] = _id
-              this.seleArrName[1] = _name
-              this.seleArr.splice(0, 0)
-              this.seleArrName.splice(0, 0)
-            } else {
-              if (this.seleArr.length >= _num) {
-                this.$Message.error({
-                  content: '仲裁员最多只能选择二位！',
-                  duration: 5
-                })
-              } else {
-                this.seleArr.push(_id)
-                this.seleArrName.push(_name)
-              }
+          let _t = false
+          for (let k in this.seleArr) {
+            if (this.seleArr[k] === '') {
+              this.seleArr[k] = _id
+              this.seleArrName[k] = _name
+              this.seleArr.splice(k, 0)
+              this.seleArrName.splice(k, 0)
+              _t = true
+              break
             }
-          } else {
-            if (this.seleArr.length >= _num) {
-              this.$Message.error({
-                content: '仲裁员最多只能选择一位！',
-                duration: 5
-              })
-            } else {
-              this.seleArr.push(_id)
-              this.seleArrName.push(_name)
-            }
+          }
+          console.log(this.seleArr, this.seleArrName)
+          if (!_t) {
+            this.$Message.error({
+              content: '仲裁员最多只能选择' + _num + '位！',
+              duration: 5
+            })
           }
         }
       } else {
