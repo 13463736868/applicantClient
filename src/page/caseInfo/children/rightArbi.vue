@@ -3,20 +3,20 @@
     <div class="_arbiInfo">
       <div class="_top">仲裁委信息</div>
       <div class="_mid">
-        <Row>
+        <Row v-if="arbiInfoShow">
           <Col span="22" offset="1">
             <div class="_logo">
-              <img :src="logo.url" alt="">
-              <div class="f14 pt5"><b v-text="dataMap.name"></b></div>
-              <div><b v-text="dataMap.excName"></b></div>
+              <img class="_img" :src="arbiInfo.logoUrl" alt="">
+              <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
+              <div><b v-text="arbiInfo.englishName"></b></div>
             </div>
             <p>
               <span class="mr10"><b>电话 :</b></span>
-              <span class="mr10" v-text="dataMap.tel"></span>
+              <span class="mr10" v-text="arbiInfo.telephone"></span>
             </p>
             <p>
               <span class="mr10"><b>地址 :</b></span>
-              <span class="mr10" v-text="dataMap.address"></span>
+              <span class="mr10" v-text="arbiInfo.address"></span>
             </p>
           </Col>
         </Row>
@@ -199,6 +199,8 @@ export default {
       logo: {
         url: require('../../static/images/logoR.png')
       },
+      arbiInfoShow: false,
+      arbiInfo: null,
       dataInfoShow: false,
       dataInfo: null,
       addSubmit: false,
@@ -256,6 +258,7 @@ export default {
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.resCaseItem()
+      this.resArbiItem()
     }
     this.$watch('searchText', this.debounce(this.resSearch, 1000))
   },
@@ -346,6 +349,21 @@ export default {
         this.dataInfoShow = true
       }).catch(e => {
         this.dataInfoShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    resArbiItem () {
+      axios.post('/caseType/arbitration/baseItem', {
+        oldId: this.caseOldId
+      }).then(res => {
+        this.arbiInfo = res.data.data
+        this.arbiInfoShow = true
+        console.log(this.arbiInfo)
+      }).catch(e => {
+        this.arbiInfoShow = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -827,6 +845,10 @@ export default {
   ._logo {
     padding: 5px 0;
     text-align: center;
+    ._img {
+      width: 80px;
+      height: 80px;
+    }
   }
 }
 </style>
