@@ -266,9 +266,6 @@ export default {
     ...mapGetters([
       'myCaseShowBtn'
     ]),
-    dataMap () {
-      return regi.dataMap
-    },
     resAction () {
       return regi.api + '/case/withdraw'
     },
@@ -361,7 +358,6 @@ export default {
       }).then(res => {
         this.arbiInfo = res.data.data
         this.arbiInfoShow = true
-        console.log(this.arbiInfo)
       }).catch(e => {
         this.arbiInfoShow = false
         this.$Message.error({
