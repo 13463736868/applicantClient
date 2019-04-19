@@ -61,6 +61,7 @@ export default {
       } else if (this.partieType === 2) {
         let _data = {}
         _data.id = this.caseId
+        _data.oldId = this.caseOldId
         return _data
       }
     }

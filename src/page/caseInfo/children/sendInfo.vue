@@ -188,6 +188,7 @@ export default {
     resSendInfo () {
       axios.post('/case/findNoticeList', {
         id: this.caseId,
+        oldId: this.caseOldId,
         messageType: 'email',
         partyType: this.partieType
       }).then(res => {
@@ -200,6 +201,7 @@ export default {
       })
       axios.post('/case/findNoticeList', {
         id: this.caseId,
+        oldId: this.caseOldId,
         messageType: 'sms',
         partyType: this.partieType
       }).then(res => {

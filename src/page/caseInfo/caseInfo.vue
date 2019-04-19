@@ -9,10 +9,10 @@
           <router-link v-for="item in menuClaim" :to='{path: "/caseInfo" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
         <Col span="14" class="_center_right">
-          <router-view :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></router-view>
+          <router-view :caseId="myCaseId === 'null' ? null : myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></router-view>
         </Col>
         <Col span="4">
-          <right-arbi :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></right-arbi>
+          <right-arbi :caseId="myCaseId === 'null' ? null : myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></right-arbi>
         </Col>
       </Row>
     </div>

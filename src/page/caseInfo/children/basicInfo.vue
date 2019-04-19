@@ -156,7 +156,8 @@ export default {
   methods: {
     resBaseItem () {
       axios.post('/case/baseItem', {
-        id: this.caseId
+        id: this.caseId,
+        oldId: this.caseOldId
       }).then(res => {
         this.dataBasic = res.data.data
         this.progressList.bodyList = res.data.data.processList === null ? [] : res.data.data.processList

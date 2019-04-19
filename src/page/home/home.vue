@@ -9,18 +9,36 @@
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
-        <Col span="8">
+        <Col span="4">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
-        <Col span="6">
-          <label class="lh32 f16 fc6 fr mr15">案件状态</label>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">合同类型</label>
         </Col>
-        <Col span="6">
-          <Select v-model="caseStatus" style="width:200px" @on-change="resChangeStatus()">
-            <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Col span="3">
+          <Select v-model="caseTypeStatus" @on-change="resChangeStatus()">
+            <Option value="all" key="all">全部</Option>
+            <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
         <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">仲裁委</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="committee" @on-change="resChangeStatus()">
+            <Option value="all" key="all">全部</Option>
+            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
+          </Select>
+        </Col>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">案件状态</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="caseStatus" @on-change="resChangeStatus()">
+            <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Col>
+        <Col span="2" offset="1">
           <Button type="primary" @click="resPayment">批量缴费</Button>
         </Col>
       </Row>
@@ -198,11 +216,16 @@ export default {
       },
       alertShow: {
         idsList: []
-      }
+      },
+      caseTypeList: [],
+      caseTypeStatus: null,
+      caseMap: {},
+      committee: null
     }
   },
   created () {
-    this.dictionary()
+    this.dictionary('caseState')
+    this.dictionary('caseTypeList')
     this.resMineList()
   },
   computed: {
@@ -447,23 +470,45 @@ export default {
         }
       }
     },
-    dictionary () {
-      axios.post('/dictionary/caseState').then(res => {
-        let _dataList = res.data.data
-        let _select = []
-        for (let k in _dataList) {
-          let _o = {}
-          _o.value = _dataList[k].itemValue
-          _o.label = _dataList[k].item
-          _select.push(_o)
-        }
-        this.caseStatusList = _select
-      }).catch(e => {
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
+    dictionary (type) {
+      switch (type) {
+        case 'caseState':
+          axios.post('/dictionary/caseState').then(res => {
+            let _dataList = res.data.data
+            let _select = []
+            for (let k in _dataList) {
+              let _o = {}
+              _o.value = _dataList[k].itemValue
+              _o.label = _dataList[k].item
+              _select.push(_o)
+            }
+            this.caseStatusList = _select
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e,
+              duration: 5
+            })
+          })
+          break
+        case 'caseTypeList':
+          axios.post('/caseType/list').then(res => {
+            let _dataList = res.data.data
+            this.caseTypeList = _dataList.map((a, b) => {
+              let _o = {}
+              _o.value = a.id
+              _o.label = a.caseTypeName
+              _o.status = a.status
+              this.caseMap[a.id] = a.arbitrationList
+              return _o
+            })
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e + ' 稍后再试',
+              duration: 5
+            })
+          })
+          break
+      }
     },
     resMineList () {
       this.spinShow = true
@@ -471,7 +516,9 @@ export default {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text,
-        caseState: this.caseStatus
+        caseState: this.caseStatus,
+        arbitrationId: this.committee === 'all' ? null : this.committee,
+        caseTypeId: this.caseTypeStatus === 'all' ? null : this.caseTypeStatus
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList

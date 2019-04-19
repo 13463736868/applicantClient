@@ -339,7 +339,8 @@ export default {
     },
     resCaseItem () {
       axios.post('/case/queryCaseItem', {
-        id: this.caseId
+        id: this.caseId,
+        oldId: this.caseOldId
       }).then(res => {
         this.dataInfo = res.data.data
         this.dataInfoShow = true
@@ -355,6 +356,7 @@ export default {
       axios.post('/case/selectArbitrator', {
         pageIndex: 0,
         pageSize: 10,
+        oldId: this.caseOldId,
         id: this.caseId
       }).then(res => {
         let _res = res.data.data.dataList
@@ -402,6 +404,7 @@ export default {
             })
           } else {
             axios.post('/case/applyAvoid', {
+              oldId: this.caseOldId,
               id: this.caseId,
               reason: this.dataObj.avoi,
               partyType: this.partieType,
@@ -441,6 +444,7 @@ export default {
               this.dataObj.avoiObj.idArr[2] = -1
             }
             axios.post('/case/applyAvoid', {
+              oldId: this.caseOldId,
               id: this.caseId,
               reason: this.dataObj.avoi,
               partyType: this.partieType,
@@ -581,6 +585,7 @@ export default {
       axios.post('/case/selectArbitrator', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
+        oldId: this.caseOldId,
         keyword: this.searchText
       }).then(res => {
         this.seleList.bodyList = res.data.data.dataList === null ? [] : res.data.data.dataList
@@ -640,7 +645,8 @@ export default {
         })
       } else {
         axios.post('/case/appointArbitrator', {
-          caseId: this.caseId,
+          id: this.caseId,
+          oldId: this.caseOldId,
           ids: this.seleArr.join(','),
           partyType: this.partieType
         }).then(res => {
@@ -682,7 +688,8 @@ export default {
         })
       } else {
         axios.post('/case/applyAdditions', {
-          caseId: this.caseId,
+          id: this.caseId,
+          oldId: this.caseOldId,
           reason: this.dataObj.repl,
           partyType: this.partieType
         }).then(res => {
@@ -742,6 +749,7 @@ export default {
       } else {
         axios.post('/case/dissidence', {
           id: this.caseId,
+          oldId: this.caseOldId,
           reason: this.dataObj.righ
         }).then(res => {
           let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))

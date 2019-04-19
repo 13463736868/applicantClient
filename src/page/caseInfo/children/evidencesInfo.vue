@@ -90,6 +90,7 @@ export default {
       } else if (this.partieType === 2) {
         let _data = {}
         _data.id = this.caseId
+        _data.oldId = this.caseOldId
         return _data
       }
     }
@@ -116,7 +117,8 @@ export default {
     },
     resRevEvid () {
       axios.post('/case/queryRespEvidence', {
-        id: this.caseId
+        id: this.caseId,
+        oldId: this.caseOldId
       }).then(res => {
         this.revEvidData = res.data.data
         if (this.revEvidData !== null) {

@@ -30,7 +30,8 @@ export default {
   methods: {
     resCase () {
       axios.post('/case/settleItem', {
-        id: this.caseId
+        id: this.caseId,
+        oldId: this.caseOldId
       }).then(res => {
         this.endCaseD = res.data.data
       }).catch(e => {
