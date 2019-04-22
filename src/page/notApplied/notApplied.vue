@@ -15,12 +15,12 @@
         <Col span="2" offset="2">
           <label class="lh32 f16 fc6 fr mr15">状态</label>
         </Col>
-        <Col span="6">
-          <Select v-model="perfectStatus" style="width:200px" @on-change="resChangeStatus()">
+        <Col span="3">
+          <Select v-model="perfectStatus" @on-change="resChangeStatus()">
             <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="2">
+        <Col span="2" offset="2">
           <Button type="primary" @click="resAddUpload">批量导入</Button>
         </Col>
         <Col span="2">
@@ -116,7 +116,11 @@ export default {
           {
             title: '选择',
             key: 'id',
+            maxWidth: 80,
             align: 'center',
+            renderHeader: (h, params) => {
+              return this.renderAllSele(h, params)
+            },
             render: (h, params) => {
               return this.renderCheck(h, params)
             }
@@ -283,6 +287,20 @@ export default {
     ...mapActions([
       'setCaseId'
     ]),
+    renderAllSele (h, params) {
+      return h('div', [
+        h('span', {
+          style: {
+            cursor: 'pointer'
+          },
+          on: {
+            click: () => {
+              console.log('全选')
+            }
+          }
+        }, '全选')
+      ])
+    },
     renderCheck (h, params) {
       let _obj = params.row
       if (_obj.isPerfect === 1) {
