@@ -126,6 +126,16 @@ export default {
             align: 'center'
           },
           {
+            title: '合同类型',
+            key: 'caseTypeName',
+            align: 'center'
+          },
+          {
+            title: '提交仲裁委',
+            key: 'arbitrationName',
+            align: 'center'
+          },
+          {
             title: '案件状态',
             key: 'caseState',
             align: 'center'

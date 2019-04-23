@@ -60,7 +60,7 @@ export default {
         text: ''
       },
       committeeList: [],
-      committeeStatus: null,
+      committeeStatus: 'all',
       payList: {
         loading: false,
         header: [
@@ -94,6 +94,11 @@ export default {
           {
             title: '案件个数',
             key: 'caseNum',
+            align: 'center'
+          },
+          {
+            title: '提交仲裁委',
+            key: 'arbitrationName',
             align: 'center'
           },
           {

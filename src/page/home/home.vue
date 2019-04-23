@@ -121,6 +121,9 @@ export default {
             key: 'id',
             maxWidth: 70,
             align: 'center',
+            renderHeader: (h, params) => {
+              return this.renderAllSele(h, params)
+            },
             render: (h, params) => {
               return this.renderCheck(h, params)
             }
@@ -204,7 +207,8 @@ export default {
             }
           }
         ],
-        bodyList: []
+        bodyList: [],
+        seleMap: {}
       },
       pageObj: {
         total: 0,
@@ -268,9 +272,37 @@ export default {
       'setMyCasePartieType',
       'setMyCaseCrossE'
     ]),
+    renderAllSele (h, params) {
+      return h('div', [
+        h('span', {
+          style: {
+            cursor: 'pointer',
+            userSelect: 'none'
+          },
+          on: {
+            click: () => {
+              this.resAllSele()
+            }
+          }
+        }, '全选')
+      ])
+    },
+    resAllSele () {
+      if (this.caseList.seleMap[this.pageObj.pageNum] === undefined) {
+        this.caseList.seleMap[this.pageObj.pageNum] = true
+      } else {
+        this.caseList.seleMap[this.pageObj.pageNum] = !this.caseList.seleMap[this.pageObj.pageNum]
+      }
+      this.caseList.bodyList.forEach((item, index) => {
+        let _obj = item
+        if (this.caseTypeStatus !== 'all' && this.committee !== 'all' && _obj.state === 2) {
+          this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
+        }
+      })
+    },
     renderCheck (h, params) {
       let _obj = params.row
-      if (this.caseStatus === 2 && _obj.state === 2) {
+      if (this.caseTypeStatus !== 'all' && this.committee !== 'all' && _obj.state === 2) {
         if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
           return h('div', [
             h('Icon', {
@@ -577,6 +609,8 @@ export default {
           }
         }
       }
+      this.alertShow.idsList = []
+      this.caseList.seleMap = {}
       this.pageObj.pageNum = 1
       this.resMineList()
     },
@@ -628,7 +662,7 @@ export default {
           content: '操作成功',
           duration: 2
         })
-        this.resMineList()
+        this.resChangeStatus()
       }
     },
     resError (error, file) {
@@ -649,7 +683,7 @@ export default {
             content: '操作成功',
             duration: 2
           })
-          this.resMineList()
+          this.resChangeStatus()
         }).catch(e => {
           this.retrObj.spinShow = false
           this.alertCanc('retr')
@@ -782,6 +816,8 @@ export default {
       } else {
         this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
         window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
+        this.setGoPaymentArbiId(JSON.stringify(this.committee === 'all' ? '' : this.committee))
+        window.localStorage.setItem('goPaymentArbiId', JSON.stringify(this.committee === 'all' ? '' : this.committee))
         this.$router.push({
           path: '/goPayment'
         })

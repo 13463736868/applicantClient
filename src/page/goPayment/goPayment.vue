@@ -118,6 +118,16 @@ export default {
             align: 'center'
           },
           {
+            title: '合同类型',
+            key: 'caseTypeName',
+            align: 'center'
+          },
+          {
+            title: '提交仲裁委',
+            key: 'arbitrationName',
+            align: 'center'
+          },
+          {
             title: '案件状态',
             key: 'caseState',
             align: 'center'
@@ -195,7 +205,7 @@ export default {
         keyword: '',
         caseState: 2,
         caseIds: this.caseIds,
-        arbitrationId: this.arbiId
+        arbitrationId: this.arbiId === 'null' ? null : this.arbiId
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList

@@ -16,7 +16,7 @@
           <label class="lh32 f16 fc6 fr mr15">状态</label>
         </Col>
         <Col span="6">
-          <Select v-model="perfectStatus" style="width:200px" @on-change="resChangeStatus()">
+          <Select v-model="perfectStatus" style="width:200px" @on-change="resSearch">
             <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
@@ -116,7 +116,11 @@ export default {
           {
             title: '选择',
             key: 'id',
+            maxWidth: 70,
             align: 'center',
+            renderHeader: (h, params) => {
+              return this.renderAllSele(h, params)
+            },
             render: (h, params) => {
               return this.renderCheck(h, params)
             }
@@ -225,7 +229,8 @@ export default {
             }
           }
         ],
-        bodyList: []
+        bodyList: [],
+        seleMap: {}
       },
       pageObj: {
         total: 0,
@@ -282,6 +287,34 @@ export default {
     ...mapActions([
       'setCaseId'
     ]),
+    renderAllSele (h, params) {
+      return h('div', [
+        h('span', {
+          style: {
+            cursor: 'pointer',
+            userSelect: 'none'
+          },
+          on: {
+            click: () => {
+              this.resAllSele()
+            }
+          }
+        }, '全选')
+      ])
+    },
+    resAllSele () {
+      if (this.caseList.seleMap[this.pageObj.pageNum] === undefined) {
+        this.caseList.seleMap[this.pageObj.pageNum] = true
+      } else {
+        this.caseList.seleMap[this.pageObj.pageNum] = !this.caseList.seleMap[this.pageObj.pageNum]
+      }
+      this.caseList.bodyList.forEach((item, index) => {
+        let _obj = item
+        if (_obj.isPerfect === 1) {
+          this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
+        }
+      })
+    },
     renderCheck (h, params) {
       let _obj = params.row
       if (_obj.isPerfect === 1) {
@@ -387,10 +420,6 @@ export default {
         })
       })
     },
-    resChangeStatus () {
-      this.pageObj.pageNum = 1
-      this.resPrepareList()
-    },
     goCaseSee (index) {
       this.setCaseId(this.caseList.bodyList[index].id)
       window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
@@ -424,6 +453,8 @@ export default {
       this.caseDelId = null
     },
     resSearch () {
+      this.alertShow.idsList = []
+      this.caseList.seleMap = {}
       this.pageObj.pageNum = 1
       this.resPrepareList()
     },
@@ -499,7 +530,7 @@ export default {
         this.caseMap = {}
         this.caseNameMap = {}
         this.spinShow = false
-        this.resChangeStatus()
+        this.resSearch()
         this.$Message.success({
           content: res.data.message,
           duration: 10,
@@ -555,7 +586,7 @@ export default {
       } else if (type === 'info') {
         this.alertShow.info = false
         this.seleList.bodyList = []
-        this.resChangeStatus()
+        this.resSearch()
       } else if (type === 'submit') {
         this.alertShow.submit = false
       }
