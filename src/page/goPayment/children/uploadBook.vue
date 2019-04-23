@@ -49,7 +49,7 @@ import spinComp from '@/components/common/spin'
 export default {
   name: 'upload_appl_book',
   components: { spinComp },
-  props: ['uploadUrl', 'fileType', 'childName', 'caseIds', 'costTotal', 'moneyTotal'],
+  props: ['uploadUrl', 'fileType', 'childName', 'arbiId', 'caseIds', 'costTotal', 'moneyTotal'],
   data () {
     return {
       spinShow: false,
@@ -63,6 +63,7 @@ export default {
     }
   },
   created () {
+    this.objData.arbitrationId = this.arbiId
     this.objData.caseIds = this.caseIds
     this.objData.costTotal = this.costTotal
     this.objData.moneyTotal = this.moneyTotal

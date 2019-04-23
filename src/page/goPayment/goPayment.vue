@@ -51,7 +51,7 @@
     <alert-btn-info :isCancBtn="true" :isSaveBtn="true" :alertShow="alertShow.addP" alertTitle="操作">
       <Row>
         <Col span="24">
-          <upload-book :caseIds="caseIds" :costTotal="costTotal" :moneyTotal="moneyTotal" childName="上传缴费凭证文件" :fileType="['jpg','jpeg','png', 'pdf']" :uploadUrl="resAddpUrl" @saveClick="addpSave" @cancClick="alertCanc('addP')"></upload-book>
+          <upload-book :arbiId="arbiId" :caseIds="caseIds" :costTotal="costTotal" :moneyTotal="moneyTotal" childName="上传缴费凭证文件" :fileType="['jpg','jpeg','png', 'pdf']" :uploadUrl="resAddpUrl" @saveClick="addpSave" @cancClick="alertCanc('addP')"></upload-book>
         </Col>
       </Row>
     </alert-btn-info>
@@ -73,6 +73,7 @@ export default {
   data () {
     return {
       caseIds: null,
+      arbiId: null,
       dataObj: null,
       costTotal: 0,
       moneyTotal: 0,
@@ -153,8 +154,9 @@ export default {
     }
   },
   created () {
-    if (this.goPaymentCaseIds !== '') {
+    if (this.goPaymentCaseIds !== '' && this.goPaymentArbiId !== '') {
       this.caseIds = this.goPaymentCaseIds
+      this.arbiId = this.goPaymentArbiId
       this.resMineList()
       this.resPayment()
     } else {
@@ -163,10 +165,12 @@ export default {
   },
   beforeDestroy () {
     this.setGoPaymentCaseIds('')
+    this.setGoPaymentArbiId('')
   },
   computed: {
     ...mapGetters([
-      'goPaymentCaseIds'
+      'goPaymentCaseIds',
+      'goPaymentArbiId'
     ]),
     resAddpUrl () {
       return regi.api + '/payment/add'
@@ -178,6 +182,7 @@ export default {
       'setMyCaseOldId',
       'setMyCaseState',
       'setGoPaymentCaseIds',
+      'setGoPaymentArbiId',
       'setMyCaseShowBtn',
       'setMyCasePartieType',
       'setMyCaseCrossE'
@@ -189,7 +194,8 @@ export default {
         pageSize: 999,
         keyword: '',
         caseState: 2,
-        caseIds: this.caseIds
+        caseIds: this.caseIds,
+        arbitrationId: this.arbiId
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -214,7 +220,9 @@ export default {
       this.moneyTotal = _moneyNum.toFixed(2)
     },
     resPayment () {
-      axios.post('/case/payFee').then(res => {
+      axios.post('/case/payFee', {
+        arbitrationId: this.arbiId
+      }).then(res => {
         this.dataObj = res.data.data
       }).catch(e => {
         this.$Message.error({

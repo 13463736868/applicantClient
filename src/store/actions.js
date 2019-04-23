@@ -27,6 +27,9 @@ export default {
   setGoPaymentCaseIds ({commit, state}, id) {
     commit('SET_GOPAYMENTCASEIDS', id)
   },
+  setGoPaymentArbiId ({commit, state}, id) {
+    commit('SET_GOPAYMENTARBIID', id)
+  },
   setPaymentInfoId ({commit, state}, id) {
     commit('SET_PAYMENTINFOID', id)
   },

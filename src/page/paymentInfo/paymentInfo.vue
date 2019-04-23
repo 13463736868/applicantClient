@@ -181,13 +181,13 @@ export default {
       'setMyCaseId',
       'setMyCaseOldId',
       'setMyCaseState',
-      'setGoPaymentCaseIds',
       'setMyCaseShowBtn',
       'setMyCasePartieType',
       'setMyCaseCrossE'
     ]),
     resPayment () {
       axios.post('/payment/details', {
+        arbitrationId: this.publicData.arbitrationId,
         id: this.publicData.id,
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize

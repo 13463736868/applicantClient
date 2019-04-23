@@ -17,7 +17,8 @@
         </Col>
         <Col span="6">
           <Select v-model="committeeStatus" style="width:200px" @on-change="resChangeStatus()">
-            <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Option value="all" key="all">全部</Option>
+            <Option :disabled="item.state !== 1" v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
       </Row>
@@ -59,7 +60,7 @@ export default {
         text: ''
       },
       committeeList: [],
-      committeeStatus: '',
+      committeeStatus: null,
       payList: {
         loading: false,
         header: [
@@ -176,29 +177,30 @@ export default {
       },
       alertShow: {
         canc: false,
-        id: null
+        id: null,
+        arbiId: null
       }
     }
   },
   created () {
-    this.resDictionary('commissionType')
+    this.resDictionary()
   },
   methods: {
     ...mapActions([
       'setPaymentInfoId'
     ]),
     resDictionary (itemGroup) {
-      axios.post('/dictionary/' + itemGroup).then(res => {
+      axios.post('/caseType/arbitration/list').then(res => {
         let _dataList = res.data.data
         let _select = []
         for (let k in _dataList) {
           let _o = {}
-          _o.value = _dataList[k].itemValue
-          _o.label = _dataList[k].item
+          _o.value = _dataList[k].id
+          _o.label = _dataList[k].name
+          _o.state = _dataList[k].state
           _select.push(_o)
         }
         this.committeeList = _select
-        this.committeeStatus = this.committeeList === '' ? '' : this.committeeList[0].value
         this.resPayList()
       }).catch(e => {
         if (this.spinShow) {
@@ -216,7 +218,7 @@ export default {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         paymentNumber: this.search.text,
-        commissionType: this.committeeStatus
+        arbitrationId: this.committeeStatus === 'all' ? null : this.committeeStatus
       }).then(res => {
         let _data = res.data.data
         this.payList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -253,15 +255,18 @@ export default {
       window.open(path, '_blank')
     },
     resCanc (index) {
+      this.alertShow.arbiId = this.payList.bodyList[index].arbitrationId
       this.alertShow.id = this.payList.bodyList[index].id
       this.alertShow.canc = true
     },
     cancSave () {
       this.alertShow.canc = false
       axios.post('/payment/withdraw', {
-        id: this.alertShow.id
+        id: this.alertShow.id,
+        arbitrationId: this.alertShow.arbiId
       }).then(res => {
         this.resSearch()
+        this.alertCanc('canc')
         this.$Message.success({
           content: '撤回成功',
           duration: 2
@@ -276,6 +281,7 @@ export default {
     alertCanc (type) {
       if (type === 'canc') {
         this.alertShow.id = null
+        this.alertShow.arbiId = null
         this.alertShow.canc = false
       }
     }

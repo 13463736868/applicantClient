@@ -1,7 +1,7 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
+      <Col span="3" class="_label">合同类型<b class="_b">*</b></Col>
       <Col span="4">
         <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')">
           <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>

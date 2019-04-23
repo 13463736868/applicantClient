@@ -77,11 +77,17 @@ const beforeEach = (to, from, next) => {
       }
       if (to.fullPath.indexOf('goPayment') === -1) {
         loc.removeItem('goPaymentCaseIds')
+        loc.removeItem('goPaymentArbiId')
         // store.commit('SET_GOPAYMENTCASEIDS', '') 销毁组件前已经清理了
       } else {
         if (store.state.goPaymentCaseIds === '') {
           if (loc.getItem('goPaymentCaseIds')) {
             store.commit('SET_GOPAYMENTCASEIDS', loc.getItem('goPaymentCaseIds'))
+          }
+        }
+        if (store.state.goPaymentArbiId === '') {
+          if (loc.getItem('goPaymentArbiId')) {
+            store.commit('SET_GOPAYMENTARBIID', loc.getItem('goPaymentArbiId'))
           }
         }
       }

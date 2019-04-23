@@ -15,6 +15,7 @@ const state = {
   myCaseOldId: '',
   myCaseState: null,
   goPaymentCaseIds: '',
+  goPaymentArbiId: '',
   paymentInfoId: '',
   userState: null,
   myCaseShowBtn: null,

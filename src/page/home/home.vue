@@ -10,13 +10,13 @@
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
         <Col span="4">
-          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
+          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resChangeStatus('sear')" @keyup.enter.native="resChangeStatus('sear')" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">合同类型</label>
         </Col>
         <Col span="3">
-          <Select v-model="caseTypeStatus" @on-change="resChangeStatus()">
+          <Select v-model="caseTypeStatus" @on-change="resChangeStatus('caseType')">
             <Option value="all" key="all">全部</Option>
             <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
@@ -34,7 +34,7 @@
           <label class="lh32 f16 fc6 fr mr15">案件状态</label>
         </Col>
         <Col span="3">
-          <Select v-model="caseStatus" @on-change="resChangeStatus()">
+          <Select v-model="caseStatus" @on-change="resChangeStatus('caseStatus')">
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
@@ -119,6 +119,7 @@ export default {
           {
             title: '选择',
             key: 'id',
+            maxWidth: 70,
             align: 'center',
             render: (h, params) => {
               return this.renderCheck(h, params)
@@ -164,6 +165,16 @@ export default {
           {
             title: '纠纷类型',
             key: 'caseType',
+            align: 'center'
+          },
+          {
+            title: '合同类型',
+            key: 'caseTypeName',
+            align: 'center'
+          },
+          {
+            title: '提交仲裁委',
+            key: 'arbitrationName',
             align: 'center'
           },
           {
@@ -218,9 +229,9 @@ export default {
         idsList: []
       },
       caseTypeList: [],
-      caseTypeStatus: null,
+      caseTypeStatus: 'all',
       caseMap: {},
-      committee: null
+      committee: 'all'
     }
   },
   created () {
@@ -252,13 +263,14 @@ export default {
       'setMyCaseOldId',
       'setMyCaseState',
       'setGoPaymentCaseIds',
+      'setGoPaymentArbiId',
       'setMyCaseShowBtn',
       'setMyCasePartieType',
       'setMyCaseCrossE'
     ]),
     renderCheck (h, params) {
       let _obj = params.row
-      if (_obj.state === 2) {
+      if (this.caseStatus === 2 && _obj.state === 2) {
         if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
           return h('div', [
             h('Icon', {
@@ -536,7 +548,35 @@ export default {
       this.pageObj.pageNum = 1
       this.resMineList()
     },
-    resChangeStatus () {
+    resChangeStatus (type) {
+      if (type === 'caseType') {
+        this.committee = 'all'
+        if (this.caseTypeStatus === 'all') {
+          this.caseStatus = 0
+        }
+      }
+      if (type === 'sear') {
+        this.committee = 'all'
+        this.caseTypeStatus = 'all'
+        this.caseStatus = 0
+      } else {
+        if ([0, 13, 14, 15].indexOf(this.caseStatus) === -1) {
+          if (this.caseTypeStatus === 'all') {
+            this.$Message.warning({
+              content: '请先选择一个合同类型, 合同类型不能为全部',
+              duration: 5
+            })
+            return false
+          }
+          if (this.committee === 'all') {
+            this.$Message.warning({
+              content: '请先选择一个仲裁委, 仲裁委不能为全部',
+              duration: 5
+            })
+            return false
+          }
+        }
+      }
       this.pageObj.pageNum = 1
       this.resMineList()
     },
@@ -767,6 +807,8 @@ export default {
       _arr.push(this.caseList.bodyList[index].id)
       this.setGoPaymentCaseIds(JSON.stringify(_arr))
       window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(_arr))
+      this.setGoPaymentArbiId(JSON.stringify(this.caseList.bodyList[index].arbitrationId))
+      window.localStorage.setItem('goPaymentArbiId', JSON.stringify(this.caseList.bodyList[index].arbitrationId))
       this.$router.push({
         path: '/goPayment'
       })

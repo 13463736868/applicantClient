@@ -29,6 +29,9 @@ export default {
   [types.SET_GOPAYMENTCASEIDS] (state, id) {
     state.goPaymentCaseIds = id
   },
+  [types.SET_GOPAYMENTARBIID] (state, id) {
+    state.goPaymentArbiId = id
+  },
   [types.SET_PAYMENTINFOID] (state, id) {
     state.paymentInfoId = id
   },
