@@ -229,7 +229,8 @@ export default {
             }
           }
         ],
-        bodyList: []
+        bodyList: [],
+        seleMap: {}
       },
       pageObj: {
         total: 0,
@@ -291,15 +292,29 @@ export default {
       return h('div', [
         h('span', {
           style: {
-            cursor: 'pointer'
+            cursor: 'pointer',
+            userSelect: 'none'
           },
           on: {
             click: () => {
-              console.log('全选')
+              this.resAllSele()
             }
           }
         }, '全选')
       ])
+    },
+    resAllSele () {
+      if (this.caseList.seleMap[this.pageObj.pageNum] === undefined) {
+        this.caseList.seleMap[this.pageObj.pageNum] = true
+      } else {
+        this.caseList.seleMap[this.pageObj.pageNum] = !this.caseList.seleMap[this.pageObj.pageNum]
+      }
+      this.caseList.bodyList.forEach((item, index) => {
+        let _obj = item
+        if (_obj.isPerfect === 1) {
+          this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
+        }
+      })
     },
     renderCheck (h, params) {
       let _obj = params.row
@@ -426,6 +441,7 @@ export default {
       })
     },
     resChangeStatus () {
+      this.caseList.seleMap = {}
       this.pageObj.pageNum = 1
       this.resPrepareList()
     },
