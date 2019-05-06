@@ -102,6 +102,7 @@ export default {
             title: '选择',
             key: 'id',
             align: 'center',
+            maxWidth: 80,
             renderHeader: (h, params) => {
               return this.renderAllSele(h, params)
             },
