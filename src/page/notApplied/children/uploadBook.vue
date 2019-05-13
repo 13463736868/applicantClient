@@ -5,6 +5,20 @@
     </spin-comp>
     <Row>
       <Col span="24">
+        <Row v-if="docShow">
+          <Col span="4">
+            <span>案件类型：</span>
+          </Col>
+          <Col span="10">
+            <Select v-model="caseTypeAll" size="small">
+              <Option v-for="item in caseTypeAllList" :value="item.id" :key="item.id">{{ item.caseTypeName }}</Option>
+            </Select>
+          </Col>
+          <Col span="8" offset="2" v-if="caseTypeAll !== null">
+            <span class="lh24 hand _blue" v-if="caseTypeUrl !== null" @click="resDoc"><Icon class="mr5" type="ios-information-outline" size="14" color="#ff7a7a"/>模版下载</span>
+            <span class="lh24 _red" v-else>暂无此案件类型模版</span>
+          </Col>
+        </Row>
         <Row class="_labelFor">
           <Col span="12" class="_label"><span v-text="childName"></span><b class="_b">*</b></Col>
           <Col v-if="dowShow" span="12" class="_label tr"><span class="_enDow hand" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="14" color="#ff7a7a"/>批量导入用户模版下载</span></Col>
@@ -18,7 +32,7 @@
               :show-upload-list="false"
               :format="fileType"
               :max-size="204800"
-              :data="data"
+              :data="dataObj"
               :on-format-error="resFormError"
               :on-exceeded-size="resSzieError"
               :before-upload="resBefoUpload"
@@ -45,12 +59,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 import spinComp from '@/components/common/spin'
 
 export default {
   name: 'upload_appl_book',
   components: { spinComp },
-  props: ['uploadUrl', 'fileType', 'childName', 'dowShow'],
+  props: ['uploadUrl', 'fileType', 'childName', 'dowShow', 'docShow'],
   data () {
     return {
       spinShow: false,
@@ -59,11 +74,30 @@ export default {
         status: 0,
         text: ''
       },
-      data: {},
-      fileObj: null
+      fileObj: null,
+      caseTypeAllList: [],
+      caseTypeAll: null,
+      caseTypeMap: {}
+    }
+  },
+  created () {
+    if (this.docShow) {
+      this.resCaseType()
     }
   },
   computed: {
+    dataObj () {
+      let _a = {}
+      if (this.docShow) {
+        _a.caseType = this.caseTypeAll
+        return _a
+      } else {
+        return _a
+      }
+    },
+    caseTypeUrl () {
+      return this.caseTypeMap[this.caseTypeAll]
+    },
     addFileBtn () {
       if (this.fileObj === null) {
         return true
@@ -73,6 +107,27 @@ export default {
     }
   },
   methods: {
+    resDoc () {
+      window.open(this.caseTypeUrl, '_blank')
+    },
+    resCaseType () {
+      axios.post('/caseType/list', {
+        pageIndex: 0,
+        pageSize: 999,
+        caseTypeName: ''
+      }).then(res => {
+        let _data = res.data.data
+        this.caseTypeAllList = _data.dataList === null ? [] : _data.dataList
+        this.caseTypeAllList.forEach(a => {
+          this.caseTypeMap[a.id] = a.importTemplateUrl === null || a.importTemplateUrl === undefined ? null : a.importTemplateUrl
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
+    },
     resFormError (file) {
       this.spinShow = false
       this.$Message.error({
@@ -128,8 +183,16 @@ export default {
       })
     },
     saveClick () {
-      this.spinShow = true
-      this.$refs.upload.post(this.fileObj)
+      if (this.docShow && this.caseTypeAll === null) {
+        this.$Message.warning({
+          content: '请先选择一个案件类型',
+          duration: 5
+        })
+        return false
+      } else {
+        this.spinShow = true
+        this.$refs.upload.post(this.fileObj)
+      }
     },
     cancClick () {
       this.$emit('cancClick')
@@ -191,6 +254,12 @@ export default {
   }
   ._cancelBtn:focus,._saveBtn:focus {
     outline: 0px;
+  }
+  ._blue {
+    color: #337BB5;
+  }
+  ._red {
+    color: #ff7a7a;
   }
 }
 </style>
