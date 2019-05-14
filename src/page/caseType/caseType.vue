@@ -12,10 +12,10 @@
         <Col span="8">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件类型名称"></Input>
         </Col>
-        <Col span="2" class="tc" offset="9">
+        <!-- <Col span="2" class="tc" offset="9">
           <Button type="primary" @click="resDocDow">下载通用模版</Button>
-        </Col>
-        <Col span="2" class="tc">
+        </Col> -->
+        <Col span="2" class="tc" offset="11">
           <Button type="primary" @click="resAdd">添加</Button>
         </Col>
       </Row>
