@@ -220,8 +220,8 @@ export default {
     },
     resEdit (index) {
       let _obj = this.payList.bodyList[index]
-      this.arbiId = _obj.orgId
-      this.compUserId = _obj.masterId
+      this.arbiId = _obj.orgid
+      this.compUserId = _obj.masterid
       this.alertShow.id = _obj.id
       this.resAdd()
       this.resChangeArbi('edit')
