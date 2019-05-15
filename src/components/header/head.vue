@@ -7,7 +7,6 @@
       <div class="user fr w350">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
           <Col span="20 tr">
-            <!-- <span class="fcf f13" v-if="isRegister"><span v-if="userName !== null" v-text="userName + '，您好！'"></span></span> -->
             <Dropdown v-if="isRegister" @on-click="changeDown">
               <span class="hand fcf" v-if="userName !== null" v-text="userName + '，您好！'"></span>
               <DropdownMenu class="tl" slot="list">
@@ -77,6 +76,11 @@ export default {
             id: '3',
             text: '缴费单查询',
             url: '/paymentSlip'
+          },
+          {
+            id: '4',
+            text: '合作列表管理',
+            url: '/contrace'
           }
         ]
       }

@@ -24,6 +24,7 @@ const claimItems = r => require.ensure([], () => r(require('@/page/filing/childr
 const evidences = r => require.ensure([], () => r(require('@/page/filing/children/evidences.vue')), 'evidences')
 const notApplied = r => require.ensure([], () => r(require('@/page/notApplied/notApplied.vue')), 'notApplied')
 const paymentSlip = r => require.ensure([], () => r(require('@/page/paymentSlip/paymentSlip.vue')), 'paymentSlip')
+const contrace = r => require.ensure([], () => r(require('@/page/contrace/contrace.vue')), 'contrace')
 const userInfo = r => require.ensure([], () => r(require('@/page/userInfo/userInfo.vue')), 'userInfo')
 const caseType = r => require.ensure([], () => r(require('@/page/caseType/caseType.vue')), 'caseType')
 
@@ -224,6 +225,14 @@ export default new Router({
         requireAuth: true
       },
       component: paymentSlip
+    },
+    {
+      path: '/contrace',
+      name: 'contrace',
+      meta: {
+        requireAuth: true
+      },
+      component: contrace
     },
     {
       path: '/userInfo',
