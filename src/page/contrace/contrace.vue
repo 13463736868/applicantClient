@@ -238,40 +238,41 @@ export default {
       this.alertShow.add = true
     },
     addSave () {
-      if (this.arbiId === null) {
+      if (this.arbiId === null || this.arbiId === undefined) {
         this.$Message.warning({
           content: '请先选择一个合作公司',
           duration: 5
         })
         return false
-      } else if (this.compUserId === null) {
+      } else if (this.compUserId === null || this.compUserId === undefined) {
         this.$Message.warning({
           content: '请先选择公司旗下人员',
           duration: 5
         })
         return false
-      }
-      let _data = {
-        orgid: this.arbiId,
-        mauserid: this.compUserId
-      }
-      if (this.alertShow.id !== null) {
-        _data.id = this.alertShow.id
-      }
-      this.alertShow.add = false
-      axios.post('/MaCustomerTypeUserController/add/' + (this.alertShow.id === null ? '1' : '2'), _data).then(res => {
-        this.resSearch()
-        this.alertCanc('add')
-        this.$Message.success({
-          content: '操作成功',
-          duration: 2
+      } else {
+        let _data = {
+          orgid: this.arbiId,
+          mauserid: this.compUserId
+        }
+        if (this.alertShow.id !== null) {
+          _data.id = this.alertShow.id
+        }
+        this.alertShow.add = false
+        axios.post('/MaCustomerTypeUserController/add/' + (this.alertShow.id === null ? '1' : '2'), _data).then(res => {
+          this.resSearch()
+          this.alertCanc('add')
+          this.$Message.success({
+            content: '操作成功',
+            duration: 2
+          })
+        }).catch(e => {
+          this.$Message.error({
+            content: '错误信息:' + e + ' 稍后再试',
+            duration: 5
+          })
         })
-      }).catch(e => {
-        this.$Message.error({
-          content: '错误信息:' + e + ' 稍后再试',
-          duration: 5
-        })
-      })
+      }
     },
     resDel (index) {
       this.alertShow.id = this.payList.bodyList[index].id
