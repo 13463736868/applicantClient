@@ -251,11 +251,15 @@ export default {
         })
         return false
       }
-      axios.post('/MaCustomerTypeUserController/add/' + (this.alertShow.id === null ? '1' : '2'), {
+      let _data = {
         orgid: this.arbiId,
-        mauserid: this.compUserId,
-        id: this.alertShow.id
-      }).then(res => {
+        mauserid: this.compUserId
+      }
+      if (this.alertShow.id !== null) {
+        _data.id = this.alertShow.id
+      }
+      this.alertShow.add = false
+      axios.post('/MaCustomerTypeUserController/add/' + (this.alertShow.id === null ? '1' : '2'), _data).then(res => {
         this.resSearch()
         this.alertCanc('add')
         this.$Message.success({
