@@ -75,7 +75,7 @@ export default {
           },
           {
             title: '接收员工',
-            key: 'masterName',
+            key: 'mauserName',
             align: 'center'
           },
           {
