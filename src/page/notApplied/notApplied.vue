@@ -87,7 +87,7 @@
           </Select>
         </Col>
       </Row>
-      <Row class="_labelFor">
+      <!-- <Row class="_labelFor">
         <Col span="6" offset="1">
           <p><span class="_span">*</span><b>案件类型：</b></p>
         </Col>
@@ -96,7 +96,7 @@
             <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-      </Row>
+      </Row> -->
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.buildBook" @alertCancel="alertCanc('buildBook')" @alertConfirm="buildBookSave" alertTitle="提示">
       <p>当前页有 {{buildBookIds.length}} 条案件可以生成仲裁申请书,确定要生成吗？</p>
@@ -627,13 +627,13 @@ export default {
     submitSave () {
       this.alertCanc('submit')
       this.spinShow = true
-      let caseTypeCode = this.caseTypeStatus === '' ? null : this.caseTypeStatus
-      let caseTypeName = this.caseMap[this.caseTypeStatus] === '' ? null : this.caseMap[this.caseTypeStatus]
+      // let caseTypeCode = this.caseTypeStatus === '' ? null : this.caseTypeStatus
+      // let caseTypeName = this.caseMap[this.caseTypeStatus] === '' ? null : this.caseMap[this.caseTypeStatus]
       axios.post('/case/submit', {
         caseId: JSON.stringify(this.alertShow.idsList),
         commissionType: this.alertShow.committee,
-        caseTypeCode: caseTypeCode,
-        caseTypeName: caseTypeName
+        caseTypeCode: null,
+        caseTypeName: null
       }).then(res => {
         this.alertShow.idsList = []
         this.spinShow = false
