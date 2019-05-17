@@ -1,5 +1,6 @@
 export default {
   userInfo: state => state.userInfo,
+  caseTypeCode: state => state.caseTypeCode,
   caseId: state => state.caseId,
   caseInfo: state => state.caseInfo,
   myCaseId: state => state.myCaseId,

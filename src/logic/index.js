@@ -21,12 +21,19 @@ const beforeEach = (to, from, next) => {
       }
       if (to.fullPath.indexOf('filing') === -1) {
         loc.removeItem('caseId')
+        loc.removeItem('caseTypeCode')
         store.commit('SET_CASEID', '')
+        store.commit('SET_CASETYPECODE', '')
         store.commit('SET_CASEINFO', null)
       } else {
         if (store.state.caseId === '') {
           if (loc.getItem('caseId')) {
             store.commit('SET_CASEID', loc.getItem('caseId'))
+          }
+        }
+        if (store.state.caseTypeCode === '') {
+          if (loc.getItem('caseTypeCode')) {
+            store.commit('SET_CASETYPECODE', loc.getItem('caseTypeCode'))
           }
         }
       }
@@ -100,6 +107,7 @@ const beforeEach = (to, from, next) => {
       store.commit('SET_USERINFO', null)
       store.commit('SET_USERSTATE', null)
       store.commit('SET_CASEID', '')
+      store.commit('SET_CASETYPECODE', '')
       store.commit('SET_CASEINFO', null)
       store.commit('SET_MYCASEID', '')
       store.commit('SET_MYCASESTATE', null)
@@ -120,6 +128,7 @@ const beforeEach = (to, from, next) => {
         store.commit('SET_USERINFO', null)
         store.commit('SET_USERSTATE', null)
         store.commit('SET_CASEID', '')
+        store.commit('SET_CASETYPECODE', '')
         store.commit('SET_CASEINFO', null)
         store.commit('SET_MYCASEID', '')
         store.commit('SET_MYCASESTATE', null)

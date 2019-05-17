@@ -311,7 +311,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setCaseId'
+      'setCaseId',
+      'setCaseTypeCode'
     ]),
     renderAllSele (h, params) {
       return h('div', [
@@ -489,7 +490,9 @@ export default {
     },
     goCaseSee (index) {
       this.setCaseId(this.caseList.bodyList[index].id)
+      this.setCaseTypeCode(this.caseList.bodyList[index].caseTypeCode)
       window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
+      window.localStorage.setItem('caseTypeCode', this.caseList.bodyList[index].caseTypeCode)
       this.$router.push({
         path: '/filing'
       })

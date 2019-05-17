@@ -9,7 +9,7 @@
       </Col>
       <Col span="3" offset="1" class="_label">案件类型<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="caseTypeStatus">
+        <Select v-model="caseTypeStatus" :disabled="caseTypeCode !== null && caseTypeCode !== 'null'">
           <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
@@ -55,13 +55,14 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'caseTypeCode',
       'caseInfo',
       'userInfo',
       'userState'
     ]),
     caseTypeStatus: {
       get: function () {
-        return this.caseInfo !== null ? this.caseInfo.caseTypeCode : ''
+        return this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.caseTypeCode)) : ''
       },
       set: function () {
       }

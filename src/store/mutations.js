@@ -8,6 +8,9 @@ export default {
   [types.SET_USERINFO] (state, obj) {
     state.userInfo = obj
   },
+  [types.SET_CASETYPECODE] (state, id) {
+    state.caseTypeCode = id
+  },
   [types.SET_CASEID] (state, id) {
     state.caseId = id
   },

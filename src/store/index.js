@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
   // token: null
   userInfo: null,
+  caseTypeCode: '',
   caseId: '',
   caseInfo: null,
   myCaseId: '',
