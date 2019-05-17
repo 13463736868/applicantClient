@@ -43,7 +43,6 @@ export default {
       committeeList: [],
       committeeStatus: '',
       caseTypeList: [],
-      caseTypeStatus: '',
       caseMap: {},
       alertShow: {
         hash: false
@@ -59,7 +58,14 @@ export default {
       'caseInfo',
       'userInfo',
       'userState'
-    ])
+    ]),
+    caseTypeStatus: {
+      get: function () {
+        return this.caseInfo !== null ? this.caseInfo.caseTypeCode : ''
+      },
+      set: function () {
+      }
+    }
   },
   methods: {
     ...mapActions([

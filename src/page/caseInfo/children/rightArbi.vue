@@ -123,7 +123,7 @@
       <spin-comp :spinShow="spinShow">
         <div v-if="progressText !== null" v-text="progressText"></div>
       </spin-comp>
-      <p style="padding-bottom:10px;">确定要申请撤回案件吗？</p>
+      <p style="padding-bottom:10px;">确定要申请撤回案件吗？<span class="_enDow hand fr" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>撤案申请书模版下载</span></p>
       <Upload
         ref="upload"
         name="file"
@@ -762,6 +762,9 @@ export default {
         })
       }
     },
+    dowDoc () {
+      window.open(regi.api + '/file/templet/dowload/6', '_blank')
+    },
     alertCanc (type) {
       this.alertShow[type] = false
       this.dataObj[type] = null
@@ -820,5 +823,8 @@ export default {
     padding: 5px 0;
     text-align: center;
   }
+}
+._enDow {
+  color: #337BB5
 }
 </style>
