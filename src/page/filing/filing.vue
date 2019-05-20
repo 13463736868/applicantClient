@@ -69,6 +69,8 @@ export default {
   created () {
     if (this.caseId === '') {
       this.alertShow = true
+      this.setCaseTypeCode('null')
+      window.localStorage.setItem('caseTypeCode', 'null')
     } else {
       this.resCaseInfo(this.caseId)
     }
@@ -81,7 +83,8 @@ export default {
   methods: {
     ...mapActions([
       'setCaseId',
-      'setCaseInfo'
+      'setCaseInfo',
+      'setCaseTypeCode'
     ]),
     resCaseInfo (id) {
       axios.post('/case/details', {
