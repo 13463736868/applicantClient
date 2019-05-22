@@ -39,9 +39,8 @@ export default {
       spinShow: false,
       alertShow: false,
       alertShowSub: false,
-      committeeCode: null,
+      committeeId: null,
       caseTypeId: null,
-      caseTypeName: null,
       menuClaim: [
         {
           id: '0',
@@ -69,6 +68,10 @@ export default {
   created () {
     if (this.caseId === '') {
       this.alertShow = true
+      this.setCaseTypeId('null')
+      window.localStorage.setItem('caseTypeId', 'null')
+      this.setArbId('null')
+      window.localStorage.setItem('arbId', 'null')
     } else {
       this.resCaseInfo(this.caseId)
     }
@@ -81,7 +84,9 @@ export default {
   methods: {
     ...mapActions([
       'setCaseId',
-      'setCaseInfo'
+      'setCaseInfo',
+      'setCaseTypeId',
+      'setArbId'
     ]),
     resCaseInfo (id) {
       axios.post('/case/details', {
@@ -122,9 +127,8 @@ export default {
     },
     caseSubInfo (obj) {
       this.alertShowSub = true
-      this.committeeCode = obj.committeeCode
+      this.committeeId = obj.committeeId
       this.caseTypeId = obj.caseTypeId
-      this.caseTypeName = obj.caseTypeName
     },
     caseSubSave () {
       this.spinShow = true
@@ -133,9 +137,8 @@ export default {
       _arr.push(this.caseId)
       axios.post('/case/submit', {
         caseId: JSON.stringify(_arr),
-        commissionType: this.committeeCode,
-        caseTypeId: this.caseTypeId,
-        caseTypeName: this.caseTypeName
+        commissionType: this.committeeId,
+        caseTypeId: this.caseTypeId
       }).then(res => {
         this.spinShow = false
         this.$Message.success({
@@ -159,7 +162,7 @@ export default {
     },
     caseSubCanc () {
       this.alertShowSub = false
-      this.committeeCode = null
+      this.committeeId = null
     }
   }
 }

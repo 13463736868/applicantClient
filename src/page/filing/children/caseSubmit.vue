@@ -3,14 +3,14 @@
     <Row class="_labelFor">
       <Col span="3" class="_label">合同类型<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')">
+        <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')" :disabled="caseTypeId !== null && caseTypeId !== 'null'">
           <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
       <Col span="3" offset="1" class="_label">选择仲裁机构<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="committeeStatus">
-          <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
+        <Select v-model="committeeStatus" :disabled="arbId !== null && arbId !== 'null'">
+          <Option v-for="item in caseMap[caseTypeStatus]" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
         </Select>
       </Col>
       <Col span="4">
@@ -40,9 +40,9 @@ export default {
     return {
       addSubmit: false,
       addHash: false,
-      committeeStatus: '',
       caseTypeList: [],
-      caseTypeStatus: '',
+      caseTypeStatus: null,
+      committeeStatus: null,
       caseMap: {},
       caseNameMap: {},
       alertShow: {
@@ -52,19 +52,48 @@ export default {
   },
   created () {
     this.resCaseType()
+    this.resSelect()
   },
   computed: {
     ...mapGetters([
+      'caseTypeId',
+      'arbId',
       'caseInfo',
       'userInfo',
       'userState'
     ])
+    // caseTypeStatus: {
+    //   get: function () {
+    //     return this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.type)) : ''
+    //   },
+    //   set: function () {
+    //   }
+    // },
+    // committeeStatus: {
+    //   get: function () {
+    //     return this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.arbitrationId)) : ''
+    //   },
+    //   set: function () {
+    //   }
+    // }
   },
   methods: {
     ...mapActions([
       'setFiling',
       'setUserState'
     ]),
+    resSelect () {
+      if (this.caseTypeId === null || this.caseTypeId === 'null') {
+        this.caseTypeStatus = this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.type)) : ''
+      } else {
+        this.caseTypeStatus = this.caseTypeId
+      }
+      if (this.arbId === null || this.arbId === 'null') {
+        this.committeeStatus = this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.arbitrationId)) : ''
+      } else {
+        this.committeeStatus = this.arbId
+      }
+    },
     saveClick () {
       if (this.userState === null) {
         if (this.userInfo.verify === '1') {
@@ -164,7 +193,7 @@ export default {
           })
           return false
         }
-        this.$emit('saveClick', {committeeCode: this.committeeStatus, caseTypeId: this.caseTypeStatus, caseTypeName: this.caseNameMap[this.caseTypeStatus]})
+        this.$emit('saveClick', {committeeId: this.committeeStatus, caseTypeId: this.caseTypeStatus})
       }
     },
     hashClick () {
@@ -217,7 +246,6 @@ export default {
           this.caseNameMap[a.id] = a.caseTypeName
           return _o
         })
-        this.alertShow.submit = true
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',

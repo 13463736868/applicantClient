@@ -5,26 +5,49 @@
     </head-top>
     <div class="_center pr">
       <spin-comp :spinShow="spinShow"></spin-comp>
-      <Row>
-        <Col span="2">
-          <label class="lh32 f16 fc6 fr mr15">搜索</label>
-        </Col>
-        <Col span="8">
-          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
-        </Col>
-        <Col span="2" offset="2">
-          <label class="lh32 f16 fc6 fr mr15">状态</label>
-        </Col>
-        <Col span="6">
-          <Select v-model="perfectStatus" style="width:200px" @on-change="resSearch">
-            <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
+      <Row class="mb20">
+        <Col span="3" offset="17">
+          <Button title="一键生成仲裁申请书" type="primary" @click="resBuildBook">生成仲裁申请书</Button>
         </Col>
         <Col span="2">
           <Button type="primary" @click="resAddUpload">批量导入</Button>
         </Col>
         <Col span="2">
           <Button type="primary" @click="resSubmit">批量提交</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">搜索</label>
+        </Col>
+        <Col span="4">
+          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
+        </Col>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">合同类型</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="caseTypeStatus" @on-change="resChangeStatus('caseType')">
+            <Option value="all" key="all">全部</Option>
+            <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Col>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">仲裁委</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="committee" @on-change="resChangeStatus()">
+            <Option value="all" key="all">全部</Option>
+            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
+          </Select>
+        </Col>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">状态</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="perfectStatus" style="width:200px" @on-change="resSearch">
+            <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
         </Col>
       </Row>
       <div class="_caseList clearfix">
@@ -50,10 +73,10 @@
       </Row>
       <Row>
         <Col v-if="alertShow.stepNum === 1" span="24">
-          <upload-book childName="上传excel文件" :dowShow="true" :fileType="['xls','xlsx']" :uploadUrl="resUploadUrlA" @dowDoc="dowDocBook" @saveClick="excSave" @cancClick="alertCanc('addC')"></upload-book>
+          <upload-book childName="上传excel文件" :dowShow="false" :docShow="true" :fileType="['xls','xlsx']" :uploadUrl="resUploadUrlA" @dowDoc="dowDocBook" @saveClick="excSave" @cancClick="alertCanc('addC')"></upload-book>
         </Col>
         <Col v-if="alertShow.stepNum === 2" span="24">
-          <upload-book childName="上传zip压缩文件" :dowShow="true" :fileType="['zip']" :uploadUrl="resUploadUrlB"  @dowDoc="dowDocBookB" @saveClick="zipSave" @cancClick="alertCanc('addC')"></upload-book>
+          <upload-book childName="上传zip压缩文件" :dowShow="true" :docShow="false" :fileType="['zip']" :uploadUrl="resUploadUrlB"  @dowDoc="dowDocBookB" @saveClick="zipSave" @cancClick="alertCanc('addC')"></upload-book>
         </Col>
       </Row>
     </alert-btn-info>
@@ -65,26 +88,10 @@
       </Row>
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.submit" @alertCancel="alertCanc('submit')" @alertConfirm="submitSave" alertTitle="提示">
-      <Row class="_labelFor">
-        <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>合同类型：</b></p>
-        </Col>
-        <Col span="16">
-          <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')">
-            <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </Col>
-      </Row>
-      <Row class="_labelFor">
-        <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>选择仲裁机构：</b></p>
-        </Col>
-        <Col span="16">
-          <Select v-model="alertShow.committee">
-            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
-          </Select>
-        </Col>
-      </Row>
+      <p>当前勾选 {{alertShow.idsList.length}} 条案件,确定要批量提交吗？</p>
+    </alert-btn-info>
+    <alert-btn-info :alertShow="alertShow.buildBook" @alertCancel="alertCanc('buildBook')" @alertConfirm="buildBookSave" alertTitle="提示">
+      <p>当前页有 {{buildBookIds.length}} 条案件可以生成仲裁申请书,确定要生成吗？</p>
     </alert-btn-info>
   </div>
 </template>
@@ -183,6 +190,16 @@ export default {
             }
           },
           {
+            title: '合同类型',
+            key: 'caseTypeName',
+            align: 'center'
+          },
+          {
+            title: '仲裁委',
+            key: 'arbName',
+            align: 'center'
+          },
+          {
             title: '是否完善',
             key: 'isPerfect',
             align: 'center',
@@ -238,13 +255,13 @@ export default {
         pageSize: 10
       },
       alertShow: {
+        buildBook: false,
         addcase: false,
         text: '第一步：',
         stepNum: 1,
         info: false,
         idsList: [],
         submit: false,
-        committee: '',
         btnText: '下一步'
       },
       seleList: {
@@ -263,15 +280,19 @@ export default {
         ],
         bodyList: []
       },
+      buildBookIds: [],
+      buildBookCaseTypes: [],
       perfectStatusList: [],
       perfectStatus: 0,
-      caseTypeList: [],
-      caseTypeStatus: '',
       caseMap: {},
-      caseNameMap: {}
+      caseNameMap: {},
+      caseTypeList: [],
+      caseTypeStatus: 'all',
+      committee: 'all'
     }
   },
   created () {
+    this.resCaseType()
     this.dictionary()
     this.resPrepareList()
   },
@@ -285,7 +306,9 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setCaseId'
+      'setCaseId',
+      'setCaseTypeId',
+      'setArbId'
     ]),
     renderAllSele (h, params) {
       return h('div', [
@@ -400,13 +423,22 @@ export default {
         })
       })
     },
+    resChangeStatus (type) {
+      if (type === 'caseType') {
+        this.committee = 'all'
+      }
+      this.pageObj.pageNum = 1
+      this.resPrepareList()
+    },
     resPrepareList () {
       this.spinShow = true
       axios.post('/case/prepareList', {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text,
-        perfectType: this.perfectStatus
+        perfectType: this.perfectStatus,
+        arbId: this.committee === 'all' ? null : this.committee,
+        caseTypeId: this.caseTypeStatus === 'all' ? null : this.caseTypeStatus
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -423,8 +455,79 @@ export default {
     goCaseSee (index) {
       this.setCaseId(this.caseList.bodyList[index].id)
       window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
+      this.setCaseTypeId(this.caseList.bodyList[index].type)
+      window.localStorage.setItem('caseTypeId', this.caseList.bodyList[index].type)
+      this.setArbId(this.caseList.bodyList[index].arbitrationId)
+      window.localStorage.setItem('arbId', this.caseList.bodyList[index].arbitrationId)
       this.$router.push({
         path: '/filing'
+      })
+    },
+    resBuildBook () {
+      if (this.caseTypeStatus === 'all') {
+        this.$Message.warning({
+          content: '请先选择一个明确的合同类型',
+          duration: 2
+        })
+        return false
+      }
+      if (this.committee === 'all') {
+        this.$Message.warning({
+          content: '请先选择一个明确的仲裁委',
+          duration: 2
+        })
+        return false
+      }
+      if (this.caseList.bodyList.length === 0) {
+        this.$Message.warning({
+          content: '当前无案件',
+          duration: 2
+        })
+        return false
+      } else {
+        let ids = []
+        let caseTypes = []
+        this.caseList.bodyList.map(a => {
+          if (a.arbRequisitionFile === null && a.caseTypeCode !== undefined && a.caseTypeCode !== null) {
+            if (caseTypes.length === 0) {
+              caseTypes.push(a.caseTypeCode)
+              ids.push(a.id)
+            } else if (caseTypes.indexOf(a.caseTypeCode) !== -1) {
+              ids.push(a.id)
+            }
+          }
+        })
+        if (ids.length === 0) {
+          this.$Message.warning({
+            content: '当前页无可以生成仲裁申请书的案件',
+            duration: 2
+          })
+        } else {
+          this.buildBookIds = ids
+          this.buildBookCaseTypes = caseTypes[0]
+          this.alertShow.buildBook = true
+        }
+      }
+    },
+    buildBookSave () {
+      this.alertShow.buildBook = false
+      axios.post('/case/generate/arbitrationBook', {
+        caseIds: JSON.stringify(this.buildBookIds),
+        caseTypeCode: this.buildBookCaseTypes,
+        arbId: this.committee
+      }).then(res => {
+        this.alertCanc('buildBook')
+        this.resSearch()
+        this.$Message.success({
+          content: '操作成功' + res.data.data,
+          duration: 6
+        })
+      }).catch(e => {
+        this.alertCanc('buildBook')
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
       })
     },
     resCaseDel (index) {
@@ -472,6 +575,7 @@ export default {
       this.alertShow.addcase = true
     },
     excSave (obj) {
+      this.resSearch()
       this.$Message.success({
         content: '' + obj + '',
         duration: 5
@@ -495,40 +599,16 @@ export default {
           duration: 5
         })
       } else {
-        this.resCaseType()
-      }
-    },
-    resAction (type) {
-      if (type === 'change_subm') {
-        this.alertShow.committee = ''
+        this.alertShow.submit = true
       }
     },
     submitSave () {
       this.alertCanc('submit')
-      if (this.caseTypeStatus === '') {
-        this.$Message.error({
-          content: '案件类型不能为空',
-          duration: 5
-        })
-        return false
-      }
-      if (this.alertShow.committee === '') {
-        this.$Message.error({
-          content: '提交仲裁委不能为空',
-          duration: 5
-        })
-        return false
-      }
       this.spinShow = true
       axios.post('/case/submit', {
-        caseId: JSON.stringify(this.alertShow.idsList),
-        commissionType: this.alertShow.committee,
-        caseTypeId: this.caseTypeStatus,
-        caseTypeName: this.caseNameMap[this.caseTypeStatus]
+        caseId: JSON.stringify(this.alertShow.idsList)
       }).then(res => {
         this.alertShow.idsList = []
-        this.caseMap = {}
-        this.caseNameMap = {}
         this.spinShow = false
         this.resSearch()
         this.$Message.success({
@@ -538,8 +618,6 @@ export default {
         })
       }).catch(e => {
         this.spinShow = false
-        this.caseMap = {}
-        this.caseNameMap = {}
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -558,7 +636,6 @@ export default {
           this.caseNameMap[a.id] = a.caseTypeName
           return _o
         })
-        this.alertShow.submit = true
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e + ' 稍后再试',
@@ -589,6 +666,9 @@ export default {
         this.resSearch()
       } else if (type === 'submit') {
         this.alertShow.submit = false
+      } else if (type === 'buildBook') {
+        this.alertShow.buildBook = false
+        this.buildBookIds = []
       }
     }
   }

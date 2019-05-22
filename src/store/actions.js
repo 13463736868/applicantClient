@@ -6,6 +6,12 @@ export default {
   setUserInfo ({commit, state}, obj) {
     commit('SET_USERINFO', obj)
   },
+  setCaseTypeId ({commit, state}, obj) {
+    commit('SET_CASETYPEID', obj)
+  },
+  setArbId ({commit, state}, obj) {
+    commit('SET_ARBID', obj)
+  },
   setCaseId ({commit, state}, id) {
     commit('SET_CASEID', id)
   },
