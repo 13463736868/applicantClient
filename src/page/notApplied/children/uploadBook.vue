@@ -20,7 +20,7 @@
             </Col>
             <Col span="7">
               <Select v-model="committee" size="small" @on-change="resAction('committee')">
-                <Option v-for="item in caseMap[caseTypeAll]" :title="item.name" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                <Option v-for="item in caseMap[caseTypeAll]" :title="item.name" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
               </Select>
             </Col>
           </Row>

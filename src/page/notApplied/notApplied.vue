@@ -38,7 +38,7 @@
         <Col span="3">
           <Select v-model="committee" @on-change="resChangeStatus()">
             <Option value="all" key="all">全部</Option>
-            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.id" :key="item.id">{{ item.name }}</Option>
+            <Option v-for="item in caseMap[caseTypeStatus]" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
           </Select>
         </Col>
         <Col span="2">
