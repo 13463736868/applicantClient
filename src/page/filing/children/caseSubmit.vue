@@ -10,7 +10,7 @@
       <Col span="3" offset="1" class="_label">选择仲裁机构<b class="_b">*</b></Col>
       <Col span="4">
         <Select v-model="committeeStatus" :disabled="arbId !== null && arbId !== 'null'">
-          <Option v-for="item in caseMap[caseTypeStatus]" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
+          <Option :disabled="item.state === 2" v-for="item in caseMap[caseTypeStatus]" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
         </Select>
       </Col>
       <Col span="4">
@@ -95,57 +95,58 @@ export default {
       }
     },
     saveClick () {
-      if (this.userState === null) {
-        if (this.userInfo.verify === '1') {
-          this.resReg()
-        } else {
-          axios.post('/person/checkState').then(res => {
-            if (res.data.data.verify === '1') {
-              if (window.localStorage) {
-                let loc = window.localStorage
-                loc.setItem('userState', JSON.stringify(res.data.data))
-              }
-              this.setUserState(res.data.data)
-              this.resReg()
-            } else {
-              this.$Message.error({
-                content: '请先完善通过身份绑定信息',
-                duration: 5
-              })
-            }
-          }).catch(e => {
-            this.$Message.error({
-              content: '错误信息:' + e + ' 稍后再试',
-              duration: 5
-            })
-          })
-        }
-      } else {
-        if (this.userState.verify === '1') {
-          this.resReg()
-        } else {
-          axios.post('/person/checkState').then(res => {
-            if (res.data.data.verify === '1') {
-              if (window.localStorage) {
-                let loc = window.localStorage
-                loc.setItem('userState', JSON.stringify(res.data.data))
-              }
-              this.setUserState(res.data.data)
-              this.resReg()
-            } else {
-              this.$Message.error({
-                content: '请先完善通过身份绑定信息',
-                duration: 5
-              })
-            }
-          }).catch(e => {
-            this.$Message.error({
-              content: '错误信息:' + e + ' 稍后再试',
-              duration: 5
-            })
-          })
-        }
-      }
+      this.resReg()
+      // if (this.userState === null) {
+      //   if (this.userInfo.verify === '1') {
+      //     this.resReg()
+      //   } else {
+      //     axios.post('/person/checkState').then(res => {
+      //       if (res.data.data.verify === '1') {
+      //         if (window.localStorage) {
+      //           let loc = window.localStorage
+      //           loc.setItem('userState', JSON.stringify(res.data.data))
+      //         }
+      //         this.setUserState(res.data.data)
+      //         this.resReg()
+      //       } else {
+      //         this.$Message.error({
+      //           content: '请先完善通过身份绑定信息',
+      //           duration: 5
+      //         })
+      //       }
+      //     }).catch(e => {
+      //       this.$Message.error({
+      //         content: '错误信息:' + e + ' 稍后再试',
+      //         duration: 5
+      //       })
+      //     })
+      //   }
+      // } else {
+      //   if (this.userState.verify === '1') {
+      //     this.resReg()
+      //   } else {
+      //     axios.post('/person/checkState').then(res => {
+      //       if (res.data.data.verify === '1') {
+      //         if (window.localStorage) {
+      //           let loc = window.localStorage
+      //           loc.setItem('userState', JSON.stringify(res.data.data))
+      //         }
+      //         this.setUserState(res.data.data)
+      //         this.resReg()
+      //       } else {
+      //         this.$Message.error({
+      //           content: '请先完善通过身份绑定信息',
+      //           duration: 5
+      //         })
+      //       }
+      //     }).catch(e => {
+      //       this.$Message.error({
+      //         content: '错误信息:' + e + ' 稍后再试',
+      //         duration: 5
+      //       })
+      //     })
+      //   }
+      // }
     },
     resReg () {
       if (this.caseInfo.propList.lenght === 0) {
