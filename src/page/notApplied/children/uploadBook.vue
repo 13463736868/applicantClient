@@ -123,7 +123,7 @@ export default {
     resAction (type) {
       if (type === 'caseType') {
         this.committee = null
-      } else if (type === 'committee' && this.committee !== null) {
+      } else if (type === 'committee' && this.committee !== null && this.committee !== undefined) {
         axios.post('/caseType/queryTemplateUrl', {
           caseTypeCode: this.caseCodeMap[this.caseTypeAll],
           arbId: this.committee
