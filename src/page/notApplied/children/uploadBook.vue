@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     resDoc () {
-      // window.open(this.caseTypeUrl, '_blank')
+      window.open(this.caseTypeUrl, '_blank')
     },
     resAction (type) {
       if (type === 'caseType') {
