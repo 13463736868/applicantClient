@@ -63,7 +63,7 @@
             <p><span class="_span">*</span><b>开始日期：</b></p>
           </Col>
           <Col span="16">
-            <DatePicker class="wmax" @on-change="changeDateStart" type="date" confirm placeholder="请选择开始日期"></DatePicker>
+            <DatePicker class="wmax" :value="beginTime" @on-change="changeDateStart" type="date" confirm placeholder="请选择开始日期"></DatePicker>
           </Col>
         </Row>
         <Row class="_labelFor">
@@ -71,7 +71,7 @@
             <p><span class="_span">*</span><b>结束日期：</b></p>
           </Col>
           <Col span="16">
-            <DatePicker class="wmax" @on-change="changeDateEnd" type="date" confirm placeholder="请选择结束日期"></DatePicker>
+            <DatePicker class="wmax" :value="endTime" @on-change="changeDateEnd" type="date" confirm placeholder="请选择结束日期"></DatePicker>
           </Col>
         </Row>
       </template>
@@ -300,6 +300,10 @@ export default {
       this.arbiId = _obj.orgId
       this.caseTypeId = _obj.casetypeId
       this.longTerm = _obj.longTerm
+      if (this.longTerm === 2) {
+        this.beginTime = _obj.beginTime.substr(0, 10)
+        this.endTime = _obj.endTime.substr(0, 10)
+      }
       this.alertShow.id = _obj.id
       this.resAdd()
     },
