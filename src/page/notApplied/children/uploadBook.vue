@@ -25,7 +25,7 @@
             </Col>
           </Row>
           <Col span="12" class="_label"><span v-text="childName"></span><b class="_b">*</b></Col>
-          <Col span="10" offset="2" class="_label" v-if="docShow && committee !== null">
+          <Col span="10" offset="2" class="_label" v-if="docShow && committee !== null && committee !== undefined">
             <span class="hand _blue" v-if="caseTypeUrl !== null" @click="resDoc"><Icon class="mr5" type="ios-information-outline" size="14" color="#ff7a7a"/>模版下载</span>
             <span class="_red" v-else>暂无此案件类型模版</span>
           </Col>

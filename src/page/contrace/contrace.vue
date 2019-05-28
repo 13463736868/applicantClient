@@ -42,6 +42,7 @@
         </Col>
         <Col span="16">
           <Select v-model="caseTypeId">
+            <Option :value="0" :key="0">全部</Option>
             <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
@@ -119,7 +120,11 @@ export default {
           {
             title: '合同类型',
             key: 'casetypeName',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.casetypeId === 0 ? '全部' : params.row.casetypeName)
+            }
           },
           {
             title: '有效期',
@@ -415,6 +420,7 @@ export default {
       this.alertShow.state = true
     },
     stateSave () {
+      this.alertShow.state = false
       axios.post('/MaCustomerTypeUserController/updateState', {
         id: this.alertShow.id,
         state: this.alertShow.stateN
