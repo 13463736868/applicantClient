@@ -209,6 +209,7 @@ export default {
     },
     delPropImgSave () {
       axios.post('/file/deleteFileUpload', {
+        caseId: this.caseInfo.id,
         id: this.delPropImgObj.fileId
       }).then(res => {
         for (let k in this.propData) {
@@ -323,6 +324,7 @@ export default {
     },
     delAgenImgSave () {
       axios.post('/file/deleteFileUpload', {
+        caseId: this.caseInfo.id,
         id: this.delAgenImgObj.fileId
       }).then(res => {
         for (let k in this.agenData) {
