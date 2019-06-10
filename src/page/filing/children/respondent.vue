@@ -161,6 +161,7 @@ export default {
     },
     delRespImgSave (_obj) {
       axios.post('/file/deleteFileUpload', {
+        caseId: this.caseInfo.id,
         id: this.delRespImgObj.fileId
       }).then(res => {
         for (let k in this.respData) {

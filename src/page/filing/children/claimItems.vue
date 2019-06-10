@@ -236,6 +236,7 @@ export default {
     },
     delApplSave () {
       axios.post('/file/deleteFileUpload', {
+        caseId: this.caseInfo.id,
         id: this.applData.id
       }).then(res => {
         this.applData = null
