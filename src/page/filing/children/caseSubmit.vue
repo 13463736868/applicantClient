@@ -198,13 +198,28 @@ export default {
       }
     },
     hashClick () {
+      if (this.caseTypeStatus === '') {
+        this.$Message.error({
+          content: '案件类型不能为空',
+          duration: 5
+        })
+        return false
+      }
+      if (this.committeeStatus === '') {
+        this.$Message.error({
+          content: '提交仲裁委不能为空',
+          duration: 5
+        })
+        return false
+      }
       this.alertShow.hash = true
     },
     hashSave () {
       this.alertShow.hash = false
       this.addHash = true
       axios.post('/case/solidifyHash', {
-        caseId: this.caseInfo.id
+        caseId: this.caseInfo.id,
+        arbId: this.committeeStatus
       }).then(res => {
         this.addHash = false
         this.changeEviden()
