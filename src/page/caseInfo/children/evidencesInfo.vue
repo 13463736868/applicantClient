@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-if="evidObj.add">
-        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
       <div v-if="partieType === 1 && myCaseCrossE === 1">
         <add-icon v-if="evidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div v-if="revEvidObj.add">
-        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addRevEvidSave" @cancClick="changeView('listRevEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addRevEvidSave" @cancClick="changeView('listRevEvid')"></add-evid-info>
       </div>
       <div v-if="partieType === 2 && myCaseCrossE === 1">
         <add-icon v-if="revEvidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addRevEvid')"></add-icon>
@@ -73,6 +73,9 @@ export default {
     ]),
     uploadUrl () {
       return regi.api + '/case/supplyEvidence'
+    },
+    uploadFileUrl () {
+      return regi.api + '/file/upload'
     },
     resEvidUrl () {
       if (this.partieType === 1) {

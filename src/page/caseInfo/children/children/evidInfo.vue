@@ -18,11 +18,13 @@
               <span v-text="infoData.memo"></span>
             </p>
             <p>
-              <span class="mr10">附件名称 :</span>
-              <span class="_file" v-text="infoData.fileName" :title="'点击查看: '+infoData.fileName" @click="seeFile(infoData.filePath)"></span>
-              <span class="_icon">
+              <Row>
+                <Col span="3"><span class="mr10">附件名称 :</span></Col>
+                <Col span="20">
+                  <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
+                </Col>
+              </Row>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
-              </span>
             </p>
             <p>
               <span class="mr10">固化状态 :</span>
@@ -82,7 +84,8 @@ export default {
     }
     ._file {
       @include hand;
-      color: #337BB5
+      color: #337BB5;
+      margin-right: 60px;
     }
   }
 }

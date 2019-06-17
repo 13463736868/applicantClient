@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-if="evidShow.add">
-        <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
+        <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
       <add-icon v-if="evidShow.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
     </div>
@@ -55,6 +55,9 @@ export default {
     ]),
     uploadUrl () {
       return regi.api + '/case/evidenceAdd'
+    },
+    uploadFileUrl () {
+      return regi.api + '/file/upload'
     }
   },
   methods: {
