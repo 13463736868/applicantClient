@@ -223,6 +223,7 @@ export default {
       },
       retrDObj: null,
       roomPhone: null,
+      roomArbId: null,
       roomId: null,
       roomPartie: null,
       roomCode: null,
@@ -755,6 +756,7 @@ export default {
           }).then(res => {
             this.roomPhone = res.data.data
             this.roomId = _info.id
+            this.roomArbId = _info.arbitrationId
             this.roomPartie = _info.partieType
             this.goRoomCode()
           }).catch(e => {
@@ -781,6 +783,7 @@ export default {
       this.alertObj.code = false
       this.roomPhone = null
       this.roomId = null
+      this.roomArbId = null
       this.roomPartie = null
       this.roomCode = null
     },
@@ -830,7 +833,8 @@ export default {
       let _id = this.roomId
       let _partieType = this.roomPartie === 1 ? 3 : (this.roomPartie === 2 ? 2 : '')
       axios.post('/encryption', {
-        params: _id + '$' + _partieType
+        params: _id + '$' + _partieType,
+        arbitrationId: this.roomArbId
       }).then(res => {
         this.alertCode()
         window.open('' + res.data.data, '_blank')
