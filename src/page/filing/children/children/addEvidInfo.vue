@@ -25,9 +25,9 @@
           <Col span="16" class="_input"><input type="text" v-model.trim="data.memo"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
         </Row>
-        <Row class="_labelFor">
+        <Row class="_labelFor" v-if="fileList.length !== 0">
           <Col span="4" class="_label">已上传的文件<b class="_b">*</b></Col>
-          <Col span="16" :class="fileList.length === 0 ? '' : '_input'">
+          <Col span="16" :class="_input">
             <Row>
               <Col span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" @click="seeFile(item.filePath)">{{item.filename}}</span><span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></span></Col>
             </Row>

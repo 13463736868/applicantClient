@@ -54,7 +54,7 @@ export default {
       'caseInfo'
     ]),
     uploadUrl () {
-      return regi.api + '/case/evidenceAdd'
+      return '/case/evidenceAdd'
     },
     uploadFileUrl () {
       return regi.api + '/file/upload'

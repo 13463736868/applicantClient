@@ -72,7 +72,7 @@ export default {
       'myCaseCrossE'
     ]),
     uploadUrl () {
-      return regi.api + '/case/supplyEvidence'
+      return '/case/supplyEvidence'
     },
     uploadFileUrl () {
       return regi.api + '/file/upload'
