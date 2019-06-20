@@ -23,21 +23,30 @@
         <Row class="_labelFor">
           <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
           <Col span="16" class="_input"><input type="text" v-model="data.memo"></Col>
-          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor" v-if="fileList.length !== 0">
+          <Col span="4" class="_label">已上传的文件<b class="_b">*</b></Col>
+          <Col span="16" :class="_input">
+            <Row>
+              <Col span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" :title="item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 25 ? item.filename.substr(0, 20) + '...' : item.filename}}</span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></Col>
+            </Row>
+          </Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===4" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="24" class="_label">证据上传<b class="_b">*</b></Col>
           <Col span="24">
             <Upload
+              multiple
               ref="upload"
               name="file"
               type="drag"
-              :action="uploadUrl"
+              :action="uploadFileUrl"
               :with-credentials="true"
               :show-upload-list="false"
               :format="fileType"
               :max-size="10240"
-              :data="data"
               :on-format-error="resFormError"
               :on-exceeded-size="resSzieError"
               :before-upload="resBefoUpload"
@@ -58,18 +67,19 @@
     </Row>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
-      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addFileBtn}" v-bind:disabled="addFileBtn" @click="saveClick">上 传</button></Col>
+      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addFileBtn}" v-bind:disabled="addFileBtn" @click="saveClick">保 存</button></Col>
     </Row>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import spinComp from '@/components/common/spin'
 
 export default {
   name: 'add_evid_info',
   components: { spinComp },
-  props: ['caseId', 'caseOldId', 'partieType', 'uploadUrl', 'fileType'],
+  props: ['caseId', 'caseOldId', 'partieType', 'uploadUrl', 'uploadFileUrl', 'fileType'],
   data () {
     return {
       spinShow: false,
@@ -86,12 +96,14 @@ export default {
         state: null,
         memo: ''
       },
+      fileList: [],
+      fileIdList: [],
       fileObj: null
     }
   },
   computed: {
     addFileBtn () {
-      if (this.fileObj === null || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
+      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
         return true
       } else {
         return false
@@ -99,12 +111,28 @@ export default {
     }
   },
   methods: {
+    delFile (id) {
+      for (let k in this.fileList) {
+        if (this.fileList[k].id === id) {
+          this.fileList.splice(k, 1)
+          this.$Message.success({
+            content: '删除成功',
+            duration: 2
+          })
+          return
+        }
+      }
+    },
+    seeFile (path) {
+      window.open(path, '_blank')
+    },
     resFormError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 5
       })
+      this.fileObj = null
     },
     resSzieError (file) {
       this.spinShow = false
@@ -112,10 +140,11 @@ export default {
         content: '文件不能超过10MB',
         duration: 5
       })
+      this.fileObj = null
     },
     resBefoUpload (file) {
       this.fileObj = file
-      return false
+      this.spinShow = true
     },
     resProgress (event, file) {
       let _percent = event.percent
@@ -129,15 +158,10 @@ export default {
       this.progressText = '100%'
       this.fileObj = null
       this.spinShow = false
-      this.$Message.success({
-        content: '文件上传成功',
-        duration: 1,
-        onClose: () => {
-          setTimeout(() => {
-            this.$emit('saveClick')
-          })
-        }
-      })
+      if (this.fileIdList.indexOf(file.response.data.id) === -1) {
+        this.fileList.push(file.response.data)
+        this.fileIdList.push(file.response.data.id)
+      }
     },
     resError (error, file) {
       this.spinShow = false
@@ -147,8 +171,30 @@ export default {
       })
     },
     saveClick () {
-      this.spinShow = true
-      this.$refs.upload.post(this.fileObj)
+      axios.post(this.uploadUrl, {
+        partyType: this.partieType,
+        id: this.caseId,
+        caseid: this.caseOldId,
+        name: this.data.name,
+        state: this.data.state,
+        memo: this.data.memo,
+        fileIds: JSON.stringify(this.fileIdList)
+      }).then(res => {
+        this.$Message.success({
+          content: '文件上传成功',
+          duration: 1,
+          onClose: () => {
+            setTimeout(() => {
+              this.$emit('saveClick')
+            })
+          }
+        })
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
     },
     cancClick () {
       this.$emit('cancClick')
@@ -167,6 +213,15 @@ export default {
   background: #fff;
   font-size: 12px;
   ._labelFor {
+    ._del {
+      color: #ff7a7a;
+      margin-left: 10px;
+    }
+    ._item {
+      color: #126eaf;
+      height: 29px;
+      line-height: 29px;
+    }
     ._label {
       padding: 5px 0;
       ._b {
