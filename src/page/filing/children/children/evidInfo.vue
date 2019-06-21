@@ -21,12 +21,8 @@
               <span v-text="infoData.memo"></span>
             </p>
             <p>
-              <Row>
-                <Col span="3"><span class="mr10">附件名称 :</span></Col>
-                <Col span="20">
-                  <span class="_file" v-for="item in infoData.fileUploads" :key="item.id" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
-                </Col>
-              </Row>
+              <span class="mr10">附件名称 :</span>
+              <span class="_file" v-for="item in infoData.fileUploads" :key="item.id" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
             </p>
             <p>
               <span class="mr10">固化状态 :</span>

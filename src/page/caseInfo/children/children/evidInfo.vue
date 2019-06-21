@@ -18,12 +18,8 @@
               <span v-text="infoData.memo"></span>
             </p>
             <p>
-              <Row>
-                <Col span="3"><span class="mr10">附件名称 :</span></Col>
-                <Col span="20">
-                  <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
-                </Col>
-              </Row>
+              <span class="mr10">附件名称 :</span>
+              <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
             </p>
             <p>
