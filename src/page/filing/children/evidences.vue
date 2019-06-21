@@ -4,11 +4,14 @@
       <div class="_top">我的证据</div>
       <div v-if="evidShow.list" class="_listResp">
         <div v-if="evidData !== null" v-for="(item, index) in evidData" :key="index">
-          <evid-info :infoData="item" @delInfo="delEvidInfo"></evid-info>
+          <evid-info :infoData="item" @editInfo="editEvidInfo(item)" @delInfo="delEvidInfo"></evid-info>
         </div>
       </div>
       <div v-if="evidShow.add">
         <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
+      </div>
+      <div v-if="evidShow.edit">
+        <edit-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" :editEvidData="editEvidData" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></edit-evid-info>
       </div>
       <add-icon v-if="evidShow.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
     </div>
@@ -24,21 +27,24 @@ import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import evidInfo from '@/page/filing/children/children/evidInfo'
 import addEvidInfo from '@/page/filing/children/children/addEvidInfo'
+import editEvidInfo from '@/page/filing/children/children/editEvidInfo'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidences',
   props: [],
-  components: { alertTip, addIcon, evidInfo, addEvidInfo },
+  components: { alertTip, addIcon, evidInfo, addEvidInfo, editEvidInfo },
   data () {
     return {
       alertShowEvid: false,
       evidShow: {
         list: false,
         add: false,
+        edit: false,
         addBtn: true
       },
       evidData: [],
+      editEvidData: {},
       delEvidId: null
     }
   },
@@ -72,6 +78,24 @@ export default {
         content: '添加成功',
         duration: 2
       })
+    },
+    editEvidInfo (_obj) {
+      this.editEvidData = _obj
+      this.changeView('editEvid')
+    },
+    editEvidSave (_obj) {
+      for (let k in this.evidData) {
+        if (this.evidData[k].id === _obj.id) {
+          this.evidData[k] = JSON.parse(JSON.stringify(_obj))
+          this.setFiling({type: 'evidenceList', data: this.evidData})
+          this.changeView('listEvid')
+          this.$Message.success({
+            content: '修改成功',
+            duration: 2
+          })
+          return
+        }
+      }
     },
     delEvidInfo (_id) {
       this.alertShowEvid = true
@@ -120,11 +144,16 @@ export default {
         } else {
           this.evidShow.list = true
         }
+        this.evidShow.edit = false
         this.evidShow.add = false
         this.evidShow.addBtn = true
       } else if (type === 'addEvid') {
         this.evidShow.list = false
         this.evidShow.add = true
+        this.evidShow.addBtn = false
+      } else if (type === 'editEvid') {
+        this.evidShow.list = false
+        this.evidShow.edit = true
         this.evidShow.addBtn = false
       }
     }
