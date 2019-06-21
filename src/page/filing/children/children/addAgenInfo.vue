@@ -89,6 +89,7 @@ export default {
   props: ['caseId', 'propArrName'],
   data () {
     return {
+      addBtnSwt: false,
       addAgenBtn: false,
       emInfo: {
         status: 0,
@@ -203,6 +204,10 @@ export default {
       }
     },
     sendAjax () {
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post('/proxy/add', {
         caseId: this.caseId,
         propId: this.agenData.propId,
@@ -224,8 +229,10 @@ export default {
         if (typeof res.data.data.propName === 'string') {
           res.data.data.propName = res.data.data.propName - 0
         }
+        this.addBtnSwt = false
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

@@ -21,7 +21,7 @@
               <Row>
                 <Col span="3"><span class="mr10">附件名称 :</span></Col>
                 <Col span="20">
-                  <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
+                  <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
                 </Col>
               </Row>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
@@ -72,6 +72,7 @@ export default {
     background: #fff;
     padding: 10px 0;
     p {
+      word-break: break-all;
       padding: 5px 0;
     }
     ._icon {
