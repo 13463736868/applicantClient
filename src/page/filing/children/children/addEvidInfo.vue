@@ -94,6 +94,7 @@ export default {
         state: null,
         memo: ''
       },
+      addBtnSwt: false,
       fileList: [],
       fileIdList: [],
       fileObj: null
@@ -176,6 +177,10 @@ export default {
       })
     },
     saveClick () {
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post(this.uploadUrl, {
         caseid: this.caseId,
         name: this.data.name,
@@ -187,12 +192,14 @@ export default {
           content: '文件上传成功',
           duration: 1,
           onClose: () => {
+            this.addBtnSwt = false
             setTimeout(() => {
               this.$emit('saveClick', res.data.data)
             })
           }
         })
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
