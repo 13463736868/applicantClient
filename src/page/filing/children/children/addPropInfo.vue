@@ -278,6 +278,7 @@ export default {
   props: ['caseId', 'addType'],
   data () {
     return {
+      addBtnSwt: false,
       addPropBtn: false,
       emInfo: {
         status: 0,
@@ -555,6 +556,10 @@ export default {
       }
     },
     sendAjax () {
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post('/party/add/' + this.addType, {
         caseId: this.caseId,
         type: this.propData.type,
@@ -575,8 +580,10 @@ export default {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []
         }
+        this.addBtnSwt = false
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

@@ -26,6 +26,7 @@ export default {
   props: ['caseId', 'editReasData'],
   data () {
     return {
+      addBtnSwt: false,
       addReasBtn: false,
       emInfo: {
         status: 0,
@@ -36,13 +37,18 @@ export default {
   },
   methods: {
     saveClick () {
-      // console.log('type?_regExg_ajax')
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post('/case/requestUpdate/2', {
         caseid: this.caseId,
         content: this.reasData.content
       }).then(res => {
+        this.addBtnSwt = false
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

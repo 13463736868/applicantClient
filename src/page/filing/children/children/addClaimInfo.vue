@@ -43,6 +43,7 @@ export default {
   props: ['caseId', 'propArrName'],
   data () {
     return {
+      addBtnSwt: false,
       addClaimBtn: false,
       emInfo: {
         status: 0,
@@ -97,6 +98,10 @@ export default {
       }
     },
     sendAjax () {
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post('/case/requestAdd/1', {
         caseid: this.caseId,
         requestName: this.claimData.requestName,
@@ -106,8 +111,10 @@ export default {
         if (typeof res.data.data.requestName === 'string') {
           res.data.data.requestName = res.data.data.requestName - 0
         }
+        this.addBtnSwt = false
         this.$emit('saveClick', res.data.data)
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
