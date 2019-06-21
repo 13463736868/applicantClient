@@ -17,9 +17,9 @@
               <span class="mr10">证据项描述 :</span>
               <span v-text="infoData.memo"></span>
             </p>
-            <p>
+            <p style="word-break: break-all;">
               <span class="mr10">附件名称 :</span>
-              <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" v-text="item.filename" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)"></span>
+              <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
             </p>
             <p>
