@@ -20,7 +20,7 @@
               <span class="mr10">证据项描述 :</span>
               <span v-text="infoData.memo"></span>
             </p>
-            <p style="word-break: break-all;">
+            <p>
               <span class="mr10">附件名称 :</span>
               <span class="_file" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
             </p>
@@ -73,6 +73,7 @@ export default {
     background: #fff;
     padding: 10px 0;
     p {
+      word-break: break-all;
       padding: 5px 0;
     }
     ._icon {
