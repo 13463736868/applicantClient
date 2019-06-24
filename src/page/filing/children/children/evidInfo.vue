@@ -8,7 +8,7 @@
               <span class="mr10">证据项名称 :</span>
               <span v-text="infoData.name"></span>
               <span v-if="!hashStatus" class="_icon">
-                <!-- <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon> -->
+                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
               </span>
             </p>

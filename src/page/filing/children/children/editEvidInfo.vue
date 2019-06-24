@@ -7,13 +7,13 @@
       <Col span="22" offset="1">
         <Row class="_labelFor">
           <Col span="4" class="_label">证据项名称<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model.trim="data.name"></Col>
+          <Col span="16" class="_input"><input type="text" v-model.trim="evidData.name"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
           <Col span="4" class="_label">是否有原文件<b class="_b">*</b></Col>
           <Col span="16" class="_radio">
-            <RadioGroup v-model="data.state">
+            <RadioGroup v-model="evidData.state">
               <Radio :label="1">是</Radio>
               <Radio :label="2">否</Radio>
             </RadioGroup>
@@ -22,7 +22,7 @@
         </Row>
         <Row class="_labelFor">
           <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model.trim="data.memo"></Col>
+          <Col span="16" class="_input"><input type="text" v-model.trim="evidData.memo"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor" v-if="fileList.length !== 0">
@@ -79,30 +79,32 @@ import spinComp from '@/components/common/spin'
 export default {
   name: 'edit_evid_info',
   components: { spinComp },
-  props: ['caseId', 'uploadUrl', 'uploadFileUrl', 'fileType'],
+  props: ['caseId', 'uploadUrl', 'uploadFileUrl', 'fileType', 'editEvidData'],
   data () {
     return {
       spinShow: false,
+      fileNum: 0,
       progressText: null,
       emInfo: {
         status: 0,
         text: ''
       },
-      data: {
-        caseid: this.caseId,
-        name: '',
-        state: null,
-        memo: ''
-      },
+      evidData: JSON.parse(JSON.stringify(this.editEvidData)),
       addBtnSwt: false,
       fileList: [],
       fileIdList: [],
       fileObj: null
     }
   },
+  mounted () {
+    this.fileList = this.evidData.fileUploads
+    for (let k in this.fileList) {
+      this.fileIdList.push(this.fileList[k].id)
+    }
+  },
   computed: {
     addFileBtn () {
-      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
+      if (this.fileList.length === 0 || this.evidData.name === '' || this.evidData.state === null || this.evidData.state === 2 || this.evidData.memo === '') {
         return true
       } else {
         return false
@@ -114,6 +116,7 @@ export default {
       for (let k in this.fileList) {
         if (this.fileList[k].id === id) {
           this.fileList.splice(k, 1)
+          this.fileIdList.splice(k, 1)
           this.$Message.success({
             content: '删除成功',
             duration: 2
@@ -142,6 +145,7 @@ export default {
       this.fileObj = null
     },
     resBefoUpload (file) {
+      this.fileNum++
       this.fileObj = file
       this.spinShow = true
     },
@@ -154,9 +158,12 @@ export default {
       }
     },
     resSuccess (res, file) {
-      this.progressText = '100%'
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.progressText = '100%'
+        this.spinShow = false
+      }
       this.fileObj = null
-      this.spinShow = false
       if (res.flag === false) {
         this.$Message.error({
           content: '错误信息:' + res.message + '',
@@ -170,7 +177,10 @@ export default {
       }
     },
     resError (error, file) {
-      this.spinShow = false
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.spinShow = false
+      }
       this.$Message.error({
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5
@@ -182,14 +192,15 @@ export default {
       }
       this.addBtnSwt = true
       axios.post(this.uploadUrl, {
-        caseid: this.caseId,
-        name: this.data.name,
-        state: this.data.state,
-        memo: this.data.memo,
+        id: this.evidData.id,
+        caseid: this.evidData.caseid,
+        name: this.evidData.name,
+        state: this.evidData.state,
+        memo: this.evidData.memo,
         fileIds: JSON.stringify(this.fileIdList)
       }).then(res => {
         this.$Message.success({
-          content: '文件上传成功',
+          content: '操作成功',
           duration: 1,
           onClose: () => {
             this.addBtnSwt = false

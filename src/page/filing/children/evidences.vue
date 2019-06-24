@@ -11,7 +11,7 @@
         <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
       <div v-if="evidShow.edit">
-        <edit-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" :editEvidData="editEvidData" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></edit-evid-info>
+        <edit-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="editUploadUrl" :uploadFileUrl="uploadFileUrl" :editEvidData="editEvidData" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></edit-evid-info>
       </div>
       <add-icon v-if="evidShow.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
     </div>
@@ -61,6 +61,9 @@ export default {
     ]),
     uploadUrl () {
       return '/case/evidenceAdd'
+    },
+    editUploadUrl () {
+      return '/case/evidenceUpdate'
     },
     uploadFileUrl () {
       return regi.api + '/file/upload'

@@ -83,6 +83,7 @@ export default {
   data () {
     return {
       spinShow: false,
+      fileNum: 0,
       progressText: null,
       emInfo: {
         status: 0,
@@ -114,6 +115,7 @@ export default {
       for (let k in this.fileList) {
         if (this.fileList[k].id === id) {
           this.fileList.splice(k, 1)
+          this.fileIdList.splice(k, 1)
           this.$Message.success({
             content: '删除成功',
             duration: 2
@@ -142,6 +144,7 @@ export default {
       this.fileObj = null
     },
     resBefoUpload (file) {
+      this.fileNum++
       this.fileObj = file
       this.spinShow = true
     },
@@ -154,9 +157,12 @@ export default {
       }
     },
     resSuccess (res, file) {
-      this.progressText = '100%'
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.progressText = '100%'
+        this.spinShow = false
+      }
       this.fileObj = null
-      this.spinShow = false
       if (res.flag === false) {
         this.$Message.error({
           content: '错误信息:' + res.message + '',
@@ -170,7 +176,10 @@ export default {
       }
     },
     resError (error, file) {
-      this.spinShow = false
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.spinShow = false
+      }
       this.$Message.error({
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5
