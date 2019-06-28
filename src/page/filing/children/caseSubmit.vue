@@ -93,10 +93,10 @@ export default {
       } else {
         this.committeeStatus = this.arbId
       }
-      if (typeof this.caseTypeStatus === 'string') {
+      if (typeof this.caseTypeStatus === 'string' && this.caseTypeStatus !== '') {
         this.caseTypeStatus = this.caseTypeStatus - 0
       }
-      if (typeof this.committeeStatus === 'string') {
+      if (typeof this.committeeStatus === 'string' && this.committeeStatus !== '') {
         this.committeeStatus = this.committeeStatus - 0
       }
     },
