@@ -200,7 +200,7 @@ export default {
           })
           return false
         }
-        this.$emit('saveClick', {committeeId: this.committeeStatus, caseTypeId: this.caseTypeStatus})
+        this.$emit('saveClick', {committeeId: this.committeeStatus, caseTypeId: this.caseTypeStatus === 0 ? '' : this.caseTypeStatus})
       }
     },
     hashClick () {
@@ -257,15 +257,31 @@ export default {
       }
     },
     resCaseType () {
+      axios.post('/caseType/arbitration/list').then(res => {
+        this.caseMap[0] = res.data.data
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
       axios.post('/caseType/list').then(res => {
         let _dataList = res.data.data
+        let _once = {
+          id: 0,
+          caseTypeName: '请选择',
+          status: 1
+        }
+        _dataList.unshift(_once)
         this.caseTypeList = _dataList.map((a, b) => {
           let _o = {}
           _o.value = a.id
           _o.label = a.caseTypeName
           _o.status = a.status
-          this.caseMap[a.id] = a.arbitrationList
-          this.caseNameMap[a.id] = a.caseTypeName
+          if (a.id !== 0) {
+            this.caseMap[a.id] = a.arbitrationList
+            this.caseNameMap[a.id] = a.caseTypeName
+          }
           return _o
         })
       }).catch(e => {
