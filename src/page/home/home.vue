@@ -536,6 +536,14 @@ export default {
           })
           break
         case 'caseTypeList':
+          axios.post('/caseType/arbitration/list').then(res => {
+            this.caseMap['all'] = res.data.data
+          }).catch(e => {
+            this.$Message.error({
+              content: '错误信息:' + e + ' 稍后再试',
+              duration: 5
+            })
+          })
           axios.post('/caseType/list').then(res => {
             let _dataList = res.data.data
             this.caseTypeList = _dataList.map((a, b) => {

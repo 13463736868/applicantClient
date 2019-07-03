@@ -281,6 +281,8 @@ export default {
           if (a.id !== 0) {
             this.caseMap[a.id] = a.arbitrationList
             this.caseNameMap[a.id] = a.caseTypeName
+          } else {
+            this.caseTypeStatus = a.id
           }
           return _o
         })
