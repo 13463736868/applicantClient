@@ -1,5 +1,5 @@
 <template>
-  <div class="_editAgenInfo">
+  <div class="pr _editAgenInfo">
     <Row>
       <Col span="10" offset="1">
         <Row class="_labelFor">
@@ -73,6 +73,7 @@
         </Row>
       </Col>
     </Row>
+    <edit-agen-appl-book :caseId="caseId" :editApplBookData="editAgenData.authorizeBook" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="editApplBookSave" @delFileClick="delFileSave"></edit-agen-appl-book>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':editAgenBtn}" v-bind:disabled="editAgenBtn" @click="saveClick">保 存</button></Col>
@@ -82,10 +83,13 @@
 
 <script>
 import axios from 'axios'
+import editAgenApplBook from '@/page/filing/children/children/editAgenApplBook'
 import setRegExp from '@/config/regExp.js'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'edit_agen_info',
+  components: { editAgenApplBook },
   props: ['caseId', 'propArrName', 'editAgenData'],
   data () {
     return {
@@ -102,7 +106,21 @@ export default {
   created () {
     this.cardList()
   },
+  computed: {
+    uploadUrl () {
+      return '/case/evidenceAdd'
+    },
+    uploadFileUrl () {
+      return regi.api + '/file/upload'
+    }
+  },
   methods: {
+    delFileSave () {
+      this.agenData.fileId = null
+    },
+    editApplBookSave (id) {
+      this.agenData.fileId = id
+    },
     cardList () {
       axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
         let _dataOList = resO.data.data
@@ -182,6 +200,11 @@ export default {
         } else if (!setRegExp(this.agenData.address, 'address')) {
           this.emInfo.status = 25
           this.emInfo.text = '请输入正确地址格式'
+        } else if (this.agenData.fileId === null) {
+          this.$Message.error({
+            content: '请上传授权委托书',
+            duration: 5
+          })
         } else {
           this.agenData.birthdayStr = this.agenData.idcard.substr(6, 4) + '-' + this.agenData.idcard.substr(10, 2) + '-' + this.agenData.idcard.substr(12, 2)
           this.emInfo.status = 0
@@ -205,7 +228,8 @@ export default {
         address: this.agenData.address,
         nation: this.agenData.nation,
         birthdayStr: this.agenData.birthdayStr,
-        sex: this.agenData.sex
+        sex: this.agenData.sex,
+        fileId: this.agenData.fileId
       }).then(res => {
         if (typeof res.data.data.propName === 'string') {
           res.data.data.propName = res.data.data.propName - 0

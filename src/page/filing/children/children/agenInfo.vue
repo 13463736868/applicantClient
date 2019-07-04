@@ -18,6 +18,7 @@
             <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
             <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
             <p><span class="mr10">委托人姓名 :</span><span v-text="showPropName"></span></p>
+            <p><span class="mr10">授权委托书 :</span><span v-if="infoData.authorizeBook !== undefined && infoData.authorizeBook !== null" @click="seeFile(infoData.authorizeBook.filepath)" class="_autBook" v-text="infoData.authorizeBook.filename"></span></p>
           </Col>
         </Row>
       </Col>
@@ -149,6 +150,9 @@ export default {
     }
   },
   methods: {
+    seeFile (path) {
+      window.open(path, '_blank')
+    },
     cardList () {
       axios.post('/dictionary/personIdcardType').then(res => {
         this.idcardList = res.data.data
@@ -209,6 +213,10 @@ export default {
   }
   ._listL {
     padding: 10px 0;
+    ._autBook {
+      @include hand;
+      color: #126eaf
+    }
     p {
       padding: 5px 0;
     }
@@ -217,7 +225,7 @@ export default {
       ._edit {
         @include hand;
         font-size: 16px;
-        color: #126eaf
+        color: #126eaf;
       }
       ._uploadImg {
         @include hand;
@@ -260,16 +268,15 @@ export default {
     ._imgBox {
       overflow: hidden;
       width: 84%;
-      height: 188px;
+      height: 216px;
       margin: 0 auto;
       ._fileImg {
         @include hand;
         clear: both;
         display: block;
-        margin: 14px auto;
+        margin: 12px auto;
         width: 96%;
-        // height: 85%;
-        height: 65%;
+        height: 74%;
       }
       ._fileImg._iconImg {
         @include hand;
@@ -282,8 +289,8 @@ export default {
       @include hand;
       clear: both;
       display: block;
-      margin: 18px auto;
-      height: 152px;
+      margin: 28px auto;
+      height: 160px;
     }
   }
 }

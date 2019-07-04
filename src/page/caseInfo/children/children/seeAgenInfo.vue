@@ -50,6 +50,7 @@
         </Row>
       </Col>
     </Row>
+    <see-agen-appl-book :seeApplBookData="agenData.authorizeBook"></see-agen-appl-book>
     <Row>
       <Col class="tc mt10" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':seeAgenBtn}" v-bind:disabled="seeAgenBtn" @click="saveClick">确 定</button></Col>
     </Row>
@@ -58,9 +59,11 @@
 
 <script>
 import axios from 'axios'
+import seeAgenApplBook from '@/page/caseInfo/children/children/seeAgenApplBook'
 
 export default {
   name: 'see_agen_info',
+  components: { seeAgenApplBook },
   props: ['seeAgenData'],
   data () {
     return {
@@ -145,9 +148,15 @@ export default {
         width: 100%;
         letter-spacing: 1px;
         font-size: 12px;
-        color: #666;
+        // color: #666;
         height: 32px;
         line-height: 32px;
+      }
+      ._autBook {
+        padding: 8px 0;
+      }
+      ._item {
+        color: #126eaf;
       }
     }
   }
