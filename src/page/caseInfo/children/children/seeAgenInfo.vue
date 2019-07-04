@@ -148,15 +148,9 @@ export default {
         width: 100%;
         letter-spacing: 1px;
         font-size: 12px;
-        // color: #666;
+        color: #666;
         height: 32px;
         line-height: 32px;
-      }
-      ._autBook {
-        padding: 8px 0;
-      }
-      ._item {
-        color: #126eaf;
       }
     }
   }
