@@ -11,6 +11,7 @@
                 <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
                 <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
                 <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                <!-- <Icon v-if="parentCaseId !== null" @click="seeInfo" class="_see" type="eye" title="查看"></Icon> -->
               </span>
             </p>
             <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
@@ -28,7 +29,7 @@
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
-            <Button style="background:#156FAE;border:1" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
+            <Button class="_upBtn" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
@@ -45,7 +46,7 @@ import axios from 'axios'
 
 export default {
   name: 'agen_info',
-  props: ['infoData', 'propArrName'],
+  props: ['infoData', 'propArrName', 'parentCaseId'],
   data () {
     return {
       fileIndex: 0,
@@ -163,6 +164,9 @@ export default {
         })
       })
     },
+    seeInfo () {
+      this.$emit('seeInfo')
+    },
     editInfo () {
       this.$emit('editInfo')
     },
@@ -222,6 +226,11 @@ export default {
     }
     ._icon {
       float: right;
+      ._see {
+        @include hand;
+        font-size: 18px;
+        color: #126eaf
+      }
       ._edit {
         @include hand;
         font-size: 16px;
@@ -283,6 +292,14 @@ export default {
         margin: 32px auto;
         width: 50%;
         height: 60%;
+      }
+      ._upBtn {
+        background:#156FAE;
+        border:1
+      }
+      ._upBtn._disabled {
+        background:#ccc;
+        color: #fff;
       }
     }
     ._defaultImg {

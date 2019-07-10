@@ -4,8 +4,11 @@
       <div class="_top">被申请人</div>
       <div v-if="respShow.list" class="_listResp">
         <div v-if="respData !== null" v-for="(item, index) in respData" :key="index">
-          <prop-info :infoData="item" @editInfo="editRespInfo(item)" @uploadImg="uploadRespImg" @delInfo="delRespInfo" @delImg="delRespImg"></prop-info>
+          <prop-info :infoData="item" :parentCaseId="parentCaseId" @seeInfo="seeRespInfo(item)" @editInfo="editRespInfo(item)" @uploadImg="uploadRespImg" @delInfo="delRespInfo" @delImg="delRespImg"></prop-info>
         </div>
+      </div>
+      <div v-if="respShow.see">
+        <see-prop-info :seePropData="seeRespData" @saveClick="seeRespSave"></see-prop-info>
       </div>
       <div v-if="respShow.add">
         <add-prop-info :addType="2" :caseId="caseId" @saveClick="addRespSave" @cancClick="changeView('listResp')"></add-prop-info>
@@ -16,7 +19,7 @@
       <div v-if="respShow.upload">
         <upload-annex :caseId="caseId" :infoId="uploadRespId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrlB" @saveClick="uploadRespSave" @cancClick="changeView('listResp')"></upload-annex>
       </div>
-      <add-icon v-if="respShow.addBtn" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
+      <add-icon v-if="respShow.addBtn && parentCaseId === null" :imgStatus="1" addText="添加被申请人" @addClick="changeView('addResp')"></add-icon>
     </div>
     <alert-tip :alertShow="alertShowResp" @alertCancel="delRespCanc" @alertConfirm="delRespSave" alertTitle="提示" alertText="确定要删除这条记录吗？">
     </alert-tip>
@@ -31,6 +34,7 @@ import { mapGetters, mapActions } from 'vuex'
 import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
+import seePropInfo from '@/page/filing/children/children/seePropInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
 import uploadAnnex from '@/page/filing/children/children/uploadAnnex'
@@ -39,27 +43,31 @@ import regi from '@/config/regiType.js'
 export default {
   name: 'respondent',
   props: [],
-  components: { addIcon, propInfo, addPropInfo, editPropInfo, uploadAnnex, alertTip },
+  components: { addIcon, propInfo, seePropInfo, addPropInfo, editPropInfo, uploadAnnex, alertTip },
   data () {
     return {
       alertShowResp: false,
       alertShowRespImg: false,
       respShow: {
         list: false,
+        see: false,
         add: false,
         edit: false,
         upload: false,
         addBtn: true
       },
       respData: [],
+      seeRespData: {},
       editRespData: {},
       delRespId: null,
       delRespImgObj: null,
-      uploadRespId: null
+      uploadRespId: null,
+      parentCaseId: null
     }
   },
   created () {
     if (this.caseInfo !== null) {
+      this.parentCaseId = this.caseInfo.parentCaseId
       this.respData = this.caseInfo.respList
       this.createList()
     }
@@ -85,6 +93,13 @@ export default {
         content: '添加成功',
         duration: 2
       })
+    },
+    seeRespInfo (_obj) {
+      this.seeRespData = _obj
+      this.changeView('seeResp')
+    },
+    seeRespSave () {
+      this.changeView('listResp')
     },
     editRespInfo (_obj) {
       this.editRespData = _obj
@@ -206,6 +221,7 @@ export default {
         } else {
           this.respShow.list = true
         }
+        this.respShow.see = false
         this.respShow.add = false
         this.respShow.edit = false
         this.respShow.upload = false
@@ -221,6 +237,10 @@ export default {
       } else if (type === 'uploadResp') {
         this.respShow.list = false
         this.respShow.upload = true
+        this.respShow.addBtn = false
+      } else if (type === 'seeResp') {
+        this.respShow.list = false
+        this.respShow.see = true
         this.respShow.addBtn = false
       }
     }

@@ -282,7 +282,9 @@ export default {
             this.caseMap[a.id] = a.arbitrationList
             this.caseNameMap[a.id] = a.caseTypeName
           } else {
-            this.caseTypeStatus = a.id
+            if (this.caseTypeId === null || this.caseTypeId === 'null') {
+              this.caseTypeStatus = a.id
+            }
           }
           return _o
         })

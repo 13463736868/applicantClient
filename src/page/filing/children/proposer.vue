@@ -4,8 +4,11 @@
       <div class="_top">申请人</div>
       <div v-if="propShow.list" class="_listProp">
         <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
-          <prop-info :infoData="item" @editInfo="editPropInfo(item)" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
+          <prop-info :infoData="item" :parentCaseId="parentCaseId" @seeInfo="seePropInfo(item)" @editInfo="editPropInfo(item)" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
         </div>
+      </div>
+      <div v-if="propShow.see">
+        <see-prop-info :seePropData="seePropData" @saveClick="seePropSave"></see-prop-info>
       </div>
       <div v-if="propShow.add">
         <add-prop-info :addType="1" :caseId="caseId" @saveClick="addPropSave" @cancClick="changeView('listProp')"></add-prop-info>
@@ -16,14 +19,17 @@
       <div v-if="propShow.upload">
         <upload-annex :caseId="caseId" :infoId="uploadPropId" :fileType="['jpg','jpeg','png']" :uploadUrl="uploadUrlA" @saveClick="uploadPropSave" @cancClick="changeView('listProp')"></upload-annex>
       </div>
-      <add-icon v-if="propShow.addBtn" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
+      <add-icon v-if="propShow.addBtn && parentCaseId === null" :imgStatus="1" addText="添加申请人" @addClick="changeView('addProp')"></add-icon>
     </div>
     <div class="_agent">
       <div class="_top">代理人</div>
       <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
-          <agen-info :infoData="item" :propArrName="propDataName" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
+          <agen-info :infoData="item" :parentCaseId="parentCaseId" @seeInfo="seeAgenInfo(item)" :propArrName="propDataName" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
         </div>
+      </div>
+      <div v-if="agenShow.see">
+        <see-agen-info :seeAgenData="seeAgenData" @saveClick="seeAgenSave"></see-agen-info>
       </div>
       <div v-if="agenShow.add">
         <add-agen-info :caseId="caseId" :propArrName="propDataName" @saveClick="addAgenSave" @cancClick="changeView('listAgen')"></add-agen-info>
@@ -53,10 +59,12 @@ import { mapGetters, mapActions } from 'vuex'
 import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import propInfo from '@/page/filing/children/children/propInfo'
+import seePropInfo from '@/page/filing/children/children/seePropInfo'
 import addPropInfo from '@/page/filing/children/children/addPropInfo'
 import editPropInfo from '@/page/filing/children/children/editPropInfo'
 import uploadAnnex from '@/page/filing/children/children/uploadAnnex'
 import agenInfo from '@/page/filing/children/children/agenInfo'
+import seeAgenInfo from '@/page/filing/children/children/seeAgenInfo'
 import addAgenInfo from '@/page/filing/children/children/addAgenInfo'
 import editAgenInfo from '@/page/filing/children/children/editAgenInfo'
 import regi from '@/config/regiType.js'
@@ -64,7 +72,7 @@ import regi from '@/config/regiType.js'
 export default {
   name: 'proposer',
   props: [],
-  components: { alertTip, addIcon, propInfo, addPropInfo, editPropInfo, uploadAnnex, agenInfo, addAgenInfo, editAgenInfo },
+  components: { alertTip, addIcon, propInfo, seePropInfo, addPropInfo, editPropInfo, uploadAnnex, agenInfo, seeAgenInfo, addAgenInfo, editAgenInfo },
   data () {
     return {
       alertShowProp: false,
@@ -73,6 +81,7 @@ export default {
       alertShowAgenImg: false,
       propShow: {
         list: false,
+        see: false,
         add: false,
         edit: false,
         upload: false,
@@ -80,6 +89,7 @@ export default {
       },
       agenShow: {
         list: false,
+        see: false,
         add: false,
         edit: false,
         upload: false,
@@ -87,6 +97,8 @@ export default {
       },
       propData: [],
       agenData: [],
+      seePropData: {},
+      seeAgenData: {},
       editPropData: {},
       editAgenData: {},
       delPropId: null,
@@ -95,11 +107,13 @@ export default {
       delAgenImgObj: null,
       uploadPropId: null,
       uploadAgenId: null,
-      propDataName: []
+      propDataName: [],
+      parentCaseId: null
     }
   },
   created () {
     if (this.caseInfo !== null) {
+      this.parentCaseId = this.caseInfo.parentCaseId
       this.propData = this.caseInfo.propList
       this.agenData = this.caseInfo.proxyList
       this.createList()
@@ -131,6 +145,13 @@ export default {
         content: '添加成功',
         duration: 2
       })
+    },
+    seePropInfo (_obj) {
+      this.seePropData = _obj
+      this.changeView('seeProp')
+    },
+    seePropSave () {
+      this.changeView('listProp')
     },
     editPropInfo (_obj) {
       this.editPropData = _obj
@@ -248,6 +269,13 @@ export default {
         content: '添加成功',
         duration: 2
       })
+    },
+    seeAgenInfo (_obj) {
+      this.seeAgenData = _obj
+      this.changeView('seeAgen')
+    },
+    seeAgenSave () {
+      this.changeView('listAgen')
     },
     editAgenInfo (_obj) {
       this.editAgenData = _obj
@@ -391,6 +419,7 @@ export default {
         } else {
           this.propShow.list = true
         }
+        this.propShow.see = false
         this.propShow.add = false
         this.propShow.edit = false
         this.propShow.upload = false
@@ -407,12 +436,17 @@ export default {
         this.propShow.list = false
         this.propShow.upload = true
         this.propShow.addBtn = false
+      } else if (type === 'seeProp') {
+        this.propShow.list = false
+        this.propShow.see = true
+        this.propShow.addBtn = false
       } else if (type === 'listAgen') {
         if (this.agenData.length === 0) {
           this.agenShow.list = false
         } else {
           this.agenShow.list = true
         }
+        this.agenShow.see = false
         this.agenShow.add = false
         this.agenShow.edit = false
         this.agenShow.upload = false
@@ -428,6 +462,10 @@ export default {
       } else if (type === 'uploadAgen') {
         this.agenShow.list = false
         this.agenShow.upload = true
+        this.agenShow.addBtn = false
+      } else if (type === 'seeAgen') {
+        this.agenShow.list = false
+        this.agenShow.see = true
         this.agenShow.addBtn = false
       }
     }

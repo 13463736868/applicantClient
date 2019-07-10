@@ -602,13 +602,13 @@ export default {
         this.caseStatus = 0
       } else {
         if ([0, 13, 14, 15].indexOf(this.caseStatus) === -1) {
-          if (this.caseTypeStatus === 'all') {
-            this.$Message.warning({
-              content: '请先选择一个合同类型, 合同类型不能为全部',
-              duration: 5
-            })
-            return false
-          }
+          // if (this.caseTypeStatus === 'all') {
+          //   this.$Message.warning({
+          //     content: '请先选择一个合同类型, 合同类型不能为全部',
+          //     duration: 5
+          //   })
+          //   return false
+          // }
           if (this.committee === 'all') {
             this.$Message.warning({
               content: '请先选择一个仲裁委, 仲裁委不能为全部',

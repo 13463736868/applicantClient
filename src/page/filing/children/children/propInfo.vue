@@ -8,9 +8,12 @@
               <span class="mr10">姓名 :</span>
               <span v-text="infoData.name"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                <template v-if="parentCaseId === null">
+                  <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                  <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                  <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                </template>
+                <Icon v-if="parentCaseId !== null" @click="seeInfo" class="_see" type="eye" title="查看"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
@@ -25,9 +28,12 @@
               <span class="mr10">企业名 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                <template v-if="parentCaseId === null">
+                  <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                  <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                  <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                </template>
+                <Icon v-if="parentCaseId !== null" @click="seeInfo" class="_see" type="eye" title="查看"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
@@ -42,9 +48,12 @@
               <span class="mr10">名称 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                <template v-if="parentCaseId === null">
+                  <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                  <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                  <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                </template>
+                <Icon v-if="parentCaseId !== null" @click="seeInfo" class="_see" type="eye" title="查看"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
@@ -59,9 +68,12 @@
               <span class="mr10">组织名称 :</span>
               <span v-text="infoData.enterpriseName"></span>
               <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                <template v-if="parentCaseId === null">
+                  <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                  <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                  <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                </template>
+                <Icon v-if="parentCaseId !== null" @click="seeInfo" class="_see" type="eye" title="查看"></Icon>
               </span>
             </p>
             <p><span class="mr10" v-text="priseName"></span><span v-text="infoData.enterpriseIdcard"></span></p>
@@ -73,11 +85,11 @@
       </Col>
       <Col class="_listR clearfix not_s" span="9" offset="1">
         <div v-if="isShowFile">
-          <Icon @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled" title="删除"></Icon>
+          <Icon v-if="parentCaseId === null" @click="delImg(infoData.id, infoData.fileList[fileIndex].id)" class="_delImg" type="close-circled" title="删除"></Icon>
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
             <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
-            <Button style="background:#156FAE;border:1" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
+            <Button class="_upBtn" :class="{'_disabled':parentCaseId !== null}" v-bind:disabled="parentCaseId !== null" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
@@ -94,7 +106,7 @@ import axios from 'axios'
 
 export default {
   name: 'prop_info',
-  props: ['infoData'],
+  props: ['infoData', 'parentCaseId'],
   data () {
     return {
       fileIndex: 0,
@@ -213,6 +225,9 @@ export default {
         })
       })
     },
+    seeInfo () {
+      this.$emit('seeInfo')
+    },
     editInfo () {
       this.$emit('editInfo')
     },
@@ -262,6 +277,11 @@ export default {
     }
     ._icon {
       float: right;
+      ._see {
+        @include hand;
+        font-size: 18px;
+        color: #126eaf
+      }
       ._edit {
         @include hand;
         font-size: 16px;
@@ -324,6 +344,14 @@ export default {
         margin: 32px auto;
         width: 50%;
         height: 60%;
+      }
+      ._upBtn {
+        background:#156FAE;
+        border:1
+      }
+      ._upBtn._disabled {
+        background:#ccc;
+        color: #fff;
       }
     }
     ._defaultImg {

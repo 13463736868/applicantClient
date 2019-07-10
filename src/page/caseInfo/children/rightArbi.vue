@@ -730,7 +730,8 @@ export default {
     },
     counSave () {
       axios.post('/case/counterclaim', {
-        id: this.caseId
+        id: this.caseId,
+        oldId: this.caseOldId
       }).then(res => {
         this.alertCanc('coun')
         window.localStorage.setItem('caseId', res.data.data.id)
