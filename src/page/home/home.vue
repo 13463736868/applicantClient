@@ -13,7 +13,7 @@
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resChangeStatus('sear')" @keyup.enter.native="resChangeStatus('sear')" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
         <Col span="2">
-          <label class="lh32 f16 fc6 fr mr15">合同类型</label>
+          <label class="lh32 f16 fc6 fr mr15">案件类型</label>
         </Col>
         <Col span="3">
           <Select v-model="caseTypeStatus" @on-change="resChangeStatus('caseType')">
@@ -171,7 +171,7 @@ export default {
             align: 'center'
           },
           {
-            title: '合同类型',
+            title: '案件类型',
             key: 'caseTypeName',
             align: 'center'
           },
@@ -604,7 +604,7 @@ export default {
         if ([0, 13, 14, 15].indexOf(this.caseStatus) === -1) {
           // if (this.caseTypeStatus === 'all') {
           //   this.$Message.warning({
-          //     content: '请先选择一个合同类型, 合同类型不能为全部',
+          //     content: '请先选择一个案件类型, 案件类型不能为全部',
           //     duration: 5
           //   })
           //   return false

@@ -38,7 +38,7 @@
       </Row>
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>合同类型：</b></p>
+          <p><span class="_span">*</span><b>案件类型：</b></p>
         </Col>
         <Col span="16">
           <Select v-model="caseTypeId">
@@ -118,7 +118,7 @@ export default {
             align: 'center'
           },
           {
-            title: '合同类型',
+            title: '案件类型',
             key: 'casetypeName',
             align: 'center',
             render: (h, params) => {
@@ -348,7 +348,7 @@ export default {
         return false
       } else if (this.caseTypeId === null || this.caseTypeId === undefined) {
         this.$Message.warning({
-          content: '请先选择一个合同类型',
+          content: '请先选择一个案件类型',
           duration: 5
         })
         return false

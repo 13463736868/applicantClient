@@ -1,9 +1,9 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label">合同类型<b class="_b">*</b></Col>
+      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
       <Col span="4">
-        <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')" :disabled="caseTypeId !== null && caseTypeId !== 'null'">
+        <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')" :disabled="parentCaseId !== null || (caseTypeId !== null && caseTypeId !== 'null')">
           <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
@@ -61,7 +61,10 @@ export default {
       'caseInfo',
       'userInfo',
       'userState'
-    ])
+    ]),
+    parentCaseId () {
+      return this.caseInfo === null ? null : this.caseInfo.parentCaseId
+    }
     // caseTypeStatus: {
     //   get: function () {
     //     return this.caseInfo !== null ? JSON.parse(JSON.stringify(this.caseInfo.type)) : ''
@@ -99,6 +102,7 @@ export default {
       if (typeof this.committeeStatus === 'string' && this.committeeStatus !== '') {
         this.committeeStatus = this.committeeStatus - 0
       }
+      console.log(this.committeeStatus)
     },
     saveClick () {
       this.resReg()

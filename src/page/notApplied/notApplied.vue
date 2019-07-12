@@ -24,7 +24,7 @@
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
         <Col span="2">
-          <label class="lh32 f16 fc6 fr mr15">合同类型</label>
+          <label class="lh32 f16 fc6 fr mr15">案件类型</label>
         </Col>
         <Col span="3">
           <Select v-model="caseTypeStatus" @on-change="resChangeStatus('caseType')">
@@ -190,7 +190,7 @@ export default {
             }
           },
           {
-            title: '合同类型',
+            title: '案件类型',
             key: 'caseTypeName',
             align: 'center'
           },
@@ -466,7 +466,7 @@ export default {
     resBuildBook () {
       if (this.caseTypeStatus === 'all') {
         this.$Message.warning({
-          content: '请先选择一个明确的合同类型',
+          content: '请先选择一个明确的案件类型',
           duration: 2
         })
         return false

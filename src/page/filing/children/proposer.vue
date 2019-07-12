@@ -107,13 +107,11 @@ export default {
       delAgenImgObj: null,
       uploadPropId: null,
       uploadAgenId: null,
-      propDataName: [],
-      parentCaseId: null
+      propDataName: []
     }
   },
   created () {
     if (this.caseInfo !== null) {
-      this.parentCaseId = this.caseInfo.parentCaseId
       this.propData = this.caseInfo.propList
       this.agenData = this.caseInfo.proxyList
       this.createList()
@@ -125,6 +123,9 @@ export default {
       'caseId',
       'caseInfo'
     ]),
+    parentCaseId () {
+      return this.caseInfo === null ? null : this.caseInfo.parentCaseId
+    },
     uploadUrlA () {
       return regi.api + '/file/uploadParty/1'
     },

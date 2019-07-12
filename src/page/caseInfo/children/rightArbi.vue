@@ -292,6 +292,8 @@ export default {
   },
   methods: {
     ...mapActions([
+      'setArbId',
+      'setCaseTypeId',
       'setCaseId',
       'setMyCaseShowBtn'
     ]),
@@ -736,6 +738,10 @@ export default {
         this.alertCanc('coun')
         window.localStorage.setItem('caseId', res.data.data.id)
         this.setCaseId(res.data.data.id)
+        window.localStorage.setItem('caseTypeId', res.data.data.type)
+        this.setCaseTypeId(res.data.data.type)
+        window.localStorage.setItem('arbId', res.data.data.arbitrationId)
+        this.setArbId(res.data.data.arbitrationId)
         this.$router.push({
           path: '/filing'
         })

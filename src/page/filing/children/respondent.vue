@@ -61,13 +61,11 @@ export default {
       editRespData: {},
       delRespId: null,
       delRespImgObj: null,
-      uploadRespId: null,
-      parentCaseId: null
+      uploadRespId: null
     }
   },
   created () {
     if (this.caseInfo !== null) {
-      this.parentCaseId = this.caseInfo.parentCaseId
       this.respData = this.caseInfo.respList
       this.createList()
     }
@@ -77,6 +75,9 @@ export default {
       'caseId',
       'caseInfo'
     ]),
+    parentCaseId () {
+      return this.caseInfo === null ? null : this.caseInfo.parentCaseId
+    },
     uploadUrlB () {
       return regi.api + '/file/uploadParty/2'
     }

@@ -8,7 +8,7 @@
         <Row class="_labelFor">
           <Row v-if="docShow">
             <Col span="4">
-              <span>合同类型：</span>
+              <span>案件类型：</span>
             </Col>
             <Col span="7">
               <Select v-model="caseTypeAll" size="small" @on-change="resAction('caseType')">

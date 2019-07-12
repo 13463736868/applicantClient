@@ -118,7 +118,7 @@ export default {
             align: 'center'
           },
           {
-            title: '合同类型',
+            title: '案件类型',
             key: 'caseTypeName',
             align: 'center'
           },
