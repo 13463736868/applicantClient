@@ -102,7 +102,6 @@ export default {
       if (typeof this.committeeStatus === 'string' && this.committeeStatus !== '') {
         this.committeeStatus = this.committeeStatus - 0
       }
-      console.log(this.committeeStatus)
     },
     saveClick () {
       this.resReg()
