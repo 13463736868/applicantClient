@@ -38,7 +38,7 @@ axios.interceptors.response.use((res) => {
         // 没有登录
         removeToken()
         // 如何跳转到登录页面
-        if (router.currentRoute.path !== 'login') {
+        if (router.currentRoute.path !== '/login') {
           router.replace({
             path: '/login',
             query: {redirect: router.currentRoute.fullpath}
