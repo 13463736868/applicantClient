@@ -58,12 +58,12 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===124" v-text="emInfo.text"></span></Col>
           </Row>
@@ -96,19 +96,19 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===214" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">法定代表人<b class="_b">*</b></Col>
+            <Col span="24" class="_label">法定代表人</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件类型</Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
@@ -117,17 +117,17 @@
             <Col span="24" class="_em"><span></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件号码</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===224" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===225" v-text="emInfo.text"></span></Col>
           </Row>
@@ -160,19 +160,19 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===314" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===315" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">经营者<b class="_b">*</b></Col>
+            <Col span="24" class="_label">经营者</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===321" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件类型</Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
@@ -181,17 +181,17 @@
             <Col span="24" class="_em"><span></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件号码</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===323" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===324" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===325" v-text="emInfo.text"></span></Col>
           </Row>
@@ -224,19 +224,19 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===414" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达手机</Col>
+            <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.phone"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===415" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">负责人<b class="_b">*</b></Col>
+            <Col span="24" class="_label">负责人</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===421" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件类型</Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
@@ -245,17 +245,17 @@
             <Col span="24" class="_em"><span></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
+            <Col span="24" class="_label">证件号码</Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===423" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">送达邮箱</Col>
+            <Col span="24" class="_label">送达邮箱<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.email"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===424" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">联系地址</Col>
+            <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model="propData.address"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===425" v-text="emInfo.text"></span></Col>
           </Row>
@@ -278,6 +278,7 @@ export default {
   props: ['editType', 'caseId', 'editPropData'],
   data () {
     return {
+      addBtnSwt: false,
       editPropBtn: false,
       emInfo: {
         status: 0,
@@ -437,9 +438,40 @@ export default {
             this.emInfo.status = 225
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 214
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 221
+                this.emInfo.text = '请输入法定代表人姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 222
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 223
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 221
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 223
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 214
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       } else if (this.propData.type === 3) {
@@ -480,9 +512,40 @@ export default {
             this.emInfo.status = 325
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 314
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 321
+                this.emInfo.text = '请输入经营者姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 322
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 323
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 321
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 323
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 314
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       } else if (this.propData.type === 4) {
@@ -523,14 +586,49 @@ export default {
             this.emInfo.status = 425
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 414
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 421
+                this.emInfo.text = '请输入负责人姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 422
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 423
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 421
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 423
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 414
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       }
     },
     sendAjax () {
+      if (this.addBtnSwt) {
+        return false
+      }
+      this.addBtnSwt = true
       axios.post('/party/update/' + this.editType, {
         caseId: this.caseId,
         id: this.propData.id,
@@ -550,7 +648,9 @@ export default {
         sex: this.propData.sex
       }).then(res => {
         this.$emit('saveClick', res.data.data)
+        this.addBtnSwt = false
       }).catch(e => {
+        this.addBtnSwt = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

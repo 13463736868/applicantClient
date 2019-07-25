@@ -462,9 +462,40 @@ export default {
             this.emInfo.status = 225
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 214
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 221
+                this.emInfo.text = '请输入法定代表人姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 222
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 223
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 221
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 223
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 214
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       } else if (this.propData.type === 3) {
@@ -505,9 +536,40 @@ export default {
             this.emInfo.status = 325
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 314
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 321
+                this.emInfo.text = '请输入经营者姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 322
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 323
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 321
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 323
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 314
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       } else if (this.propData.type === 4) {
@@ -548,9 +610,40 @@ export default {
             this.emInfo.status = 425
             this.emInfo.text = '请输入正确地址格式'
           } else {
-            this.emInfo.status = 0
-            this.emInfo.text = ''
-            this.sendAjax()
+            if (this.propData.name === '' && this.propData.idcardType === null && this.propData.idcard === '') {
+              if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 414
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            } else {
+              if (this.propData.name === '') {
+                this.emInfo.status = 421
+                this.emInfo.text = '请输入负责人姓名'
+              } else if (this.propData.idcardType === null) {
+                this.emInfo.status = 422
+                this.emInfo.text = '请选择证件类型'
+              } else if (this.propData.idcard === '') {
+                this.emInfo.status = 423
+                this.emInfo.text = '请输入证件号码'
+              } else if (!setRegExp(this.propData.name, 'name')) {
+                this.emInfo.status = 421
+                this.emInfo.text = '请输入正确名字格式'
+              } else if (!setRegExp(this.propData.idcard, 'idcard')) {
+                this.emInfo.status = 423
+                this.emInfo.text = '请输入正确证件号码格式'
+              } else if (this.propData.linkMan !== '' && !setRegExp(this.propData.linkMan, 'name')) {
+                this.emInfo.status = 414
+                this.emInfo.text = '请输入正确联系人姓名'
+              } else {
+                this.emInfo.status = 0
+                this.emInfo.text = ''
+                this.sendAjax()
+              }
+            }
           }
         }
       }
@@ -580,8 +673,8 @@ export default {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []
         }
-        this.addBtnSwt = false
         this.$emit('saveClick', res.data.data)
+        this.addBtnSwt = false
       }).catch(e => {
         this.addBtnSwt = false
         this.$Message.error({
