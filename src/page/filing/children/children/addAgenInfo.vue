@@ -113,7 +113,7 @@ export default {
         nation: null,
         birthdayStr: '',
         sex: null,
-        fileId: null
+        fileid: null
       }
     }
   },
@@ -130,10 +130,10 @@ export default {
   },
   methods: {
     delFileSave () {
-      this.agenData.fileId = null
+      this.agenData.fileid = null
     },
     addApplBookSave (id) {
-      this.agenData.fileId = id
+      this.agenData.fileid = id
     },
     cardList () {
       axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
@@ -214,7 +214,7 @@ export default {
         } else if (!setRegExp(this.agenData.address, 'address')) {
           this.emInfo.status = 25
           this.emInfo.text = '请输入正确地址格式'
-        } else if (this.agenData.fileId === null) {
+        } else if (this.agenData.fileid === null) {
           this.$Message.error({
             content: '请上传授权委托书',
             duration: 5
@@ -246,7 +246,7 @@ export default {
         nation: this.agenData.nation,
         birthdayStr: this.agenData.birthdayStr,
         sex: this.agenData.sex,
-        fileId: this.agenData.fileId
+        fileId: this.agenData.fileid
       }).then(res => {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []
