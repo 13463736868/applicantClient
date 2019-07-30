@@ -59,6 +59,14 @@ const infoMap = {
     address: '黑龙江省哈尔滨市道里区抚顺街1号',
     goRoom: '',
     note: '哈尔滨部署演示'
+  },
+  'QingDao': {
+    name: '中国哈尔滨仲裁委员会',
+    excName: 'Qingdao Arbitration Commission',
+    tel: '0532－85768569',
+    address: '青岛市崂山区同安路886号',
+    goRoom: '',
+    note: '青岛部署演示'
   }
 }
 const dataMap = infoMap[type]

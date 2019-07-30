@@ -3,20 +3,20 @@
     <div class="_arbiInfo">
       <div class="_top">仲裁委信息</div>
       <div class="_mid">
-        <Row v-if="arbiInfoShow">
+        <Row>
           <Col span="22" offset="1">
             <div class="_logo">
-              <img class="_img" :src="arbiInfo.logoUrl" alt="">
-              <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
-              <div><b v-text="arbiInfo.englishName"></b></div>
+              <img :src="logo.url" alt="">
+              <div class="f14 pt5"><b v-text="dataMap.name"></b></div>
+              <div><b v-text="dataMap.excName"></b></div>
             </div>
             <p>
               <span class="mr10"><b>电话 :</b></span>
-              <span class="mr10" v-text="arbiInfo.telephone"></span>
+              <span class="mr10" v-text="dataMap.tel"></span>
             </p>
             <p>
               <span class="mr10"><b>地址 :</b></span>
-              <span class="mr10" v-text="arbiInfo.address"></span>
+              <span class="mr10" v-text="dataMap.address"></span>
             </p>
           </Col>
         </Row>
@@ -199,8 +199,6 @@ export default {
       logo: {
         url: require('../../static/images/logoR.png')
       },
-      arbiInfoShow: false,
-      arbiInfo: null,
       dataInfoShow: false,
       dataInfo: null,
       addSubmit: false,
@@ -258,7 +256,6 @@ export default {
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.resCaseItem()
-      this.resArbiItem()
     }
     this.$watch('searchText', this.debounce(this.resSearch, 1000))
   },
@@ -266,6 +263,9 @@ export default {
     ...mapGetters([
       'myCaseShowBtn'
     ]),
+    dataMap () {
+      return regi.dataMap
+    },
     resAction () {
       return regi.api + '/case/withdraw'
     },
@@ -336,20 +336,6 @@ export default {
           })
         ])
       }
-    },
-    resArbiItem () {
-      axios.post('/caseType/arbitration/baseItem', {
-        oldId: this.caseOldId
-      }).then(res => {
-        this.arbiInfo = res.data.data
-        this.arbiInfoShow = true
-      }).catch(e => {
-        this.arbiInfoShow = false
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
     },
     resCaseItem () {
       axios.post('/case/queryCaseItem', {
@@ -833,10 +819,6 @@ export default {
   ._logo {
     padding: 5px 0;
     text-align: center;
-    ._img {
-      width: 80px;
-      height: 80px;
-    }
   }
 }
 </style>
