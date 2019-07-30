@@ -61,12 +61,20 @@ const infoMap = {
     note: '哈尔滨部署演示'
   },
   'QingDao': {
-    name: '中国哈尔滨仲裁委员会',
+    name: '青岛仲裁委员会',
     excName: 'Qingdao Arbitration Commission',
     tel: '0532－85768569',
     address: '青岛市崂山区同安路886号',
     goRoom: '',
     note: '青岛部署演示'
+  },
+  'ZhongWei': {
+    name: '中卫仲裁委员会',
+    excName: 'Zhongwei Arbitration Commission',
+    tel: '0955-7674885',
+    address: '宁夏省中卫市沙坡头区文萃北街东方花园A4楼',
+    goRoom: '',
+    note: '中卫部署演示'
   }
 }
 const dataMap = infoMap[type]
