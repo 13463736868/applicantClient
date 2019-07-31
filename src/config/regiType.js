@@ -72,7 +72,7 @@ const infoMap = {
     name: '中卫仲裁委员会',
     excName: 'Zhongwei Arbitration Commission',
     tel: '0955-7674885',
-    address: '宁夏省中卫市沙坡头区文萃北街东方花园A4楼',
+    address: '宁夏回族自治区中卫市文萃北街13号',
     goRoom: '',
     note: '中卫部署演示'
   }
