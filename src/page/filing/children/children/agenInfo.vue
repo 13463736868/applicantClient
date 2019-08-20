@@ -5,20 +5,66 @@
         <Row>
           <Col span="22" offset="1">
             <p>
-              <span class="mr10">姓名 :</span>
-              <span v-text="infoData.name"></span>
-              <span class="_icon">
-                <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
-                <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
-              </span>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">姓名 :</span></Col>
+                <Col span="18">
+                  <span v-text="infoData.name"></span>
+                  <span class="_icon">
+                    <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                    <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                    <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled" title="删除"></Icon>
+                  </span>
+                </Col>
+              </Row>
             </p>
-            <p><span class="mr10" v-text="idcardName"></span><span v-text="infoData.idcard"></span></p>
-            <p><span class="mr10">送达手机 :</span><span v-text="infoData.phone"></span></p>
-            <p><span class="mr10">送达邮箱 :</span><span v-text="infoData.email"></span></p>
-            <p><span class="mr10">联系地址 :</span><span v-text="infoData.address"></span></p>
-            <p><span class="mr10">委托人姓名 :</span><span v-text="showPropName"></span></p>
-            <p><span class="mr10">授权委托书 :</span><span v-if="infoData.authorizeBook !== undefined && infoData.authorizeBook !== null" @click="seeFile(infoData.authorizeBook.filepath)" class="_autBook" v-text="infoData.authorizeBook.filename"></span></p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10" v-text="idcardName"></span></Col>
+                <Col span="18">
+                  <span v-text="infoData.idcard"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">送达手机 :</span></Col>
+                <Col span="18">
+                  <span v-text="infoData.phone"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">送达邮箱 :</span></Col>
+                <Col span="18">
+                  <span v-text="infoData.email"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">联系地址 :</span></Col>
+                <Col span="18">
+                  <span v-text="infoData.address"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">委托人姓名 :</span></Col>
+                <Col span="18">
+                  <span v-text="showPropName"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="5"><span class="mr10">授权委托书 :</span></Col>
+                <Col span="18">
+                  <span v-if="infoData.authorizeBook !== undefined && infoData.authorizeBook !== null" @click="seeFile(infoData.authorizeBook.filepath)" class="_autBook" v-text="infoData.authorizeBook.filename"></span>
+                </Col>
+              </Row>
+            </p>
           </Col>
         </Row>
       </Col>

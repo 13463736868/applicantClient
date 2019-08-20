@@ -6,7 +6,8 @@
     <Row>
       <Col span="22" offset="1">
         <Row class="_labelFor">
-          <Col span="24" class="_label">仲裁申请书上传<b class="_b">*</b></Col>
+          <Col span="12" class="_label">仲裁申请书上传<b class="_b">*</b></Col>
+          <Col span="12" class="_label tr"><span class="_enDow hand" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>仲裁申请书模版下载</span></Col>
           <Col span="24">
             <Upload
               ref="upload"
@@ -45,6 +46,7 @@
 
 <script>
 import spinComp from '@/components/common/spin'
+import regi from '@/config/regiType.js'
 
 export default {
   name: 'upload_appl_book',
@@ -134,6 +136,9 @@ export default {
     },
     cancClick () {
       this.$emit('cancClick')
+    },
+    dowDoc () {
+      window.open(regi.api + '/file/templet/dowload/5', '_blank')
     }
   }
 }

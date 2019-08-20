@@ -20,10 +20,10 @@
             <Option v-for="item in perfectStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="2" offset="2">
+        <!-- <Col span="2" offset="2">
           <Button type="primary" @click="resAddUpload">批量导入</Button>
-        </Col>
-        <Col span="2">
+        </Col> -->
+        <Col span="2" offset="4">
           <Button type="primary" @click="resSubmit">批量提交</Button>
         </Col>
       </Row>

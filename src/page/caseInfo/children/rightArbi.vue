@@ -3,20 +3,30 @@
     <div class="_arbiInfo">
       <div class="_top">仲裁委信息</div>
       <div class="_mid">
-        <Row>
+        <Row v-if="arbiInfoShow">
           <Col span="22" offset="1">
             <div class="_logo">
-              <img :src="logo.url" alt="">
-              <div class="f14 pt5"><b v-text="dataMap.name"></b></div>
-              <div><b v-text="dataMap.excName"></b></div>
+              <img class="_img" :src="arbiInfo.loginLogoUrl" alt="">
+              <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
+              <div><b v-text="arbiInfo.enName"></b></div>
             </div>
             <p>
-              <span class="mr10"><b>电话 :</b></span>
-              <span class="mr10" v-text="dataMap.tel"></span>
+              <Row>
+                <Col class="tr" span="6"><span class="mr10"><b>电话 :</b></span></Col>
+                <Col span="18">
+                  <ul v-for="(item, index) in arbiInfo.phone.split(',')" :key="index">
+                    <li class="mr10" v-text="item"></li>
+                  </ul>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>地址 :</b></span>
-              <span class="mr10" v-text="dataMap.address"></span>
+              <Row>
+                <Col class="tr" span="6"><span class="mr10"><b>地址 :</b></span></Col>
+                <Col span="18">
+                  <span class="mr10" v-text="arbiInfo.address"></span>
+                </Col>
+              </Row>
             </p>
           </Col>
         </Row>
@@ -28,32 +38,60 @@
         <Row v-if="dataInfoShow">
           <Col span="22" offset="1">
             <p>
-              <span class="mr10"><b>仲裁机构 :</b></span>
-              <span class="mr10" v-text="dataInfo.carbitrationNameode"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>仲裁机构 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.carbitrationNameode"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>案件案号 :</b></span>
-              <span class="mr10" v-text="dataInfo.code"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>案件案号 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.code"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>纠纷类型 :</b></span>
-              <span class="mr10" v-text="dataInfo.caseType"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>纠纷类型 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.caseType"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>案件状态 :</b></span>
-              <span class="mr10" v-text="dataInfo.caseState"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>案件状态 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.caseState"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>仲裁员 :</b></span>
-              <span class="mr10" v-text="dataInfo.arbitratorName"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>仲裁员 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.arbitratorName"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>秘书 :</b></span>
-              <span class="mr10" v-text="dataInfo.secretaryName"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>秘书 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.secretaryName"></span>
+                </Col>
+              </Row>
             </p>
             <p>
-              <span class="mr10"><b>电话 :</b></span>
-              <span class="mr10" v-text="dataInfo.secretaryPhone"></span>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>电话 :</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.secretaryPhone"></span>
+                </Col>
+              </Row>
             </p>
           </Col>
         </Row>
@@ -199,6 +237,8 @@ export default {
       logo: {
         url: require('../../static/images/logoR.png')
       },
+      arbiInfoShow: false,
+      arbiInfo: null,
       dataInfoShow: false,
       dataInfo: null,
       addSubmit: false,
@@ -256,6 +296,7 @@ export default {
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.resCaseItem()
+      this.resArbiItem()
     }
     this.$watch('searchText', this.debounce(this.resSearch, 1000))
   },
@@ -345,6 +386,20 @@ export default {
         this.dataInfoShow = true
       }).catch(e => {
         this.dataInfoShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    resArbiItem () {
+      axios.post('/case/findArbitrationItem', {
+        oldId: this.caseOldId
+      }).then(res => {
+        this.arbiInfo = res.data.data
+        this.arbiInfoShow = true
+      }).catch(e => {
+        this.arbiInfoShow = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

@@ -5,33 +5,49 @@
         <Row>
           <Col span="22" offset="1">
             <p>
-              <span class="mr10">证据项名称 :</span>
-              <span v-text="infoData.name"></span>
-              <span v-if="!hashStatus" class="_icon">
-                <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
-              </span>
-            </p>
-            <p>
-              <span class="mr10">是否有原件 :</span>
-              <span v-if="infoData.state === 1">是</span>
-              <span v-else-if="infoData.state === 2">否</span>
-            </p>
-            <p>
-              <span class="mr10">证据项描述 :</span>
-              <span v-text="infoData.memo"></span>
+              <Row>
+                <Col span="3 tr"><span class="mr10">证据项名称 :</span></Col>
+                <Col span="20">
+                  <span v-text="infoData.name"></span>
+                  <span v-if="!hashStatus" class="_icon">
+                    <Icon @click="delInfo(infoData.id)" class="_del" type="close-circled"></Icon>
+                  </span>
+                </Col>
+              </Row>
             </p>
             <p>
               <Row>
-                <Col span="3"><span class="mr10">附件名称 :</span></Col>
+                <Col span="3 tr"><span class="mr10">是否有原件 :</span></Col>
+                <Col span="20">
+                  <span v-if="infoData.state === 1">是</span>
+                  <span v-else-if="infoData.state === 2">否</span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col span="3 tr"><span class="mr10">证据项描述 :</span></Col>
+                <Col span="20">
+                  <span v-text="infoData.memo"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col span="3 tr"><span class="mr10">附件名称 :</span></Col>
                 <Col span="20">
                   <span class="_file" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
                 </Col>
               </Row>
             </p>
             <p>
-              <span class="mr10">固化状态 :</span>
-              <span v-if="hashStatus === true" style="color:#19be6b;">已固化</span>
-              <span v-else-if="hashStatus === false" style="color:#ff9900;">未固化</span>
+              <Row>
+                <Col span="3 tr"><span class="mr10">固化状态 :</span></Col>
+                <Col span="20">
+                  <span v-if="hashStatus === true" style="color:#19be6b;">已固化</span>
+                  <span v-else-if="hashStatus === false" style="color:#ff9900;">未固化</span>
+                </Col>
+              </Row>
             </p>
           </Col>
         </Row>

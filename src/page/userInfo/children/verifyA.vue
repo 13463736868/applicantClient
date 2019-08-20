@@ -37,12 +37,12 @@
               <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">联系邮箱</Col>
+              <Col span="24" class="_label">仲裁送达邮箱</Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">联系地址</Col>
+              <Col span="24" class="_label">仲裁送达地址</Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.address"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
             </Row>
@@ -174,7 +174,7 @@
     </div>
     <Row class="pb30">
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">重 置</button></Col>
-      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addInfoBtn}" v-bind:disabled="addInfoBtn" @click="saveClick">保 存</button></Col>
+      <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addInfoBtn}" v-bind:disabled="addInfoBtn" @click="saveClick">提 交</button></Col>
     </Row>
   </div>
 </template>
