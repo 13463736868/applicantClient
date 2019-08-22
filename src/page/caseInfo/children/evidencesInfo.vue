@@ -28,6 +28,14 @@
         <add-icon v-if="revEvidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addRevEvid')"></add-icon>
       </div>
     </div>
+    <div v-if="questionObj.list" class="_question">
+      <div class="_top">问题清单</div>
+      <div v-if="questionObj.list">
+        <div v-for="(item, index) in questionData" :key="index">
+          <question-info :infoData="item"></question-info>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,12 +45,13 @@ import { mapGetters } from 'vuex'
 import addIcon from '@/components/common/addIcon'
 import evidInfo from '@/page/caseInfo/children/children/evidInfo'
 import addEvidInfo from '@/page/caseInfo/children/children/addEvidInfo'
+import questionInfo from '@/page/caseInfo/children/children/questionInfo'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidencesInfo',
   props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
-  components: { addIcon, evidInfo, addEvidInfo },
+  components: { addIcon, evidInfo, addEvidInfo, questionInfo },
   data () {
     return {
       evidObj: {
@@ -55,8 +64,12 @@ export default {
         add: false,
         addBtn: true
       },
+      questionObj: {
+        list: false
+      },
       evidData: null,
-      revEvidData: null
+      revEvidData: null,
+      questionData: null
     }
   },
   created () {
@@ -64,6 +77,9 @@ export default {
       if (this.partieType !== null) {
         this.resEvid()
         this.resRevEvid()
+        if (regi.type === 'ZhongWei') {
+          this.resQuestion()
+        }
       }
     }
   },
@@ -98,6 +114,27 @@ export default {
     }
   },
   methods: {
+    resQuestion () {
+      axios.post('/case/findCaseQusetionList', {
+        caseId: this.caseId
+      }).then(res => {
+        this.questionData = res.data.data
+        if (this.questionData !== null) {
+          if (this.questionData.length === 0) {
+            this.questionObj.list = false
+          } else {
+            this.questionObj.list = true
+          }
+        } else {
+          this.questionObj.list = false
+        }
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     resEvid () {
       axios.post(this.resEvidUrl, this.resEvidUrlId).then(res => {
         this.evidData = res.data.data.evidenceList
@@ -186,7 +223,10 @@ export default {
   ._revEvidences {
     padding-bottom: 60px;
   }
-  ._evidences ._top, ._revEvidences ._top{
+  ._question {
+    padding-bottom: 60px;
+  }
+  ._evidences ._top, ._revEvidences ._top, ._question ._top {
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
