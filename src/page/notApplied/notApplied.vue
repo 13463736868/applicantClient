@@ -67,10 +67,10 @@
     <alert-btn-info :alertShow="alertShow.submit" @alertCancel="alertCanc('submit')" @alertConfirm="submitSave" alertTitle="提示">
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>选择仲裁机构：</b></p>
+          <p><span class="_span">*</span><b>仲裁机构：</b></p>
         </Col>
         <Col span="16">
-          <Select v-model="alertShow.committee">
+          <Select disabled v-model="alertShow.committee">
             <Option v-for="item in alertShow.committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
