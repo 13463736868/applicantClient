@@ -1,30 +1,41 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
-      <Col span="4">
+      <Col span="4" class="_label">案件类型<b class="_b">*</b></Col>
+      <Col span="7">
         <Select v-model="caseTypeStatus" @on-change="resAction('change_subm')" :disabled="parentCaseId !== null || (caseTypeId !== null && caseTypeId !== 'null')">
           <Option :disabled="item.status === 2" v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="3" offset="1" class="_label">选择仲裁机构<b class="_b">*</b></Col>
-      <Col span="4">
+      <Col span="4" offset="2" class="_label">选择仲裁机构<b class="_b">*</b></Col>
+      <Col span="7">
         <Select v-model="committeeStatus" :disabled="arbId !== null && arbId !== 'null'">
           <Option :disabled="item.state === 2" v-for="item in caseMap[caseTypeStatus]" :value="item.arbId" :key="item.arbId">{{ item.name }}</Option>
         </Select>
       </Col>
-      <Col span="4">
+    </Row>
+    <Row class="_labelFor">
+      <Col span="8">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
         </Row>
       </Col>
-      <Col span="4" offset="1">
+      <Col span="8" :offset="caseInfo !== null && (caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 4) ? '' : '8'">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
+      <Col span="8" v-if="caseInfo !== null && (caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 4)">
+        <Row v-if="caseInfo.paymentStatus === 2">
+          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBook}" v-bind:disabled="addBook" @click="bookClick">申请公证书</button></Col>
+        </Row>
+        <Row v-if="caseInfo.paymentStatus === 4">
+          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBookPay}" v-bind:disabled="addBookPay" @click="bookPayClick">公证书缴费</button></Col>
+        </Row>
+      </Col>
     </Row>
     <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="固化后证据不允许删除，确定要固化吗？"></alert-tip>
+    <alert-tip :alertShow="alertShow.book" @alertCancel="alertCanc('book')" @alertConfirm="bookSave" alertTitle="提示" alertText="确定要申请公证书吗？"></alert-tip>
   </div>
 </template>
 
@@ -40,13 +51,16 @@ export default {
     return {
       addSubmit: false,
       addHash: false,
+      addBook: false,
+      addBookPay: false,
       caseTypeList: [],
       caseTypeStatus: null,
       committeeStatus: null,
       caseMap: {},
       caseNameMap: {},
       alertShow: {
-        hash: false
+        hash: false,
+        book: false
       }
     }
   },
@@ -231,15 +245,63 @@ export default {
         arbId: this.committeeStatus
       }).then(res => {
         this.addHash = false
-        this.changeEviden()
         this.alertCanc('hash')
+        if (res.data.data.flagg === '2') {
+          this.changeEviden()
+          this.$Message.success({
+            content: res.data.message,
+            duration: 2
+          })
+        } else if (res.data.data.flagg === '1') {
+          var newwindow = window.open('#', '_blank')
+          newwindow.document.write(res.data.data.transmissionNotarization)
+        } else {
+          this.$Message.warning({
+            content: res.data.message,
+            duration: 2
+          })
+        }
+      }).catch(e => {
+        this.addHash = false
+        this.alertCanc('hash')
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    bookClick () {
+      this.alertShow.book = true
+    },
+    bookSave () {
+      this.alertShow.book = false
+      this.addBook = true
+      axios.post('/case/applyNotarization', {
+        caseId: this.caseInfo.id
+      }).then(res => {
+        this.addBook = false
         this.$Message.success({
           content: res.data.message,
           duration: 2
         })
       }).catch(e => {
-        this.addHash = false
-        this.alertCanc('hash')
+        this.addBook = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    bookPayClick () {
+      this.addBookPay = true
+      axios.post('/case/toPayTheFee', {
+        caseId: this.caseInfo.id
+      }).then(res => {
+        this.addBookPay = false
+        var newwindow = window.open('#', '_blank')
+        newwindow.document.write(res.data.data)
+      }).catch(e => {
+        this.addBookPay = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
