@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="tc fc6 _footerFont fcf">
-      <p>CopyRight © 版权所有: {{loginName}}仲裁委员会 技术支持：北京知仲科技有限公司（010-64170741）</p>
+      <p>CopyRight © 版权所有: {{loginName}}仲裁委员会 &nbsp;技术支持: 北京知仲科技有限公司（010-64170741）</p>
     </div>
   </div>
 </template>
