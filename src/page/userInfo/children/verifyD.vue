@@ -268,13 +268,13 @@ export default {
   created () {
     if (this.userType === 1) {
       this.cardList()
-      this.uploadUrl = regi.api + '/person/perfect/2'
+      this.uploadUrl = '/person/perfect/2'
       this.fileObj = this.fileObjA
       this.imgUrlId = this.imgUrlIdA
     } else if (this.userType === 2) {
       this.cardList()
       this.dictionary()
-      this.uploadUrl = regi.api + '/person/perfect/company/2'
+      this.uploadUrl = '/person/perfect/company/2'
       this.fileObj = this.fileObjB
       this.imgUrlId = this.imgUrlIdA
     }
