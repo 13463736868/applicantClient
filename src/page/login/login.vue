@@ -51,8 +51,8 @@
         <p :style="{'display':!isChrome ? 'none' : ''}" style="color:#D37575">推荐使用chrome浏览器</p>
       </div>
     </div>
-    <div class="tc fc6 _footerFont">
-      <p>CopyRight © 版权所有: 青岛仲裁委员会 技术支持：北京知仲科技有限公司（010-64170741）</p>
+    <div class="tc fc6 _footerFont fcf">
+      <p>CopyRight © 版权所有: {{loginName}}仲裁委员会 技术支持：北京知仲科技有限公司（010-64170741）</p>
     </div>
   </div>
 </template>
@@ -113,6 +113,9 @@ export default {
   computed: {
     codeImgSrc () {
       return regi.api + '/verify/code' + this.codeSrc
+    },
+    loginName () {
+      return regi.dataMap.loginName
     }
   },
   methods: {

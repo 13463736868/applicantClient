@@ -1,12 +1,12 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label none">仲裁机构<b class="_b">*</b></Col>
-      <Col span="4" class="none">
+      <!-- <Col span="3" class="_label">仲裁机构<b class="_b">*</b></Col>
+      <Col span="4">
         <Select disabled v-model="committeeStatus">
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </Col>
+      </Col> -->
       <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
       <Col span="8">
         <Select v-model="caseTypeStatus">

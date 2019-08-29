@@ -21,6 +21,7 @@ const infoMap = {
     note: '前后分离,打包需要注意:代理信息,服务器路径前缀client,接口地址前缀upcase,以及路由信息base,图片信息'
   },
   'YanCheng': {
+    loginName: '盐城',
     name: '中国盐城仲裁委员会',
     excName: 'YanCheng Arbitration Commission',
     tel: '0515-88123589',
@@ -61,6 +62,7 @@ const infoMap = {
     note: '哈尔滨部署演示'
   },
   'QingDao': {
+    loginName: '青岛',
     name: '青岛仲裁委员会',
     excName: 'Qingdao Arbitration Commission',
     tel: '0532－85768569',
@@ -69,6 +71,7 @@ const infoMap = {
     note: '青岛部署演示'
   },
   'ZhongWei': {
+    loginName: '中卫',
     name: '中卫仲裁委员会',
     excName: 'Zhongwei Arbitration Commission',
     tel: '0955-7674885',
@@ -82,6 +85,5 @@ const dataMap = infoMap[type]
 export default {
   regiType,
   api,
-  dataMap,
-  type
+  dataMap
 }
