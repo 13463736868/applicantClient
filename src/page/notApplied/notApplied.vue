@@ -65,7 +65,7 @@
       </Row>
     </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.submit" @alertCancel="alertCanc('submit')" @alertConfirm="submitSave" alertTitle="提示">
-      <Row class="_labelFor">
+      <Row class="_labelFor none">
         <Col span="6" offset="1">
           <p><span class="_span">*</span><b>仲裁机构：</b></p>
         </Col>

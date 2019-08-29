@@ -1,26 +1,26 @@
 <template>
   <div class="caseSubmit">
     <Row class="_labelFor">
-      <Col span="3" class="_label">仲裁机构<b class="_b">*</b></Col>
-      <Col span="4">
+      <Col span="3" class="_label none">仲裁机构<b class="_b">*</b></Col>
+      <Col span="4" class="none">
         <Select disabled v-model="committeeStatus">
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="3" offset="1" class="_label">案件类型<b class="_b">*</b></Col>
-      <Col span="4">
+      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
+      <Col span="8">
         <Select v-model="caseTypeStatus">
           <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
-      <Col span="4">
+      <Col span="5" offset="2">
         <Row>
-          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
+          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
         </Row>
       </Col>
-      <Col span="4" offset="1">
+      <Col span="5" offset="1">
         <Row>
-          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
+          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
     </Row>
