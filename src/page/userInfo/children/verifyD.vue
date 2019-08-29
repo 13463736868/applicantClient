@@ -153,7 +153,7 @@
             ref="upload"
             name="file"
             type="drag"
-            :action="uploadUrl"
+            :action="'/api' + uploadUrl"
             :with-credentials="true"
             :show-upload-list="false"
             :data="uploadData"
