@@ -15,27 +15,33 @@
       </Col>
     </Row>
     <Row class="_labelFor">
-      <Col span="8">
+      <Col span="6">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
         </Row>
       </Col>
-      <Col span="8" :offset="caseInfo !== null && (caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 4) ? '' : '8'">
+      <Col span="6">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
-      <Col span="8" v-if="caseInfo !== null && (caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 4)">
-        <Row v-if="caseInfo.paymentStatus === 2">
+      <Col span="6" v-if="caseInfo !== null">
+        <Row v-if="caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 6">
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBook}" v-bind:disabled="addBook" @click="bookClick">申请公证书</button></Col>
         </Row>
         <Row v-if="caseInfo.paymentStatus === 4">
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBookPay}" v-bind:disabled="addBookPay" @click="bookPayClick">公证书缴费</button></Col>
         </Row>
       </Col>
+      <Col span="6" v-if="caseInfo !== null && caseInfo.paymentStatus !== 1">
+        <Row>
+          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addLett}" v-bind:disabled="addLett" @click="lettClick">申请存管涵</button></Col>
+        </Row>
+      </Col>
     </Row>
     <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="固化后证据不允许删除，确定要固化吗？"></alert-tip>
     <alert-tip :alertShow="alertShow.book" @alertCancel="alertCanc('book')" @alertConfirm="bookSave" alertTitle="提示" alertText="确定要申请公证书吗？"></alert-tip>
+    <alert-tip :alertShow="alertShow.lett" @alertCancel="alertCanc('lett')" @alertConfirm="lettSave" alertTitle="提示" alertText="确定要申请存管涵吗？"></alert-tip>
   </div>
 </template>
 
@@ -53,6 +59,7 @@ export default {
       addHash: false,
       addBook: false,
       addBookPay: false,
+      addLett: false,
       caseTypeList: [],
       caseTypeStatus: null,
       committeeStatus: null,
@@ -60,7 +67,8 @@ export default {
       caseNameMap: {},
       alertShow: {
         hash: false,
-        book: false
+        book: false,
+        lett: false
       }
     }
   },
@@ -264,6 +272,28 @@ export default {
       }).catch(e => {
         this.addHash = false
         this.alertCanc('hash')
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    lettClick () {
+      this.alertShow.lett = true
+    },
+    lettSave () {
+      this.alertShow.lett = false
+      this.addLett = true
+      axios.post('/case/saveElectronicStorage', {
+        caseId: this.caseInfo.id
+      }).then(res => {
+        this.addLett = false
+        this.$Message.success({
+          content: res.data.message,
+          duration: 2
+        })
+      }).catch(e => {
+        this.addLett = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
