@@ -33,7 +33,7 @@
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBookPay}" v-bind:disabled="addBookPay" @click="bookPayClick">公证书缴费</button></Col>
         </Row>
       </Col>
-      <Col span="6" v-if="caseInfo !== null && caseInfo.paymentStatus !== 1">
+      <Col span="6" v-if="caseInfo !== null && caseInfo.paymentStatus !== null && caseInfo.paymentStatus !== 1">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addLett}" v-bind:disabled="addLett" @click="lettClick">申请存管涵</button></Col>
         </Row>
