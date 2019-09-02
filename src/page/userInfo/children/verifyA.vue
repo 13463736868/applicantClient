@@ -37,12 +37,12 @@
               <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">联系邮箱</Col>
+              <Col span="24" class="_label">联系邮箱<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">联系地址</Col>
+              <Col span="24" class="_label">联系地址<b class="_b">*</b></Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.address"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
             </Row>
@@ -74,6 +74,15 @@
               </Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===214" v-text="emInfo.text"></span></Col>
             </Row>
+            <Row class="_labelFor">
+              <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
+              <Col span="24">
+                <Select v-model="userAInfo.scale">
+                  <Option v-for="item in scaleList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                </Select>
+              </Col>
+              <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
+            </Row>
           </Col>
           <Col span="10" offset="2">
             <Row class="_labelFor">
@@ -96,12 +105,8 @@
               <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
-              <Col span="24">
-                <Select v-model="userAInfo.scale">
-                  <Option v-for="item in scaleList" :value="item.value" :key="item.value">{{item.label}}</Option>
-                </Select>
-              </Col>
+              <Col span="24" class="_label">联系邮箱<b class="_b">*</b></Col>
+              <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===224" v-text="emInfo.text"></span></Col>
             </Row>
           </Col>
@@ -540,8 +545,11 @@ export default {
             this.emInfo.status = 223
             this.emInfo.text = '请输入证件号码'
           } else if (this.userAInfo.scale === null) {
-            this.emInfo.status = 224
+            this.emInfo.status = 215
             this.emInfo.text = '请选择公司人数'
+          } else if (this.userAInfo.email === '') {
+            this.emInfo.status = 224
+            this.emInfo.text = '请输入邮箱地址'
           }
         } else {
           if (!setRegExp(this.userAInfo.name, 'company')) {
@@ -559,6 +567,9 @@ export default {
           } else if (!setRegExp(this.userAInfo.idcard, 'idcard')) {
             this.emInfo.status = 223
             this.emInfo.text = '请输入正确证件号码格式'
+          } else if (!setRegExp(this.userAInfo.email, 'email')) {
+            this.emInfo.status = 224
+            this.emInfo.text = '请输入正确邮箱格式'
           } else {
             this.emInfo.status = 0
             this.emInfo.text = ''
