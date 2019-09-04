@@ -218,7 +218,7 @@ export default {
           })
           return false
         }
-        if (this.committeeStatus === '') {
+        if (this.committeeStatus === '' || this.committeeStatus === null) {
           this.$Message.error({
             content: '提交仲裁委不能为空',
             duration: 5
