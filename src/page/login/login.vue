@@ -48,6 +48,7 @@
           <span class="_loginBtn" @click="resRegister">注册 / </span>
           <span class="_loginBtn" @click="resForget">忘记密码?</span>
         </div>
+        <p :style="{'display':!isChrome ? 'none' : ''}" style="color:#D37575">推荐使用chrome浏览器</p>
       </div>
     </div>
   </div>
@@ -91,12 +92,18 @@ export default {
         em: '',
         emStatus: false
       },
-      codeSrc: ''
+      codeSrc: '',
+      isChrome: true
     }
   },
   created () {
     this.clearTokenLoc()
     this.resGetCode()
+    if (this.getweb() !== 'Chrome') {
+      alert('推荐使用chrome浏览器')
+    } else {
+      this.isChrome = false
+    }
   },
   mounted () {
   },
@@ -109,6 +116,17 @@ export default {
     ...mapActions([
       'setUserInfo'
     ]),
+    getweb () {
+      if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+        return 'IE'
+      } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+        return 'Firefox'
+      } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        return 'Chrome'
+      } else if (navigator.userAgent.indexOf('Safari') !== -1) {
+        return 'Safari'
+      }
+    },
     clearTokenLoc () {
       removeToken()
       if (window.localStorage) {
