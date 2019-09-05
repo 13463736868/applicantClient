@@ -236,7 +236,7 @@ export default {
         })
         return false
       }
-      if (this.committeeStatus === '') {
+      if (this.committeeStatus === '' || this.committeeStatus === null) {
         this.$Message.error({
           content: '提交仲裁委不能为空',
           duration: 5
@@ -279,13 +279,21 @@ export default {
       })
     },
     lettClick () {
+      if (this.committeeStatus === '' || this.committeeStatus === null) {
+        this.$Message.error({
+          content: '提交仲裁委不能为空',
+          duration: 5
+        })
+        return false
+      }
       this.alertShow.lett = true
     },
     lettSave () {
       this.alertShow.lett = false
       this.addLett = true
       axios.post('/case/saveElectronicStorage', {
-        caseId: this.caseInfo.id
+        caseId: this.caseInfo.id,
+        arbId: this.committeeStatus
       }).then(res => {
         this.addLett = false
         this.$Message.success({
@@ -301,13 +309,21 @@ export default {
       })
     },
     bookClick () {
+      if (this.committeeStatus === '' || this.committeeStatus === null) {
+        this.$Message.error({
+          content: '提交仲裁委不能为空',
+          duration: 5
+        })
+        return false
+      }
       this.alertShow.book = true
     },
     bookSave () {
       this.alertShow.book = false
       this.addBook = true
       axios.post('/case/applyNotarization', {
-        caseId: this.caseInfo.id
+        caseId: this.caseInfo.id,
+        arbId: this.committeeStatus
       }).then(res => {
         this.addBook = false
         this.$Message.success({
