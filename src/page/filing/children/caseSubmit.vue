@@ -261,8 +261,8 @@ export default {
             duration: 2
           })
         } else if (res.data.data.flagg === '1') {
-          var newwindow = window.open('#', '_blank')
-          newwindow.document.write(res.data.data.transmissionNotarization)
+          // var newwindow = window.open('#', '_blank')
+          window.document.write(res.data.data.transmissionNotarization)
         } else {
           this.$Message.warning({
             content: res.data.message,
@@ -344,8 +344,8 @@ export default {
         caseId: this.caseInfo.id
       }).then(res => {
         this.addBookPay = false
-        var newwindow = window.open('#', '_blank')
-        newwindow.document.write(res.data.data)
+        // var newwindow = window.open('#', '_blank')
+        window.document.write(res.data.data)
       }).catch(e => {
         this.addBookPay = false
         this.$Message.error({
