@@ -33,15 +33,14 @@
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBookPay}" v-bind:disabled="addBookPay" @click="bookPayClick">公证书缴费</button></Col>
         </Row>
       </Col>
-      <Col span="6" v-if="caseInfo !== null && caseInfo.paymentStatus !== null && caseInfo.paymentStatus !== 1">
+      <Col span="6" v-if="[2, 3, 4, 5, 6].indexOf(caseInfo.paymentStatus) !== -1">
         <Row>
-          <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addLett}" v-bind:disabled="addLett" @click="lettClick">申请存管涵</button></Col>
+          <Col class="tc" span="20" offset="2"><button class="_saveBtn" @click="seeLett">查看存管涵</button></Col>
         </Row>
       </Col>
     </Row>
     <alert-tip :alertShow="alertShow.hash" @alertCancel="alertCanc('hash')" @alertConfirm="hashSave" alertTitle="提示" alertText="固化后证据不允许删除，确定要固化吗？"></alert-tip>
     <alert-tip :alertShow="alertShow.book" @alertCancel="alertCanc('book')" @alertConfirm="bookSave" alertTitle="提示" alertText="确定要申请公证书吗？"></alert-tip>
-    <alert-tip :alertShow="alertShow.lett" @alertCancel="alertCanc('lett')" @alertConfirm="lettSave" alertTitle="提示" alertText="确定要申请存管涵吗？"></alert-tip>
   </div>
 </template>
 
@@ -67,8 +66,7 @@ export default {
       caseNameMap: {},
       alertShow: {
         hash: false,
-        book: false,
-        lett: false
+        book: false
       }
     }
   },
@@ -278,30 +276,12 @@ export default {
         })
       })
     },
-    lettClick () {
-      if (this.committeeStatus === '' || this.committeeStatus === null) {
-        this.$Message.error({
-          content: '提交仲裁委不能为空',
-          duration: 5
-        })
-        return false
-      }
-      this.alertShow.lett = true
-    },
-    lettSave () {
-      this.alertShow.lett = false
-      this.addLett = true
-      axios.post('/case/saveElectronicStorage', {
-        caseId: this.caseInfo.id,
-        arbId: this.committeeStatus
+    seeLett () {
+      axios.post('/case/queryDocument', {
+        caseId: this.caseInfo.id
       }).then(res => {
-        this.addLett = false
-        this.$Message.success({
-          content: res.data.message,
-          duration: 2
-        })
+        window.open(res.data.data, '_blank')
       }).catch(e => {
-        this.addLett = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
