@@ -232,6 +232,10 @@ export default new Router({
         requireAuth: true
       },
       component: userInfo
+    },
+    {
+      path: '*',
+      redirect: '/home'
     }
   ]
 })
