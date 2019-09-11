@@ -29,7 +29,7 @@
           <Col span="4" class="_label">已上传的文件<b class="_b">*</b></Col>
           <Col span="16" :class="_input">
             <Row>
-              <Col span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" :title="item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 25 ? item.filename.substr(0, 20) + '...' : item.filename}}</span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></Col>
+              <Col span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" :title="item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></Col>
             </Row>
           </Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===4" v-text="emInfo.text"></span></Col>
