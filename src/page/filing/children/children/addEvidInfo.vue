@@ -133,6 +133,11 @@ export default {
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 5
       })
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.progressText = '100%'
+        this.spinShow = false
+      }
       this.fileObj = null
     },
     resSizeError (file) {
@@ -141,6 +146,11 @@ export default {
         content: '文件不能超过10MB',
         duration: 5
       })
+      this.fileNum--
+      if (this.fileNum === 0) {
+        this.progressText = '100%'
+        this.spinShow = false
+      }
       this.fileObj = null
     },
     resBefoUpload (file) {

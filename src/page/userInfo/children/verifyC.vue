@@ -55,6 +55,10 @@
                 <Col span="24" class="_label">公司行业<b class="_b">*</b></Col>
                 <Col span="24" class="_input"><span v-text="tradeName"></span></Col>
               </Row>
+              <Row class="_labelFor">
+                <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
+                <Col span="24" class="_input"><span v-text="scaleName"></span></Col>
+              </Row>
             </Col>
             <Col span="10" offset="2">
               <Row class="_labelFor">
@@ -70,8 +74,8 @@
                 <Col span="24" class="_input"><span v-text="userAInfo.idcard"></span></Col>
               </Row>
               <Row class="_labelFor">
-                <Col span="24" class="_label">公司人数<b class="_b">*</b></Col>
-                <Col span="24" class="_input"><span v-text="scaleName"></span></Col>
+                <Col span="24" class="_label">联系邮箱<b class="_b">*</b></Col>
+                <Col span="24" class="_input"><span v-text="userAInfo.email"></span></Col>
               </Row>
             </Col>
           </Row>
