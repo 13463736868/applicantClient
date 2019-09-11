@@ -25,7 +25,7 @@
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
-      <Col span="6" v-if="caseInfo !== null">
+      <Col span="6" v-if="paymentStatus !== null">
         <Row v-if="caseInfo.paymentStatus === 2 || caseInfo.paymentStatus === 6">
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBook}" v-bind:disabled="addBook" @click="bookClick">申请公证书</button></Col>
         </Row>
@@ -33,7 +33,7 @@
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addBookPay}" v-bind:disabled="addBookPay" @click="bookPayClick">公证书缴费</button></Col>
         </Row>
       </Col>
-      <Col span="6" v-if="[2, 3, 4, 5, 6].indexOf(caseInfo.paymentStatus) !== -1">
+      <Col span="6" v-if="paymentStatus !== null && [2, 3, 4, 5, 6].indexOf(caseInfo.paymentStatus) !== -1">
         <Row>
           <Col class="tc" span="20" offset="2"><button class="_saveBtn" @click="seeLett">查看存管涵</button></Col>
         </Row>
@@ -84,6 +84,9 @@ export default {
     ]),
     parentCaseId () {
       return this.caseInfo === null ? null : this.caseInfo.parentCaseId
+    },
+    paymentStatus () {
+      return this.caseInfo === null ? null : this.caseInfo.paymentStatus
     }
     // caseTypeStatus: {
     //   get: function () {
