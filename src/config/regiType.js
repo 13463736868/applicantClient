@@ -93,6 +93,7 @@ const infoMap = {
 const dataMap = infoMap[type]
 
 export default {
+  type,
   regiType,
   api,
   dataMap
