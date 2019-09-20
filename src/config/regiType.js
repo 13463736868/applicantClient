@@ -79,6 +79,15 @@ const infoMap = {
     address: '宁夏回族自治区中卫市文萃北街13号',
     goRoom: '',
     note: '中卫部署演示'
+  },
+  'HeFei': {
+    loginName: '合肥',
+    name: '合肥仲裁委员会',
+    excName: 'HeFei Arbitration Commission',
+    tel: '0551-62648826',
+    address: '安徽省合肥市阜阳路17号',
+    goRoom: '',
+    note: '合肥部署演示'
   }
 }
 const dataMap = infoMap[type]
