@@ -2,7 +2,7 @@
 // regiType 1 线上;2 本地(个人注册)  anyang:/upcase ;src/axios;src/router;index.html
 const regiType = 1
 const api = '/api'
-const type = 'QingYang'
+const type = 'QingDao'
 const infoMap = {
   'QingYang': {
     loginName: '庆阳',

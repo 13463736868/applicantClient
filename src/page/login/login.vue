@@ -82,7 +82,7 @@ export default {
           width: '210px',
           position: 'absolute',
           top: '20px',
-          right: '20px',
+          left: '20px',
           userSelect: 'none'
         }
       },
