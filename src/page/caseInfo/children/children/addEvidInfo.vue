@@ -11,23 +11,23 @@
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="4" class="_label">是否有原文件<b class="_b">*</b></Col>
+          <Col span="4" class="_label">证明事项<b class="_b">*</b></Col>
+          <Col span="16" class="_input"><input type="text" v-model="data.memo"></Col>
+          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
+          <Col span="6" class="_label">该证据是否为证据原件<b class="_b">*</b></Col>
           <Col span="16" class="_radio">
-            <RadioGroup v-model="data.state">
+            <RadioGroup v-model="data.state" @on-change="selectRadio">
               <Radio :label="1">是</Radio>
               <Radio :label="2">否</Radio>
             </RadioGroup>
           </Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
         </Row>
-        <Row class="_labelFor">
-          <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model="data.memo"></Col>
-          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
-        </Row>
         <Row class="_labelFor" v-if="fileList.length !== 0">
           <Col span="4" class="_label">已上传的文件<b class="_b">*</b></Col>
-          <Col span="16" :class="_input">
+          <Col span="16" class="_input">
             <Row>
               <Col span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" :title="item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 25 ? item.filename.substr(0, 20) + '...' : item.filename}}</span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></Col>
             </Row>
@@ -65,23 +65,39 @@
         </Row>
       </Col>
     </Row>
+    <Row class="pb5 pt5 _tipsText">
+      <Col span="22" offset="1">提示：当事人应当为自己的仲裁请求承担举证责任，您提交的证据不是证据原件，您将为此承担相应的法律风险</Col>
+    </Row>
+    <Row class="pb5 pt5">
+      <Col span="22" offset="1">
+        <Checkbox v-model="agree">我已阅读并同意</Checkbox>
+      </Col>
+    </Row>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addFileBtn}" v-bind:disabled="addFileBtn" @click="saveClick">保 存</button></Col>
     </Row>
+    <alert-btn-info :alertShow="alertShow.select" @alertConfirm="alertCanc" @alertCancel="alertCanc" alertTitle="提示">
+      <p>当事人应当为自己的仲裁请求承担举证责任，您提交的证据不是证据原件，您将为此承担相应的法律风险</p>
+    </alert-btn-info>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import spinComp from '@/components/common/spin'
+import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
 
 export default {
   name: 'add_evid_info',
-  components: { spinComp },
+  components: { spinComp, alertBtnInfo },
   props: ['caseId', 'caseOldId', 'partieType', 'uploadUrl', 'uploadFileUrl', 'fileType'],
   data () {
     return {
+      agree: false,
+      alertShow: {
+        select: false
+      },
       spinShow: false,
       progressText: null,
       emInfo: {
@@ -104,7 +120,7 @@ export default {
   },
   computed: {
     addFileBtn () {
-      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
+      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.agree === false || this.data.memo === '') {
         return true
       } else {
         return false
@@ -112,6 +128,14 @@ export default {
     }
   },
   methods: {
+    alertCanc () {
+      this.alertShow.select = false
+    },
+    selectRadio () {
+      if (this.data.state === 2) {
+        this.alertShow.select = true
+      }
+    },
     delFile (id) {
       for (let k in this.fileList) {
         if (this.fileList[k].id === id) {
@@ -270,6 +294,9 @@ export default {
         float: right;
       }
     }
+  }
+  ._tipsText{
+    color: #126eaf;
   }
   ._cancelBtn {
     @include btn(#fff, 90px, 14px, 32px);
