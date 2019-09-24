@@ -7,20 +7,20 @@
           <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col> -->
-      <Col span="3" class="_label">案件类型<b class="_b">*</b></Col>
-      <Col span="8">
+      <!-- <Col span="3" class="_label">合同类型<b class="_b">*</b></Col>
+      <Col span="4">
         <Select v-model="caseTypeStatus">
           <Option v-for="item in caseTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </Col>
-      <Col span="5" offset="2">
+      </Col> -->
+      <Col span="12">
         <Row>
-          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
+          <Col class="tc" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">提交仲裁</button></Col>
         </Row>
       </Col>
-      <Col span="5" offset="1">
+      <Col span="12">
         <Row>
-          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
+          <Col class="tc" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
         </Row>
       </Col>
     </Row>

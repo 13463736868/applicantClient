@@ -12,14 +12,14 @@
         <Col span="8">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="缴费单号"></Input>
         </Col>
-        <Col span="8">
+        <!-- <Col span="8">
           <label class="lh32 f16 fc6 fr mr15">仲裁委</label>
         </Col>
         <Col span="6">
           <Select v-model="committeeStatus" style="width:200px" @on-change="resChangeStatus()">
             <Option v-for="item in committeeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
-        </Col>
+        </Col> -->
       </Row>
       <div class="_payList clearfix">
         <Row>

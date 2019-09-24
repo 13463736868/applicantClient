@@ -1,7 +1,7 @@
 <template>
   <div class="caseType">
     <head-top :isRegister="true">
-      <span class="f36 fcf">案件类型管理</span>
+      <span class="f36 fcf">合同类型管理</span>
     </head-top>
     <div class="_center pr">
       <spin-comp :spinShow="spinShow"></spin-comp>
@@ -28,7 +28,7 @@
     <alert-btn-info :alertShow="alertObj.add"  @alertConfirm="addSave" @alertCancel="alertCanc('add')" alertTitle="操作">
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>案件类型名称：</b></p>
+          <p><span class="_span">*</span><b>合同类型名称：</b></p>
         </Col>
         <Col span="16">
           <Input v-model="alertObj.caseTypeName"></Input>
@@ -54,12 +54,12 @@ export default {
         loading: false,
         header: [
           {
-            title: '案件类型名称',
+            title: '合同类型名称',
             key: 'caseTypeName',
             align: 'center'
           },
           {
-            title: '案件类型编码',
+            title: '合同类型编码',
             key: 'caseTypeCode',
             align: 'center'
           },
@@ -114,7 +114,7 @@ export default {
     addSave () {
       if (this.alertObj.caseTypeName === '') {
         this.$Message.error({
-          content: '案件类型名称不能为空',
+          content: '合同类型名称不能为空',
           duration: 5
         })
         return false

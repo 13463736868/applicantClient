@@ -678,7 +678,7 @@ export default {
           })
         } else {
           this.$Message.error({
-            content: '错误信息:用户案件类型未知',
+            content: '错误信息:用户合同类型未知',
             duration: 5
           })
         }

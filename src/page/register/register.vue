@@ -127,8 +127,16 @@
             </Row>
           </div>
         </div>
+        <Row class="pb10 pt10 _text">
+          <Col span="18" offset="4">友情提示：注册手机号码要确保真实有效，该手机号码须作为仲裁程序送达地址之一</Col>
+        </Row>
+        <Row class="pb10 pt10">
+          <Col span="18" offset="4">
+            <Checkbox v-model="agree">我已阅读并同意</Checkbox>
+          </Col>
+        </Row>
         <Row class="pb10 pt20">
-          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':registerBtn}" v-bind:disabled="registerBtn" @click="resRegister">注 册</button></Col>
+          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':registerBtns}" v-bind:disabled="registerBtns" @click="resRegister">注 册</button></Col>
         </Row>
       </div>
     </div>
@@ -146,6 +154,7 @@ export default {
   components: { headTop },
   data () {
     return {
+      agree: false,
       registerType: true,
       registerBtn: true,
       identCodeBtn: true,
@@ -183,6 +192,13 @@ export default {
     }
   },
   computed: {
+    registerBtns () {
+      if (this.agree && !this.registerBtn) {
+        return false
+      } else {
+        return true
+      }
+    },
     regiType () {
       if (regi.regiType === 1) {
         return true
@@ -210,6 +226,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.agree = false
         }
       } else if (type === 'personal') {
         if (this.registerType !== false) {
@@ -228,6 +245,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.agree = false
         }
       }
     },
@@ -244,6 +262,7 @@ export default {
       if (!setRegExp(this[type].phone, 'phone')) {
         this[type].emStatus = 1
         this[type].emText = '手机号码格式不正确'
+        this.registerBtn = true
       } else {
         axios.post('/checkPhone', {
           phone: this[type].phone
@@ -451,6 +470,9 @@ export default {
       line-height: 32px;
       margin-right: 10px;
       color: #ff7a7a;
+    }
+    ._text {
+      color: #126eaf;
     }
   }
 }

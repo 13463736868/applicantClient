@@ -24,7 +24,7 @@
           <Button type="primary" @click="resAddUpload">批量导入</Button>
         </Col> -->
         <Col span="2" offset="4">
-          <Button type="primary" @click="resSubmit">批量提交</Button>
+          <Button type="primary" @click="resSubmit">合同类型</Button>
         </Col>
       </Row>
       <div class="_caseList clearfix">
@@ -77,7 +77,7 @@
       </Row> -->
       <Row class="_labelFor">
         <Col span="6" offset="1">
-          <p><span class="_span">*</span><b>案件类型：</b></p>
+          <p><span class="_span">*</span><b>合同类型：</b></p>
         </Col>
         <Col span="16">
           <Select v-model="caseTypeStatus">
@@ -210,7 +210,7 @@ export default {
                       this.goCaseSee(params.index)
                     }
                   }
-                }, '查看'),
+                }, '查看和修订'),
                 h('Button', {
                   props: {
                     type: 'primary',

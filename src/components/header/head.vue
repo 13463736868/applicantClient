@@ -80,7 +80,7 @@ export default {
           },
           {
             id: '4',
-            text: '案件类型管理',
+            text: '合同类型管理',
             url: '/caseType'
           }
         ]

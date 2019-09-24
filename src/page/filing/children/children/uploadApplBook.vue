@@ -161,6 +161,9 @@ export default {
         margin-left: 5px;
         vertical-align: middle;
       }
+      ._enDow {
+        color: #337BB5
+      }
     }
     ._text {
       padding: 30px 0;
