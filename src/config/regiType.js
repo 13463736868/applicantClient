@@ -88,6 +88,15 @@ const infoMap = {
     address: '安徽省合肥市阜阳路17号',
     goRoom: '',
     note: '合肥部署演示'
+  },
+  'ChiFeng': {
+    loginName: '赤峰',
+    name: '赤峰仲裁委员会',
+    excName: 'ChiFeng Arbitration Commission',
+    tel: '0476-8369302',
+    address: '内蒙古自治区赤峰市红山区昭乌达路71号13楼1304',
+    goRoom: '',
+    note: '赤峰部署演示'
   }
 }
 const dataMap = infoMap[type]

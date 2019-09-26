@@ -77,7 +77,7 @@ export default {
       if (this.partieType !== null) {
         this.resEvid()
         this.resRevEvid()
-        if (regi.type === 'ZhongWei') {
+        if (regi.type === 'ZhongWei' || regi.type === 'HeFei' || regi.type === 'ChiFeng') {
           this.resQuestion()
         }
       }
