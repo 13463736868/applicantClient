@@ -15,7 +15,7 @@
         </Row>
         <Row class="_labelFor" v-if="fileIdList.length === 0">
           <Col span="12" class="_label">授权委托书<b class="_b">*</b></Col>
-          <Col span="12" class="_label tr"><span class="_enDow hand" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>授权委托书模版下载</span></Col>
+          <Col span="12" class="_label"><span class="_enDow hand f13" style="margin-left:-100px;" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>代理人授权委托书建议版本下载</span></Col>
           <Col span="24">
             <Upload
               ref="upload"

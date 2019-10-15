@@ -6,7 +6,7 @@
     <div class="_center pr">
       <spin-comp :spinShow="spinShow"></spin-comp>
       <Row class="pb20">
-        <Col span="2" class="tc" offset="21">
+        <Col span="2" class="tr pr20" offset="22">
           <Button type="primary" @click="resAdd">添加</Button>
         </Col>
       </Row>

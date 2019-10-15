@@ -20,7 +20,7 @@
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="2">
+        <Col span="2" class="tr pr20">
           <Button type="primary" @click="resPayment">批量缴费</Button>
         </Col>
       </Row>

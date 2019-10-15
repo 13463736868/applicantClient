@@ -7,7 +7,7 @@
       <Col span="22" offset="1">
         <Row class="_labelFor">
           <Col span="12" class="_label">仲裁申请书上传<b class="_b">*</b></Col>
-          <Col span="12" class="_label tr"><span class="_enDow hand" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>仲裁申请书模版下载</span></Col>
+          <Col span="12" class="_label"><span class="_enDow hand f13" style="margin-left:-75px;" @click="dowDoc"><Icon class="mr5" type="ios-information-outline" size="16" color="#ff7a7a"/>仲裁申请书模版下载</span></Col>
           <Col span="24">
             <Upload
               ref="upload"

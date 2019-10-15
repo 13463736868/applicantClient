@@ -23,7 +23,7 @@
         <!-- <Col span="2" offset="2">
           <Button type="primary" @click="resAddUpload">批量导入</Button>
         </Col> -->
-        <Col span="2" offset="4">
+        <Col span="2" offset="5">
           <Button type="primary" @click="resSubmit">合同类型</Button>
         </Col>
       </Row>
