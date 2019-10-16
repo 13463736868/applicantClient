@@ -77,9 +77,7 @@ export default {
       if (this.partieType !== null) {
         this.resEvid()
         this.resRevEvid()
-        if (regi.type === 'ZhongWei') {
-          this.resQuestion()
-        }
+        this.resQuestion()
       }
     }
   },
