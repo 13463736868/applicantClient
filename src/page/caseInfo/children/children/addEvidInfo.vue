@@ -65,20 +65,18 @@
         </Row>
       </Col>
     </Row>
-    <Row class="pb5 pt5 _tipsText">
+    <!-- <Row class="pb5 pt5 _tipsText">
       <Col span="22" offset="1">提示：当事人应当为自己的仲裁请求承担举证责任，您提交的证据不是证据原件，您将为此承担相应的法律风险</Col>
-    </Row>
-    <Row class="pb5 pt5">
-      <Col span="22" offset="1">
-        <Checkbox v-model="agree">我已阅读并同意</Checkbox>
-      </Col>
-    </Row>
+    </Row> -->
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addFileBtn}" v-bind:disabled="addFileBtn" @click="saveClick">保 存</button></Col>
     </Row>
-    <alert-btn-info :alertShow="alertShow.select" @alertConfirm="alertCanc" @alertCancel="alertCanc" alertTitle="提示">
+    <alert-btn-info :alertShow="alertShow.select" @alertConfirm="alertSave" @alertCancel="alertCanc" alertTitle="提示">
       <p>当事人应当为自己的仲裁请求承担举证责任，您提交的证据不是证据原件，您将为此承担相应的法律风险</p>
+      <div class="pt5 tr">
+        <Checkbox v-model="agree">我已阅读并同意</Checkbox>
+      </div>
     </alert-btn-info>
   </div>
 </template>
@@ -120,7 +118,7 @@ export default {
   },
   computed: {
     addFileBtn () {
-      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.agree === false || this.data.memo === '') {
+      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.data.memo === '') {
         return true
       } else {
         return false
@@ -130,6 +128,20 @@ export default {
   methods: {
     alertCanc () {
       this.alertShow.select = false
+      this.data.state = 1
+      this.agree = false
+    },
+    alertSave () {
+      if (this.agree === false) {
+        this.$Message.error({
+          content: '请先勾选阅读并同意',
+          duration: 5
+        })
+        return false
+      } else {
+        this.alertShow.select = false
+        this.agree = false
+      }
     },
     selectRadio () {
       if (this.data.state === 2) {
