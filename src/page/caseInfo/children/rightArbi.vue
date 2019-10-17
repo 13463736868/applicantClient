@@ -324,7 +324,7 @@ export default {
         } else if (this.dataInfo.money < 1000000) {
           return false
         } else if (this.dataInfo.money >= 1000000) {
-          return true
+          return false
         } else {
           return false
         }
