@@ -72,6 +72,7 @@ const infoMap = {
     note: '青岛部署演示'
   },
   'ZhongWei': {
+    indexName: '中卫仲裁委员会网络仲裁立案平台',
     loginName: '中卫',
     name: '中卫仲裁委员会',
     excName: 'Zhongwei Arbitration Commission',
