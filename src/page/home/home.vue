@@ -651,12 +651,12 @@ export default {
       let beginT = (beginTime.substr(11, 2) - 0) * 60 + (beginTime.substr(14, 2) - 0)
       if (newD !== beginD) {
         this.$Message.warning({
-          content: '只能在开庭前十分钟及开庭后半小时内进入',
+          content: '只能在开庭前半小时内进入',
           duration: 5
         })
-      } else if (beginT - newT > 10 || newT - beginT > 30) {
+      } else if (beginT - newT > 30) {
         this.$Message.warning({
-          content: '只能在开庭前十分钟及开庭后半小时内进入',
+          content: '只能在开庭前半小时内进入',
           duration: 5
         })
       } else {
@@ -666,10 +666,16 @@ export default {
             oldId: _info.oldId,
             partieType: _info.partieType
           }).then(res => {
-            this.roomPhone = res.data.data
-            this.roomId = _info.id
-            this.roomPartie = _info.partieType
-            this.goRoomCode()
+            if (res.data.data === 'phone') {
+              this.roomId = _info.id
+              this.roomPartie = _info.partieType
+              this.goCourtRoomS()
+            } else {
+              this.roomPhone = res.data.data
+              this.roomId = _info.id
+              this.roomPartie = _info.partieType
+              this.goRoomCode()
+            }
           }).catch(e => {
             this.$Message.error({
               content: '错误信息:' + e + ' 稍后再试',
