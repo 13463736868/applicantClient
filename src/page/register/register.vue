@@ -318,7 +318,7 @@ export default {
         this[type].emText = '请填写密码'
       } else if (!setRegExp(this[type].password.text, 'password')) {
         this[type].emStatus = 3
-        this[type].emText = '密码长度8~30位,必须包含大写字母,小写字母,数字,特殊符号(且不能包含下划线_)'
+        this[type].emText = '密码长度8~20位,必须包含大写字母,小写字母,数字'
       } else if (this[type].vPassword.text === '') {
         this[type].emStatus = 4
         this[type].emText = '请再次输入密码'
