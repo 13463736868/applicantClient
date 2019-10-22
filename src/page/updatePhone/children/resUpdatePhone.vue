@@ -78,7 +78,17 @@ export default {
         this.identCodeShow = true
         this.identCodeBtn = true
       } else {
-        this.identCodeBtn = false
+        axios.post('/checkPhone', {
+          phone: this.user.phone
+        }).then(res => {
+          if (res.data.data === 0) {
+            this.identCodeBtn = false
+          } else if (res.data.data === 1) {
+            this.resMessage('error', '手机号已存在')
+          }
+        }).catch(e => {
+          this.resMessage('error', '错误信息:' + e + ' 稍后再试')
+        })
       }
     },
     resIdentCode () {
