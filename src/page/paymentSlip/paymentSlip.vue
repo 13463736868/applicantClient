@@ -1,7 +1,7 @@
 <template>
   <div class="paymentSlip">
     <head-top :isRegister="true">
-      <span class="f36 fcf">缴费单查询</span>
+      <span class="f36 fcf">交费单查询</span>
     </head-top>
     <div class="_center pr">
       <spin-comp :spinShow="spinShow"></spin-comp>
@@ -10,7 +10,7 @@
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
         <Col span="8">
-          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="缴费单号"></Input>
+          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="交费单号"></Input>
         </Col>
         <Col span="8">
           <label class="lh32 f16 fc6 fr mr15">仲裁委</label>
@@ -37,7 +37,7 @@
       </div>
     </div>
     <alert-btn-info :alertShow="alertShow.canc" @alertCancel="alertCanc('canc')" @alertConfirm="cancSave" alertTitle="提示">
-      <p>确定要撤回这个缴费批次吗？</p>
+      <p>确定要撤回这个交费批次吗？</p>
     </alert-btn-info>
   </div>
 </template>
@@ -64,7 +64,7 @@ export default {
         loading: false,
         header: [
           {
-            title: '缴费单号',
+            title: '交费单号',
             key: 'paymentNumber',
             align: 'center',
             render: (h, params) => {
@@ -133,7 +133,7 @@ export default {
                         this.seeFile(params.row.filepath)
                       }
                     }
-                  }, '查看缴费凭证'),
+                  }, '查看交费凭证'),
                   h('Button', {
                     props: {
                       type: 'primary',
@@ -161,7 +161,7 @@ export default {
                         this.seeFile(params.row.filepath)
                       }
                     }
-                  }, '查看缴费凭证')
+                  }, '查看交费凭证')
                 ])
               }
             }
