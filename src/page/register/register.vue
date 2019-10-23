@@ -53,7 +53,7 @@
               </Col>
             </Row>
             <Row>
-              <Col span="16" offset="4" class="_em"><span v-show="company.emStatus===3" v-text="company.emText"></span></Col>
+              <Col span="16" offset="4" class="_em"><span>密码长度8~20位,必须包含大写字母,小写字母,数字</span></Col>
             </Row>
           </div>
           <div class="_vPassword">
@@ -67,7 +67,7 @@
               </Col>
             </Row>
             <Row>
-              <Col span="16" offset="4" class="_em"><span v-show="company.emStatus===4" v-text="company.emText"></span></Col>
+              <Col span="16" offset="4" class="_em"><span>密码长度8~20位,必须包含大写字母,小写字母,数字</span></Col>
             </Row>
           </div>
         </div>
@@ -109,7 +109,7 @@
               </Col>
             </Row>
             <Row>
-              <Col span="16" offset="4" class="_em"><span v-show="personal.emStatus===3" v-text="personal.emText"></span></Col>
+              <Col span="16" offset="4" class="_em"><span>密码长度8~20位,必须包含大写字母,小写字母,数字</span></Col>
             </Row>
           </div>
           <div class="_vPassword">
@@ -123,7 +123,7 @@
               </Col>
             </Row>
             <Row>
-              <Col span="16" offset="4" class="_em"><span v-show="personal.emStatus===4" v-text="personal.emText"></span></Col>
+              <Col span="16" offset="4" class="_em"><span>密码长度8~20位,必须包含大写字母,小写字母,数字</span></Col>
             </Row>
           </div>
         </div>
