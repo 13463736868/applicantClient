@@ -269,7 +269,7 @@ export default {
           },
           {
             title: '擅长领域',
-            key: 'professional',
+            key: 'sign',
             align: 'center'
           },
           {
