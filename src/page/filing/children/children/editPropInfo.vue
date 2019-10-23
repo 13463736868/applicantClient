@@ -266,20 +266,30 @@
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':editPropBtn}" v-bind:disabled="editPropBtn" @click="saveClick">保 存</button></Col>
     </Row>
+    <get-prop-code v-if="propCode" :resPhone="propData.phone" :resEmail="propData.email" :phoneShow="propCodeObj.phoneShow" :emailShow="propCodeObj.emailShow" @alertConfirm="alertSave('propCode', ...arguments)" @alertCancel="alertCanc('propCode')"></get-prop-code>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import getPropCode from '@/page/filing/children/children/getPropCode'
 import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'edit_prop_info',
   props: ['editType', 'caseId', 'editPropData'],
+  components: { getPropCode },
   data () {
     return {
       addBtnSwt: false,
       editPropBtn: false,
+      propCode: false,
+      propCodeObj: {
+        phoneShow: false,
+        emailShow: false,
+        fristPhone: '',
+        fristEmail: ''
+      },
       emInfo: {
         status: 0,
         text: ''
@@ -292,6 +302,10 @@ export default {
   },
   created () {
     this.cardList()
+    if (this.editType === 1) {
+      this.propCodeObj.fristPhone = JSON.parse(JSON.stringify(this.propData.phone))
+      this.propCodeObj.fristEmail = JSON.parse(JSON.stringify(this.propData.email))
+    }
   },
   methods: {
     cardList () {
@@ -344,6 +358,8 @@ export default {
       this.propData.nation = null
       this.propData.birthdayStr = null
       this.propData.sex = null
+      this.propData.phoneIdentCode = null
+      this.propData.emailIdentCode = null
       this.emInfo = {
         status: 0,
         text: ''
@@ -397,7 +413,11 @@ export default {
             this.propData.birthdayStr = this.propData.idcard.substr(6, 4) + '-' + this.propData.idcard.substr(10, 2) + '-' + this.propData.idcard.substr(12, 2)
             this.emInfo.status = 0
             this.emInfo.text = ''
-            this.sendAjax()
+            if (this.editType === 1) {
+              this.getCode()
+            } else {
+              this.sendAjax()
+            }
           }
         }
       } else if (this.propData.type === 2) {
@@ -445,7 +465,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -469,7 +493,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
@@ -519,7 +547,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -543,7 +575,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
@@ -593,7 +629,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -617,11 +657,51 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.editType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
         }
+      }
+    },
+    getCode () {
+      if (this.propCodeObj.fristPhone === this.propData.phone && this.propCodeObj.fristEmail === this.propData.email) {
+        this.propData.phoneIdentCode = null
+        this.propData.emailIdentCode = null
+        this.sendAjax()
+      } else {
+        if (this.propCodeObj.fristPhone !== this.propData.phone) {
+          this.propCodeObj.phoneShow = true
+        } else {
+          this.propCodeObj.phoneShow = false
+        }
+        if (this.propCodeObj.fristEmail !== this.propData.email) {
+          this.propCodeObj.emailShow = true
+        } else {
+          this.propCodeObj.emailShow = false
+        }
+        this.propCode = true
+      }
+    },
+    alertSave (type, ...val) {
+      switch (type) {
+        case 'propCode':
+          this.propData.phoneIdentCode = val[0].phoneCode === '' ? null : val[0].phoneCode
+          this.propData.emailIdentCode = val[0].emailCode === '' ? null : val[0].emailCode
+          this.propCode = false
+          this.sendAjax()
+          break
+      }
+    },
+    alertCanc (type) {
+      switch (type) {
+        case 'propCode':
+          this.propCode = false
+          break
       }
     },
     sendAjax () {
@@ -645,7 +725,9 @@ export default {
         address: this.propData.address,
         nation: this.propData.nation,
         birthdayStr: this.propData.birthdayStr,
-        sex: this.propData.sex
+        sex: this.propData.sex,
+        phoneIdentCode: this.propData.phoneIdentCode,
+        emailIdentCode: this.propData.emailIdentCode
       }).then(res => {
         this.$emit('saveClick', res.data.data)
         this.addBtnSwt = false

@@ -266,20 +266,24 @@
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addPropBtn}" v-bind:disabled="addPropBtn" @click="saveClick">保 存</button></Col>
     </Row>
+    <get-prop-code v-if="propCode" :resPhone="propData.phone" :resEmail="propData.email" :phoneShow="true" :emailShow="true" @alertConfirm="alertSave('propCode', ...arguments)" @alertCancel="alertCanc('propCode')"></get-prop-code>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import getPropCode from '@/page/filing/children/children/getPropCode'
 import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'add_prop_info',
   props: ['caseId', 'addType'],
+  components: { getPropCode },
   data () {
     return {
       addBtnSwt: false,
       addPropBtn: false,
+      propCode: false,
       emInfo: {
         status: 0,
         text: ''
@@ -301,7 +305,9 @@ export default {
         address: '',
         nation: null,
         birthdayStr: '',
-        sex: null
+        sex: null,
+        phoneIdentCode: null,
+        emailIdentCode: null
       }
     }
   },
@@ -366,7 +372,9 @@ export default {
         address: '',
         nation: null,
         birthdayStr: '',
-        sex: null
+        sex: null,
+        phoneIdentCode: null,
+        emailIdentCode: null
       }
       this.emInfo = {
         status: 0,
@@ -421,7 +429,11 @@ export default {
             this.propData.birthdayStr = this.propData.idcard.substr(6, 4) + '-' + this.propData.idcard.substr(10, 2) + '-' + this.propData.idcard.substr(12, 2)
             this.emInfo.status = 0
             this.emInfo.text = ''
-            this.sendAjax()
+            if (this.addType === 1) {
+              this.getCode()
+            } else {
+              this.sendAjax()
+            }
           }
         }
       } else if (this.propData.type === 2) {
@@ -469,7 +481,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -493,7 +509,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
@@ -543,7 +563,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -567,7 +591,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
@@ -617,7 +645,11 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             } else {
               if (this.propData.name === '') {
@@ -641,11 +673,35 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                this.sendAjax()
+                if (this.addType === 1) {
+                  this.getCode()
+                } else {
+                  this.sendAjax()
+                }
               }
             }
           }
         }
+      }
+    },
+    getCode () {
+      this.propCode = true
+    },
+    alertSave (type, ...val) {
+      switch (type) {
+        case 'propCode':
+          this.propData.phoneIdentCode = val[0].phoneCode === '' ? null : val[0].phoneCode
+          this.propData.emailIdentCode = val[0].emailCode === '' ? null : val[0].emailCode
+          this.propCode = false
+          this.sendAjax()
+          break
+      }
+    },
+    alertCanc (type) {
+      switch (type) {
+        case 'propCode':
+          this.propCode = false
+          break
       }
     },
     sendAjax () {
@@ -668,7 +724,9 @@ export default {
         address: this.propData.address,
         nation: this.propData.nation,
         birthdayStr: this.propData.birthdayStr,
-        sex: this.propData.sex
+        sex: this.propData.sex,
+        phoneIdentCode: this.propData.phoneIdentCode,
+        emailIdentCode: this.propData.emailIdentCode
       }).then(res => {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []
