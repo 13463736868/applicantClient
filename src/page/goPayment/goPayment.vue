@@ -43,7 +43,7 @@
           </div>
           <Row class="pb40">
             <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="goHome">返 回</button></Col>
-            <Col class="tc" span="10" offset="2"><button class="_saveBtn" @click="addPayment">确认已交费</button></Col>
+            <Col class="tc" span="10" offset="2"><button class="_saveBtn" @click="addPayment">确认已缴费</button></Col>
           </Row>
         </Col>
       </Row>
@@ -51,7 +51,7 @@
     <alert-btn-info :isCancBtn="true" :isSaveBtn="true" :alertShow="alertShow.addP" alertTitle="操作">
       <Row>
         <Col span="24">
-          <upload-book :caseIds="caseIds" :costTotal="costTotal" :moneyTotal="moneyTotal" childName="上传交费凭证文件" :fileType="['jpg','jpeg','png', 'pdf']" :uploadUrl="resAddpUrl" @saveClick="addpSave" @cancClick="alertCanc('addP')"></upload-book>
+          <upload-book :caseIds="caseIds" :costTotal="costTotal" :moneyTotal="moneyTotal" childName="上传缴费凭证文件" :fileType="['jpg','jpeg','png', 'pdf']" :uploadUrl="resAddpUrl" @saveClick="addpSave" @cancClick="alertCanc('addP')"></upload-book>
         </Col>
       </Row>
     </alert-btn-info>
@@ -228,7 +228,7 @@ export default {
     },
     addpSave (obj) {
       this.$Message.success({
-        content: '交费单号:' + obj,
+        content: '缴费单号:' + obj,
         duration: 10,
         closable: true
       })

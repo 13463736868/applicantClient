@@ -76,7 +76,7 @@ export default {
           },
           {
             id: '3',
-            text: '交费单查询',
+            text: '缴费单查询',
             url: '/paymentSlip'
           },
           {

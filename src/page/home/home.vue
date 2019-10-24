@@ -21,7 +21,7 @@
           </Select>
         </Col>
         <Col span="2">
-          <Button type="primary" @click="resPayment">批量交费</Button>
+          <Button type="primary" @click="resPayment">批量缴费</Button>
         </Col>
       </Row>
       <div class="_caseList clearfix">
@@ -351,7 +351,7 @@ export default {
                   this.goPayment(params.index)
                 }
               }
-            }, '去交费'),
+            }, '去缴费'),
             h('Button', {
               props: {
                 type: 'primary',
@@ -382,7 +382,7 @@ export default {
                   this.goPayment(params.index)
                 }
               }
-            }, '去交费')
+            }, '去缴费')
           ])
         }
       } else if (params.row.state === 5) {
