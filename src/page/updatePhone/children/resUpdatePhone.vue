@@ -2,34 +2,34 @@
   <div class="resUpdatPhone">
     <alert-btn-info :alertShow="alertShow" @alertConfirm="alertSave" @alertCancel="alertCanc" alertTitle="操作">
       <Row class="_labelFor">
-        <Col span="6" offset="1">
+        <Col span="6 tr">
           <p><span class="_span">*</span><b>旧手机号：</b></p>
         </Col>
-        <Col span="16">
+        <Col span="16" offset="1">
           <p v-text="resPhone"></p>
         </Col>
       </Row>
       <Row class="_labelFor">
-        <Col span="6" offset="1">
+        <Col span="6 tr">
           <p><span class="_span">*</span><b>旧密码：</b></p>
         </Col>
-        <Col span="16">
+        <Col span="16" offset="1">
           <Input v-model.trim="resData.oldPassword"></Input>
         </Col>
       </Row>
       <Row class="_labelFor">
-        <Col span="6" offset="1">
+        <Col span="6 tr">
           <p><span class="_span">*</span><b>新手机号：</b></p>
         </Col>
-        <Col span="16">
+        <Col span="16" offset="1">
           <Input v-model.trim="resData.newPhone" @on-blur="resCheckPhone"></Input>
         </Col>
       </Row>
       <Row class="_labelFor">
-        <Col span="6" offset="1">
+        <Col span="6 tr">
           <p><span class="_span">*</span><b>短信验证码：</b></p>
         </Col>
-        <Col span="8">
+        <Col span="8" offset="1">
           <Input v-model.trim="resData.identCode"></Input>
         </Col>
         <Col span="8">
@@ -79,7 +79,7 @@ export default {
         this.identCodeBtn = true
       } else {
         axios.post('/checkPhone', {
-          phone: this.user.phone
+          phone: this.resData.newPhone
         }).then(res => {
           if (res.data.data === 0) {
             this.identCodeBtn = false
