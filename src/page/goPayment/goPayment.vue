@@ -1,7 +1,7 @@
 <template>
   <div class="goPayment">
     <head-top :isRegister="true">
-      <span class="f36 fcf">缴 费</span>
+      <span class="f36 fcf">交 费</span>
     </head-top>
     <div class="_center pr">
       <Row>
@@ -40,6 +40,17 @@
                 </Col>
               </Row>
             </div>
+            <div class="mt10 f12 _tips">
+              <Row>
+                <Col span="3" class="tr">
+                  <p>友情提示：</p>
+                </Col>
+                <Col span="15" offset="1">
+                  <p>1. 汇款金额必须准确。</p>
+                  <p>2. 请备注 "{{applicantName}}" 仲裁费。</p>
+                </Col>
+              </Row>
+            </div>
           </div>
           <Row class="pb40">
             <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="goHome">返 回</button></Col>
@@ -72,6 +83,7 @@ export default {
   props: [],
   data () {
     return {
+      applicantName: null,
       caseIds: null,
       dataObj: null,
       costTotal: 0,
@@ -194,6 +206,7 @@ export default {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
         this.rescostTotal()
+        this.getProposer()
         this.spinShow = false
       }).catch(e => {
         this.spinShow = false
@@ -212,6 +225,13 @@ export default {
       })
       this.costTotal = _costNum.toFixed(2)
       this.moneyTotal = _moneyNum.toFixed(2)
+    },
+    getProposer () {
+      let applicantName = []
+      this.caseList.bodyList.forEach((a) => {
+        applicantName.push(a.applicantName)
+      })
+      this.applicantName = applicantName.join(',')
     },
     resPayment () {
       axios.post('/case/payFee').then(res => {
@@ -307,6 +327,10 @@ export default {
         }
       }
     }
+  }
+  ._tips {
+    color: red;
+    font-weight: 700;
   }
   ._cancelBtn {
     @include btn(#fff, 90px, 14px, 32px);
