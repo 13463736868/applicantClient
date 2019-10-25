@@ -77,7 +77,7 @@ export default {
       } else if (this.resData.counter === null || this.resData.counter === 0) {
         this.resMessage('error', '输入金额不能为0')
       } else {
-        axios.post('/payMentRequest/findArbitrationFee', {
+        axios.post('/case/findArbitrationFee', {
           money: this.resData.counter
         }).then(res => {
           let _data = res.data.data
