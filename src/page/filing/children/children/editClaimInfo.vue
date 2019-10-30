@@ -19,7 +19,10 @@
           <Col span="24" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">请求金额(元)<b class="_b">*</b></Col>
+          <Col span="12" class="_label mb5">请求金额(元)<b class="_b">*</b></Col>
+          <Col span="12" class="_label mb5">
+            <span class="hand fr" style="color: #126eaf;" @click="resAction('arbi', null)">仲裁费计算</span>
+          </Col>
           <Col span="24">
             <Input v-model="claimData.disputeFee" @on-change="dispMoney"/>
           </Col>
@@ -31,15 +34,18 @@
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addClaimBtn}" v-bind:disabled="addClaimBtn" @click="saveClick">保 存</button></Col>
     </Row>
+    <res-arbi-counter v-if="alertObj.arbi" @alertConfirm="alertCanc('arbi')" @alertCancel="alertCanc('arbi')"></res-arbi-counter>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import resArbiCounter from '@/page/filing/children/children/resArbiCounter'
 import setRegExp from '@/config/regExp.js'
 
 export default {
   name: 'edit_claim_info',
+  components: { resArbiCounter },
   props: ['caseId', 'propArrName', 'editClaiData'],
   data () {
     return {
@@ -47,6 +53,9 @@ export default {
       emInfo: {
         status: 0,
         text: ''
+      },
+      alertObj: {
+        arbi: false
       },
       dispSwitch: false,
       claimData: JSON.parse(JSON.stringify(this.editClaiData))
@@ -110,6 +119,20 @@ export default {
     },
     cancClick () {
       this.$emit('cancClick')
+    },
+    resAction (type, data) {
+      switch (type) {
+        case 'arbi':
+          this.alertObj.arbi = true
+          break
+      }
+    },
+    alertCanc (type) {
+      switch (type) {
+        case 'arbi':
+          this.alertObj.arbi = false
+          break
+      }
     }
   }
 }

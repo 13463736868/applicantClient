@@ -9,11 +9,12 @@
         </Col>
         <Col span="16" offset="1">
           <p class="fca">因小数位四舍五入顺序的不同，以上计算结果与本会立案部门的计算结果可能会略有差异，以立案部门的计算为准。</p>
+          <p class="unit"><b>单位:元</b></p>
         </Col>
       </Row>
       <Row class="_labelFor">
         <Col span="4" offset="1" class="tr">
-          <p><span class="_span">*</span><b>仲裁费：</b></p>
+          <p><span class="_span">*</span><b>请求金额：</b></p>
         </Col>
         <Col span="16" offset="1">
           <Input v-model.trim="resData.counter" placeholder="请输入争议金额（单位：元）"></Input>
@@ -106,6 +107,10 @@ export default {
   }
   ._span {
     color: #ff7a7a;
+  }
+  .unit {
+    padding:0;
+    text-align:right
   }
 }
 </style>
