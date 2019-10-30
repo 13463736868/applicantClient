@@ -62,7 +62,7 @@ export default {
   computed: {
     resPropUrl () {
       if (this.partieType === 1) {
-        return '/case/selectObjectByCaseId/1'
+        return '/case/selectObjectById/1'
       } else if (this.partieType === 2) {
         return '/case/selectObjectById/1'
       }

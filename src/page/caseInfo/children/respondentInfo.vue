@@ -43,7 +43,7 @@ export default {
   computed: {
     resRespUrl () {
       if (this.partieType === 1) {
-        return '/case/selectObjectByCaseId/2'
+        return '/case/selectObjectById/2'
       } else if (this.partieType === 2) {
         return '/case/selectObjectById/2'
       }

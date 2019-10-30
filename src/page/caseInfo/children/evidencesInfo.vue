@@ -93,7 +93,7 @@ export default {
     },
     resEvidUrl () {
       if (this.partieType === 1) {
-        return '/case/selectObjectByCaseId/4'
+        return '/case/selectObjectById/4'
       } else if (this.partieType === 2) {
         return '/case/selectObjectById/4'
       }

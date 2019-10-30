@@ -48,7 +48,7 @@ export default {
   computed: {
     resClaimUrl () {
       if (this.partieType === 1) {
-        return '/case/selectObjectByCaseId/3'
+        return '/case/selectObjectById/3'
       } else if (this.partieType === 2) {
         return '/case/selectObjectById/3'
       }
