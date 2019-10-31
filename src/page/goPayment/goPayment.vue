@@ -43,7 +43,7 @@
           </div>
           <Row class="pb40">
             <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="goHome">返 回</button></Col>
-            <Col class="tc" span="10" offset="2"><button class="_saveBtn" @click="addPayment">确认已交费</button></Col>
+            <Col class="tc" span="10" offset="2"><button class="_saveBtn" @click="addPayment">确认已缴费</button></Col>
           </Row>
         </Col>
       </Row>

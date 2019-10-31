@@ -26,6 +26,7 @@ const notApplied = r => require.ensure([], () => r(require('@/page/notApplied/no
 const paymentSlip = r => require.ensure([], () => r(require('@/page/paymentSlip/paymentSlip.vue')), 'paymentSlip')
 const userInfo = r => require.ensure([], () => r(require('@/page/userInfo/userInfo.vue')), 'userInfo')
 const caseType = r => require.ensure([], () => r(require('@/page/caseType/caseType.vue')), 'caseType')
+const updatePhone = r => require.ensure([], () => r(require('@/page/updatePhone/updatePhone.vue')), 'updatePhone')
 
 Vue.use(Router)
 
@@ -232,6 +233,14 @@ export default new Router({
         requireAuth: true
       },
       component: userInfo
+    },
+    {
+      path: '/updatePhone',
+      name: 'updatePhone',
+      meta: {
+        requireAuth: true
+      },
+      component: updatePhone
     },
     {
       path: '*',
