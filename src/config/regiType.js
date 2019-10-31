@@ -2,7 +2,7 @@
 // regiType 1 线上;2 本地(个人注册)  anyang:/upcase ;src/axios;src/router;index.html
 const regiType = 1
 const api = '/api'
-const type = 'ZhongWei'
+const type = 'QingYang'
 const infoMap = {
   'QingYang': {
     indexName: '庆阳仲裁委网络立案系统',
@@ -99,6 +99,15 @@ const infoMap = {
     address: '内蒙古自治区赤峰市红山区昭乌达路71号13楼1304',
     goRoom: '',
     note: '赤峰部署演示'
+  },
+  'HaiNan': {
+    loginName: '海南',
+    name: '海南国际仲裁院',
+    excName: 'HaiNan Arbitration Commission',
+    tel: '0898-68571768',
+    address: '海南省海口市和平大道20号鹏晖国际大厦十一层、十二层',
+    goRoom: '',
+    note: '海南部署演示'
   }
 }
 const dataMap = infoMap[type]
