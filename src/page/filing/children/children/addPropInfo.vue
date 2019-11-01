@@ -685,7 +685,8 @@ export default {
       }
     },
     getCode () {
-      this.propCode = true
+      this.sendAjax()
+      // this.propCode = true
     },
     alertSave (type, ...val) {
       switch (type) {
