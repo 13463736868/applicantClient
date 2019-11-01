@@ -54,15 +54,10 @@ export default {
       }
     },
     resClaimUrlId () {
-      if (this.partieType === 1) {
-        let _data = {}
-        _data.caseId = this.caseOldId
-        return _data
-      } else if (this.partieType === 2) {
-        let _data = {}
-        _data.id = this.caseId
-        return _data
-      }
+      let _data = {}
+      _data.caseId = this.caseOldId
+      _data.id = this.caseId
+      return _data
     }
   },
   methods: {
