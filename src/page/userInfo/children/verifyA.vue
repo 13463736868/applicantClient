@@ -37,12 +37,12 @@
               <Col span="24" class="_em"><span v-show="emInfo.status===121" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">仲裁送达邮箱</Col>
+              <Col span="24" class="_label">当事人确认的电子送达地址</Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.email"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===122" v-text="emInfo.text"></span></Col>
             </Row>
             <Row class="_labelFor">
-              <Col span="24" class="_label">仲裁送达地址</Col>
+              <Col span="24" class="_label">住址</Col>
               <Col span="24" class="_input"><input type="text" v-model.trim="userAInfo.address"></Col>
               <Col span="24" class="_em"><span v-show="emInfo.status===123" v-text="emInfo.text"></span></Col>
             </Row>

@@ -28,11 +28,11 @@
                 </Col>
               </Row>
               <Row class="_labelFor">
-                <Col span="24" class="_label">仲裁送达邮箱</Col>
+                <Col span="24" class="_label">当事人确认的电子送达地址</Col>
                 <Col span="24" class="_input"><span v-text="userAInfo.email"></span></Col>
               </Row>
               <Row class="_labelFor">
-                <Col span="24" class="_label">仲裁送达地址</Col>
+                <Col span="24" class="_label">住址</Col>
                 <Col span="24" class="_input"><p v-text="userAInfo.address" :title="userAInfo.address"></p></Col>
               </Row>
             </Col>

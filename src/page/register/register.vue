@@ -127,10 +127,17 @@
             </Row>
           </div>
         </div>
+        <Row class="pb10 pt10">
+          <Col span="18" offset="4">
+            <Checkbox class="agreeCheck" v-model="agree">我接受</Checkbox>
+            <span class="_text hand" @click="readModal">用户协议</span>
+          </Col>
+        </Row>
         <Row class="pb10 pt20">
-          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':registerBtn}" v-bind:disabled="registerBtn" @click="resRegister">注 册</button></Col>
+          <Col span="24" class="tc"><button class="_registerBtn" :class="{'_disabled':registerBtns}" v-bind:disabled="registerBtns" @click="resRegister">注 册</button></Col>
         </Row>
       </div>
+      <agreement-modal v-if="formObj.agree" @alertConfirm="alertCanc" @alertCancel="alertCanc"></agreement-modal>
     </div>
   </div>
 </template>
@@ -138,14 +145,16 @@
 <script>
 import axios from 'axios'
 import headTop from '@/components/header/head'
+import agreementModal from '@/page/register/children/agreementModal'
 import setRegExp from '@/config/regExp.js'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'register',
-  components: { headTop },
+  components: { headTop, agreementModal },
   data () {
     return {
+      agree: false,
       registerType: true,
       registerBtn: true,
       identCodeBtn: true,
@@ -179,10 +188,20 @@ export default {
         },
         emStatus: 0,
         emText: ''
+      },
+      formObj: {
+        agree: false
       }
     }
   },
   computed: {
+    registerBtns () {
+      if (this.agree && !this.registerBtn) {
+        return false
+      } else {
+        return true
+      }
+    },
     regiType () {
       if (regi.regiType === 1) {
         return true
@@ -210,6 +229,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.agree = false
         }
       } else if (type === 'personal') {
         if (this.registerType !== false) {
@@ -228,6 +248,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.agree = false
         }
       }
     },
@@ -352,6 +373,12 @@ export default {
           })
         })
       }
+    },
+    readModal () {
+      this.formObj.agree = true
+    },
+    alertCanc () {
+      this.formObj.agree = false
     }
   }
 }
@@ -451,6 +478,12 @@ export default {
       line-height: 32px;
       margin-right: 10px;
       color: #ff7a7a;
+    }
+    ._text {
+      color: #126eaf;
+    }
+    .agreeCheck{
+      margin-right: 0
     }
   }
 }

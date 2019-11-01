@@ -23,7 +23,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .verifyBInfo {
-  ._bInfo ._top,{
+  ._bInfo ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
