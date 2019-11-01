@@ -669,23 +669,24 @@ export default {
       }
     },
     getCode () {
-      if (this.propCodeObj.fristPhone === this.propData.phone && this.propCodeObj.fristEmail === this.propData.email) {
-        this.propData.phoneIdentCode = null
-        this.propData.emailIdentCode = null
-        this.sendAjax()
-      } else {
-        if (this.propCodeObj.fristPhone !== this.propData.phone) {
-          this.propCodeObj.phoneShow = true
-        } else {
-          this.propCodeObj.phoneShow = false
-        }
-        if (this.propCodeObj.fristEmail !== this.propData.email) {
-          this.propCodeObj.emailShow = true
-        } else {
-          this.propCodeObj.emailShow = false
-        }
-        this.propCode = true
-      }
+      this.sendAjax()
+      // if (this.propCodeObj.fristPhone === this.propData.phone && this.propCodeObj.fristEmail === this.propData.email) {
+      //   this.propData.phoneIdentCode = null
+      //   this.propData.emailIdentCode = null
+      //   this.sendAjax()
+      // } else {
+      //   if (this.propCodeObj.fristPhone !== this.propData.phone) {
+      //     this.propCodeObj.phoneShow = true
+      //   } else {
+      //     this.propCodeObj.phoneShow = false
+      //   }
+      //   if (this.propCodeObj.fristEmail !== this.propData.email) {
+      //     this.propCodeObj.emailShow = true
+      //   } else {
+      //     this.propCodeObj.emailShow = false
+      //   }
+      //   this.propCode = true
+      // }
     },
     alertSave (type, ...val) {
       switch (type) {
