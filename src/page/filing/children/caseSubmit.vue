@@ -169,6 +169,11 @@ export default {
           content: '请填写证据',
           duration: 5
         })
+      } else if (this.caseTypeStatus === '') {
+        this.$Message.error({
+          content: '请选择案件类型',
+          duration: 5
+        })
       } else {
         this.$emit('saveClick', {committeeStatus: this.committeeStatus, caseTypeCode: this.caseTypeStatus, caseTypeName: this.caseMap[this.caseTypeStatus]})
       }
