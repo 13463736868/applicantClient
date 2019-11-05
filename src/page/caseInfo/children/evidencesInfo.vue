@@ -2,11 +2,9 @@
   <div class="evidencesInfo">
     <div class="_question">
       <div class="_top">问题清单</div>
-      <div v-if="questionObj.list">
         <div v-if="questionObj.list">
-          <div v-for="(item, index) in questionData" :key="index">
-            <question-info :infoData="item"></question-info>
-          </div>
+        <div v-for="(item, index) in questionData" :key="index">
+          <question-info :infoData="item"></question-info>
         </div>
       </div>
       <template v-if="stateList.indexOf(caseState) !== -1">
