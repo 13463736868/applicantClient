@@ -20,7 +20,7 @@
       <div class="_page clearfix">
         <Row>
           <Col span="12" offset="6" class="tc">
-            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage" @on-page-size-change="reschangePageSize" show-sizer></Page>
           </Col>
         </Row>
       </div>
@@ -40,12 +40,14 @@
 
 <script>
 import axios from 'axios'
+import { resPage } from '@/components/common/mixin.js'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/components/common/alertBtnInfo'
 
 export default {
   name: 'case_type',
+  mixins: [resPage],
   components: { headTop, spinComp, alertBtnInfo },
   data () {
     return {
@@ -106,6 +108,10 @@ export default {
     },
     reschangePage (page) {
       this.pageObj.pageNum = page
+      this.resCaseList()
+    },
+    resSearch () {
+      this.pageObj.pageNum = 1
       this.resCaseList()
     },
     resAdd () {

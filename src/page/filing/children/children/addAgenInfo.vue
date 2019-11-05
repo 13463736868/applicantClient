@@ -31,6 +31,15 @@
           <Col span="24" class="_em"><span v-show="emInfo.status===14" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
+          <Col span="24" class="_label">代理人类型<b class="_b">*</b></Col>
+          <Col span="24">
+            <Select v-model="agenData.type">
+              <Option v-for="item in proxyList" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===16" v-text="emInfo.text"></span></Col>
+        </Row>
+        <Row class="_labelFor">
           <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
           <Col span="24" class="_input"><input type="text" v-model.trim="agenData.organization"></Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===15" v-text="emInfo.text"></span></Col>
@@ -101,6 +110,7 @@ export default {
       },
       idcardList: [],
       nationList: [],
+      proxyList: [],
       agenData: {
         idcardType: null,
         idcard: '',
@@ -113,7 +123,8 @@ export default {
         nation: null,
         birthdayStr: '',
         sex: null,
-        fileid: null
+        fileid: null,
+        type: null
       }
     }
   },
@@ -136,11 +147,13 @@ export default {
       this.agenData.fileid = id
     },
     cardList () {
-      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
+      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName'), axios.post('/dictionary/proxyType')]).then(axios.spread((resO, resT, resP) => {
         let _dataOList = resO.data.data
         let _selectO = []
         let _dataTList = resT.data.data
         let _selectT = []
+        let _dataPList = resP.data.data
+        let _selectP = []
         for (let k in _dataOList) {
           let _o = {}
           _o.value = _dataOList[k].itemValue
@@ -153,8 +166,15 @@ export default {
           _t.label = _dataTList[v].item
           _selectT.push(_t)
         }
+        for (let i in _dataPList) {
+          let _p = {}
+          _p.value = _dataPList[i].itemValue
+          _p.label = _dataPList[i].item
+          _selectP.push(_p)
+        }
         this.idcardList = _selectO
         this.nationList = _selectT
+        this.proxyList = _selectP
       })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
@@ -163,7 +183,7 @@ export default {
       })
     },
     saveClick () {
-      if (this.agenData.name === '' || this.agenData.nation === null || this.agenData.idcardType === null || this.agenData.idcard === '' || this.agenData.organization === '' || this.agenData.sex === null || this.agenData.propId === null || this.agenData.phone === '' || this.agenData.email === '' || this.agenData.address === '') {
+      if (this.agenData.name === '' || this.agenData.nation === null || this.agenData.idcardType === null || this.agenData.idcard === '' || this.agenData.organization === '' || this.agenData.sex === null || this.agenData.propId === null || this.agenData.phone === '' || this.agenData.email === '' || this.agenData.address === '' || this.agenData.type === null) {
         if (this.agenData.name === '') {
           this.emInfo.status = 11
           this.emInfo.text = '请输入姓名'
@@ -194,6 +214,9 @@ export default {
         } else if (this.agenData.address === '') {
           this.emInfo.status = 25
           this.emInfo.text = '请输入联系地址'
+        } else if (this.agenData.type === null) {
+          this.emInfo.status = 16
+          this.emInfo.text = '请选择代理人类型'
         }
       } else {
         if (!setRegExp(this.agenData.name, 'name')) {
@@ -246,7 +269,8 @@ export default {
         nation: this.agenData.nation,
         birthdayStr: this.agenData.birthdayStr,
         sex: this.agenData.sex,
-        fileId: this.agenData.fileid
+        fileId: this.agenData.fileid,
+        type: this.agenData.type
       }).then(res => {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []

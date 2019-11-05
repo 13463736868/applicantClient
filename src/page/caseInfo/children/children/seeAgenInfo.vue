@@ -19,6 +19,10 @@
           <Col span="24" class="_input"><span v-text="agenData.idcard"></span></Col>
         </Row>
         <Row class="_labelFor">
+          <Col span="24" class="_label">代理人类型<b class="_b">*</b></Col>
+          <Col span="24" class="_input"><span v-text="typeName"></span></Col>
+        </Row>
+        <Row class="_labelFor">
           <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
           <Col span="24" class="_input"><span v-text="agenData.organization"></span></Col>
         </Row>
@@ -70,6 +74,7 @@ export default {
       seeAgenBtn: false,
       idcardList: [],
       nationList: [],
+      typeList: [],
       agenData: JSON.parse(JSON.stringify(this.seeAgenData))
     }
   },
@@ -92,13 +97,22 @@ export default {
         }
       }
       return '未知'
+    },
+    typeName () {
+      for (let k in this.typeList) {
+        if (this.typeList[k].itemValue === this.agenData.type) {
+          return this.typeList[k].item
+        }
+      }
+      return '未知'
     }
   },
   methods: {
     cardList () {
-      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
+      axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName'), axios.post('/dictionary/proxyType')]).then(axios.spread((resO, resT, resP) => {
         this.idcardList = resO.data.data
         this.nationList = resT.data.data
+        this.typeList = resP.data.data
       })).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,

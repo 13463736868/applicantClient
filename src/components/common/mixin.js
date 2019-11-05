@@ -8,3 +8,12 @@ export const resMess = {
     }
   }
 }
+
+export const resPage = {
+  methods: {
+    reschangePageSize (obj) {
+      this.pageObj.pageSize = obj
+      this.resSearch()
+    }
+  }
+}

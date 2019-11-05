@@ -40,6 +40,11 @@
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===114" v-text="emInfo.text"></span></Col>
           </Row>
+          <Row class="_labelFor">
+            <Col span="24" class="_label">工作单位<b class="_b">*</b></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.enterpriseName"></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===115" v-text="emInfo.text"></span></Col>
+          </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
@@ -98,6 +103,11 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">送达手机<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.phone"></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
+          </Row>
+          <Row class="_labelFor">
+            <Col span="24" class="_label">公司职务<b class="_b">*</b></Col>
+            <Col span="24" class="_input"><input type="text" v-model.trim="propData.companyPosition"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
@@ -307,7 +317,8 @@ export default {
         birthdayStr: '',
         sex: null,
         phoneIdentCode: null,
-        emailIdentCode: null
+        emailIdentCode: null,
+        companyPosition: ''
       }
     }
   },
@@ -374,7 +385,8 @@ export default {
         birthdayStr: '',
         sex: null,
         phoneIdentCode: null,
-        emailIdentCode: null
+        emailIdentCode: null,
+        companyPosition: ''
       }
       this.emInfo = {
         status: 0,
@@ -383,7 +395,7 @@ export default {
     },
     saveClick () {
       if (this.propData.type === 1) {
-        if (this.propData.name === '' || this.propData.nation === null || this.propData.idcardType === null || this.propData.idcard === '' || this.propData.sex === null || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+        if (this.propData.name === '' || this.propData.nation === null || this.propData.idcardType === null || this.propData.idcard === '' || this.propData.sex === null || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '' || this.propData.enterpriseName === '') {
           if (this.propData.name === '') {
             this.emInfo.status = 111
             this.emInfo.text = '请输入姓名'
@@ -408,6 +420,9 @@ export default {
           } else if (this.propData.address === '') {
             this.emInfo.status = 124
             this.emInfo.text = '请输入联系地址'
+          } else if (this.propData.enterpriseName === '') {
+            this.emInfo.status = 115
+            this.emInfo.text = '请输入工作单位'
           }
         } else {
           if (!setRegExp(this.propData.name, 'name')) {
@@ -437,7 +452,7 @@ export default {
           }
         }
       } else if (this.propData.type === 2) {
-        if (this.propData.enterpriseName === '' || this.propData.enterpriseType === null || this.propData.enterpriseIdcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '') {
+        if (this.propData.enterpriseName === '' || this.propData.enterpriseType === null || this.propData.enterpriseIdcard === '' || this.propData.phone === '' || this.propData.email === '' || this.propData.address === '' || this.propData.companyPosition === '') {
           if (this.propData.enterpriseName === '') {
             this.emInfo.status = 211
             this.emInfo.text = '请输入企业名称'
@@ -456,6 +471,9 @@ export default {
           } else if (this.propData.address === '') {
             this.emInfo.status = 225
             this.emInfo.text = '请输入联系地址'
+          } else if (this.propData.companyPosition === '') {
+            this.emInfo.status = 215
+            this.emInfo.text = '请输入公司职务'
           }
         } else {
           if (!setRegExp(this.propData.enterpriseName, 'company')) {
@@ -726,7 +744,8 @@ export default {
         birthdayStr: this.propData.birthdayStr,
         sex: this.propData.sex,
         phoneIdentCode: this.propData.phoneIdentCode,
-        emailIdentCode: this.propData.emailIdentCode
+        emailIdentCode: this.propData.emailIdentCode,
+        companyPosition: this.propData.companyPosition
       }).then(res => {
         if (res.data.data.fileList === null) {
           res.data.data.fileList = []

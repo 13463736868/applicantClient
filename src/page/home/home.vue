@@ -9,18 +9,24 @@
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
-        <Col span="8">
-          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
-        </Col>
         <Col span="6">
+          <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人 / 案由"></Input>
+        </Col>
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">时间</label>
+        </Col>
+        <Col span="4">
+          <DatePicker class="wmax" format="yyyy-MM-dd" @on-change="changeDate" confirm @on-clear="clearDate" @on-ok="resSearch" type="datetimerange" placeholder="起始时间"></DatePicker>
+        </Col>
+        <Col span="2" offset="1">
           <label class="lh32 f16 fc6 fr mr15">案件状态</label>
         </Col>
-        <Col span="6">
+        <Col span="4">
           <Select v-model="caseStatus" style="width:200px" @on-change="resChangeStatus()">
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="2">
+        <Col span="2" offset="1">
           <Button type="primary" @click="resPayment">批量缴费</Button>
         </Col>
       </Row>
@@ -34,7 +40,7 @@
       <div class="_page clearfix">
         <Row>
           <Col span="12" offset="6" class="tc">
-            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage"></Page>
+            <Page :total="pageObj.total" :current="pageObj.pageNum" :page-size="pageObj.pageSize" show-elevator show-total @on-change="reschangePage" @on-page-size-change="reschangePageSize" show-sizer></Page>
           </Col>
         </Row>
       </div>
@@ -78,6 +84,7 @@
 <script>
 import axios from 'axios'
 import { mapActions } from 'vuex'
+import { resPage } from '@/components/common/mixin.js'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
@@ -86,12 +93,15 @@ import regi from '@/config/regiType.js'
 
 export default {
   name: 'home',
+  mixins: [resPage],
   components: { headTop, spinComp, alertBtnInfo },
   data () {
     return {
       spinShow: true,
       search: {
-        text: ''
+        text: '',
+        startTime: '',
+        endTime: ''
       },
       caseStatusList: [],
       caseStatus: 0,
@@ -504,7 +514,9 @@ export default {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text,
-        caseState: this.caseStatus
+        caseState: this.caseStatus,
+        startTime: this.search.startTime,
+        endTime: this.search.endTime
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -780,6 +792,15 @@ export default {
       this.$router.push({
         path: '/caseInfo'
       })
+    },
+    changeDate (val) {
+      this.search.startTime = val[0]
+      this.search.endTime = val[1]
+    },
+    clearDate () {
+      this.search.startTime = ''
+      this.search.endTime = ''
+      this.resSearch()
     }
   }
 }

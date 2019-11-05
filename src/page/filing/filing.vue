@@ -55,12 +55,12 @@ export default {
         },
         {
           id: '2',
-          text: '请求',
+          text: '仲裁请求',
           url: '/claimItems'
         },
         {
           id: '3',
-          text: '证据',
+          text: '提交证据',
           url: '/evidences'
         }
       ]

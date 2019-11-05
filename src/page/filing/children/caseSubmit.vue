@@ -15,12 +15,12 @@
       </Col>
       <Col span="5" offset="2">
         <Row>
-          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">仲 裁</button></Col>
+          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">提交仲裁</button></Col>
         </Row>
       </Col>
       <Col span="5" offset="1">
         <Row>
-          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">固 化</button></Col>
+          <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">证据固化</button></Col>
         </Row>
       </Col>
     </Row>
