@@ -48,12 +48,12 @@ export default {
         },
         {
           id: '3',
-          text: '请求和答辩',
+          text: '请求答辩(反请求答辩)',
           url: '/claimItem'
         },
         {
           id: '5',
-          text: '证据和质证',
+          text: '仲裁审理',
           url: '/evidencesInfo'
         }
       ],
@@ -75,17 +75,12 @@ export default {
         },
         {
           id: '3',
-          text: '请求和答辩',
+          text: '请求答辩(反请求答辩)',
           url: '/claimItem'
         },
         {
-          id: '4',
-          text: '反请求和答辩',
-          url: '/revClaimItem'
-        },
-        {
           id: '5',
-          text: '证据和质证',
+          text: '仲裁审理',
           url: '/evidencesInfo'
         },
         {
@@ -112,28 +107,23 @@ export default {
         },
         {
           id: '3',
-          text: '请求和答辩',
+          text: '请求答辩(反请求答辩)',
           url: '/claimItem'
         },
         {
-          id: '4',
-          text: '反请求和答辩',
-          url: '/revClaimItem'
-        },
-        {
           id: '5',
-          text: '证据和质证',
+          text: '仲裁审理',
           url: '/evidencesInfo'
         },
         {
           id: '6',
-          text: '送达',
-          url: '/sendInfo'
+          text: '裁决书',
+          url: '/endCaseInfo'
         },
         {
           id: '7',
-          text: '结案',
-          url: '/endCaseInfo'
+          text: '送达',
+          url: '/sendInfo'
         }
       ],
       menuClaimD: [
@@ -154,17 +144,17 @@ export default {
         },
         {
           id: '3',
-          text: '请求和答辩',
+          text: '请求答辩(反请求答辩)',
           url: '/claimItem'
         },
         {
           id: '5',
-          text: '证据和质证',
+          text: '仲裁审理',
           url: '/evidencesInfo'
         },
         {
-          id: '7',
-          text: '结案',
+          id: '6',
+          text: '裁决书',
           url: '/endCaseInfo'
         }
       ],
@@ -216,7 +206,7 @@ export default {
     text-align: left;
     li {
       @include hand;
-      margin-left: 75px;
+      margin-left: 30px;
       margin-bottom: 8px;
       padding-left: 8px;
       height: 44px;

@@ -1,37 +1,5 @@
 <template>
   <div class="rightArbi">
-    <div class="_arbiInfo">
-      <div class="_top">仲裁委信息</div>
-      <div class="_mid">
-        <Row v-if="arbiInfoShow">
-          <Col span="22" offset="1">
-            <div class="_logo">
-              <img class="_img" :src="arbiInfo.loginLogoUrl" alt="">
-              <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
-              <div><b v-text="arbiInfo.enName"></b></div>
-            </div>
-            <p>
-              <Row>
-                <Col class="tr" span="6"><span class="mr10"><b>电话 :</b></span></Col>
-                <Col span="18">
-                  <ul v-for="(item, index) in arbiInfo.phone.split(',')" :key="index">
-                    <li class="mr10" v-text="item"></li>
-                  </ul>
-                </Col>
-              </Row>
-            </p>
-            <p>
-              <Row>
-                <Col class="tr" span="6"><span class="mr10"><b>地址 :</b></span></Col>
-                <Col span="18">
-                  <span class="mr10" v-text="arbiInfo.address"></span>
-                </Col>
-              </Row>
-            </p>
-          </Col>
-        </Row>
-      </div>
-    </div>
     <div class="_caseInfo">
       <div class="_top">案件信息</div>
       <div class="_mid">
@@ -90,6 +58,38 @@
                 <Col class="tr" span="10"><span class="mr10"><b>电话 :</b></span></Col>
                 <Col span="14">
                   <span class="mr10" v-text="dataInfo.secretaryPhone"></span>
+                </Col>
+              </Row>
+            </p>
+          </Col>
+        </Row>
+      </div>
+    </div>
+    <div class="_arbiInfo">
+      <div class="_top">仲裁委信息</div>
+      <div class="_mid">
+        <Row v-if="arbiInfoShow">
+          <Col span="22" offset="1">
+            <div class="_logo">
+              <img class="_img" :src="arbiInfo.loginLogoUrl" alt="">
+              <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
+              <div><b v-text="arbiInfo.enName"></b></div>
+            </div>
+            <p>
+              <Row>
+                <Col class="tr" span="6"><span class="mr10"><b>电话 :</b></span></Col>
+                <Col span="18">
+                  <ul v-for="(item, index) in arbiInfo.phone.split(',')" :key="index">
+                    <li class="mr10" v-text="item"></li>
+                  </ul>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="6"><span class="mr10"><b>地址 :</b></span></Col>
+                <Col span="18">
+                  <span class="mr10" v-text="arbiInfo.address"></span>
                 </Col>
               </Row>
             </p>
@@ -834,7 +834,7 @@ export default {
 @import '@/style/mixin';
 .rightArbi {
   padding-left: 6px;
-  ._caseInfo {
+  ._arbiInfo {
     padding-top: 60px;
     padding-bottom: 60px;
   }

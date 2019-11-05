@@ -1,7 +1,7 @@
 <template>
   <div class="endCaseInfo">
     <div class="_endCase">
-      <div class="_top">结案</div>
+      <div class="_top">裁决书</div>
       <div v-if="endCaseD !== null" v-for="(item, index) in endCaseD" :key="index">
         <end-info :infoData="item"></end-info>
       </div>

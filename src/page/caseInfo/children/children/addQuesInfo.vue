@@ -1,42 +1,24 @@
 <template>
-  <div class="pr _addEvidInfo">
+  <div class="pr _addQuesInfo">
     <spin-comp :spinShow="spinShow">
       <div v-if="progressText !== null" v-text="progressText"></div>
     </spin-comp>
     <Row>
       <Col span="22" offset="1">
         <Row class="_labelFor">
-          <Col span="4" class="_label">证据项名称<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model.trim="data.name"></Col>
+          <Col span="4" class="_label">问题清单名称<b class="_b">*</b></Col>
+          <Col span="16" class="_input"><input type="text" v-model="data.name"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===1" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
-          <Col span="4" class="_label">有无原文件<b class="_b">*</b></Col>
-          <Col span="16" class="_radio">
-            <RadioGroup v-model="data.state">
-              <Radio :label="1">有</Radio>
-              <Radio :label="2">无</Radio>
-            </RadioGroup>
-          </Col>
-          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>
-        </Row>
-        <Row class="_labelFor">
-          <Col span="4" class="_label">证据项描述<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model.trim="data.memo"></Col>
+          <Col span="4" class="_label">问题描述<b class="_b">*</b></Col>
+          <Col span="16" class="_input"><input type="text" v-model="data.remark"></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
         </Row>
-        <Row class="_labelFor" v-if="fileList.length !== 0">
-          <Col span="4" class="_label">已上传的文件<b class="_b">*</b></Col>
-          <Col span="16" class="_input">
-            <p span="12" class="_item" v-for="item in fileList" :key="item.id"><span class="hand" :title="item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}</span><Icon @click="delFile(item.id)" class="_del hand" type="close-circled"></Icon></p>
-          </Col>
-          <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===4" v-text="emInfo.text"></span></Col>
-        </Row>
         <Row class="_labelFor">
-          <Col span="24" class="_label">证据上传<b class="_b">*</b></Col>
+          <Col span="24" class="_label">文件上传<b class="_b"></b></Col>
           <Col span="24">
             <Upload
-              multiple
               ref="upload"
               name="file"
               type="drag"
@@ -44,18 +26,19 @@
               :with-credentials="true"
               :show-upload-list="false"
               :format="fileType"
-              :max-size="102400"
+              :max-size="10240"
+              :data="data"
               :on-format-error="resFormError"
-              :on-exceeded-size="resSizeError"
+              :on-exceeded-size="resSzieError"
               :before-upload="resBefoUpload"
               :on-progress="resProgress"
               :on-success="resSuccess"
               :on-error="resError"
             >
               <div class="_text">
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                <p v-if="fileObj === null" v-text="'上传类型只支持 '+fileType"></p>
-                <div v-if="fileObj !== null" v-text="fileObj.name"></div>
+                  <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                  <p v-if="fileObj === null" v-text="'上传类型只支持 '+fileType"></p>
+                  <div v-if="fileObj !== null" v-text="fileObj.name"></div>
               </div>
             </Upload>
           </Col>
@@ -75,33 +58,30 @@ import axios from 'axios'
 import spinComp from '@/components/common/spin'
 
 export default {
-  name: 'add_evid_info',
+  name: 'add_ques_info',
   components: { spinComp },
-  props: ['caseId', 'uploadUrl', 'uploadFileUrl', 'fileType'],
+  props: ['caseId', 'caseOldId', 'partieType', 'uploadUrl', 'uploadFileUrl', 'fileType'],
   data () {
     return {
       spinShow: false,
-      fileNum: 0,
       progressText: null,
       emInfo: {
         status: 0,
         text: ''
       },
       data: {
-        caseid: this.caseId,
+        partyType: this.partieType,
+        caseId: this.caseId,
         name: '',
-        state: null,
-        memo: ''
+        remark: ''
       },
       addBtnSwt: false,
-      fileList: [],
-      fileIdList: [],
       fileObj: null
     }
   },
   computed: {
     addFileBtn () {
-      if (this.fileList.length === 0 || this.data.name === '' || this.data.state === null || this.data.state === 2 || this.data.memo === '') {
+      if (this.data.name === '' || this.data.remark === '') {
         return true
       } else {
         return false
@@ -109,52 +89,25 @@ export default {
     }
   },
   methods: {
-    delFile (id) {
-      for (let k in this.fileList) {
-        if (this.fileList[k].id === id) {
-          this.fileList.splice(k, 1)
-          this.fileIdList.splice(k, 1)
-          this.$Message.success({
-            content: '删除成功',
-            duration: 2
-          })
-          return
-        }
-      }
-    },
-    seeFile (path) {
-      window.open(path, '_blank')
-    },
     resFormError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 5
       })
-      this.fileNum--
-      if (this.fileNum === 0) {
-        this.progressText = '100%'
-        this.spinShow = false
-      }
       this.fileObj = null
     },
-    resSizeError (file) {
+    resSzieError (file) {
       this.spinShow = false
       this.$Message.error({
         content: '文件不能超过10MB',
         duration: 5
       })
-      this.fileNum--
-      if (this.fileNum === 0) {
-        this.progressText = '100%'
-        this.spinShow = false
-      }
       this.fileObj = null
     },
     resBefoUpload (file) {
-      this.fileNum++
       this.fileObj = file
-      this.spinShow = true
+      return false
     },
     resProgress (event, file) {
       let _percent = event.percent
@@ -165,29 +118,21 @@ export default {
       }
     },
     resSuccess (res, file) {
-      this.fileNum--
-      if (this.fileNum === 0) {
-        this.progressText = '100%'
-        this.spinShow = false
-      }
+      this.progressText = '100%'
       this.fileObj = null
-      if (res.flag === false) {
-        this.$Message.error({
-          content: '错误信息:' + res.message + '',
-          duration: 5
-        })
-      } else {
-        if (this.fileIdList.indexOf(file.response.data.id) === -1) {
-          this.fileList.push(file.response.data)
-          this.fileIdList.push(file.response.data.id)
+      this.spinShow = false
+      this.$Message.success({
+        content: '文件上传成功',
+        duration: 1,
+        onClose: () => {
+          setTimeout(() => {
+            this.$emit('saveClick')
+          })
         }
-      }
+      })
     },
     resError (error, file) {
-      this.fileNum--
-      if (this.fileNum === 0) {
-        this.spinShow = false
-      }
+      this.spinShow = false
       this.$Message.error({
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5
@@ -198,30 +143,34 @@ export default {
         return false
       }
       this.addBtnSwt = true
-      axios.post(this.uploadUrl, {
-        caseid: this.caseId,
-        name: this.data.name,
-        state: this.data.state,
-        memo: this.data.memo,
-        fileIds: JSON.stringify(this.fileIdList)
-      }).then(res => {
-        this.$Message.success({
-          content: '文件上传成功',
-          duration: 1,
-          onClose: () => {
-            this.addBtnSwt = false
-            setTimeout(() => {
-              this.$emit('saveClick', res.data.data)
-            })
-          }
+      if (this.fileObj === null) {
+        axios.post(this.uploadUrl, {
+          partyType: this.partieType,
+          caseId: this.caseId,
+          name: this.data.name,
+          remark: this.data.remark
+        }).then(res => {
+          this.$Message.success({
+            content: '文件上传成功',
+            duration: 1,
+            onClose: () => {
+              this.addBtnSwt = false
+              setTimeout(() => {
+                this.$emit('saveClick')
+              })
+            }
+          })
+        }).catch(e => {
+          this.addBtnSwt = false
+          this.$Message.error({
+            content: '错误信息:' + e,
+            duration: 5
+          })
         })
-      }).catch(e => {
-        this.addBtnSwt = false
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
+      } else {
+        this.spinShow = true
+        this.$refs.upload.post(this.fileObj)
+      }
     },
     cancClick () {
       this.$emit('cancClick')
@@ -232,7 +181,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/mixin';
-._addEvidInfo {
+._addQuesInfo {
   @include borderRadius(3px);
   @include boxShadow(0 1px 6px -1px #bbb);
   margin-top: 10px;
