@@ -14,8 +14,8 @@
           <Col span="4" class="_label">有无原件<b class="_b">*</b></Col>
           <Col span="16" class="_radio">
             <RadioGroup v-model="data.state">
-              <Radio :label="1">是</Radio>
-              <Radio :label="2">否</Radio>
+              <Radio :label="1">有</Radio>
+              <Radio :label="2">无</Radio>
             </RadioGroup>
           </Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===2" v-text="emInfo.text"></span></Col>

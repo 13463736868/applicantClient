@@ -16,8 +16,8 @@
               <Row>
                 <Col class="tr" span="3"><span class="mr10">有无原件 :</span></Col>
                 <Col span="20">
-                  <span v-if="infoData.state === 1">是</span>
-                  <span v-else-if="infoData.state === 2">否</span>
+                  <span v-if="infoData.state === 1">有</span>
+                  <span v-else-if="infoData.state === 2">无</span>
                 </Col>
               </Row>
             </p>
