@@ -9,6 +9,9 @@
                 <Col class="tr" span="4"><span class="mr10">申请人 :</span></Col>
                 <Col span="20">
                   <span v-text="infoData.propName"></span>
+                  <span class="_icon">
+                    <Icon @click="editInfo" class="_edit" type="edit"></Icon>
+                  </span>
                 </Col>
               </Row>
             </p>
@@ -41,6 +44,11 @@ export default {
   props: ['infoData'],
   data () {
     return {}
+  },
+  methods: {
+    editInfo () {
+      this.$emit('editInfo')
+    }
   }
 }
 </script>
@@ -56,6 +64,20 @@ export default {
     padding: 10px 0;
     p {
       padding: 5px 0;
+    }
+    ._icon {
+      float: right;
+      ._edit {
+        @include hand;
+        font-size: 16px;
+        color: #126eaf
+      }
+      ._del {
+        @include hand;
+        font-size: 17px;
+        color: #ff7a7a;
+        margin-left: 10px;
+      }
     }
   }
 }

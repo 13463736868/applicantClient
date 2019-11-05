@@ -14,7 +14,7 @@
       </Row>
       <Row class="_labelFor">
         <Col span="4" offset="1" class="tr">
-          <p><span class="_span">*</span><b>请求金额：</b></p>
+          <p><span class="_span">*</span><b>标的额：</b></p>
         </Col>
         <Col span="16" offset="1">
           <Input v-model.trim="resData.counter" placeholder="请输入争议金额（单位：元）"></Input>

@@ -47,7 +47,7 @@
                 </Col>
                 <Col span="15" offset="1">
                   <p>1. 汇款金额必须准确。</p>
-                  <p>2. 请备注 "{{applicantName}}" 仲裁费。</p>
+                  <p>2. 请备注: {{applicantName}}仲裁费。</p>
                 </Col>
               </Row>
             </div>

@@ -36,11 +36,12 @@ export default {
   },
   methods: {
     saveClick () {
-      axios.post('/case/requestUpdate/2', {
+      axios.post('/case/updateRequestOrFact/2', {
+        id: this.reasData.id,
         caseid: this.caseId,
         content: this.reasData.content
       }).then(res => {
-        this.$emit('saveClick', res.data.data)
+        this.$emit('saveClick')
       }).catch(e => {
         this.$Message.error({
           content: '错误信息:' + e,
