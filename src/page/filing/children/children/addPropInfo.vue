@@ -108,17 +108,17 @@
           <Row class="_labelFor">
             <Col span="24" class="_label">公司职务<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.companyPosition"></Col>
-            <Col span="24" class="_em"><span v-show="emInfo.status===215" v-text="emInfo.text"></span></Col>
+            <Col span="24" class="_em"><span v-show="emInfo.status===216" v-text="emInfo.text"></span></Col>
           </Row>
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">法定代表人</Col>
+            <Col span="24" class="_label">法定代表人<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===221" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型</Col>
+            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
@@ -127,7 +127,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===222" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码</Col>
+            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===223" v-text="emInfo.text"></span></Col>
           </Row>
@@ -177,12 +177,12 @@
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">经营者</Col>
+            <Col span="24" class="_label">经营者<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===321" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型</Col>
+            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
@@ -191,7 +191,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===322" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码</Col>
+            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===323" v-text="emInfo.text"></span></Col>
           </Row>
@@ -241,12 +241,12 @@
         </Col>
         <Col span="10" offset="2">
           <Row class="_labelFor">
-            <Col span="24" class="_label">负责人</Col>
+            <Col span="24" class="_label">负责人<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.name"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===421" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件类型</Col>
+            <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
                 <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
@@ -255,7 +255,7 @@
             <Col span="24" class="_em"><span v-show="emInfo.status===422" v-text="emInfo.text"></span></Col>
           </Row>
           <Row class="_labelFor">
-            <Col span="24" class="_label">证件号码</Col>
+            <Col span="24" class="_label">证件号码<b class="_b">*</b></Col>
             <Col span="24" class="_input"><input type="text" v-model.trim="propData.idcard"></Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===423" v-text="emInfo.text"></span></Col>
           </Row>
@@ -472,7 +472,7 @@ export default {
             this.emInfo.status = 225
             this.emInfo.text = '请输入联系地址'
           } else if (this.propData.companyPosition === '') {
-            this.emInfo.status = 215
+            this.emInfo.status = 216
             this.emInfo.text = '请输入公司职务'
           }
         } else {

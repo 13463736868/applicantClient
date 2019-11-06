@@ -36,7 +36,7 @@
               <Row>
                 <Col span="3 tr"><span class="mr10">附件名称 :</span></Col>
                 <Col span="20">
-                  <span class="_file" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
+                  <p class="_file" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}</p>
                 </Col>
               </Row>
             </p>
