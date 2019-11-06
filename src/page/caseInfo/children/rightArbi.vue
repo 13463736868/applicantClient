@@ -39,7 +39,23 @@
             </p>
             <p>
               <Row>
-                <Col class="tr" span="10"><span class="mr10"><b>仲裁员 :</b></span></Col>
+                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(申):</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.propArbitratorName"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(被):</b></span></Col>
+                <Col span="14">
+                  <span class="mr10" v-text="dataInfo.respArbitratorName"></span>
+                </Col>
+              </Row>
+            </p>
+            <p>
+              <Row>
+                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(终):</b></span></Col>
                 <Col span="14">
                   <span class="mr10" v-text="dataInfo.arbitratorName"></span>
                 </Col>
