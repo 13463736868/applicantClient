@@ -121,6 +121,7 @@ export default {
       this.progressText = '100%'
       this.fileObj = null
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.success({
         content: '文件上传成功',
         duration: 1,
@@ -133,6 +134,7 @@ export default {
     },
     resError (error, file) {
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.error({
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5
