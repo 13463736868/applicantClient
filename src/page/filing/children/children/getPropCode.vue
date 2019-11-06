@@ -81,6 +81,16 @@ export default {
   },
   methods: {
     resCode (type, val) {
+      if (type === 'phone' && this.phoneCodeBtn === true) {
+        return false
+      } else {
+        this.phoneCodeBtn = true
+      }
+      if (type === 'email' && this.emailCodeBtn === true) {
+        return false
+      } else {
+        this.emailCodeBtn = true
+      }
       axios.post('/sendMessage', {
         phone: val
       }).then(res => {

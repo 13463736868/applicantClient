@@ -12,7 +12,7 @@
         </Row>
         <Row class="_labelFor">
           <Col span="4" class="_label">问题描述<b class="_b">*</b></Col>
-          <Col span="16" class="_input"><input type="text" v-model="data.remark"></Col>
+          <Col span="16" class="_input"><Input :autosize="{minRows: 5,maxRows: 7}" v-model="data.remark" type="textarea" placeholder="输入问题描述..." /></Col>
           <Col span="16" offset="4" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
         </Row>
         <Row class="_labelFor">
