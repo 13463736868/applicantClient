@@ -47,6 +47,11 @@ export default {
           url: '/respondentInfo'
         },
         {
+          id: '4',
+          text: '仲裁员选定',
+          url: '/revClaimItem'
+        },
+        {
           id: '3',
           text: '请求答辩(反请求答辩)',
           url: '/claimItem'
@@ -72,6 +77,11 @@ export default {
           id: '2',
           text: '被申请方',
           url: '/respondentInfo'
+        },
+        {
+          id: '4',
+          text: '仲裁员选定',
+          url: '/revClaimItem'
         },
         {
           id: '3',
@@ -104,6 +114,11 @@ export default {
           id: '2',
           text: '被申请方',
           url: '/respondentInfo'
+        },
+        {
+          id: '4',
+          text: '仲裁员选定',
+          url: '/revClaimItem'
         },
         {
           id: '3',
@@ -141,6 +156,11 @@ export default {
           id: '2',
           text: '被申请方',
           url: '/respondentInfo'
+        },
+        {
+          id: '4',
+          text: '仲裁员选定',
+          url: '/revClaimItem'
         },
         {
           id: '3',

@@ -1,52 +1,29 @@
 <template>
   <div class="revClaimInfo">
     <div class="_reason">
-      <div class="_top">事实与理由 (反请求)</div>
-      <div v-if="dataObj !== null">
-        <reas-info :infoData="dataObj"></reas-info>
-      </div>
-    </div>
-    <div class="_applicationBook">
-      <div class="_top">仲裁申请书 (反请求)</div>
-      <div v-if="dataObj !== null">
-        <appl-info :infoData="dataObj"></appl-info>
+      <div class="_top">选择仲裁员</div>
+      <div v-if="dataObj !== false">
+        <res-sele-arbi :caseId="caseId" :partieType="partieType"></res-sele-arbi>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import reasInfo from '@/page/caseInfo/children/children/reasInfo'
-import applInfo from '@/page/caseInfo/children/children/applInfo'
+import resSeleArbi from '@/page/caseInfo/children/children/resSeleArbi'
 
 export default {
   name: 'revClaimItem',
   props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
-  components: { reasInfo, applInfo },
+  components: { resSeleArbi },
   data () {
     return {
-      dataObj: null
+      dataObj: false
     }
   },
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
-      this.resResClaim()
-    }
-  },
-  methods: {
-    resResClaim () {
-      axios.post('/case/queryRespRequest', {
-        id: this.caseId,
-        caseId: this.caseOldId
-      }).then(res => {
-        this.dataObj = res.data.data
-      }).catch(e => {
-        this.$Message.error({
-          content: '错误信息:' + e,
-          duration: 5
-        })
-      })
+      this.dataObj = true
     }
   }
 }
@@ -55,11 +32,10 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/mixin';
 .revClaimInfo {
-  ._applicationBook {
-    padding-top: 60px;
+  ._reason {
     padding-bottom: 60px;
   }
-  ._reason ._top, ._applicationBook ._top{
+  ._reason ._top{
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;

@@ -17,3 +17,16 @@ export const resPage = {
     }
   }
 }
+
+export const resTimeOut = {
+  methods: {
+    debounce (fn, idle) {
+      let setTm
+      if (!idle || idle <= 0) return fn
+      return () => {
+        clearTimeout(setTm)
+        setTm = setTimeout(fn.bind(this, ...arguments), idle)
+      }
+    }
+  }
+}
