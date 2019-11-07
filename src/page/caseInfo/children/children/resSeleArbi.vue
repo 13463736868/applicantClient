@@ -241,36 +241,36 @@ export default {
       }
     },
     seleSave () {
-      if (this.seleArr.length === 0) {
-        this.$Message.success({
-          content: '请选择仲裁员',
-          duration: 5
-        })
-      } else {
-        axios.post('/case/appointArbitrator', {
-          caseId: this.caseId,
-          ids: this.seleArr.join(','),
-          partyType: this.partieType
-        }).then(res => {
-          let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
-          _showBtnObj.changeArbitrator = 0
-          this.setMyCaseShowBtn(_showBtnObj)
-          window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
-          this.pageObj.pageNum = 1
-          this.seleArr = []
+      for (var i = 0; i < this.seleArr.length; i++) {
+        if (this.seleArr[i] === '') {
           this.$Message.success({
-            content: '操作成功',
-            duration: 2
-          })
-        }).catch(e => {
-          this.pageObj.pageNum = 1
-          this.seleArr = []
-          this.$Message.error({
-            content: '错误信息:' + e + ' 稍后再试',
+            content: '请选择仲裁员',
             duration: 5
           })
-        })
+          return false
+        }
       }
+      axios.post('/case/appointArbitrator', {
+        caseId: this.caseId,
+        ids: this.seleArr.join(','),
+        partyType: this.partieType
+      }).then(res => {
+        let _showBtnObj = JSON.parse(JSON.stringify(this.myCaseShowBtn))
+        _showBtnObj.changeArbitrator = 0
+        this.setMyCaseShowBtn(_showBtnObj)
+        window.localStorage.setItem('myCaseShowBtn', JSON.stringify(_showBtnObj))
+        this.selectClick()
+        this.$Message.success({
+          content: '操作成功',
+          duration: 2
+        })
+      }).catch(e => {
+        this.selectClick()
+        this.$Message.error({
+          content: '错误信息:' + e + ' 稍后再试',
+          duration: 5
+        })
+      })
     }
   }
 }
