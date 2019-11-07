@@ -125,11 +125,11 @@
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="retractClick">撤回案件</button></Col>
           </Row>
         </Col>
-        <Col v-if="myCaseShowBtn.changeArbitrator === 1" span="24">
+        <!-- <Col v-if="myCaseShowBtn.changeArbitrator === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="selectClick">选择仲裁员</button></Col>
           </Row>
-        </Col>
+        </Col> -->
         <Col v-if="myCaseShowBtn.applyCorrect === 1" span="24">
           <Row>
             <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="replClick">申请补正</button></Col>
