@@ -98,6 +98,9 @@
       </div>
     </div>
     <div class="_myCaseSub">
+      <Row v-if="myCaseState === '3' || myCaseState === 3">
+        <Col class="tc" span="20" offset="2"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="reSubClick">重新提交仲裁委</button></Col>
+      </Row>
       <Row v-if="myCaseShowBtn !== null">
         <Col v-if="myCaseShowBtn.debarbArbitrator === 1" span="24">
           <Row>
@@ -131,18 +134,21 @@
         </Col>
       </Row>
     </div>
+    <alert-btn-info :alertShow="alertShow.reSub" @alertConfirm="reSubSave" @alertCancel="alertCanc('reSub')" alertTitle="重新提交仲裁委">
+      <p>确定要重新提交仲裁委吗？</p>
+    </alert-btn-info>
     <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
       <Row class="pb10" v-if="dataObj.avoiObj !== null">
         <Col span="22" offset="1">
-          <span><b>主 裁： </b></span>
+          <span><b>首席仲裁员： </b></span>
           <span v-if="dataObj.avoiObj.nameArr[0]"><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[0]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[0]"></Checkbox></span>
         </Col>
         <Col span="22" offset="1" v-if="dataObj.avoiObj.nameArr[1]">
-          <span><b>边 裁：</b></span>
+          <span><b>其他仲裁员：</b></span>
           <span><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[1]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[1]"></Checkbox></span>
         </Col>
         <Col span="22" offset="1" v-if="dataObj.avoiObj.nameArr[2]">
-          <span><b>边 裁：</b></span>
+          <span><b>其他仲裁员：</b></span>
           <span><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[2]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[2]"></Checkbox></span>
         </Col>
       </Row>
@@ -197,11 +203,11 @@
       </Row>
       <Row class="pb10" v-if="seleShow">
         <Col span="20" offset="1">
-          <span><b>主 裁： </b></span>
+          <span><b>首席仲裁员： </b></span>
           <span v-if="seleArrName[0]"><span class="ml5" v-text="seleArrName[0]"></span><Icon @click="resSeleDel(0)" class="ml5 hand" color="#ed3f14" type="close"></Icon></span>
         </Col>
         <Col span="20" offset="1">
-          <span><b>边 裁：</b></span>
+          <span><b>其他仲裁员：</b></span>
           <span v-if="seleArrName[1]"><span class="ml5" v-text="seleArrName[1]"></span><Icon @click="resSeleDel(1)" class="ml5 hand" color="#ed3f14" type="close"></Icon></span>
         </Col>
       </Row>
@@ -248,7 +254,8 @@ export default {
         sele: false,
         repl: false,
         coun: false,
-        righ: false
+        righ: false,
+        reSub: false
       },
       dataObj: {
         avoi: null,
@@ -257,7 +264,8 @@ export default {
         sele: null,
         repl: null,
         coun: null,
-        righ: null
+        righ: null,
+        reSub: false
       },
       seleList: {
         loading: false,
@@ -302,6 +310,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'myCaseState',
       'myCaseShowBtn'
     ]),
     dataMap () {
@@ -324,7 +333,7 @@ export default {
         } else if (this.dataInfo.money < 1000000) {
           return false
         } else if (this.dataInfo.money >= 1000000) {
-          return false
+          return true
         } else {
           return false
         }
@@ -400,6 +409,29 @@ export default {
         this.arbiInfoShow = true
       }).catch(e => {
         this.arbiInfoShow = false
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
+    reSubClick () {
+      this.alertShow.reSub = true
+    },
+    reSubSave () {
+      axios.post('/case/reSubmitCase', {
+        caseId: this.caseId
+      }).then(res => {
+        this.alertCanc('reSub')
+        this.$Message.success({
+          content: '操作成功',
+          duration: 2
+        })
+        this.$router.push({
+          path: '/home'
+        })
+      }).catch(e => {
+        this.alertCanc('reSub')
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5

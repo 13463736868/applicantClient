@@ -383,6 +383,11 @@ export default {
       } else {
         this.agenShow.list = true
       }
+      if (this.agenData.length < 2) {
+        this.agenShow.addBtn = true
+      } else {
+        this.agenShow.addBtn = false
+      }
     },
     changeView (type) {
       if (type === 'listProp') {
@@ -416,7 +421,11 @@ export default {
         this.agenShow.add = false
         this.agenShow.edit = false
         this.agenShow.upload = false
-        this.agenShow.addBtn = true
+        if (this.agenData.length < 2) {
+          this.agenShow.addBtn = true
+        } else {
+          this.agenShow.addBtn = false
+        }
       } else if (type === 'addAgen') {
         this.agenShow.list = false
         this.agenShow.add = true

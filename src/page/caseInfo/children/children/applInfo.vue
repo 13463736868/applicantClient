@@ -9,7 +9,7 @@
               <!-- <span class="_icon">
                 <Icon @click="dowInfo(infoData.id)" class="_dow" type="archive"></Icon>
               </span> -->
-              <span class="_icon">
+              <span class="_icon" v-if="myCaseState === 3 || myCaseState === '3'">
                 <Icon @click="editInfo" class="_edit" type="edit"></Icon>
               </span>
             </p>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import regi from '@/config/regiType.js'
 
 export default {
@@ -28,6 +29,11 @@ export default {
   props: ['infoData'],
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseState'
+    ])
   },
   methods: {
     editInfo () {

@@ -6,7 +6,7 @@
           <Col span="22" offset="1">
             <p>
               <span class="mr10">事实与理由 :</span>
-              <span class="_icon">
+              <span class="_icon" v-if="myCaseState === 3 || myCaseState === '3'">
                 <Icon @click="editInfo" class="_edit" type="edit"></Icon>
               </span>
             </p>
@@ -19,11 +19,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'reas_info',
   props: ['infoData'],
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseState'
+    ])
   },
   methods: {
     editInfo () {

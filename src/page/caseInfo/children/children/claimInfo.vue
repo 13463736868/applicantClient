@@ -9,7 +9,7 @@
                 <Col class="tr" span="4"><span class="mr10">申请人 :</span></Col>
                 <Col span="20">
                   <span v-text="infoData.propName"></span>
-                  <span class="_icon">
+                  <span class="_icon" v-if="myCaseState === 3 || myCaseState === '3'">
                     <Icon @click="editInfo" class="_edit" type="edit"></Icon>
                   </span>
                 </Col>
@@ -39,11 +39,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'claim_info',
   props: ['infoData'],
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters([
+      'myCaseState'
+    ])
   },
   methods: {
     editInfo () {

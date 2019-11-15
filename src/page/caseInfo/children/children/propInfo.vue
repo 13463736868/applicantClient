@@ -11,6 +11,10 @@
                   <span v-text="infoData.name"></span>
                   <span class="_icon">
                     <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+                    <template v-if="myCaseState === 3 || myCaseState === '3'">
+                      <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                      <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                    </template>
                   </span>
                 </Col>
               </Row>
@@ -58,6 +62,10 @@
                   <span v-text="infoData.enterpriseName"></span>
                   <span class="_icon">
                     <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+                    <template v-if="myCaseState === 3 || myCaseState === '3'">
+                      <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                      <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                    </template>
                   </span>
                 </Col>
               </Row>
@@ -105,6 +113,10 @@
                   <span v-text="infoData.enterpriseName"></span>
                   <span class="_icon">
                     <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+                    <template v-if="myCaseState === 3 || myCaseState === '3'">
+                      <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                      <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                    </template>
                   </span>
                 </Col>
               </Row>
@@ -152,6 +164,10 @@
                   <span v-text="infoData.enterpriseName"></span>
                   <span class="_icon">
                     <Icon @click="seeInfo" class="_see" type="eye"></Icon>
+                    <template v-if="myCaseState === 3 || myCaseState === '3'">
+                      <Icon @click="editInfo" class="_edit" type="edit" title="修改"></Icon>
+                      <Icon @click="uploadImg(infoData.id)" class="_uploadImg" type="upload" title="上传附件"></Icon>
+                    </template>
                   </span>
                 </Col>
               </Row>
@@ -196,7 +212,13 @@
           <!-- <Icon @click="dowImg(infoData.fileList[fileIndex].id)" class="_dowImg" type="archive"></Icon> -->
           <Icon class="_iconLeft" type="chevron-left" @click="imgPrev"></Icon>
           <div class="_imgBox">
-            <img class="_fileImg" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
+            <template v-if="myCaseState === 3 || myCaseState === '3'">
+              <img class="_fileImg _height" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
+              <Button style="background:#156FAE;border:1" long type="primary" size="small" @click="uploadImg(infoData.id)">上 传</Button>
+            </template>
+            <template v-else>
+              <img class="_fileImg _heightS" :class="{'_iconImg':isImgClass}" :src="fileImgSrc" alt="" :title="'点击查看: '+fileName" @click="seeImg(filePath)">
+            </template>
           </div>
           <Icon class="_iconRight" type="chevron-right" @click="imgNext"></Icon>
         </div>
@@ -207,6 +229,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 import regi from '@/config/regiType.js'
 
 export default {
@@ -228,6 +251,9 @@ export default {
     this.cardList()
   },
   computed: {
+    ...mapGetters([
+      'myCaseState'
+    ]),
     idcardName () {
       for (let k in this.idcardList) {
         if (this.idcardList[k].itemValue === this.infoData.idcardType) {
@@ -323,6 +349,12 @@ export default {
         })
       })
     },
+    editInfo () {
+      this.$emit('editInfo')
+    },
+    uploadImg (id) {
+      this.$emit('uploadImg', id)
+    },
     seeInfo () {
       this.$emit('seeInfo')
     },
@@ -366,6 +398,18 @@ export default {
     }
     ._icon {
       float: right;
+      ._edit {
+        @include hand;
+        font-size: 15px;
+        color: #126eaf;
+        margin-left: 10px;
+      }
+       ._uploadImg {
+        @include hand;
+        font-size: 18px;
+        color: #126eaf;
+        margin-left: 10px;
+      }
       ._see {
         @include hand;
         font-size: 18px;
@@ -402,13 +446,18 @@ export default {
       width: 84%;
       height: 162px;
       margin: 0 auto;
+      ._height {
+        height: 65%;
+      }
+      ._heightS {
+        height: 85%;
+      }
       ._fileImg {
         @include hand;
         clear: both;
         display: block;
         margin: 12px auto;
         width: 96%;
-        height: 85%;
       }
       ._fileImg._iconImg {
         @include hand;
