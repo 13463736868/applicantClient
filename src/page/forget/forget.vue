@@ -133,14 +133,16 @@ export default {
       }
     },
     resIdentCode () {
+      this.identCodeBtn = true
       axios.post('/sendMessage', {
         phone: this.forget.phone
       }).then(res => {
         this.identCodeTime = 60
         this.identCodeShow = true
-        this.identCodeBtn = true
+        // this.identCodeBtn = true
         this.timeOut()
       }).catch(e => {
+        this.identCodeBtn = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
