@@ -119,9 +119,11 @@ export default {
   methods: {
     delFileSave () {
       this.agenData.fileid = null
+      this.editAgenBtn = true
     },
     editApplBookSave (id) {
       this.agenData.fileid = id
+      this.editAgenBtn = true
     },
     cardList () {
       axios.all([axios.post('/dictionary/personIdcardType'), axios.post('/dictionary/nationName')]).then(axios.spread((resO, resT) => {
