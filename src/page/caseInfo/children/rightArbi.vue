@@ -651,8 +651,11 @@ export default {
     },
     resSearch () {
       if (!this.seleShow) {
-        this.seleArr = []
-        this.seleArrName = []
+        this.seleArr = ['']
+        this.seleArrName = ['']
+      } else {
+        this.seleArr = ['', '']
+        this.seleArrName = ['', '']
       }
       this.pageObj.pageNum = 1
       this.resArbitrator()
