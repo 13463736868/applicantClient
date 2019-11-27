@@ -3,7 +3,7 @@
     <Row>
       <Col span="22" offset="1" class="mb20">
         <Row class="_labelFor">
-          <Col span="4" class="_label">{{resText}}<b class="_b">*</b></Col>
+          <Col span="4" class="_label">{{resPartyType}}<b class="_b">*</b></Col>
           <Col span="20" class="_input"><Input :autosize="{minRows: 5,maxRows: 7}" v-model.trim="replyOpinion" type="textarea" :placeholder="'输入'+resText+'...'" /></Col>
         </Row>
       </Col>
@@ -28,13 +28,13 @@ export default {
     }
   },
   computed: {
-    resText () {
-      if (this.addType === 1) {
-        return '答辩描述'
-      } else if (this.addType === 3) {
-        return '最后陈述'
-      } else if (this.addType === 2) {
-        return '调解与和解'
+    resPartyType () {
+      if (this.partyType === 1) {
+        return '申请人'
+      } else if (this.partyType === 2) {
+        return '被申请人'
+      } else {
+        return ''
       }
     }
   },
