@@ -1,8 +1,24 @@
 <template>
   <div class="evidencesInfo">
+    <div class="_defence">
+      <div class="_top">答辩</div>
+      <div v-if="defenceObj.list">
+        <div v-for="(item, index) in dataList" :key="index">
+          <defence-info v-if="item.replyOpinion !== null" :infoData="item" :seeType="1"></defence-info>
+        </div>
+      </div>
+      <template>
+        <div v-if="defenceObj.add">
+          <add-defence-info :caseId="caseId" :partieType="partieType" :addType="1" @saveClick="actionSave('addDefenSave')" @cancClick="changeView('defenceObj')"></add-defence-info>
+        </div>
+        <div>
+          <add-icon v-if="defenceObj.addBtn" :imgStatus="2" addText="添加答辩" @addClick="changeView('addDefen')"></add-icon>
+        </div>
+      </template>
+    </div>
     <div class="_question">
       <div class="_top">问题清单</div>
-        <div v-if="questionObj.list">
+      <div v-if="questionObj.list">
         <div v-for="(item, index) in questionData" :key="index">
           <question-info :infoData="item"></question-info>
         </div>
@@ -44,6 +60,38 @@
         <add-icon v-if="revEvidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addRevEvid')"></add-icon>
       </div>
     </div>
+    <div class="_defence">
+      <div class="_top">最后描述</div>
+      <div v-if="descrObj.list">
+        <div v-for="(item, index) in dataList" :key="index">
+          <defence-info v-if="item.finalStatement !== null" :infoData="item"  :seeType="3"></defence-info>
+        </div>
+      </div>
+      <template>
+        <div v-if="descrObj.add">
+          <add-defence-info :caseId="caseId" :partieType="partieType" :addType="3" @saveClick="actionSave('addDescrSave')" @cancClick="changeView('descrObj')"></add-defence-info>
+        </div>
+        <div>
+          <add-icon v-if="descrObj.addBtn" :imgStatus="2" addText="最后描述" @addClick="changeView('addDescr')"></add-icon>
+        </div>
+      </template>
+    </div>
+    <div class="_defence">
+      <div class="_top">调解与和解</div>
+      <div v-if="mediateObj.list">
+        <div v-for="(item, index) in dataList" :key="index">
+          <defence-info v-if="item.mediateCompromise !== null" :infoData="item" :seeType="2"></defence-info>
+        </div>
+      </div>
+      <template>
+        <div v-if="mediateObj.add">
+          <add-defence-info :caseId="caseId" :partieType="partieType" :addType="2" @saveClick="actionSave('addMediateSave')" @cancClick="changeView('mediateObj')"></add-defence-info>
+        </div>
+        <div>
+          <add-icon v-if="mediateObj.addBtn" :imgStatus="2" addText="调解与和解" @addClick="changeView('addMediate')"></add-icon>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -55,12 +103,14 @@ import evidInfo from '@/page/caseInfo/children/children/evidInfo'
 import addEvidInfo from '@/page/caseInfo/children/children/addEvidInfo'
 import questionInfo from '@/page/caseInfo/children/children/questionInfo'
 import addQuesInfo from '@/page/caseInfo/children/children/addQuesInfo'
+import defenceInfo from '@/page/caseInfo/children/children/defenceInfo'
+import addDefenceInfo from '@/page/caseInfo/children/children/addDefenceInfo'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidencesInfo',
   props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
-  components: { addIcon, evidInfo, addEvidInfo, questionInfo, addQuesInfo },
+  components: { addIcon, evidInfo, addEvidInfo, questionInfo, addQuesInfo, defenceInfo, addDefenceInfo },
   data () {
     return {
       stateList: [4, 5, 7, '4', '5', '7'],
@@ -79,9 +129,25 @@ export default {
         add: false,
         addBtn: true
       },
+      defenceObj: {
+        list: false,
+        add: false,
+        addBtn: true
+      },
+      descrObj: {
+        list: false,
+        add: false,
+        addBtn: true
+      },
+      mediateObj: {
+        list: false,
+        add: false,
+        addBtn: true
+      },
       evidData: null,
       revEvidData: null,
-      questionData: null
+      questionData: null,
+      dataList: null
     }
   },
   created () {
@@ -89,6 +155,7 @@ export default {
       if (this.partieType !== null) {
         this.resEvid()
         this.resRevEvid()
+        this.resDefence(0)
         if (regi.type === 'ZhongWei' || regi.type === 'HeFei' || regi.type === 'ChiFeng') {
           this.resQuestion()
         }
@@ -132,6 +199,33 @@ export default {
     }
   },
   methods: {
+    resDefence () {
+      axios.post('/case/queryOpinion', {
+        caseId: this.caseId
+      }).then(res => {
+        this.dataList = res.data.data
+        if (this.dataList !== null) {
+          if (this.dataList.length === 0) {
+            this.defenceObj.list = false
+            this.descrObj.list = false
+            this.mediateObj.list = false
+          } else {
+            this.defenceObj.list = true
+            this.descrObj.list = true
+            this.mediateObj.list = true
+          }
+        } else {
+          this.defenceObj.list = false
+          this.descrObj.list = false
+          this.mediateObj.list = false
+        }
+      }).catch(e => {
+        this.$Message.error({
+          content: '错误信息:' + e,
+          duration: 5
+        })
+      })
+    },
     resQuestion () {
       axios.post('/case/findCaseQusetionList', {
         caseId: this.caseId
@@ -219,6 +313,30 @@ export default {
             duration: 2
           })
           break
+        case 'addDefenSave':
+          this.resDefence()
+          this.changeView('defenceObj')
+          this.$Message.success({
+            content: '添加成功',
+            duration: 2
+          })
+          break
+        case 'addDescrSave':
+          this.resDefence()
+          this.changeView('descrObj')
+          this.$Message.success({
+            content: '添加成功',
+            duration: 2
+          })
+          break
+        case 'addMediateSave':
+          this.resDefence()
+          this.changeView('mediateObj')
+          this.$Message.success({
+            content: '添加成功',
+            duration: 2
+          })
+          break
       }
     },
     changeView (type) {
@@ -253,6 +371,28 @@ export default {
           this.questionObj.add = false
           this.questionObj.addBtn = true
           break
+        case 'defenceObj':
+        case 'mediateObj':
+        case 'descrObj':
+          this[type].list = true
+          this[type].add = false
+          this[type].addBtn = true
+          break
+        case 'addDefen':
+          this.defenceObj.list = false
+          this.defenceObj.add = true
+          this.defenceObj.addBtn = false
+          break
+        case 'addDescr':
+          this.descrObj.list = false
+          this.descrObj.add = true
+          this.descrObj.addBtn = false
+          break
+        case 'addMediate':
+          this.mediateObj.list = false
+          this.mediateObj.add = true
+          this.mediateObj.addBtn = false
+          break
       }
     }
   }
@@ -271,7 +411,10 @@ export default {
   ._question {
     padding-bottom: 60px;
   }
-  ._evidences ._top, ._revEvidences ._top, ._question ._top {
+  ._defence {
+    padding-bottom: 60px;
+  }
+  ._evidences ._top, ._revEvidences ._top, ._question ._top, ._defence ._top {
     @include backgroundLine(right, #1a2b58, #126eaf);
     @include borderRadius(5px);
     text-align: center;
