@@ -39,7 +39,7 @@
               :with-credentials="true"
               :show-upload-list="false"
               :format="fileType"
-              :max-size="204800"
+              :max-size="1024000"
               :data="dataObj"
               :on-format-error="resFormError"
               :on-exceeded-size="resSzieError"
