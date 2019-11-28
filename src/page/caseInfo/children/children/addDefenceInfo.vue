@@ -28,7 +28,7 @@ export default {
     }
   },
   computed: {
-     resText () {
+    resText () {
       if (this.addType === 1) {
         return '答辩描述'
       } else if (this.addType === 3) {
