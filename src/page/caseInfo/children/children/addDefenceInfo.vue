@@ -28,10 +28,19 @@ export default {
     }
   },
   computed: {
+     resText () {
+      if (this.addType === 1) {
+        return '答辩描述'
+      } else if (this.addType === 3) {
+        return '最后陈述'
+      } else if (this.addType === 2) {
+        return '调解与和解'
+      }
+    },
     resPartyType () {
-      if (this.partyType === 1) {
+      if (this.partieType === 1) {
         return '申请人'
-      } else if (this.partyType === 2) {
+      } else if (this.partieType === 2) {
         return '被申请人'
       } else {
         return ''

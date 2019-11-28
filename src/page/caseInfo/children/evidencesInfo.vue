@@ -11,7 +11,7 @@
         <div v-if="defenceObj.add">
           <add-defence-info :caseId="caseId" :partieType="partieType" :addType="1" @saveClick="actionSave('addDefenSave')" @cancClick="changeView('defenceObj')"></add-defence-info>
         </div>
-        <div>
+        <div v-if="myCaseCrossE === 1">
           <add-icon v-if="defenceObj.addBtn" :imgStatus="2" addText="添加答辩" @addClick="changeView('addDefen')"></add-icon>
         </div>
       </template>
@@ -71,7 +71,7 @@
         <div v-if="descrObj.add">
           <add-defence-info :caseId="caseId" :partieType="partieType" :addType="3" @saveClick="actionSave('addDescrSave')" @cancClick="changeView('descrObj')"></add-defence-info>
         </div>
-        <div>
+        <div v-if="myCaseCrossE === 1">
           <add-icon v-if="descrObj.addBtn" :imgStatus="2" addText="最后描述" @addClick="changeView('addDescr')"></add-icon>
         </div>
       </template>
@@ -87,7 +87,7 @@
         <div v-if="mediateObj.add">
           <add-defence-info :caseId="caseId" :partieType="partieType" :addType="2" @saveClick="actionSave('addMediateSave')" @cancClick="changeView('mediateObj')"></add-defence-info>
         </div>
-        <div>
+        <div v-if="myCaseCrossE === 1">
           <add-icon v-if="mediateObj.addBtn" :imgStatus="2" addText="调解与和解" @addClick="changeView('addMediate')"></add-icon>
         </div>
       </template>
@@ -113,7 +113,7 @@ export default {
   components: { addIcon, evidInfo, addEvidInfo, questionInfo, addQuesInfo, defenceInfo, addDefenceInfo },
   data () {
     return {
-      stateList: [4, 5, 7, '4', '5', '7'],
+      stateList: [4, 5, '4', '5'],
       evidObj: {
         list: false,
         add: false,
