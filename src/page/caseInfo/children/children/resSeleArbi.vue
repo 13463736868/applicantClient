@@ -101,9 +101,9 @@ export default {
       } else {
         if (this.dataInfo.money === null) {
           return false
-        } else if (this.dataInfo.money < 1000000) {
+        } else if (this.dataInfo.money < 500000) {
           return false
-        } else if (this.dataInfo.money >= 1000000) {
+        } else if (this.dataInfo.money >= 500000) {
           return true
         } else {
           return false
