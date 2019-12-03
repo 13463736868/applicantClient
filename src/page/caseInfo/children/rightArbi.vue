@@ -140,7 +140,7 @@
     <alert-btn-info :alertShow="alertShow.avoi" @alertConfirm="avoiSave" @alertCancel="alertCanc('avoi')" alertTitle="申请仲裁员回避">
       <Row class="pb10" v-if="dataObj.avoiObj !== null">
         <Col span="22" offset="1">
-          <span><b>首席仲裁员： </b></span>
+          <span><b>{{dataObj.avoiObj.nameArr[1] || dataObj.avoiObj.nameArr[2] ? '首席' : '独任'}}仲裁员： </b></span>
           <span v-if="dataObj.avoiObj.nameArr[0]"><span class="ml5 mr5" v-text="dataObj.avoiObj.nameArr[0]"></span><Checkbox v-model="dataObj.avoiObj.statusArr[0]"></Checkbox></span>
         </Col>
         <Col span="22" offset="1" v-if="dataObj.avoiObj.nameArr[1]">
