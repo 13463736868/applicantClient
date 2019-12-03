@@ -164,7 +164,7 @@ export default {
             align: 'center'
           },
           {
-            title: '标的',
+            title: '标的(元)',
             key: 'money',
             align: 'center'
           },
