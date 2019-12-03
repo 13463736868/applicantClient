@@ -38,7 +38,7 @@
               <Row>
                 <Col span="6 tr"><span class="mr10">附件名称 :</span></Col>
                 <Col span="17">
-                  <p class="_file p0" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}<b v-if="infoData.state === 2" class="ml10" style="color:#ed3f14;">（请注意：该证据非证据原件）</b></p>
+                  <p class="_file p0" v-for="item in infoData.fileUploads" :key="item.id" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 30 ? item.filename.substr(0, 30) + '...' : item.filename}}<b v-if="infoData.state === 2" class="ml10" style="color:#ed3f14;">（请注意：该证据非证据原件）</b></p>
                 </Col>
               </Row>
             </p>
