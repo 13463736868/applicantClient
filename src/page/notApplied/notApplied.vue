@@ -147,15 +147,6 @@ export default {
             }
           },
           {
-            title: '合同编号',
-            key: 'contractNo',
-            align: 'center',
-            render: (h, params) => {
-              return h('span', {
-              }, params.row.contractNo === null ? '' : params.row.contractNo)
-            }
-          },
-          {
             title: '申请人',
             key: 'propName',
             align: 'center',

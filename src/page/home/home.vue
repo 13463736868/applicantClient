@@ -164,9 +164,8 @@ export default {
             align: 'center'
           },
           {
-            title: '开庭时间',
-            key: 'beginTime',
-            minWidth: 30,
+            title: '标的',
+            key: 'money',
             align: 'center'
           },
           {
