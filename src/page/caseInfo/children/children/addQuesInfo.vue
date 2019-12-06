@@ -153,7 +153,7 @@ export default {
           remark: this.data.remark
         }).then(res => {
           this.$Message.success({
-            content: '文件上传成功',
+            content: '操作成功',
             duration: 1,
             onClose: () => {
               this.addBtnSwt = false
