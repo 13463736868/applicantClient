@@ -87,7 +87,6 @@ export default {
   created () {
     if (this.caseId !== '' && this.caseOldId !== '') {
       this.selectClick()
-      this.resArbitrator()
     }
     this.$watch('searchText', this.debounce(this.resSearch, 1000))
   },
@@ -172,12 +171,8 @@ export default {
       }
     },
     resSearch () {
-      if (!this.seleShow) {
-        this.seleArr = []
-        this.seleArrName = []
-      }
       this.pageObj.pageNum = 1
-      this.resArbitrator()
+      this.selectClick()
     },
     selectClick () {
       this.pageObj.pageNum = 1
