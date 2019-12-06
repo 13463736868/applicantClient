@@ -171,7 +171,6 @@ export default {
       }
     },
     resSearch () {
-      this.pageObj.pageNum = 1
       this.selectClick()
     },
     selectClick () {

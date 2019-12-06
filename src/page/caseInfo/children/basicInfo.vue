@@ -147,7 +147,7 @@ export default {
             align: 'center'
           },
           {
-            title: '存在问题',
+            title: '备注',
             key: 'memo',
             align: 'center'
           }
