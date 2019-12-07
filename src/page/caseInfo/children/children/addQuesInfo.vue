@@ -72,6 +72,7 @@ export default {
       data: {
         partyType: this.partieType,
         caseId: this.caseId,
+        oldId: this.caseOldId,
         name: '',
         remark: ''
       },
@@ -149,6 +150,7 @@ export default {
         axios.post(this.uploadUrl, {
           partyType: this.partieType,
           caseId: this.caseId,
+          oldId: this.caseOldId,
           name: this.data.name,
           remark: this.data.remark
         }).then(res => {

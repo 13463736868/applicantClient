@@ -23,7 +23,7 @@
           <question-info :infoData="item"></question-info>
         </div>
       </div>
-      <template v-if="stateList.indexOf(caseState) !== -1">
+      <template v-if="stateList.indexOf(caseState) !== -1 && myCaseCrossE === 1">
         <div v-if="questionObj.add">
           <add-ques-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['pdf']" :uploadUrl="uploadUrlQues" :uploadFileUrl="uploadFileUrlQues" @saveClick="actionSave('addQuesSave')" @cancClick="changeView('listQues')"></add-ques-info>
         </div>
