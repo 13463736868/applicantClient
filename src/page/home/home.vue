@@ -552,12 +552,14 @@ export default {
         content: '文件格式错误只支持 jpg、jpeg、png、doc、docx、pdf',
         duration: 5
       })
+      this.retrObj.fileObj = null
     },
     resSizeError () {
       this.$Message.error({
         content: '文件不能超过10MB',
         duration: 5
       })
+      this.retrObj.fileObj = null
     },
     resBefoUpload (file) {
       this.retrObj.fileObj = file

@@ -81,6 +81,7 @@ export default {
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 2
       })
+      this.fileObj = null
     },
     resSzieError (file) {
       this.spinShow = false
@@ -88,6 +89,7 @@ export default {
         content: '文件不能超过10MB',
         duration: 2
       })
+      this.fileObj = null
     },
     resBefoUpload (file) {
       this.fileObj = file
