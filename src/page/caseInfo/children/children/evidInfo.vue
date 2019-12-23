@@ -33,7 +33,7 @@
               <Row>
                 <Col class="tr" span="3"><span class="mr10">附件名称 :</span></Col>
                 <Col span="20">
-                  <span class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 15 ? item.filename.substr(0, 15) + '...' : item.filename}}</span>
+                  <p class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}</p>
                 </Col>
               </Row>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
@@ -102,6 +102,7 @@ export default {
     ._file {
       @include hand;
       color: #337BB5;
+      padding-top: 0px;
       margin-right: 60px;
     }
   }

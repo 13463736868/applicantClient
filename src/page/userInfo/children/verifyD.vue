@@ -344,6 +344,7 @@ export default {
           this.userAInfo.idcardType = _data.idcardType
           this.userAInfo.idcard = _data.idcard
           this.entrDocData = _data.authorizeBook
+          this.userAInfo.authorizeBookId = _data.authorizeBook.id
           try {
             this.imgUrl.fileA = _data.fileList[0].filepath
             this.imgUrl.fileB = _data.fileList[1].filepath
@@ -673,30 +674,31 @@ export default {
           }
         }
       } else {
-        this.addInfoBtn = true
-        axios.post(this.uploadUrl, this.uploadData).then(res => {
-          this.addInfoBtn = false
-          this.$Message.success({
-            content: '修改成功',
-            duration: 2
-          })
-          let _data = {}
-          _data.userType = res.data.data.userType
-          _data.userTypeDesc = res.data.data.userTypeDesc
-          _data.verify = res.data.data.verify
-          _data.verifyDesc = res.data.data.verifyDesc
-          if (window.localStorage) {
-            let loc = window.localStorage
-            loc.setItem('userState', JSON.stringify(_data))
-          }
-          this.setUserState(_data)
-        }).catch(e => {
-          this.addInfoBtn = false
-          this.$Message.error({
-            content: '错误信息:' + e + ' 稍后再试',
-            duration: 5
-          })
-        })
+        // this.addInfoBtn = true
+        console.log(this.uploadUrl, this.uploadData)
+        // axios.post(this.uploadUrl, this.uploadData).then(res => {
+        //   this.addInfoBtn = false
+        //   this.$Message.success({
+        //     content: '修改成功',
+        //     duration: 2
+        //   })
+        //   let _data = {}
+        //   _data.userType = res.data.data.userType
+        //   _data.userTypeDesc = res.data.data.userTypeDesc
+        //   _data.verify = res.data.data.verify
+        //   _data.verifyDesc = res.data.data.verifyDesc
+        //   if (window.localStorage) {
+        //     let loc = window.localStorage
+        //     loc.setItem('userState', JSON.stringify(_data))
+        //   }
+        //   this.setUserState(_data)
+        // }).catch(e => {
+        //   this.addInfoBtn = false
+        //   this.$Message.error({
+        //     content: '错误信息:' + e + ' 稍后再试',
+        //     duration: 5
+        //   })
+        // })
       }
     },
     dowDocBook () {
