@@ -146,6 +146,7 @@ export default {
   components: { headTop },
   data () {
     return {
+      dispSwitch: false,
       registerType: true,
       registerBtn: true,
       identCodeBtn: true,
@@ -268,14 +269,20 @@ export default {
       }
     },
     resIdentCode () {
+      if (this.dispSwitch) {
+        return false
+      }
+      this.dispSwitch = true
       axios.post('/sendMessage', {
         phone: this.registerType === true ? this.company.phone : this.personal.phone
       }).then(res => {
+        this.dispSwitch = false
         this.identCodeTime = 60
         this.identCodeShow = true
         this.identCodeBtn = true
         this.timeOut()
       }).catch(e => {
+        this.dispSwitch = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
