@@ -1,37 +1,5 @@
 <template>
   <div class="evidencesInfo">
-    <div class="_defence">
-      <div class="_top">答辩</div>
-      <div v-if="defenceObj.list">
-        <div v-for="(item, index) in dataList" :key="index">
-          <defence-info v-if="item.replyOpinion !== null" :infoData="item" :seeType="1"></defence-info>
-        </div>
-      </div>
-      <template>
-        <div v-if="defenceObj.add">
-          <add-defence-info :caseId="caseId" :partieType="partieType" :addType="1" @saveClick="actionSave('addDefenSave')" @cancClick="changeView('defenceObj')"></add-defence-info>
-        </div>
-        <div v-if="myCaseCrossE === 1">
-          <add-icon v-if="defenceObj.addBtn" :imgStatus="2" addText="添加答辩" @addClick="changeView('addDefen')"></add-icon>
-        </div>
-      </template>
-    </div>
-    <div class="_question">
-      <div class="_top">问题清单</div>
-      <div v-if="questionObj.list">
-        <div v-for="(item, index) in questionData" :key="index">
-          <question-info :infoData="item"></question-info>
-        </div>
-      </div>
-      <template v-if="stateList.indexOf(caseState) !== -1 && myCaseCrossE === 1">
-        <div v-if="questionObj.add">
-          <add-ques-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['pdf']" :uploadUrl="uploadUrlQues" :uploadFileUrl="uploadFileUrlQues" @saveClick="actionSave('addQuesSave')" @cancClick="changeView('listQues')"></add-ques-info>
-        </div>
-        <div>
-          <add-icon v-if="questionObj.addBtn" :imgStatus="2" addText="上传问题清单" @addClick="changeView('addQues')"></add-icon>
-        </div>
-      </template>
-    </div>
     <div class="_evidences">
       <div class="_top">申请人证据</div>
       <div v-if="evidObj.list">
@@ -60,8 +28,40 @@
         <add-icon v-if="revEvidObj.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addRevEvid')"></add-icon>
       </div>
     </div>
+    <div class="_question">
+      <div class="_top">问题清单</div>
+      <div v-if="questionObj.list">
+        <div v-for="(item, index) in questionData" :key="index">
+          <question-info :infoData="item"></question-info>
+        </div>
+      </div>
+      <template v-if="stateList.indexOf(caseState) !== -1 && myCaseCrossE === 1">
+        <div v-if="questionObj.add">
+          <add-ques-info :caseId="caseId" :caseOldId="caseOldId" :partieType="partieType" :fileType="['pdf']" :uploadUrl="uploadUrlQues" :uploadFileUrl="uploadFileUrlQues" @saveClick="actionSave('addQuesSave')" @cancClick="changeView('listQues')"></add-ques-info>
+        </div>
+        <div>
+          <add-icon v-if="questionObj.addBtn" :imgStatus="2" addText="上传问题清单" @addClick="changeView('addQues')"></add-icon>
+        </div>
+      </template>
+    </div>
     <div class="_defence">
-      <div class="_top">最后描述</div>
+      <div class="_top">答辩</div>
+      <div v-if="defenceObj.list">
+        <div v-for="(item, index) in dataList" :key="index">
+          <defence-info v-if="item.replyOpinion !== null" :infoData="item" :seeType="1"></defence-info>
+        </div>
+      </div>
+      <template>
+        <div v-if="defenceObj.add">
+          <add-defence-info :caseId="caseId" :partieType="partieType" :addType="1" @saveClick="actionSave('addDefenSave')" @cancClick="changeView('defenceObj')"></add-defence-info>
+        </div>
+        <div v-if="myCaseCrossE === 1">
+          <add-icon v-if="defenceObj.addBtn" :imgStatus="2" addText="添加答辩" @addClick="changeView('addDefen')"></add-icon>
+        </div>
+      </template>
+    </div>
+    <div class="_defence">
+      <div class="_top">最后陈述</div>
       <div v-if="descrObj.list">
         <div v-for="(item, index) in dataList" :key="index">
           <defence-info v-if="item.finalStatement !== null" :infoData="item"  :seeType="3"></defence-info>
@@ -72,7 +72,7 @@
           <add-defence-info :caseId="caseId" :partieType="partieType" :addType="3" @saveClick="actionSave('addDescrSave')" @cancClick="changeView('descrObj')"></add-defence-info>
         </div>
         <div v-if="myCaseCrossE === 1">
-          <add-icon v-if="descrObj.addBtn" :imgStatus="2" addText="最后描述" @addClick="changeView('addDescr')"></add-icon>
+          <add-icon v-if="descrObj.addBtn" :imgStatus="2" addText="最后陈述" @addClick="changeView('addDescr')"></add-icon>
         </div>
       </template>
     </div>

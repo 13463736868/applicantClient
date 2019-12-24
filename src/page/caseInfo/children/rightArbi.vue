@@ -89,7 +89,8 @@
             <div class="_logo">
               <img class="_img" :src="arbiInfo.loginLogoUrl" alt="">
               <div class="f14 pt5"><b v-text="arbiInfo.name"></b></div>
-              <div><b v-text="arbiInfo.enName"></b></div>
+              <div class="f14"><b>网络立案平台</b></div>
+              <!-- <div><b v-text="arbiInfo.enName"></b></div> -->
             </div>
             <p>
               <Row>
