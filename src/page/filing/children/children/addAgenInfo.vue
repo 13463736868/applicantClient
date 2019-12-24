@@ -73,7 +73,7 @@
         </Row>
       </Col>
     </Row>
-      <add-agen-appl-book :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addApplBookSave" @delFileClick="delFileSave"></add-agen-appl-book>
+    <add-agen-appl-book :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addApplBookSave" @delFileClick="delFileSave"></add-agen-appl-book>
     <Row>
       <Col class="tc" span="10" offset="1"><button class="_cancelBtn" @click="cancClick">取 消</button></Col>
       <Col class="tc" span="10" offset="2"><button class="_saveBtn" :class="{'_disabled':addAgenBtn}" v-bind:disabled="addAgenBtn" @click="saveClick">保 存</button></Col>
