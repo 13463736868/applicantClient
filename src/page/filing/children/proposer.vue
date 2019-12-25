@@ -2,6 +2,9 @@
   <div class="proposer">
     <div class="_proposer">
       <div class="_top">申请人</div>
+      <div class="_caption">
+        <p>点击下方按钮添加申请人，按照填报项要求填写申请人真实信息</p>
+      </div>
       <div v-if="propShow.list" class="_listProp">
         <div v-if="propData !== null" v-for="(item, index) in propData" :key="index">
           <prop-info :infoData="item" @editInfo="editPropInfo(item)" @uploadImg="uploadPropImg" @delInfo="delPropInfo" @delImg="delPropImg"></prop-info>
@@ -20,6 +23,9 @@
     </div>
     <div class="_agent">
       <div class="_top">代理人</div>
+      <div class="_caption">
+        <p>点击下方按钮添加代理人，按照填报项要求填写代理人真实信息</p>
+      </div>
       <div v-if="agenShow.list" class="_listAgen">
         <div v-if="agenData !== null" v-for="(item, index) in agenData" :key="index">
           <agen-info :infoData="item" :propArrName="propDataName" @editInfo="editAgenInfo(item)" @uploadImg="uploadAgenImg" @delInfo="delAgenInfo" @delImg="delAgenImg"></agen-info>
@@ -460,6 +466,14 @@ export default {
     line-height: 44px;
     color: #fff;
     font-size: 20px;
+  }
+  ._caption {
+    color: #999;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    p {
+      padding: 5px 0;
+    }
   }
 }
 </style>

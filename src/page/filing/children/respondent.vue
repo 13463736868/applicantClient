@@ -2,6 +2,9 @@
   <div class="respondent">
     <div class="_respondent">
       <div class="_top">被申请人</div>
+      <div class="_caption">
+        <p>点击下方按钮添加被申请人，按照填报项要求填写被申请人真实信息</p>
+      </div>
       <div v-if="respShow.list" class="_listResp">
         <div v-if="respData !== null" v-for="(item, index) in respData" :key="index">
           <prop-info :infoData="item" @editInfo="editRespInfo(item)" @uploadImg="uploadRespImg" @delInfo="delRespInfo" @delImg="delRespImg"></prop-info>
@@ -250,6 +253,14 @@ export default {
     line-height: 44px;
     color: #fff;
     font-size: 20px;
+  }
+  ._caption {
+    color: #999;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    p {
+      padding: 5px 0;
+    }
   }
 }
 </style>

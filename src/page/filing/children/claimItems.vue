@@ -23,6 +23,9 @@
     </div>
     <div class="_reason">
       <div class="_top">事实与理由</div>
+      <div class="_caption">
+        <p>应叙述双方发生争议的时间、地点、原因、事件、方式、手段和后果等，特别是要把引发双方发生争议的关键性事实客观的交代清楚。叙述应全面而简洁</p>
+      </div>
       <div v-if="reasShow.list">
         <reas-info :infoData="reasData" @editInfo="changeView('editReas')"></reas-info>
       </div>
@@ -36,6 +39,12 @@
     </div>
     <div class="_applicationBook">
       <div class="_top">仲裁申请书</div>
+      <div class="_caption">
+        <p>请将填写完整并加盖公章的仲裁申请人按照下方要求上传至系统，仲裁申请书应包含以下内容：</p>
+        <p>1：申请人及被申请人信息；</p>
+        <p>2：仲裁请求和所根据的事实、理由；</p>
+        <p>3：个人签名或单位公章；</p>
+      </div>
       <div v-if="applShow.list">
         <appl-info :infoData="applData" @delInfo="delApplInfo"></appl-info>
       </div>

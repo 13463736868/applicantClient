@@ -2,6 +2,9 @@
   <div class="evidences">
     <div class="_evidences">
       <div class="_top">我的证据</div>
+      <div class="_caption">
+        <p>点击下方按钮进行证据的添加，须包含有仲裁条款的合同或书面仲裁协议</p>
+      </div>
       <div v-if="evidShow.list" class="_listResp">
         <div v-if="evidData !== null" v-for="(item, index) in evidData" :key="index">
           <evid-info :infoData="item" @delInfo="delEvidInfo"></evid-info>
@@ -154,6 +157,14 @@ export default {
     line-height: 44px;
     color: #fff;
     font-size: 20px;
+  }
+  ._caption {
+    color: #999;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    p {
+      padding: 5px 0;
+    }
   }
 }
 </style>
