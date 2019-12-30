@@ -16,7 +16,7 @@
           <label class="lh32 f16 fc6 fr mr15">时间</label>
         </Col>
         <Col span="4">
-          <DatePicker class="wmax" format="yyyy-MM-dd" @on-change="changeDate" confirm @on-clear="clearDate" @on-ok="resSearch" type="datetimerange" placeholder="起始时间"></DatePicker>
+          <DatePicker class="wmax" format="yyyy-MM-dd" @on-change="changeDate" confirm @on-clear="clearDate" @on-ok="resSearch" type="daterange" placeholder="起止时间"></DatePicker>
         </Col>
         <Col span="2" offset="1">
           <label class="lh32 f16 fc6 fr mr15">案件状态</label>
