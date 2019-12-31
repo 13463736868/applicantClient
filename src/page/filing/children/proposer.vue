@@ -224,6 +224,7 @@ export default {
               if (this.propData[k].fileList[v].id === this.delPropImgObj.fileId) {
                 this.propData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'propList', data: this.propData})
+                this.changeView('delPropImg')
                 this.alertShowPropImg = false
                 this.$Message.success({
                   content: '删除成功',
@@ -339,6 +340,7 @@ export default {
               if (this.agenData[k].fileList[v].id === this.delAgenImgObj.fileId) {
                 this.agenData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'proxyList', data: this.agenData})
+                this.changeView('delAgenImg')
                 this.alertShowAgenImg = false
                 this.$Message.success({
                   content: '删除成功',
@@ -413,6 +415,16 @@ export default {
         this.propShow.list = false
         this.propShow.upload = true
         this.propShow.addBtn = false
+      } else if (type === 'delPropImg') {
+        this.propShow.list = false
+        setTimeout(() => {
+          this.propShow.list = true
+        }, 500)
+      } else if (type === 'delAgenImg') {
+        this.agenShow.list = false
+        setTimeout(() => {
+          this.agenShow.list = true
+        }, 500)
       } else if (type === 'listAgen') {
         if (this.agenData.length === 0) {
           this.agenShow.list = false
