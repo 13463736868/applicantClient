@@ -127,6 +127,7 @@ export default {
     },
     resFormError (file) {
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 5
@@ -135,6 +136,7 @@ export default {
     },
     resSzieError (file) {
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.error({
         content: '文件不能超过10MB',
         duration: 5
@@ -157,6 +159,7 @@ export default {
       this.progressText = '100%'
       this.fileObj = null
       this.spinShow = false
+      this.addBtnSwt = false
       if (this.fileIdList.indexOf(file.response.data.id) === -1) {
         this.fileList.push(file.response.data)
         this.fileIdList.push(file.response.data.id)
@@ -164,6 +167,8 @@ export default {
     },
     resError (error, file) {
       this.spinShow = false
+      this.addBtnSwt = false
+      this.fileObj = null
       this.$Message.error({
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5

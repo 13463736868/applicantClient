@@ -92,6 +92,7 @@ export default {
   methods: {
     resFormError (file) {
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.error({
         content: '文件格式错误只支持 ' + this.fileType,
         duration: 5
@@ -100,6 +101,7 @@ export default {
     },
     resSzieError (file) {
       this.spinShow = false
+      this.addBtnSwt = false
       this.$Message.error({
         content: '文件不能超过10MB',
         duration: 5
@@ -108,6 +110,7 @@ export default {
     },
     resBefoUpload (file) {
       this.fileObj = file
+      this.addBtnSwt = false
       return false
     },
     resProgress (event, file) {
@@ -140,6 +143,7 @@ export default {
         content: '错误信息:' + error.status + ' 稍后再试',
         duration: 5
       })
+      this.fileObj = null
     },
     saveClick () {
       if (this.addBtnSwt) {
