@@ -9,19 +9,31 @@
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
-        <Col span="8">
+        <Col span="5">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
-        <Col span="6">
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">条件选择</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="batchCondition" @on-change="resChangeStatus()">
+            <Option :value="0" :key="0">全部</Option>
+            <Option :value="1" :key="1">撤回案件</Option>
+          </Select>
+        </Col>
+        <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">案件状态</label>
         </Col>
-        <Col span="6">
-          <Select v-model="caseStatus" style="width:200px" @on-change="resChangeStatus()">
+        <Col span="3">
+          <Select v-model="caseStatus" @on-change="resChangeStatus()">
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="2" class="tr pr20">
-          <Button type="primary" @click="resPayment">批量交费</Button>
+        <Col span="7">
+          <div class="tr pr20">
+            <Button class="ml20" type="primary" @click="resActions('resBatchCanc', null)">批量撤回</Button>
+            <Button class="ml20" type="primary" @click="resPayment">批量交费</Button>
+          </div>
         </Col>
       </Row>
       <div class="_caseList clearfix">
@@ -93,6 +105,7 @@ export default {
       search: {
         text: ''
       },
+      batchCondition: 0,
       caseStatusList: [],
       caseStatus: 0,
       caseList: {
@@ -211,11 +224,19 @@ export default {
   },
   computed: {
     resAction () {
-      return regi.api + '/case/withdraw'
+      if (this.retrDObj === null || this.retrDObj.length === 1) {
+        return regi.api + '/case/withdraw'
+      } else {
+        return regi.api + '/case/withdrawBatch'
+      }
     },
     retrData () {
       let _data = {}
-      _data.caseId = this.retrDObj
+      if (this.retrDObj === null || this.retrDObj.length === 1) {
+        _data.caseId = this.retrDObj
+      } else {
+        _data.caseIds = this.retrDObj.join(',')
+      }
       return _data
     },
     codePhone () {
@@ -263,14 +284,14 @@ export default {
       }
       this.caseList.bodyList.forEach((item, index) => {
         let _obj = item
-        if (_obj.state === 2) {
+        if (this.batchCondition === 1 || _obj.state === 2) {
           this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
         }
       })
     },
     renderCheck (h, params) {
       let _obj = params.row
-      if (_obj.state === 2) {
+      if (this.batchCondition === 1 || _obj.state === 2) {
         if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
           return h('div', [
             h('Icon', {
@@ -506,7 +527,8 @@ export default {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text,
-        caseState: this.caseStatus
+        caseState: this.caseStatus,
+        batchCondition: this.batchCondition === 0 ? null : this.batchCondition
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -525,6 +547,7 @@ export default {
       this.resMineList()
     },
     resChangeStatus () {
+      this.alertShow.idsList = []
       this.caseList.seleMap = {}
       this.pageObj.pageNum = 1
       this.resMineList()
@@ -591,7 +614,13 @@ export default {
     retrSave () {
       this.retrObj.spinShow = true
       if (this.retrObj.fileObj === null) {
-        axios.post('/case/withdraw', this.retrData).then(res => {
+        let _url = ''
+        if (this.retrData.caseIds === undefined) {
+          _url = '/case/withdraw'
+        } else {
+          _url = '/case/withdrawBatch'
+        }
+        axios.post(_url, this.retrData).then(res => {
           this.retrObj.spinShow = false
           this.alertCanc('retr')
           this.$Message.success({
@@ -615,6 +644,7 @@ export default {
       this.retrObj.alertShow = false
       this.retrObj.fileObj = null
       this.retrDObj = null
+      this.alertShow.idsList = []
     },
     getFormatDate () {
       let date = new Date()
@@ -734,6 +764,26 @@ export default {
         this.$router.push({
           path: '/goPayment'
         })
+      }
+    },
+    resActions (type, data) {
+      switch (type) {
+        case 'resBatchCanc':
+          if (this.batchCondition !== 1) {
+            this.$Message.error({
+              content: '请先条件选择 \'撤回案件\'',
+              duration: 5
+            })
+          } else if (this.alertShow.idsList.length === 0) {
+            this.$Message.error({
+              content: '请先选择一个案件',
+              duration: 5
+            })
+          } else {
+            this.retrDObj = this.alertShow.idsList
+            this.retrObj.alertShow = true
+          }
+          break
       }
     },
     goCourtRoomS () {
