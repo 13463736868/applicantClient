@@ -170,6 +170,7 @@ export default {
               if (this.respData[k].fileList[v].id === this.delRespImgObj.fileId) {
                 this.respData[k].fileList.splice(v, 1)
                 this.setFiling({type: 'respList', data: this.respData})
+                this.changeView('delRespImg')
                 this.alertShowRespImg = false
                 this.$Message.success({
                   content: '删除成功',
@@ -222,6 +223,11 @@ export default {
         this.respShow.list = false
         this.respShow.upload = true
         this.respShow.addBtn = false
+      } else if (type === 'delRespImg') {
+        this.respShow.list = false
+        setTimeout(() => {
+          this.respShow.list = true
+        }, 500)
       }
     }
   },
