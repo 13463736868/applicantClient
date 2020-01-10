@@ -9,7 +9,7 @@
         <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">搜索</label>
         </Col>
-        <Col span="5">
+        <Col span="4">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
         <Col span="2">
@@ -19,6 +19,7 @@
           <Select v-model="batchCondition" @on-change="resChangeStatus()">
             <Option :value="0" :key="0">全部</Option>
             <Option :value="1" :key="1">撤回案件</Option>
+            <Option :value="2" :key="2">上传问题清单</Option>
           </Select>
         </Col>
         <Col span="2">
@@ -29,10 +30,11 @@
             <Option v-for="item in caseStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </Col>
-        <Col span="7">
+        <Col span="8">
           <div class="tr pr20">
-            <Button class="ml20" type="primary" @click="resActions('resBatchCanc', null)">批量撤回</Button>
-            <Button class="ml20" type="primary" @click="resPayment">批量交费</Button>
+            <Button class="ml10" type="primary" @click="resActions('resBatchQues', null)">批量上传问题清单</Button>
+            <Button class="ml10" type="primary" @click="resActions('resBatchCanc', null)">批量撤回</Button>
+            <Button class="ml10" type="primary" @click="resPayment">批量交费</Button>
           </div>
         </Col>
       </Row>
@@ -84,6 +86,7 @@
       <p class="pb5">验证码已发送至手机: <b class="ml5" v-text="codePhone"></b></p>
       <p><span>验证码：</span><Input class="ml10" v-model="roomCode" placeholder="6位数字验证码" style="width: 100px" /></p>
     </alert-btn-info>
+    <upload-ques-alert v-if="alertObj.uploadQues" :resCaseId="alertObj.caseId" @alertConfirm="alertSave('resBatchQues')" @alertCancel="alertSave('resBatchQues')"></upload-ques-alert>
   </div>
 </template>
 
@@ -93,12 +96,13 @@ import { mapActions } from 'vuex'
 import headTop from '@/components/header/head'
 import spinComp from '@/components/common/spin'
 import alertBtnInfo from '@/page/caseInfo/children/children/alertBtnInfo'
+import uploadQuesAlert from '@/page/home/children/uploadQuesAlert'
 import setRegExp from '@/config/regExp.js'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'home',
-  components: { headTop, spinComp, alertBtnInfo },
+  components: { headTop, spinComp, alertBtnInfo, uploadQuesAlert },
   data () {
     return {
       spinShow: true,
@@ -211,7 +215,9 @@ export default {
       roomPartie: null,
       roomCode: null,
       alertObj: {
-        code: false
+        code: false,
+        uploadQues: false,
+        caseId: null
       },
       alertShow: {
         idsList: []
@@ -284,14 +290,14 @@ export default {
       }
       this.caseList.bodyList.forEach((item, index) => {
         let _obj = item
-        if (this.batchCondition === 1 || _obj.state === 2) {
+        if (this.batchCondition !== 0 || _obj.state === 2) {
           this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
         }
       })
     },
     renderCheck (h, params) {
       let _obj = params.row
-      if (this.batchCondition === 1 || _obj.state === 2) {
+      if (this.batchCondition !== 0 || _obj.state === 2) {
         if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
           return h('div', [
             h('Icon', {
@@ -783,6 +789,30 @@ export default {
             this.retrDObj = this.alertShow.idsList
             this.retrObj.alertShow = true
           }
+          break
+        case 'resBatchQues':
+          if (this.batchCondition !== 2) {
+            this.$Message.error({
+              content: '请先条件选择 \'上传问题清单\'',
+              duration: 5
+            })
+          } else if (this.alertShow.idsList.length === 0) {
+            this.$Message.error({
+              content: '请先选择一个案件',
+              duration: 5
+            })
+          } else {
+            this.alertObj.caseId = this.alertShow.idsList
+            this.alertObj.uploadQues = true
+          }
+          break
+      }
+    },
+    alertSave (type, data) {
+      switch (type) {
+        case 'resBatchQues':
+          this.alertObj.uploadQues = false
+          this.alertObj.caseId = null
           break
       }
     },
