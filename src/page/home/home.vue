@@ -86,7 +86,7 @@
       <p class="pb5">验证码已发送至手机: <b class="ml5" v-text="codePhone"></b></p>
       <p><span>验证码：</span><Input class="ml10" v-model="roomCode" placeholder="6位数字验证码" style="width: 100px" /></p>
     </alert-btn-info>
-    <upload-ques-alert v-if="alertObj.uploadQues" :resCaseId="alertObj.caseId" @alertConfirm="alertSave('resBatchQues')" @alertCancel="alertSave('resBatchQues')"></upload-ques-alert>
+    <upload-ques-alert v-if="alertObj.uploadQues" :resCaseId="alertObj.caseId" @alertConfirm="alertSave('resBatchQues')" @alertCancel="alertCanc('resBatchQues')"></upload-ques-alert>
   </div>
 </template>
 
@@ -431,7 +431,21 @@ export default {
                     this.resCancCase(params.index)
                   }
                 }
-              }, '撤回')
+              }, '撤回'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.resActions('uploadQues', params.row)
+                  }
+                }
+              }, '上传问题清单')
             ])
           } else {
             return h('div', [
@@ -462,12 +476,40 @@ export default {
                     this.goCourtRoom(params.index)
                   }
                 }
-              }, '进入庭室')
+              }, '进入庭室'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.resActions('uploadQues', params.row)
+                  }
+                }
+              }, '上传问题清单')
             ])
           }
         } else {
           if (params.row.beginTime === null || params.row.beginTime === '') {
             return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.resActions('uploadQues', params.row)
+                  }
+                }
+              }, '上传问题清单')
             ])
           } else {
             return h('div', [
@@ -484,7 +526,21 @@ export default {
                     this.goCourtRoom(params.index)
                   }
                 }
-              }, '进入庭室')
+              }, '进入庭室'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.resActions('uploadQues', params.row)
+                  }
+                }
+              }, '上传问题清单')
             ])
           }
         }
@@ -549,6 +605,7 @@ export default {
       })
     },
     resSearch () {
+      this.alertCanc('clearIds')
       this.pageObj.pageNum = 1
       this.resMineList()
     },
@@ -645,12 +702,6 @@ export default {
       } else {
         this.$refs.upload.post(this.retrObj.fileObj)
       }
-    },
-    alertCanc () {
-      this.retrObj.alertShow = false
-      this.retrObj.fileObj = null
-      this.retrDObj = null
-      this.alertShow.idsList = []
     },
     getFormatDate () {
       let date = new Date()
@@ -806,6 +857,10 @@ export default {
             this.alertObj.uploadQues = true
           }
           break
+        case 'uploadQues':
+          this.alertObj.caseId = [data.id]
+          this.alertObj.uploadQues = true
+          break
       }
     },
     alertSave (type, data) {
@@ -813,6 +868,25 @@ export default {
         case 'resBatchQues':
           this.alertObj.uploadQues = false
           this.alertObj.caseId = null
+          this.resSearch()
+          break
+      }
+    },
+    alertCanc (type) {
+      switch (type) {
+        case 'resBatchQues':
+          this.alertObj.uploadQues = false
+          this.alertObj.caseId = null
+          break
+        case 'retr':
+          this.retrObj.alertShow = false
+          this.retrObj.fileObj = null
+          this.retrDObj = null
+          this.alertShow.idsList = []
+          break
+        case 'clearIds':
+          this.alertShow.idsList = []
+          this.caseList.seleMap = {}
           break
       }
     },

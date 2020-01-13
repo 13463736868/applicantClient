@@ -15,6 +15,7 @@ const respondentInfo = r => require.ensure([], () => r(require('@/page/caseInfo/
 const claimItem = r => require.ensure([], () => r(require('@/page/caseInfo/children/claimItem.vue')), 'claimItem')
 const revClaimItem = r => require.ensure([], () => r(require('@/page/caseInfo/children/revClaimItem.vue')), 'revClaimItem')
 const evidencesInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/evidencesInfo.vue')), 'evidencesInfo')
+const questionsInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/questionsInfo.vue')), 'questionsInfo')
 const sendInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/sendInfo.vue')), 'sendInfo')
 const endCaseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/endCaseInfo.vue')), 'endCaseInfo')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
@@ -141,6 +142,14 @@ export default new Router({
             requireAuth: true
           },
           component: evidencesInfo
+        },
+        {
+          path: 'questionsInfo',
+          name: 'questionsInfo',
+          meta: {
+            requireAuth: true
+          },
+          component: questionsInfo
         },
         {
           path: 'sendInfo',
