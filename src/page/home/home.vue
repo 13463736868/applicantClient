@@ -53,7 +53,7 @@
         </Row>
       </div>
     </div>
-    <alert-btn-info :alertShow="retrObj.alertShow" @alertConfirm="retrSave" @alertCancel="alertCanc" alertTitle="申请撤回案件">
+    <alert-btn-info :alertShow="retrObj.alertShow" @alertConfirm="retrSave" @alertCancel="alertCanc('retr')" alertTitle="申请撤回案件">
       <spin-comp :spinShow="retrObj.spinShow">
         <div v-if="retrObj.progressText !== null" v-text="retrObj.progressText"></div>
       </spin-comp>
@@ -621,7 +621,7 @@ export default {
     },
     resCancCase (index) {
       this.retrObj.alertShow = true
-      this.retrDObj = this.caseList.bodyList[index].oldId
+      this.retrDObj = [this.caseList.bodyList[index].oldId]
     },
     resFormError () {
       this.$Message.error({
