@@ -210,6 +210,7 @@ export default {
         spinShow: false
       },
       retrDObj: null,
+      retrDObjSwitch: false,
       roomPhone: null,
       roomId: null,
       roomPartie: null,
@@ -230,7 +231,7 @@ export default {
   },
   computed: {
     resAction () {
-      if (this.retrDObj === null || this.retrDObj.length === 1) {
+      if (!this.retrDObjSwitch) {
         return regi.api + '/case/withdraw'
       } else {
         return regi.api + '/case/withdrawBatch'
@@ -238,10 +239,12 @@ export default {
     },
     retrData () {
       let _data = {}
-      if (this.retrDObj === null || this.retrDObj.length === 1) {
-        _data.caseId = this.retrDObj
-      } else {
-        _data.caseIds = this.retrDObj.join(',')
+      if (this.retrDObj !== null) {
+        if (!this.retrDObjSwitch) {
+          _data.caseId = this.retrDObj.join(',')
+        } else {
+          _data.caseIds = this.retrDObj.join(',')
+        }
       }
       return _data
     },
@@ -620,6 +623,7 @@ export default {
       this.resMineList()
     },
     resCancCase (index) {
+      this.retrDObjSwitch = false
       this.retrObj.alertShow = true
       this.retrDObj = [this.caseList.bodyList[index].oldId]
     },
@@ -678,7 +682,7 @@ export default {
       this.retrObj.spinShow = true
       if (this.retrObj.fileObj === null) {
         let _url = ''
-        if (this.retrData.caseIds === undefined) {
+        if (!this.retrDObjSwitch) {
           _url = '/case/withdraw'
         } else {
           _url = '/case/withdrawBatch'
@@ -837,6 +841,7 @@ export default {
               duration: 5
             })
           } else {
+            this.retrDObjSwitch = true
             this.retrDObj = this.alertShow.idsList
             this.retrObj.alertShow = true
           }
@@ -879,6 +884,7 @@ export default {
           this.alertObj.caseId = null
           break
         case 'retr':
+          this.retrDObjSwitch = false
           this.retrObj.alertShow = false
           this.retrObj.fileObj = null
           this.retrDObj = null
