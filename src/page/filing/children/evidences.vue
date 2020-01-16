@@ -10,7 +10,17 @@
       <div v-if="evidShow.add">
         <add-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-evid-info>
       </div>
-      <add-icon v-if="evidShow.addBtn" :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
+      <div v-if="evidShow.addGet">
+        <add-get-evid-info :caseId="caseId" :fileType="['jpg','jpeg','png','pdf']" :uploadUrl="uploadUrl" :uploadFileUrl="uploadFileUrl" @saveClick="addEvidSave" @cancClick="changeView('listEvid')"></add-get-evid-info>
+      </div>
+      <Row v-if="evidShow.addBtn">
+        <Col span="12">
+          <add-icon :imgStatus="2" addText="添加证据" @addClick="changeView('addEvid')"></add-icon>
+        </Col>
+        <Col span="12">
+          <add-icon :imgStatus="2" addText="证据平台取证" @addClick="changeView('addGetEvid')"></add-icon>
+        </Col>
+      </Row>
     </div>
     <alert-tip :alertShow="alertShowEvid" @alertCancel="delEvidCanc" @alertConfirm="delEvidSave" alertTitle="提示" alertText="确定要删除这个证据项吗？">
     </alert-tip>
@@ -24,18 +34,20 @@ import alertTip from '@/components/common/alertTip'
 import addIcon from '@/components/common/addIcon'
 import evidInfo from '@/page/filing/children/children/evidInfo'
 import addEvidInfo from '@/page/filing/children/children/addEvidInfo'
+import addGetEvidInfo from '@/page/filing/children/children/addGetEvidInfo'
 import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidences',
   props: [],
-  components: { alertTip, addIcon, evidInfo, addEvidInfo },
+  components: { alertTip, addIcon, evidInfo, addEvidInfo, addGetEvidInfo },
   data () {
     return {
       alertShowEvid: false,
       evidShow: {
         list: false,
         add: false,
+        addGet: false,
         addBtn: true
       },
       evidData: [],
@@ -121,10 +133,17 @@ export default {
           this.evidShow.list = true
         }
         this.evidShow.add = false
+        this.evidShow.addGet = false
         this.evidShow.addBtn = true
       } else if (type === 'addEvid') {
         this.evidShow.list = false
         this.evidShow.add = true
+        this.evidShow.addGet = false
+        this.evidShow.addBtn = false
+      } else if (type === 'addGetEvid') {
+        this.evidShow.list = false
+        this.evidShow.add = false
+        this.evidShow.addGet = true
         this.evidShow.addBtn = false
       }
     }

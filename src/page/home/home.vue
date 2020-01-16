@@ -20,6 +20,7 @@
             <Option :value="0" :key="0">全部</Option>
             <Option :value="1" :key="1">撤回案件</Option>
             <Option :value="2" :key="2">上传问题清单</Option>
+            <Option :value="3" :key="3">交费</Option>
           </Select>
         </Col>
         <Col span="2">
@@ -293,14 +294,14 @@ export default {
       }
       this.caseList.bodyList.forEach((item, index) => {
         let _obj = item
-        if (this.batchCondition !== 0 || _obj.state === 2) {
+        if (this.batchCondition !== 0) {
           this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
         }
       })
     },
     renderCheck (h, params) {
       let _obj = params.row
-      if (this.batchCondition !== 0 || _obj.state === 2) {
+      if (this.batchCondition !== 0) {
         if (this.alertShow.idsList.indexOf(_obj.id) === -1) {
           return h('div', [
             h('Icon', {
@@ -814,21 +815,29 @@ export default {
       }
     },
     resPayment () {
-      if (this.alertShow.idsList.length === 0) {
-        this.$Message.error({
-          content: '请先选择一个案件',
-          duration: 5
-        })
-      } else {
-        this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
-        window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
-        this.$router.push({
-          path: '/goPayment'
-        })
-      }
+      
     },
     resActions (type, data) {
       switch (type) {
+        case 'resPayment':
+          if (this.batchCondition !== 2) {
+            this.$Message.error({
+              content: '请先条件选择 \'交费\'',
+              duration: 5
+            })
+          } else if (this.alertShow.idsList.length === 0) {
+            this.$Message.error({
+              content: '请先选择一个案件',
+              duration: 5
+            })
+          } else {
+            this.setGoPaymentCaseIds(JSON.stringify(this.alertShow.idsList))
+            window.localStorage.setItem('goPaymentCaseIds', JSON.stringify(this.alertShow.idsList))
+            this.$router.push({
+              path: '/goPayment'
+            })
+          }
+          break
         case 'resBatchCanc':
           if (this.batchCondition !== 1) {
             this.$Message.error({
