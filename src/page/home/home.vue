@@ -293,7 +293,6 @@ export default {
         this.caseList.seleMap[this.pageObj.pageNum] = !this.caseList.seleMap[this.pageObj.pageNum]
       }
       this.caseList.bodyList.forEach((item, index) => {
-        let _obj = item
         if (this.batchCondition !== 0) {
           this.seleArrChange(index, this.caseList.seleMap[this.pageObj.pageNum])
         }
@@ -813,9 +812,6 @@ export default {
           })
         })
       }
-    },
-    resPayment () {
-      
     },
     resActions (type, data) {
       switch (type) {
