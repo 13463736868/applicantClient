@@ -418,12 +418,12 @@ export default {
         this.propShow.list = false
         setTimeout(() => {
           this.propShow.list = true
-        }, 500)
+        }, 50)
       } else if (type === 'delAgenImg') {
         this.agenShow.list = false
         setTimeout(() => {
           this.agenShow.list = true
-        }, 500)
+        }, 50)
       } else if (type === 'listAgen') {
         if (this.agenData.length === 0) {
           this.agenShow.list = false

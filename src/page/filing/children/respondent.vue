@@ -227,7 +227,7 @@ export default {
         this.respShow.list = false
         setTimeout(() => {
           this.respShow.list = true
-        }, 500)
+        }, 50)
       }
     }
   },
