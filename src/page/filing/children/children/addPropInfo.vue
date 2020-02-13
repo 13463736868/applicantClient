@@ -21,7 +21,7 @@
             <Col span="24" class="_label">民族<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.nation">
-                <Option v-for="item in nationList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                <Option v-for="item in nationList" :value="item.value" :key="item.id">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===112" v-text="emInfo.text"></span></Col>
@@ -30,7 +30,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.id">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===113" v-text="emInfo.text"></span></Col>
@@ -85,7 +85,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseType">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.id">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===212" v-text="emInfo.text"></span></Col>
@@ -121,7 +121,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.id" v-text="item.label"></Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===222" v-text="emInfo.text"></span></Col>
@@ -154,7 +154,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseType">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.id">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===312" v-text="emInfo.text"></span></Col>
@@ -185,7 +185,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.id" v-text="item.label"></Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===322" v-text="emInfo.text"></span></Col>
@@ -218,7 +218,7 @@
             <Col span="24" class="_label">证照类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.enterpriseType">
-                <Option v-for="item in enterpriseList" :value="item.value" :key="item.value">{{item.label}}</Option>
+                <Option v-for="item in enterpriseList" :value="item.value" :key="item.id">{{item.label}}</Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===412" v-text="emInfo.text"></span></Col>
@@ -249,7 +249,7 @@
             <Col span="24" class="_label">证件类型<b class="_b">*</b></Col>
             <Col span="24">
               <Select v-model="propData.idcardType">
-                <Option v-for="item in idcardList" :value="item.value" :key="item.value" v-text="item.label"></Option>
+                <Option v-for="item in idcardList" :value="item.value" :key="item.id" v-text="item.label"></Option>
               </Select>
             </Col>
             <Col span="24" class="_em"><span v-show="emInfo.status===422" v-text="emInfo.text"></span></Col>
@@ -343,18 +343,21 @@ export default {
           let _o = {}
           _o.value = _dataOList[k].itemValue
           _o.label = _dataOList[k].item
+          _o.id = _dataOList[k].id
           _selectO.push(_o)
         }
         for (let v in _dataTList) {
           let _t = {}
           _t.value = _dataTList[v].itemValue
           _t.label = _dataTList[v].item
+          _t.id = _dataTList[v].id
           _selectT.push(_t)
         }
         for (let n in _dataSList) {
           let _s = {}
           _s.value = _dataSList[n].itemValue
           _s.label = _dataSList[n].item
+          _s.id = _dataSList[n].id
           _selectS.push(_s)
         }
         this.enterpriseList = _selectO
