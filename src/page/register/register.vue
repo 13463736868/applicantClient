@@ -146,6 +146,7 @@ export default {
   components: { headTop },
   data () {
     return {
+      dispSwitch: false,
       registerType: true,
       registerBtn: true,
       identCodeBtn: true,
@@ -210,6 +211,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.dispSwitch = false
         }
       } else if (type === 'personal') {
         if (this.registerType !== false) {
@@ -228,6 +230,7 @@ export default {
           this.registerBtn = true
           this.identCodeBtn = true
           this.identCodeShow = false
+          this.dispSwitch = false
         }
       }
     },
@@ -268,6 +271,10 @@ export default {
       }
     },
     resIdentCode () {
+      if (this.dispSwitch) {
+        return false
+      }
+      this.dispSwitch = true
       axios.post('/sendMessage', {
         phone: this.registerType === true ? this.company.phone : this.personal.phone
       }).then(res => {
@@ -276,6 +283,7 @@ export default {
         this.identCodeBtn = true
         this.timeOut()
       }).catch(e => {
+        this.dispSwitch = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -288,6 +296,7 @@ export default {
           clearTimeout(this.codeTimeOut)
           this.identCodeBtn = false
           this.identCodeShow = false
+          this.dispSwitch = false
           return
         }
         this.identCodeTime--

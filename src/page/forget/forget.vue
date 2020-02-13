@@ -79,6 +79,7 @@ export default {
   components: { headTop },
   data () {
     return {
+      dispSwitch: false,
       forgetBtn: true,
       identCodeBtn: true,
       identCodeTime: 30,
@@ -133,6 +134,10 @@ export default {
       }
     },
     resIdentCode () {
+      if (this.dispSwitch) {
+        return false
+      }
+      this.dispSwitch = true
       axios.post('/sendMessage', {
         phone: this.forget.phone
       }).then(res => {
@@ -141,6 +146,7 @@ export default {
         this.identCodeBtn = true
         this.timeOut()
       }).catch(e => {
+        this.dispSwitch = false
         this.$Message.error({
           content: '错误信息:' + e,
           duration: 5
@@ -153,6 +159,7 @@ export default {
           clearTimeout(this.codeTimeOut)
           this.identCodeBtn = false
           this.identCodeShow = false
+          this.dispSwitch = false
           return
         }
         this.identCodeTime--
