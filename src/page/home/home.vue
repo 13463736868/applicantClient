@@ -35,7 +35,7 @@
           <div class="tr pr20">
             <Button class="ml10" type="primary" @click="resActions('resBatchQues', null)">批量上传问题清单</Button>
             <Button class="ml10" type="primary" @click="resActions('resBatchCanc', null)">批量撤回</Button>
-            <Button class="ml10" type="primary" @click="resPayment">批量交费</Button>
+            <Button class="ml10" type="primary" @click="resActions('resPayment', null)">批量交费</Button>
           </div>
         </Col>
       </Row>
