@@ -816,7 +816,7 @@ export default {
     resActions (type, data) {
       switch (type) {
         case 'resPayment':
-          if (this.batchCondition !== 2) {
+          if (this.batchCondition !== 3) {
             this.$Message.error({
               content: '请先条件选择 \'交费\'',
               duration: 5
