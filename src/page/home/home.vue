@@ -87,7 +87,7 @@
       <p class="pb5">验证码已发送至手机: <b class="ml5" v-text="codePhone"></b></p>
       <p><span>验证码：</span><Input class="ml10" v-model="roomCode" placeholder="6位数字验证码" style="width: 100px" /></p>
     </alert-btn-info>
-    <upload-ques-alert v-if="alertObj.uploadQues" :resCaseId="alertObj.caseId" @alertConfirm="alertSave('resBatchQues')" @alertCancel="alertCanc('resBatchQues')"></upload-ques-alert>
+    <upload-ques-alert v-if="alertObj.uploadQues" :resCaseId="alertObj.caseId" :resPartyType="alertShow.partieTypeList" @alertConfirm="alertSave('resBatchQues')" @alertCancel="alertCanc('resBatchQues')"></upload-ques-alert>
   </div>
 </template>
 
@@ -222,7 +222,8 @@ export default {
         caseId: null
       },
       alertShow: {
-        idsList: []
+        idsList: [],
+        partieTypeList: []
       }
     }
   },
@@ -356,6 +357,9 @@ export default {
             })
             return false
           } else {
+            if (this.batchCondition === 2) {
+              this.alertShow.partieTypeList.push(info.partieType)
+            }
             this.alertShow.idsList.push(info.id)
           }
         }
@@ -613,8 +617,7 @@ export default {
       this.resMineList()
     },
     resChangeStatus () {
-      this.alertShow.idsList = []
-      this.caseList.seleMap = {}
+      this.alertCanc('clearIds')
       this.pageObj.pageNum = 1
       this.resMineList()
     },
@@ -869,6 +872,7 @@ export default {
           break
         case 'uploadQues':
           this.alertObj.caseId = [data.id]
+          this.alertShow.partieTypeList = [data.partieType]
           this.alertObj.uploadQues = true
           break
       }
@@ -898,6 +902,7 @@ export default {
         case 'clearIds':
           this.alertShow.idsList = []
           this.caseList.seleMap = {}
+          this.alertShow.partieTypeList = []
           break
       }
     },

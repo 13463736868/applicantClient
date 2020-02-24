@@ -61,7 +61,7 @@ export default {
   name: 'upload_ques_alert',
   mixins: [resMess],
   components: { spinComp, alertBtnInfo },
-  props: ['resCaseId'],
+  props: ['resCaseId', 'resPartyType'],
   data () {
     return {
       alertShow: true,
@@ -135,6 +135,8 @@ export default {
     alertSave () {
       this.spinShow = true
       this.resData.caseIds = this.resCaseId.join(',')
+      // clientEvidenceId 1申请人 2被申请人 3仲裁员
+      this.resData.clientEvidenceId = this.resPartyType.join(',')
       this.$refs.upload.post(this.fileObj)
     },
     alertCanc () {
