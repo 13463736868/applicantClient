@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     loginOut () {
-      if (this.headType === 'register' || this.headType === 'forget') {
+      if (this.headType === 'register' || this.headType === 'forget' || this.headType === 'fileDowload') {
         this.userOutSave()
       } else {
         this.alertShowOut = true
