@@ -5,6 +5,7 @@ import 'iview/dist/styles/iview.css'
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login')
 const register = r => require.ensure([], () => r(require('@/page/register/register.vue')), 'register')
 const forget = r => require.ensure([], () => r(require('@/page/forget/forget.vue')), 'forget')
+const fileDowload = r => require.ensure([], () => r(require('@/page/fileDowload/fileDowload.vue')), 'fileDowload')
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
 const goPayment = r => require.ensure([], () => r(require('@/page/goPayment/goPayment.vue')), 'goPayment')
 const paymentInfo = r => require.ensure([], () => r(require('@/page/paymentInfo/paymentInfo.vue')), 'paymentInfo')
@@ -50,6 +51,11 @@ export default new Router({
       path: '/forget',
       name: 'forget',
       component: forget
+    },
+    {
+      path: '/fileDowload',
+      name: 'fileDowload',
+      component: fileDowload
     },
     {
       path: '/home',

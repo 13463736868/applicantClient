@@ -115,7 +115,7 @@ export default function (val, type) {
     }
   } else if (type === 'idcard5xx') {
     // 5护照 废弃
-    let reg = new RegExp('^[A-Z]{1}[0-9]{8,9}$')
+    let reg = new RegExp('^[A-Z]{1,2}[0-9]{7,9}$')
     if (reg.test(val)) {
       return true
     } else {

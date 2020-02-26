@@ -45,8 +45,9 @@
           <button class="_loginBtn" v-bind:disabled="user.loginBtn" :class="{'_active':user.loginBtn}" @click="resLogin">确 认</button>
         </div>
         <div class="_register bc w350 tc">
-          <span class="_loginBtn" @click="resRegister">注册 / </span>
-          <span class="_loginBtn" @click="resForget">忘记密码?</span>
+          <span class="_loginBtn" @click="resReplace('/register')">注册 / </span>
+          <span class="_loginBtn" @click="resReplace('/forget')">忘记密码?</span>
+          <span class="_loginBtn" @click="resReplace('/fileDowload')"> / 文件下载</span>
         </div>
         <p :style="{'display':!isChrome ? 'none' : ''}" style="color:#D37575">推荐使用chrome浏览器</p>
       </div>
@@ -144,11 +145,6 @@ export default {
     showPass () {
       this.user.showPass = !this.user.showPass
     },
-    resForget () {
-      this.$router.push({
-        path: '/forget'
-      })
-    },
     resCheckPhone () {
       if (this.user.phone === '') {
         this.user.emStatus = true
@@ -232,9 +228,9 @@ export default {
         })
       }
     },
-    resRegister () {
+    resReplace (r) {
       this.$router.push({
-        path: '/register'
+        path: r
       })
     }
   }
