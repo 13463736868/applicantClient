@@ -48,6 +48,7 @@
 
 <script>
 import spinComp from '@/components/common/spin'
+import regi from '@/config/regiType.js'
 export default {
   name: 'add_agen_appl_book',
   components: { spinComp },
@@ -147,6 +148,9 @@ export default {
     },
     cancClick () {
       this.$emit('cancClick')
+    },
+    dowDoc () {
+      window.open(regi.api + '/file/templet/dowload/7', '_blank')
     }
   }
 }
