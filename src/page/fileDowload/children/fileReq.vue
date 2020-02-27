@@ -156,7 +156,10 @@ export default {
     },
     idCardBlur () {
       let type = 'forget'
-      if ((this[type].idcardType === 0 || this[type].idcardType === 1) && !setRegExp(this[type].idCard, 'idcard')) {
+      if (this[type].idCard === '') {
+        this[type].emStatus = 3
+        this[type].emText = '证件号码不能为空'
+      } else if ((this[type].idcardType === 0 || this[type].idcardType === 1) && !setRegExp(this[type].idCard, 'idcard')) {
         this[type].emStatus = 3
         this[type].emText = '证件号码格式不正确'
       } else if ((this[type].idcardType === 2) && !setRegExp(this[type].idCard, 'entityNo1')) {

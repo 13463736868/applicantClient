@@ -6,7 +6,7 @@
       </Col>
     </Row>
     <Row>
-      <Col span="12" offset="6">
+      <Col span="12" offset="6" class="ofh">
         <Table stripe align="center" :loading="seleList.loading" :columns="seleList.header" :data="seleList.bodyList"></Table>
       </Col>
     </Row>
