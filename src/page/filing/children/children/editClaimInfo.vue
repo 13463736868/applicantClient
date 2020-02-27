@@ -69,7 +69,7 @@ export default {
         this.dispSwitch = true
       } else if (!setRegExp(this.claimData.disputeFee, 'money')) {
         this.emInfo.status = 3
-        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999999)'
+        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999)'
         this.dispSwitch = true
       } else {
         this.emInfo.status = 0

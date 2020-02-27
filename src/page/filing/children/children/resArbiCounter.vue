@@ -76,7 +76,7 @@ export default {
       if (this.resData.counter === '') {
         this.resMessage('error', '请输入金额不能为空')
       } else if (!setRegExp(this.resData.counter, 'money')) {
-        this.resMessage('error', '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999999)')
+        this.resMessage('error', '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999)')
       } else if (this.resData.counter === null || this.resData.counter === 0) {
         this.resMessage('error', '输入金额不能为0')
       } else {
