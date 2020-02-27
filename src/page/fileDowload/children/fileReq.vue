@@ -108,7 +108,10 @@ export default {
   methods: {
     resCheckPhone () {
       let type = 'forget'
-      if (!setRegExp(this[type].phone, 'phone')) {
+      if (this[type].idCard === '') {
+        this[type].emStatus = 1
+        this[type].emText = '手机号码不能为空'
+      } else if (!setRegExp(this[type].phone, 'phone')) {
         this[type].emStatus = 1
         this[type].emText = '手机号码格式不正确'
         this.forgetBtn = true
