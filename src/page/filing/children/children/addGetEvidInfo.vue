@@ -175,8 +175,6 @@ export default {
             }
           }
         }
-        console.log(this.getFileList)
-        console.log(this.fileIdList, 'id')
       }).catch(e => {
         this.spinShow = false
         this.$Message.error({
