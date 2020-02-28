@@ -170,10 +170,13 @@ export default {
           if (this.getFileList[k].num === ids) {
             this.getFileList[k].fileObj = res.data.data[0]
             this.getFileList[k].isGet = 1
-            this.fileIdList.push(res.data.data[0].id)
+            if (this.fileIdList.indexOf(res.data.data[0].id) === -1) {
+              this.fileIdList.push(res.data.data[0].id)
+            }
           }
         }
         console.log(this.getFileList)
+        console.log(this.fileIdList, 'id')
       }).catch(e => {
         this.spinShow = false
         this.$Message.error({
