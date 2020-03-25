@@ -12,7 +12,16 @@
         <Col span="8">
           <Input v-model="search.text" icon="ios-search-strong" class="_search" @on-click="resSearch" @keyup.enter.native="resSearch" placeholder="案件编号 / 申请人 / 被申请人"></Input>
         </Col>
-        <Col span="2" offset="2">
+        <Col span="2">
+          <label class="lh32 f16 fc6 fr mr15">使用程序</label>
+        </Col>
+        <Col span="3">
+          <Select v-model="caseLineType" @on-change="resChangeStatus()">
+            <Option :value="1" key="1">在线程序</Option>
+            <Option :value="2" key="2">线下程序</Option>
+          </Select>
+        </Col>
+        <Col span="2">
           <label class="lh32 f16 fc6 fr mr15">状态</label>
         </Col>
         <Col span="3">
@@ -23,7 +32,7 @@
         <!-- <Col span="2" offset="2">
           <Button type="primary" @click="resAddUpload">批量导入</Button>
         </Col> -->
-        <Col span="2" offset="4">
+        <Col span="2" offset="1">
           <Button type="primary" @click="resSubmit">批量提交</Button>
         </Col>
       </Row>
@@ -142,7 +151,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.goCaseSee(params.index)
+                    this.goCaseSee(params.row)
                   }
                 }
               }, params.row.id)
@@ -185,6 +194,15 @@ export default {
             }
           },
           {
+            title: '使用程序',
+            key: 'caseLineType',
+            align: 'center',
+            render: (h, params) => {
+              return h('span', {
+              }, params.row.caseLineType === 2 ? '线下程序' : (params.row.caseLineType === 1 ? '在线程序' : ''))
+            }
+          },
+          {
             title: '是否完善',
             key: 'isPerfect',
             align: 'center',
@@ -209,7 +227,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.goCaseSee(params.index)
+                      this.goCaseSee(params.row)
                     }
                   }
                 }, '查看'),
@@ -266,6 +284,7 @@ export default {
         ],
         bodyList: []
       },
+      caseLineType: 1,
       perfectStatusList: [],
       perfectStatus: 0,
       caseTypeList: [],
@@ -428,7 +447,8 @@ export default {
         pageIndex: (this.pageObj.pageNum - 1) * this.pageObj.pageSize,
         pageSize: this.pageObj.pageSize,
         keyword: this.search.text,
-        perfectType: this.perfectStatus
+        perfectType: this.perfectStatus,
+        caseLineType: this.caseLineType
       }).then(res => {
         let _data = res.data.data
         this.caseList.bodyList = _data.dataList === null ? [] : _data.dataList
@@ -447,12 +467,18 @@ export default {
       this.pageObj.pageNum = 1
       this.resPrepareList()
     },
-    goCaseSee (index) {
-      this.setCaseId(this.caseList.bodyList[index].id)
-      window.localStorage.setItem('caseId', this.caseList.bodyList[index].id)
-      this.$router.push({
-        path: '/filing'
-      })
+    goCaseSee (row) {
+      this.setCaseId(row.id)
+      window.localStorage.setItem('caseId', row.id)
+      if (row.caseLineType === 1) {
+        this.$router.push({
+          path: '/filing'
+        })
+      } if (row.caseLineType === 2) {
+        this.$router.push({
+          path: '/archiveFiling'
+        })
+      }
     },
     resCaseDel (index) {
       this.alertShowSub = true
@@ -533,7 +559,8 @@ export default {
         caseId: JSON.stringify(this.alertShow.idsList),
         commissionType: this.alertShow.committee,
         caseTypeCode: caseTypeCode,
-        caseTypeName: caseTypeName
+        caseTypeName: caseTypeName,
+        caseLineType: this.caseLineType
       }).then(res => {
         this.alertShow.idsList = []
         this.spinShow = false

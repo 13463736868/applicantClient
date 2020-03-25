@@ -3,7 +3,7 @@
     <div class="_claim">
       <div class="_top">仲裁请求</div>
       <div v-if="claimData !== null" v-for="(item, index) in claimData" :key="index">
-        <claim-info :infoData="item"></claim-info>
+        <claim-info :caseLineType="caseLineType" :infoData="item"></claim-info>
       </div>
     </div>
     <div class="_reason">
@@ -41,7 +41,7 @@ import applInfo from '@/page/caseInfo/children/children/applInfo'
 
 export default {
   name: 'claimItem',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType', 'caseLineType'],
   components: { claimInfo, reasInfo, applInfo },
   data () {
     return {
@@ -71,10 +71,12 @@ export default {
       if (this.partieType === 1) {
         let _data = {}
         _data.caseId = this.caseOldId
+        _data.caseLineType = this.caseLineType
         return _data
       } else if (this.partieType === 2) {
         let _data = {}
         _data.id = this.caseId
+        _data.caseLineType = this.caseLineType
         return _data
       }
     }

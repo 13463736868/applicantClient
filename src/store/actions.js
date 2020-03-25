@@ -3,6 +3,9 @@ export default {
   // setToken ({commit}, id) {
   //   commit('SET_TOKEN', id)
   // }
+  setFilingType ({commit, state}, obj) {
+    commit('SET_FILINGTYPE', obj)
+  },
   setUserInfo ({commit, state}, obj) {
     commit('SET_USERINFO', obj)
   },
@@ -15,14 +18,8 @@ export default {
   setFiling ({commit, state}, obj) {
     commit('SET_FILING', obj)
   },
-  setMyCaseId ({commit, state}, id) {
-    commit('SET_MYCASEID', id)
-  },
-  setMyCaseOldId ({commit, state}, id) {
-    commit('SET_MYCASEOLDID', id)
-  },
-  setMyCaseState ({commit, state}, obj) {
-    commit('SET_MYCASESTATE', obj)
+  setMyCaseListInfo ({commit, state}, obj) {
+    commit('SET_MYCASELISTINFO', obj)
   },
   setGoPaymentCaseIds ({commit, state}, id) {
     commit('SET_GOPAYMENTCASEIDS', id)
@@ -35,9 +32,6 @@ export default {
   },
   setMyCaseShowBtn ({commit, state}, obj) {
     commit('SET_MYCASESHOWBTN', obj)
-  },
-  setMyCasePartieType ({commit, state}, obj) {
-    commit('SET_MYCASEPARTIETYPE', obj)
   },
   setMyCaseCrossE ({commit, state}, obj) {
     commit('SET_MYCASECROSSE', obj)

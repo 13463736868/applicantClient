@@ -51,7 +51,7 @@
             <p v-text="dataBasic.defendantName"></p>
           </Col>
         </Row>
-        <Row>
+        <Row v-if="caseLineType === 1">
           <Col span="4">
             <p class="tr">仲裁员：</p>
           </Col>
@@ -85,7 +85,7 @@
         </Row>
         <Row>
           <Col span="4">
-            <p class="tr">总仲裁费：</p>
+            <p class="tr">总仲裁费(元)：</p>
           </Col>
           <Col span="18">
             <p v-text="dataBasic.cost"></p>
@@ -111,7 +111,7 @@ import axios from 'axios'
 
 export default {
   name: 'basicInfo',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseLineType', 'caseId', 'caseOldId', 'caseState', 'partieType'],
   data () {
     return {
       dataBasic: null,
@@ -164,7 +164,8 @@ export default {
   methods: {
     resBaseItem () {
       axios.post('/case/baseItem', {
-        id: this.caseId
+        id: this.caseId,
+        caseLineType: this.caseLineType
       }).then(res => {
         this.dataBasic = res.data.data
         this.progressList.bodyList = res.data.data.processList === null ? [] : res.data.data.processList

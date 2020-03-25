@@ -19,61 +19,36 @@ const beforeEach = (to, from, next) => {
           store.commit('SET_USERINFO', JSON.parse(loc.getItem('userInfo')))
         }
       }
-      if (to.fullPath.indexOf('filing') === -1) {
+      if (to.fullPath.indexOf('iling') === -1) {
         loc.removeItem('caseId')
+        loc.removeItem('filingType')
         store.commit('SET_CASEID', '')
         store.commit('SET_CASEINFO', null)
+        store.commit('SET_FILINGTYPE', null)
       } else {
         if (store.state.caseId === '') {
           if (loc.getItem('caseId')) {
             store.commit('SET_CASEID', loc.getItem('caseId'))
           }
         }
+        if (from.fullPath.indexOf('filing') !== -1 && to.fullPath.indexOf('archiveFiling') !== -1) {
+          loc.removeItem('caseId')
+          store.commit('SET_CASEID', '')
+          store.commit('SET_CASEINFO', null)
+        }
+        if (to.fullPath.indexOf('filing') !== -1 && from.fullPath.indexOf('archiveFiling') !== -1) {
+          loc.removeItem('caseId')
+          store.commit('SET_CASEID', '')
+          store.commit('SET_CASEINFO', null)
+        }
       }
       if (to.fullPath.indexOf('caseInfo') === -1) {
-        loc.removeItem('myCaseId')
-        loc.removeItem('myCaseOldId')
-        loc.removeItem('myCaseState')
         loc.removeItem('myCaseShowBtn')
-        loc.removeItem('myCasePartieType')
         loc.removeItem('myCaseCrossE')
-        store.commit('SET_MYCASEID', '')
-        store.commit('SET_MYCASEOLDID', '')
-        store.commit('SET_MYCASESTATE', null)
+        loc.removeItem('myCaseListInfo')
         store.commit('SET_MYCASESHOWBTN', null)
-        store.commit('SET_MYCASEPARTIETYPE', null)
         store.commit('SET_MYCASECROSSE', null)
-      } else {
-        if (store.state.myCaseId === '') {
-          if (loc.getItem('myCaseId')) {
-            store.commit('SET_MYCASEID', loc.getItem('myCaseId'))
-          }
-        }
-        if (store.state.myCaseOldId === '') {
-          if (loc.getItem('myCaseOldId')) {
-            store.commit('SET_MYCASEOLDID', loc.getItem('myCaseOldId'))
-          }
-        }
-        if (store.state.myCaseState === null) {
-          if (loc.getItem('myCaseState')) {
-            store.commit('SET_MYCASESTATE', loc.getItem('myCaseState'))
-          }
-        }
-        if (store.state.myCaseShowBtn === null) {
-          if (loc.getItem('myCaseShowBtn')) {
-            store.commit('SET_MYCASESHOWBTN', JSON.parse(loc.getItem('myCaseShowBtn')))
-          }
-        }
-        if (store.state.myCasePartieType === null) {
-          if (loc.getItem('myCasePartieType')) {
-            store.commit('SET_MYCASEPARTIETYPE', JSON.parse(loc.getItem('myCasePartieType')))
-          }
-        }
-        if (store.state.myCaseCrossE === null) {
-          if (loc.getItem('myCaseCrossE')) {
-            store.commit('SET_MYCASECROSSE', JSON.parse(loc.getItem('myCaseCrossE')))
-          }
-        }
+        store.commit('SET_MYCASELISTINFO', null)
       }
       if (to.fullPath.indexOf('goPayment') === -1) {
         loc.removeItem('goPaymentCaseIds')
@@ -101,9 +76,9 @@ const beforeEach = (to, from, next) => {
       store.commit('SET_USERSTATE', null)
       store.commit('SET_CASEID', '')
       store.commit('SET_CASEINFO', null)
-      store.commit('SET_MYCASEID', '')
-      store.commit('SET_MYCASESTATE', null)
       store.commit('SET_GOPAYMENTCASEIDS', '')
+      store.commit('SET_FILINGTYPE', null)
+      store.commit('SET_MYCASELISTINFO', null)
       next({
         path: '/login',
         query: {redirect: to.fullPath}
@@ -121,9 +96,9 @@ const beforeEach = (to, from, next) => {
         store.commit('SET_USERSTATE', null)
         store.commit('SET_CASEID', '')
         store.commit('SET_CASEINFO', null)
-        store.commit('SET_MYCASEID', '')
-        store.commit('SET_MYCASESTATE', null)
         store.commit('SET_GOPAYMENTCASEIDS', '')
+        store.commit('SET_FILINGTYPE', null)
+        store.commit('SET_MYCASELISTINFO', null)
         next()
       }
     } else {

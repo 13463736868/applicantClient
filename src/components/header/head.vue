@@ -2,7 +2,10 @@
   <div class="_header pr not_s" :style="style.bg">
     <div class="header_top clearfix">
       <ul class="nav fl" v-if="isRegister">
-        <router-link v-for="item in nav.menu" :to="item.url" :key="item.id" tag="li" class="hand fl">{{item.text}}</router-link>
+        <template v-for="item in nav.menu">
+          <res-dropdown v-if="item.id === '1'" :key="item.id" :resTitle="item.text" :resMenu="item.obj"></res-dropdown>
+          <router-link v-if="item.id !== '1'" :to="item.url" :key="item.id" tag="li" class="hand fl">{{item.text}}</router-link>
+        </template>
       </ul>
       <div class="user fr w350">
         <Row type="flex" justify="center" align="middle" class="hmax tc">
@@ -37,12 +40,13 @@
 <script>
 import axios from 'axios'
 import {removeToken} from '@/cookies'
+import resDropdown from '@/components/header/children/resDropdown'
 import alertTip from '@/components/common/alertTip'
 
 export default {
   name: 'header_top',
   props: ['isRegister', 'headType'],
-  components: { alertTip },
+  components: { alertTip, resDropdown },
   data () {
     return {
       alertShowOut: false,
@@ -67,7 +71,19 @@ export default {
           {
             id: '1',
             text: '立案申请',
-            url: '/filing'
+            url: '/filing',
+            obj: [
+              {
+                id: '10',
+                text: '线上立案申请',
+                url: '/filing'
+              },
+              {
+                id: '11',
+                text: '线下案件',
+                url: '/archiveFiling'
+              }
+            ]
           },
           {
             id: '2',

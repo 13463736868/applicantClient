@@ -21,7 +21,7 @@ import seePropInfo from '@/page/caseInfo/children/children/seePropInfo'
 
 export default {
   name: 'respondentInfo',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseId', 'caseOldId', 'caseState', 'partieType', 'caseLineType'],
   components: { propInfo, seePropInfo },
   data () {
     return {
@@ -52,10 +52,12 @@ export default {
       if (this.partieType === 1) {
         let _data = {}
         _data.caseId = this.caseOldId
+        _data.caseLineType = this.caseLineType
         return _data
       } else if (this.partieType === 2) {
         let _data = {}
         _data.id = this.caseId
+        _data.caseLineType = this.caseLineType
         return _data
       }
     }

@@ -8,17 +8,15 @@ Vue.use(Vuex)
 
 const state = {
   // token: null
+  filingType: null,
   userInfo: null,
   caseId: '',
   caseInfo: null,
-  myCaseId: '',
-  myCaseOldId: '',
-  myCaseState: null,
+  myCaseListInfo: null,
   goPaymentCaseIds: '',
   paymentInfoId: '',
   userState: null,
   myCaseShowBtn: null,
-  myCasePartieType: null,
   myCaseCrossE: null
 }
 

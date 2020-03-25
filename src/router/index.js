@@ -17,6 +17,7 @@ const revClaimItem = r => require.ensure([], () => r(require('@/page/caseInfo/ch
 const evidencesInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/evidencesInfo.vue')), 'evidencesInfo')
 const sendInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/sendInfo.vue')), 'sendInfo')
 const endCaseInfo = r => require.ensure([], () => r(require('@/page/caseInfo/children/endCaseInfo.vue')), 'endCaseInfo')
+const archiveFiling = r => require.ensure([], () => r(require('@/page/archiveFiling/archiveFiling.vue')), 'archiveFiling')
 const filing = r => require.ensure([], () => r(require('@/page/filing/filing.vue')), 'filing')
 const proposer = r => require.ensure([], () => r(require('@/page/filing/children/proposer.vue')), 'proposer')
 const respondent = r => require.ensure([], () => r(require('@/page/filing/children/respondent.vue')), 'respondent')
@@ -158,6 +159,55 @@ export default new Router({
             requireAuth: true
           },
           component: endCaseInfo
+        }
+      ]
+    },
+    {
+      path: '/archiveFiling',
+      meta: {
+        requireAuth: true
+      },
+      component: archiveFiling,
+      children: [
+        {
+          path: '',
+          redirect: '/archiveFiling/proposer'
+        },
+        {
+          path: 'proposer',
+          name: 'proposerA',
+          meta: {
+            requireAuth: true
+          },
+          component: proposer
+        },
+        {
+          path: 'respondent',
+          name: 'respondentA',
+          meta: {
+            requireAuth: true
+          },
+          component: respondent
+        },
+        {
+          path: 'claimItems',
+          name: 'claimItemsA',
+          meta: {
+            requireAuth: true
+          },
+          component: claimItems
+        },
+        {
+          path: 'evidences',
+          name: 'evidencesA',
+          meta: {
+            requireAuth: true
+          },
+          component: evidences
+        },
+        {
+          path: '*',
+          redirect: '/archiveFiling/proposer'
         }
       ]
     },

@@ -1,9 +1,9 @@
 <template>
-  <div class="filing">
+  <div class="archiveFiling">
     <head-top :isRegister="true">
-      <span class="f36 fcf">立案申请</span>
+      <span class="f36 fcf">线下案件</span>
     </head-top>
-    <alert-tip :alertShow="alertShow" @alertCancel="alertCancel" @alertConfirm="alertConfirm" alertTitle="提示" alertText="是否确定直接申请立案？">
+    <alert-tip :alertShow="alertShow" @alertCancel="alertCancel" @alertConfirm="alertConfirm" alertTitle="提示" alertText="是否确定创建线下案件？">
     </alert-tip>
     <div class="_center pr">
       <spin-comp :spinShow="spinShow">
@@ -11,7 +11,7 @@
       </spin-comp>
       <Row>
         <Col span="4" offset="1" class="_center_left not_s">
-          <router-link v-for="item in menuClaim" :to='{path: "/filing" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
+          <router-link v-for="item in menuClaim" :to='{path: "/archiveFiling" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
         <Col span="14" class="_center_right">
           <router-view></router-view>
@@ -32,7 +32,7 @@ import spinComp from '@/components/common/spin'
 import caseSubmit from '@/page/filing/children/caseSubmit'
 
 export default {
-  name: 'filing',
+  name: 'archiveFiling',
   components: { headTop, alertTip, spinComp, caseSubmit },
   data () {
     return {
@@ -67,8 +67,8 @@ export default {
     }
   },
   created () {
-    window.localStorage.setItem('filingType', 1)
-    this.setFilingType(1)
+    window.localStorage.setItem('filingType', 2)
+    this.setFilingType(2)
     if (this.caseId === '') {
       this.alertShow = true
     } else {
@@ -112,7 +112,7 @@ export default {
     },
     alertConfirm () {
       axios.post('/case/new', {
-        caseLineType: 1
+        caseLineType: 2
       }).then(res => {
         this.alertShow = false
         window.localStorage.setItem('caseId', res.data.data.id)
@@ -141,7 +141,7 @@ export default {
         commissionType: this.committeeCode,
         caseTypeCode: this.caseTypeCode,
         caseTypeName: this.caseTypeName,
-        caseLineType: 1
+        caseLineType: 2
       }).then(res => {
         this.spinShow = false
         this.$Message.success({

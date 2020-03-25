@@ -33,12 +33,12 @@
               <Row>
                 <Col class="tr" span="3"><span class="mr10">附件名称 :</span></Col>
                 <Col span="20">
-                  <p class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}</p>
+                  <div class="_file" v-for="(item, index) in infoData.fileUploads" :key="index" :title="'点击查看: '+item.filename" @click="seeFile(item.filepath)">{{item.filename.length > 50 ? item.filename.substr(0, 50) + '...' : item.filename}}</div>
                 </Col>
               </Row>
                 <!-- <Icon @click="dowInfo(infoData.fileid)" class="_dow" type="archive"></Icon> -->
             </p>
-            <p>
+            <p v-if="caseLineType === 1">
               <Row>
                 <Col class="tr" span="3"><span class="mr10">固化状态 :</span></Col>
                 <Col span="20">
@@ -62,7 +62,7 @@ import regi from '@/config/regiType.js'
 
 export default {
   name: 'evid_info',
-  props: ['infoData'],
+  props: ['infoData', 'caseLineType'],
   data () {
     return {}
   },

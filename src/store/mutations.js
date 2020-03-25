@@ -5,6 +5,9 @@ export default {
   // [types.SET_TOKEN] (state, data) {
   //   state.token = data
   // }
+  [types.SET_FILINGTYPE] (state, obj) {
+    state.filingType = obj
+  },
   [types.SET_USERINFO] (state, obj) {
     state.userInfo = obj
   },
@@ -17,14 +20,8 @@ export default {
   [types.SET_FILING] (state, obj) {
     state.caseInfo[obj.type] = obj.data
   },
-  [types.SET_MYCASEID] (state, id) {
-    state.myCaseId = id
-  },
-  [types.SET_MYCASEOLDID] (state, id) {
-    state.myCaseOldId = id
-  },
-  [types.SET_MYCASESTATE] (state, obj) {
-    state.myCaseState = obj
+  [types.SET_MYCASELISTINFO] (state, obj) {
+    state.myCaseListInfo = obj
   },
   [types.SET_GOPAYMENTCASEIDS] (state, id) {
     state.goPaymentCaseIds = id
@@ -37,9 +34,6 @@ export default {
   },
   [types.SET_MYCASESHOWBTN] (state, obj) {
     state.myCaseShowBtn = obj
-  },
-  [types.SET_MYCASEPARTIETYPE] (state, obj) {
-    state.myCasePartieType = obj
   },
   [types.SET_MYCASECROSSE] (state, obj) {
     state.myCaseCrossE = obj

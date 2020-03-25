@@ -28,6 +28,14 @@
                 </Col>
               </Row>
             </p>
+            <p v-if="caseLineType === 2">
+              <Row>
+                <Col class="tr" span="4"><span class="mr10">仲裁费(元) :</span></Col>
+                <Col span="20">
+                  <span v-text="infoData.cost"></span>
+                </Col>
+              </Row>
+            </p>
           </Col>
         </Row>
       </Col>
@@ -38,7 +46,7 @@
 <script>
 export default {
   name: 'claim_info',
-  props: ['infoData'],
+  props: ['infoData', 'caseLineType'],
   data () {
     return {}
   }

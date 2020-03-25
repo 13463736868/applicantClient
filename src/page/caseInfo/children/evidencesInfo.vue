@@ -4,7 +4,7 @@
       <div class="_top">申请人证据</div>
       <div v-if="evidObj.list">
         <div v-if="evidData !== null" v-for="(item, index) in evidData" :key="index">
-          <evid-info :infoData="item"></evid-info>
+          <evid-info :caseLineType="caseLineType" :infoData="item"></evid-info>
         </div>
       </div>
       <div v-if="evidObj.add">
@@ -109,7 +109,7 @@ import regi from '@/config/regiType.js'
 
 export default {
   name: 'evidencesInfo',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseLineType', 'caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { addIcon, evidInfo, addEvidInfo, questionInfo, addQuesInfo, defenceInfo, addDefenceInfo },
   data () {
     return {
@@ -190,10 +190,12 @@ export default {
         let _data = {}
         _data.caseId = this.caseOldId
         _data.id = this.caseId
+        _data.caseLineType = this.caseLineType
         return _data
       } else if (this.partieType === 2) {
         let _data = {}
         _data.id = this.caseId
+        _data.caseLineType = this.caseLineType
         return _data
       }
     }
@@ -268,7 +270,8 @@ export default {
     },
     resRevEvid () {
       axios.post('/case/queryRespEvidence', {
-        id: this.caseId
+        id: this.caseId,
+        caseLineType: this.caseLineType
       }).then(res => {
         this.revEvidData = res.data.data
         if (this.revEvidData !== null) {

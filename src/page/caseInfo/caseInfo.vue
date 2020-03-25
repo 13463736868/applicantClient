@@ -9,10 +9,10 @@
           <router-link v-for="item in menuClaim" :to='{path: "/caseInfo" + item.url}' :key="item.id" tag="li" v-text="item.text"></router-link>
         </Col>
         <Col span="14" class="_center_right">
-          <router-view :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></router-view>
+          <router-view :caseLineType="myCaseListInfo.caseLineType" :caseId="myCaseListInfo.id" :caseOldId="myCaseListInfo.oldId" :caseState="myCaseListInfo.state" :partieType="myCaseListInfo.partieType"></router-view>
         </Col>
         <Col span="4">
-          <right-arbi :caseId="myCaseId" :caseOldId="myCaseOldId" :caseState="myCaseState" :partieType="myCasePartieType"></right-arbi>
+          <right-arbi :caseLineType="myCaseListInfo.caseLineType" :caseId="myCaseListInfo.id" :caseOldId="myCaseListInfo.oldId" :caseState="myCaseListInfo.state" :partieType="myCaseListInfo.partieType"></right-arbi>
         </Col>
       </Row>
     </div>
@@ -178,6 +178,65 @@ export default {
           url: '/endCaseInfo'
         }
       ],
+      menuClaimE: [
+        {
+          id: '0',
+          text: '基本信息',
+          url: '/basicInfo'
+        },
+        {
+          id: '1',
+          text: '申请方',
+          url: '/proposerInfo'
+        },
+        {
+          id: '2',
+          text: '被申请方',
+          url: '/respondentInfo'
+        },
+        {
+          id: '3',
+          text: '请求答辩(反请求答辩)',
+          url: '/claimItem'
+        },
+        {
+          id: '5',
+          text: '仲裁审理',
+          url: '/evidencesInfo'
+        }
+      ],
+      menuClaimF: [
+        {
+          id: '0',
+          text: '基本信息',
+          url: '/basicInfo'
+        },
+        {
+          id: '1',
+          text: '申请方',
+          url: '/proposerInfo'
+        },
+        {
+          id: '2',
+          text: '被申请方',
+          url: '/respondentInfo'
+        },
+        {
+          id: '3',
+          text: '请求答辩(反请求答辩)',
+          url: '/claimItem'
+        },
+        {
+          id: '5',
+          text: '仲裁审理',
+          url: '/evidencesInfo'
+        },
+        {
+          id: '6',
+          text: '裁决书',
+          url: '/endCaseInfo'
+        }
+      ],
       stateA: [1, 2, 3, 9, '1', '2', '3', '9'],
       stateB: [4, 5, 99, '4', '5', '99'],
       stateC: [7, 98, '7', '98'],
@@ -185,30 +244,39 @@ export default {
     }
   },
   created () {
-    if (this.myCaseId === '' || this.myCaseOldId === '') {
+    if (this.myCaseListInfo === null) {
       this.$router.push({
         path: '/home'
       })
       return
     }
-    if (this.stateA.indexOf(this.myCaseState) !== -1) {
-      this.menuClaim = this.menuClaimA
-    } else if (this.stateB.indexOf(this.myCaseState) !== -1) {
-      this.menuClaim = this.menuClaimB
-    } else if (this.stateC.indexOf(this.myCaseState) !== -1) {
-      this.menuClaim = this.menuClaimC
-    } else if (this.stateD.indexOf(this.myCaseState) !== -1) {
-      this.menuClaim = this.menuClaimD
+    if (this.myCaseListInfo.caseLineType === 1) {
+      if (this.stateA.indexOf(this.myCaseListInfo.state) !== -1) {
+        this.menuClaim = this.menuClaimA
+      } else if (this.stateB.indexOf(this.myCaseListInfo.state) !== -1) {
+        this.menuClaim = this.menuClaimB
+      } else if (this.stateC.indexOf(this.myCaseListInfo.state) !== -1) {
+        this.menuClaim = this.menuClaimC
+      } else if (this.stateD.indexOf(this.myCaseListInfo.state) !== -1) {
+        this.menuClaim = this.menuClaimD
+      } else {
+        this.menuClaim = this.menuClaimA
+      }
+    } else if (this.myCaseListInfo.caseLineType === 2) {
+      if ([7, '7'].indexOf(this.myCaseListInfo.state) !== -1) {
+        this.menuClaim = this.menuClaimF
+      } else {
+        this.menuClaim = this.menuClaimE
+      }
     } else {
-      this.menuClaim = this.menuClaimA
+      this.$router.push({
+        path: '/home'
+      })
     }
   },
   computed: {
     ...mapGetters([
-      'myCaseId',
-      'myCaseOldId',
-      'myCaseState',
-      'myCasePartieType'
+      'myCaseListInfo'
     ])
   }
 }

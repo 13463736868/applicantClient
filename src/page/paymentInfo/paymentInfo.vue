@@ -103,7 +103,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.goCaseInfo(params.index)
+                    this.goCaseInfo(params.row)
                   }
                 }
               }, params.row.oldId)
@@ -187,12 +187,8 @@ export default {
   methods: {
     ...mapActions([
       'setPaymentInfoId',
-      'setMyCaseId',
-      'setMyCaseOldId',
-      'setMyCaseState',
       'setGoPaymentCaseIds',
       'setMyCaseShowBtn',
-      'setMyCasePartieType',
       'setMyCaseCrossE'
     ]),
     resSearch () {
@@ -237,19 +233,20 @@ export default {
         path: '/paymentSlip'
       })
     },
-    goCaseInfo (index) {
-      this.setMyCaseId(this.payList.bodyList[index].id)
-      window.localStorage.setItem('myCaseId', this.payList.bodyList[index].id)
-      this.setMyCaseOldId(this.payList.bodyList[index].oldId)
-      window.localStorage.setItem('myCaseOldId', this.payList.bodyList[index].oldId)
-      this.setMyCaseState(this.payList.bodyList[index].state)
-      window.localStorage.setItem('myCaseState', this.payList.bodyList[index].state)
-      this.setMyCaseShowBtn(this.payList.bodyList[index].showBtn)
-      window.localStorage.setItem('myCaseShowBtn', JSON.stringify(this.payList.bodyList[index].showBtn))
-      this.setMyCasePartieType(this.payList.bodyList[index].partieType)
-      window.localStorage.setItem('myCasePartieType', this.payList.bodyList[index].partieType)
-      this.setMyCaseCrossE(this.payList.bodyList[index].crossExamination)
-      window.localStorage.setItem('myCaseCrossE', this.payList.bodyList[index].crossExamination)
+    goCaseInfo (obj) {
+      let _o = {
+        caseLineType: 1,
+        id: obj.id,
+        oldId: obj.oldId,
+        state: obj.state,
+        partieType: obj.partieType
+      }
+      this.setMyCaseListInfo(_o)
+      window.localStorage.setItem('myCaseListInfo', JSON.stringify(_o))
+      this.setMyCaseShowBtn(obj.showBtn)
+      window.localStorage.setItem('myCaseShowBtn', JSON.stringify(obj.showBtn))
+      this.setMyCaseCrossE(obj.crossExamination)
+      window.localStorage.setItem('myCaseCrossE', obj.crossExamination)
       this.$router.push({
         path: '/caseInfo'
       })

@@ -15,7 +15,7 @@ import endInfo from '@/page/caseInfo/children/children/endInfo'
 
 export default {
   name: 'endCaseInfo',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseLineType', 'caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { endInfo },
   data () {
     return {
@@ -30,7 +30,8 @@ export default {
   methods: {
     resCase () {
       axios.post('/case/settleItem', {
-        id: this.caseId
+        id: this.caseId,
+        caseLineType: this.caseLineType
       }).then(res => {
         this.endCaseD = res.data.data
       }).catch(e => {

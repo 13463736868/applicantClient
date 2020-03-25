@@ -18,7 +18,7 @@
           <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addSubmit}" v-bind:disabled="addSubmit" @click="saveClick">提交仲裁</button></Col>
         </Row>
       </Col>
-      <Col span="5" offset="1">
+      <Col span="5" offset="1" v-if="filingType === 1">
         <Row>
           <Col class="tr" span="24"><button class="_saveBtn" :class="{'_disabled':addHash}" v-bind:disabled="addHash" @click="hashClick">证据固化</button></Col>
         </Row>
@@ -58,7 +58,8 @@ export default {
     ...mapGetters([
       'caseInfo',
       'userInfo',
-      'userState'
+      'userState',
+      'filingType'
     ])
   },
   methods: {
@@ -154,17 +155,17 @@ export default {
           content: '请填写被请求项',
           duration: 5
         })
-      } else if (this.caseInfo.requestReasons === null) {
+      } else if (this.filingType === 1 && this.caseInfo.requestReasons === null) {
         this.$Message.error({
           content: '请填写事实与理由',
           duration: 5
         })
-      } else if (this.caseInfo.arbRequisitionFile === null) {
+      } else if (this.filingType === 1 && this.caseInfo.arbRequisitionFile === null) {
         this.$Message.error({
           content: '请上传仲裁申请书',
           duration: 5
         })
-      } else if (this.caseInfo.evidenceList.length === 0) {
+      } else if (this.filingType === 1 && this.caseInfo.evidenceList.length === 0) {
         this.$Message.error({
           content: '请填写证据',
           duration: 5

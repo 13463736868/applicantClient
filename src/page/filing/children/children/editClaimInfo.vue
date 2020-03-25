@@ -25,6 +25,13 @@
           </Col>
           <Col span="24" class="_em"><span v-show="emInfo.status===3" v-text="emInfo.text"></span></Col>
         </Row>
+        <Row class="_labelFor" v-if="filingType === 2">
+          <Col span="24" class="_label">仲裁费(元)<b class="_b">*</b></Col>
+          <Col span="24">
+            <Input v-model="claimData.cost" @on-change="dispCost"/>
+          </Col>
+          <Col span="24" class="_em"><span v-show="emInfo.status===4" v-text="emInfo.text"></span></Col>
+        </Row>
       </Col>
     </Row>
     <Row>
@@ -36,6 +43,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 import setRegExp from '@/config/regExp.js'
 
 export default {
@@ -52,7 +60,27 @@ export default {
       claimData: JSON.parse(JSON.stringify(this.editClaiData))
     }
   },
+  computed: {
+    ...mapGetters([
+      'filingType'
+    ])
+  },
   methods: {
+    dispCost () {
+      if (this.claimData.cost === null || this.claimData.cost === '') {
+        this.emInfo.status = 4
+        this.emInfo.text = '请填写请求金额！可以为 0'
+        this.dispSwitch = true
+      } else if (!setRegExp(this.claimData.cost, 'money')) {
+        this.emInfo.status = 4
+        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999)'
+        this.dispSwitch = true
+      } else {
+        this.emInfo.status = 0
+        this.emInfo.text = ''
+        this.dispSwitch = false
+      }
+    },
     dispMoney () {
       if (this.claimData.disputeFee === null || this.claimData.disputeFee === '') {
         this.emInfo.status = 3
@@ -60,7 +88,7 @@ export default {
         this.dispSwitch = true
       } else if (!setRegExp(this.claimData.disputeFee, 'money')) {
         this.emInfo.status = 3
-        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999999)'
+        this.emInfo.text = '请输入正确金额格式 例: 10.00 或 10;范围(0~9999999)'
         this.dispSwitch = true
       } else {
         this.emInfo.status = 0
@@ -98,7 +126,8 @@ export default {
         id: this.claimData.id,
         requestName: this.claimData.requestName,
         content: this.claimData.content,
-        disputeFee: this.claimData.disputeFee
+        disputeFee: this.claimData.disputeFee,
+        cost: this.claimData.cost === undefined ? null : this.claimData.cost
       }).then(res => {
         this.$emit('saveClick', res.data.data)
       }).catch(e => {

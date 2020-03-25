@@ -37,30 +37,32 @@
                 </Col>
               </Row>
             </p>
-            <p>
-              <Row>
-                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(申):</b></span></Col>
-                <Col span="14">
-                  <span class="mr10" v-text="dataInfo.propArbitratorName"></span>
-                </Col>
-              </Row>
-            </p>
-            <p>
-              <Row>
-                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(被):</b></span></Col>
-                <Col span="14">
-                  <span class="mr10" v-text="dataInfo.respArbitratorName"></span>
-                </Col>
-              </Row>
-            </p>
-            <p>
-              <Row>
-                <Col class="tr" span="10"><span class="mr10"><b>仲裁员(终):</b></span></Col>
-                <Col span="14">
-                  <span class="mr10" v-text="dataInfo.arbitratorName"></span>
-                </Col>
-              </Row>
-            </p>
+            <template v-if="caseLineType === 1">
+              <p>
+                <Row>
+                  <Col class="tr" span="10"><span class="mr10"><b>仲裁员(申):</b></span></Col>
+                  <Col span="14">
+                    <span class="mr10" v-text="dataInfo.propArbitratorName"></span>
+                  </Col>
+                </Row>
+              </p>
+              <p>
+                <Row>
+                  <Col class="tr" span="10"><span class="mr10"><b>仲裁员(被):</b></span></Col>
+                  <Col span="14">
+                    <span class="mr10" v-text="dataInfo.respArbitratorName"></span>
+                  </Col>
+                </Row>
+              </p>
+              <p>
+                <Row>
+                  <Col class="tr" span="10"><span class="mr10"><b>仲裁员(终):</b></span></Col>
+                  <Col span="14">
+                    <span class="mr10" v-text="dataInfo.arbitratorName"></span>
+                  </Col>
+                </Row>
+              </p>
+            </template>
             <p>
               <Row>
                 <Col class="tr" span="10"><span class="mr10"><b>秘书 :</b></span></Col>
@@ -245,7 +247,7 @@ import regi from '@/config/regiType.js'
 
 export default {
   name: 'right_arbi',
-  props: ['caseId', 'caseOldId', 'caseState', 'partieType'],
+  props: ['caseLineType', 'caseId', 'caseOldId', 'caseState', 'partieType'],
   components: { spinComp, alertBtnInfo },
   data () {
     return {
@@ -397,7 +399,8 @@ export default {
     },
     resCaseItem () {
       axios.post('/case/queryCaseItem', {
-        id: this.caseId
+        id: this.caseId,
+        caseLineType: this.caseLineType
       }).then(res => {
         this.dataInfo = res.data.data
         this.dataInfoShow = true
