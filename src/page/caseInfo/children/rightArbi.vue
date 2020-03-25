@@ -37,6 +37,16 @@
                 </Col>
               </Row>
             </p>
+            <template v-if="caseLineType === 2">
+              <p>
+                <Row>
+                  <Col class="tr" span="10"><span class="mr10"><b>仲裁员:</b></span></Col>
+                  <Col span="14">
+                    <span class="mr10" v-text="dataInfo.arbitratorName"></span>
+                  </Col>
+                </Row>
+              </p>
+            </template>
             <template v-if="caseLineType === 1">
               <p>
                 <Row>
