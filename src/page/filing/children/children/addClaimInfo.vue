@@ -116,9 +116,24 @@ export default {
           })
         }
       } else {
-        if (this.dispSwitch) {
+        if (this.claimData.disputeFee === null || this.claimData.disputeFee === '') {
           this.$Message.error({
-            content: this.emInfo.text,
+            content: '请填写请求金额！可以为 0',
+            duration: 5
+          })
+        } else if (!setRegExp(this.claimData.disputeFee, 'money')) {
+          this.$Message.error({
+            content: '请输入正确请求金额格式 例: 10.00 或 10;范围(0~9999999)',
+            duration: 5
+          })
+        } else if (this.filingType === 2 && (this.claimData.cost === null || this.claimData.cost === '')) {
+          this.$Message.error({
+            content: '请填写仲裁费金额！可以为 0',
+            duration: 5
+          })
+        } else if (this.filingType === 2 && !setRegExp(this.claimData.cost, 'money')) {
+          this.$Message.error({
+            content: '请输入正确仲裁费金额格式 例: 10.00 或 10;范围(0~9999999)',
             duration: 5
           })
         } else {
