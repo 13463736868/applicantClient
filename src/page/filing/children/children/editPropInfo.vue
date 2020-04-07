@@ -282,6 +282,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 import getPropCode from '@/page/filing/children/children/getPropCode'
 import setRegExp from '@/config/regExp.js'
 
@@ -316,6 +317,11 @@ export default {
       this.propCodeObj.fristPhone = JSON.parse(JSON.stringify(this.propData.phone))
       this.propCodeObj.fristEmail = JSON.parse(JSON.stringify(this.propData.email))
     }
+  },
+  computed: {
+    ...mapGetters([
+      'filingType'
+    ])
   },
   methods: {
     cardList () {
@@ -427,7 +433,7 @@ export default {
             this.propData.birthdayStr = this.propData.idcard.substr(6, 4) + '-' + this.propData.idcard.substr(10, 2) + '-' + this.propData.idcard.substr(12, 2)
             this.emInfo.status = 0
             this.emInfo.text = ''
-            if (this.editType === 1) {
+            if (this.filingType !== 2 && this.editType === 1) {
               this.getCode()
             } else {
               this.sendAjax()
@@ -482,7 +488,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
@@ -510,7 +516,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
@@ -564,7 +570,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
@@ -592,7 +598,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
@@ -646,7 +652,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
@@ -674,7 +680,7 @@ export default {
               } else {
                 this.emInfo.status = 0
                 this.emInfo.text = ''
-                if (this.editType === 1) {
+                if (this.filingType !== 2 && this.editType === 1) {
                   this.getCode()
                 } else {
                   this.sendAjax()
